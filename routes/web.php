@@ -163,3 +163,22 @@ Route::get('/storage/{path}', function ($path) {
     }
     return response()->file($filePath);
 })->where('path', '.*')->name('storage.file');
+
+// Route Health Check & Diagnostik Sistem
+Route::get('/health-check', function () {
+    try {
+        \Illuminate\Support\Facades\DB::connection()->getPdo();
+        $dbStatus = 'Connected: ' . \Illuminate\Support\Facades\DB::connection()->getDatabaseName();
+    } catch (\Throwable $e) {
+        $dbStatus = 'Error: ' . $e->getMessage();
+    }
+
+    return response()->json([
+        'status' => 'ok',
+        'php' => PHP_VERSION,
+        'app_key' => !empty(config('app.key')),
+        'db_connection' => config('database.default'),
+        'db_status' => $dbStatus,
+        'session_driver' => config('session.driver'),
+    ]);
+});
