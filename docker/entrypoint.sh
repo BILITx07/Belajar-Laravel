@@ -24,6 +24,9 @@ php artisan view:clear || true
 echo "Menjalankan migrasi database..."
 php artisan migrate --force || true
 
+echo "Menjalankan seeder user admin..."
+php artisan db:seed --class=UserSeeder --force || true
+
 php artisan storage:link || true
 
 echo "Starting PHP-FPM..."
