@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Produk;
 use App\Models\Kategori;
+use App\Services\HidrologiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -12,43 +13,96 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $tipeFilter = $request->input('tipe', 'semua');
+        $statusFilter = $request->input('status', 'semua');
 
-        // Statistics
+        $posList = HidrologiService::getDaftarPos();
+        $statistik = HidrologiService::getStatistik();
+        $infrastrukturSDA = HidrologiService::getInfrastrukturSDA();
+
+        // Optional filtering for search/type
+        if ($search) {
+            $posList = array_values(array_filter($posList, function($pos) use ($search) {
+                return stripos($pos['nama'], $search) !== false 
+                    || stripos($pos['kabupaten'], $search) !== false 
+                    || stripos($pos['kode'], $search) !== false;
+            }));
+        }
+
+        if ($tipeFilter !== 'semua') {
+            $posList = array_values(array_filter($posList, function($pos) use ($tipeFilter) {
+                return $pos['tipe'] === $tipeFilter;
+            }));
+        }
+
+        if ($statusFilter === 'online') {
+            $posList = array_values(array_filter($posList, fn($pos) => $pos['status_alat'] === 'Online'));
+        } elseif ($statusFilter === 'offline') {
+            $posList = array_values(array_filter($posList, fn($pos) => $pos['status_alat'] === 'Offline'));
+        } elseif ($statusFilter === 'siaga') {
+            $posList = array_values(array_filter($posList, fn($pos) => in_array($pos['status_siaga'], ['Waspada', 'Siaga', 'Awas'])));
+        }
+
+        // Old inventory stats (if needed)
         $totalProduk = Produk::count();
         $totalKategori = Kategori::count();
-        $totalStok = Produk::sum('stok') ?? 0;
-        $totalNilaiInventaris = Produk::selectRaw('SUM(harga * stok) as total')->value('total') ?? 0;
-
-        // Query produk
-        $produkQuery = Produk::with('kategori');
-        if ($search) {
-            $produkQuery->where(function($q) use ($search) {
-                $q->where('nama_produk', 'like', "%{$search}%")
-                  ->orWhere('kode_produk', 'like', "%{$search}%")
-                  ->orWhereHas('kategori', function($k) use ($search) {
-                      $k->where('nama_kategori', 'like', "%{$search}%");
-                  });
-            });
-        }
-        $produks = $produkQuery->latest()->get();
-
-        // Query kategori dengan jumlah produk (withCount untuk produks_count)
-        $kategoriQuery = Kategori::withCount('produks');
-        if ($search) {
-            $kategoriQuery->where('nama_kategori', 'like', "%{$search}%")
-                          ->orWhere('deskripsi', 'like', "%{$search}%");
-        }
-        $kategori = $kategoriQuery->latest()->get();
 
         return view('dashboard.index', [
-            'title' => 'Dashboard Utama',
+            'title' => 'Dashboard Telemetri & FEWS Terpadu - BWS Kalimantan I',
+            'posList' => $posList,
+            'statistik' => $statistik,
+            'infrastrukturSDA' => $infrastrukturSDA,
             'totalProduk' => $totalProduk,
             'totalKategori' => $totalKategori,
-            'totalStok' => $totalStok,
-            'totalNilaiInventaris' => $totalNilaiInventaris,
-            'produks' => $produks,
-            'kategori' => $kategori,
-            'search' => $search
+            'search' => $search,
+            'tipeFilter' => $tipeFilter,
+            'statusFilter' => $statusFilter,
+        ]);
+    }
+
+    public function dataHidrologi(Request $request)
+    {
+        $search = $request->input('search');
+        $tipeFilter = $request->input('tipe', 'semua');
+        $kabupatenFilter = $request->input('kabupaten', 'semua');
+        $statusFilter = $request->input('status', 'semua');
+
+        $allPos = HidrologiService::getDaftarPos();
+        $statistik = HidrologiService::getStatistik();
+
+        $filteredPos = array_filter($allPos, function($pos) use ($search, $tipeFilter, $kabupatenFilter, $statusFilter) {
+            $matchSearch = true;
+            if ($search) {
+                $matchSearch = stripos($pos['nama'], $search) !== false
+                    || stripos($pos['kode'], $search) !== false
+                    || stripos($pos['das'], $search) !== false
+                    || stripos($pos['kabupaten'], $search) !== false;
+            }
+
+            $matchTipe = ($tipeFilter === 'semua' || $pos['tipe'] === $tipeFilter);
+            $matchKab = ($kabupatenFilter === 'semua' || $pos['kabupaten'] === $kabupatenFilter);
+            $matchStatus = ($statusFilter === 'semua' 
+                || ($statusFilter === 'online' && $pos['status_alat'] === 'Online')
+                || ($statusFilter === 'offline' && $pos['status_alat'] === 'Offline')
+                || ($statusFilter === 'siaga' && in_array($pos['status_siaga'], ['Waspada', 'Siaga', 'Awas']))
+            );
+
+            return $matchSearch && $matchTipe && $matchKab && $matchStatus;
+        });
+
+        // List distinct kabupaten
+        $kabupatenList = array_unique(array_map(fn($p) => $p['kabupaten'], $allPos));
+        sort($kabupatenList);
+
+        return view('dashboard.hidrologi_data', [
+            'title' => 'Rekapitulasi Data Pos Hidrologi & Log Telemetri',
+            'posList' => array_values($filteredPos),
+            'statistik' => $statistik,
+            'kabupatenList' => $kabupatenList,
+            'search' => $search,
+            'tipeFilter' => $tipeFilter,
+            'kabupatenFilter' => $kabupatenFilter,
+            'statusFilter' => $statusFilter,
         ]);
     }
 
@@ -264,50 +318,105 @@ class DashboardController extends Controller
         }
 
         $hasFiles = count($geojsonFiles) > 0;
+        $posList = HidrologiService::getDaftarPos();
+        $infrastrukturSDA = HidrologiService::getInfrastrukturSDA();
 
-        return view('dashboard.peta', compact('lokasi', 'geojsonFiles', 'fileList', 'hasFiles', 'availableTypes'));
+        return view('dashboard.peta', compact('lokasi', 'geojsonFiles', 'fileList', 'hasFiles', 'availableTypes', 'posList', 'infrastrukturSDA'));
     }
 
     public function uploadGeojson(Request $request)
     {
-        // 1. Validasi: Pastikan ada file yang diunggah
-        $request->validate([
-            'file_geojson'   => 'required|array|min:1',
-            'file_geojson.*' => 'required|file|max:102400|extensions:json,geojson',
-        ], [
-            'file_geojson.required'     => 'Silakan pilih minimal satu file GeoJSON/JSON terlebih dahulu.',
-            'file_geojson.*.file'       => 'File yang diunggah tidak valid.',
-            'file_geojson.*.extensions' => 'Format file harus .json atau .geojson!',
-            'file_geojson.*.max'        => 'Ukuran file tidak boleh lebih dari 100MB.',
-        ]);
+        @ini_set('memory_limit', '1024M');
+        @set_time_limit(300);
 
-        // 2. Pastikan folder public/geojson ada
+        // Tentukan apakah upload sebagai array (form biasa) atau single blob (konversi JS)
+        $isSingleBlob = $request->hasFile('file_geojson') && !is_array($request->file('file_geojson'));
+
+        if ($isSingleBlob) {
+            // Upload blob tunggal dari konversi JS (misal: Shapefile → GeoJSON, KML → GeoJSON)
+            $request->validate([
+                'file_geojson' => 'required|file|max:262144',
+            ], [
+                'file_geojson.required' => 'File GeoJSON hasil konversi tidak ditemukan.',
+                'file_geojson.max'      => 'Ukuran file tidak boleh lebih dari 256MB.',
+            ]);
+        } else {
+            // Upload normal (array file .json / .geojson)
+            $request->validate([
+                'file_geojson'   => 'required|array|min:1',
+                'file_geojson.*' => 'required|file|max:262144|extensions:json,geojson',
+            ], [
+                'file_geojson.required'     => 'Silakan pilih minimal satu file GeoJSON/JSON terlebih dahulu.',
+                'file_geojson.*.file'       => 'File yang diunggah tidak valid.',
+                'file_geojson.*.extensions' => 'Format file harus .json atau .geojson!',
+                'file_geojson.*.max'        => 'Ukuran file tidak boleh lebih dari 256MB.',
+            ]);
+        }
+
+        // Pastikan folder public/geojson ada
         $destinationPath = public_path('geojson');
         if (!file_exists($destinationPath)) {
             File::makeDirectory($destinationPath, 0755, true);
         }
 
-        // 3. Proses setiap file yang diupload
+        // Normalisasi: jadikan selalu array agar bisa di-loop
+        $files = $isSingleBlob
+            ? [$request->file('file_geojson')]
+            : (array) $request->file('file_geojson');
+
         $namaFileList = [];
         $failedFiles  = [];
 
-        foreach ($request->file('file_geojson') as $file) {
+        foreach ($files as $file) {
             $namaFile = $file->getClientOriginalName();
-            $ext = strtolower($file->getClientOriginalExtension());
+            $ext      = strtolower($file->getClientOriginalExtension());
 
-            // Validasi format ekstensi: harus json atau geojson
+            // Validasi ekstensi
             if (!in_array($ext, ['json', 'geojson'])) {
-                $failedFiles[] = $namaFile;
+                $failedFiles[] = $namaFile . ' (ekstensi tidak valid: .' . $ext . ')';
                 continue;
             }
 
-            // 4. Simpan file ke folder public/geojson
+            // Validasi isi file secara efisien (hindari memory exhaustion dari json_decode pada file spasial besar)
+            $filePath = $file->getRealPath();
+            $fileSize = $file->getSize();
+
+            if ($fileSize > 2 * 1024 * 1024) { // Untuk file > 2MB, gunakan streaming header check yang cepat dan hemat RAM
+                $handle = fopen($filePath, 'r');
+                if (!$handle) {
+                    $failedFiles[] = $namaFile . ' (tidak dapat membaca file sementara)';
+                    continue;
+                }
+                $headerSample = fread($handle, 4096);
+                fclose($handle);
+
+                $trimmed = ltrim($headerSample);
+                if (!str_starts_with($trimmed, '{') && !str_starts_with($trimmed, '[')) {
+                    $failedFiles[] = $namaFile . ' (bukan format JSON/GeoJSON yang valid)';
+                    continue;
+                }
+
+                if (!str_contains($headerSample, '"type"') && !str_contains($headerSample, "'type'")) {
+                    $failedFiles[] = $namaFile . ' (bukan struktur GeoJSON: atribut "type" tidak ditemukan)';
+                    continue;
+                }
+            } else {
+                // Untuk file kecil <= 2MB, aman divalidasi dengan json_decode
+                $content = file_get_contents($filePath);
+                $decoded = json_decode($content, true);
+                if (json_last_error() !== JSON_ERROR_NONE || empty($decoded['type'])) {
+                    $failedFiles[] = $namaFile . ' (bukan file GeoJSON yang valid)';
+                    continue;
+                }
+            }
+
+            // Simpan file ke folder public/geojson
             $file->move($destinationPath, $namaFile);
             $namaFileList[] = $namaFile;
         }
 
         if (count($namaFileList) === 0 && count($failedFiles) > 0) {
-            $errMessage = 'Format file harus .json atau .geojson! File "' . implode(', ', $failedFiles) . '" tidak valid.';
+            $errMessage = 'Gagal mengunggah file: ' . implode(', ', $failedFiles);
             if ($request->expectsJson() || $request->ajax()) {
                 return response()->json([
                     'success' => false,
@@ -318,10 +427,10 @@ class DashboardController extends Controller
             return redirect()->back()->with('error', $errMessage);
         }
 
-        $jumlah = count($namaFileList);
+        $jumlah    = count($namaFileList);
         $pesanFile = implode(', ', $namaFileList);
 
-        // Jika request berupa AJAX / fetch batch upload, kembalikan respons JSON yang dinanti klien
+        // Kembalikan JSON untuk AJAX / fetch (termasuk dari konversi JS)
         if ($request->expectsJson() || $request->ajax()) {
             return response()->json([
                 'success'  => true,
@@ -331,7 +440,6 @@ class DashboardController extends Controller
             ]);
         }
 
-        // 5. Kembalikan ke halaman peta dengan notifikasi (key 'success' sesuai blade)
         return redirect()->back()->with('success', $jumlah . ' file GIS berhasil diunggah dan otomatis aktif di peta! (' . $pesanFile . ')');
     }
 

@@ -65,75 +65,787 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-@endif
+@endif  
 
-<!-- Modal Upload GeoJSON (Mendukung Batch Upload Puluhan File Sekaligus) -->
+<!-- ================================================================
+     Modal Upload GIS - Mendukung GeoJSON & File Mentah (Auto Konversi)
+     Format: .geojson, .json, .zip (Shapefile), .kml, .kmz, .csv, .gpx
+     ================================================================ -->
+<!-- ================================================================
+     Modal Upload GIS - Mendukung GeoJSON & File Mentah (Auto Konversi)
+     Format: .geojson, .json, .zip (Shapefile), .kml, .kmz, .csv, .gpx
+     ================================================================ -->
 <div class="modal fade" id="modalUploadGeojson" tabindex="-1" role="dialog" aria-labelledby="modalUploadGeojsonLabel" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <form id="formUploadGeojson" action="{{ route('peta.upload-geojson') }}" method="POST" enctype="multipart/form-data" class="modal-content border-0 shadow">
-            @csrf
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title font-weight-bold" id="modalUploadGeojsonLabel">
-                    <i class="fas fa-cloud-upload-alt mr-2"></i>Upload File GeoJSON
-                </h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" id="btnCloseUploadModal">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document" style="max-width: 760px; margin: 1.5rem auto;">
+        <div class="modal-content border-0 shadow-lg rounded-lg overflow-hidden">
+            <!-- Header Modal -->
+            <div class="modal-header text-white px-4 py-3 border-0" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #2563eb 100%);">
+                <div class="d-flex align-items-center">
+                    <div class="mr-3 rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width:40px;height:40px;background:rgba(255,255,255,0.18);">
+                        <i class="fas fa-cloud-upload-alt text-white fa-lg"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title font-weight-bold mb-0 text-white" id="modalUploadGeojsonLabel" style="font-size:1.15rem;letter-spacing:-0.2px;">
+                            Upload &amp; Konversi Data GIS
+                        </h5>
+                        <small class="text-white-50" style="font-size:0.8rem;">Sistem otomatis mengkonversi Shapefile, KML, CSV &amp; GPX ke peta</small>
+                    </div>
+                </div>
+                <button type="button" class="close text-white opacity-75" data-dismiss="modal" aria-label="Close" id="btnCloseUploadModal" style="outline:none;text-shadow:none;font-size:1.5rem;padding:0.75rem 1rem;">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body p-4">
-                <div class="form-group mb-3" id="uploadInputContainer">
-                    <label class="font-weight-bold text-gray-800">
-                        <i class="fas fa-file-code text-primary mr-1"></i>Pilih File GeoJSON / JSON:
-                    </label>
-                    <div class="custom-file">
-                        <input type="file" name="file_geojson[]" class="custom-file-input" id="inputGeojsonFile" multiple accept=".geojson,.json" required onchange="updateFileInputLabel(this)">
-                        <label class="custom-file-label" for="inputGeojsonFile" id="labelGeojsonFile">Pilih satu atau beberapa file...</label>
-                    </div>
-                    <small class="form-text text-muted mt-2">
-                        <i class="fas fa-info-circle mr-1"></i>Format yang didukung: <code>.geojson</code> atau <code>.json</code>. Anda dapat memilih puluhan file sekaligus (misal 54 file, otomatis diunggah bertahap tanpa limit).
-                    </small>
-                </div>
 
-                {{-- Progress Bar (Tampil otomatis saat proses upload banyak file berjalan) --}}
-                <div id="uploadProgressSection" class="mb-3" style="display: none;">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="font-weight-bold small text-primary" id="uploadStatusText">
-                            <i class="fas fa-spinner fa-spin mr-1"></i>Mengunggah file...
-                        </span>
-                        <span class="font-weight-bold small text-muted" id="uploadPercentText">0%</span>
-                    </div>
-                    <div class="progress" style="height: 18px; border-radius: 9px;">
-                        <div id="uploadProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-success font-weight-bold" role="progressbar" style="width: 0%; font-size: 11px;">0%</div>
-                    </div>
-                    <div class="small text-muted mt-2 d-flex justify-content-between" id="uploadDetailText">
-                        <span>Memproses batch file...</span>
-                        <span id="uploadBatchCountText">Batch 0/0</span>
-                    </div>
-                </div>
-
-                <div id="uploadSuccessSection" class="alert alert-success py-2 px-3 small mb-3" style="display: none;">
-                    <i class="fas fa-check-circle mr-1"></i><span id="uploadSuccessMessage">Semua file berhasil diunggah!</span>
-                </div>
-
-                <div id="uploadErrorSection" class="alert alert-danger py-2 px-3 small mb-3" style="display: none;">
-                    <i class="fas fa-exclamation-triangle mr-1"></i><span id="uploadErrorMessage"></span>
-                </div>
-
-                <div class="alert alert-info py-2 px-3 small mb-0" id="uploadInfoNote">
-                    <i class="fas fa-folder-open mr-1"></i>File yang diunggah akan langsung disimpan ke folder <code>public/geojson/</code> dan otomatis dimuat ke peta interaktif.
-                </div>
+            <!-- Tab Navigation (Pills) -->
+            <div class="px-4 pt-3 pb-2 bg-light border-bottom">
+                <ul class="nav nav-pills" id="uploadTabNav" role="tablist">
+                    <li class="nav-item mr-2">
+                        <a class="nav-link active font-weight-bold px-3 py-2" id="tab-geojson-lnk" data-toggle="pill" href="#tab-geojson" role="tab" style="font-size:13px;border-radius:20px;">
+                            <i class="fas fa-file-code mr-1"></i>File Siap (.geojson / .json)
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link font-weight-bold px-3 py-2" id="tab-konversi-lnk" data-toggle="pill" href="#tab-konversi" role="tab" style="font-size:13px;border-radius:20px;">
+                            <i class="fas fa-magic text-warning mr-1"></i>✨ Konversi Otomatis
+                            <span class="badge badge-warning text-dark ml-1 font-weight-bold">SHP · KML · CSV</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
-            <div class="modal-footer bg-light" id="uploadModalFooter">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnBatalUpload">
-                    <i class="fas fa-times mr-1"></i>Batal
-                </button>
-                <button type="submit" class="btn btn-primary font-weight-bold" id="btnSubmitUpload">
-                    <i class="fas fa-upload mr-1"></i>Upload Sekarang
-                </button>
-            </div>
-        </form>
+
+            <div class="modal-body p-4" style="background:#fafbfc;">
+                <div class="tab-content">
+
+                    <!-- ===== TAB 1: Upload GeoJSON / JSON biasa ===== -->
+                    <div class="tab-pane fade show active" id="tab-geojson" role="tabpanel">
+                        <form id="formUploadGeojson" action="{{ route('peta.upload-geojson') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="bg-white p-3 rounded border mb-3">
+                                <label class="font-weight-bold text-gray-800 mb-2 d-flex align-items-center">
+                                    <i class="fas fa-file-code text-primary mr-2"></i>Pilih File GeoJSON / JSON
+                                </label>
+                                <div class="custom-file">
+                                    <input type="file" name="file_geojson[]" class="custom-file-input" id="inputGeojsonFile" multiple accept=".geojson,.json" required onchange="updateFileInputLabel(this)">
+                                    <label class="custom-file-label" for="inputGeojsonFile" id="labelGeojsonFile">Pilih satu atau beberapa file...</label>
+                                </div>
+                                <small class="form-text text-muted mt-2">
+                                    <i class="fas fa-info-circle mr-1 text-primary"></i>Format: <code>.geojson</code> atau <code>.json</code>. Anda dapat memilih banyak file sekaligus.
+                                </small>
+                            </div>
+
+                            {{-- Progress Bar Tab 1 --}}
+                            <div id="uploadProgressSection" class="bg-white p-3 rounded border mb-3" style="display: none;">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <span class="font-weight-bold small text-primary" id="uploadStatusText">
+                                        <i class="fas fa-spinner fa-spin mr-1"></i>Mengunggah file...
+                                    </span>
+                                    <span class="font-weight-bold small text-muted" id="uploadPercentText">0%</span>
+                                </div>
+                                <div class="progress" style="height: 14px; border-radius: 7px;">
+                                    <div id="uploadProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-success font-weight-bold" role="progressbar" style="width: 0%; font-size: 10px;">0%</div>
+                                </div>
+                                <div class="small text-muted mt-2 d-flex justify-content-between" id="uploadDetailText">
+                                    <span>Memproses file...</span>
+                                    <span id="uploadBatchCountText">Batch 0/0</span>
+                                </div>
+                            </div>
+
+                            <div id="uploadSuccessSection" class="alert alert-success py-2 px-3 small mb-3 shadow-sm" style="display: none;">
+                                <i class="fas fa-check-circle mr-1"></i><span id="uploadSuccessMessage">Semua file berhasil diunggah!</span>
+                            </div>
+                            <div id="uploadErrorSection" class="alert alert-danger py-2 px-3 small mb-3 shadow-sm" style="display: none;">
+                                <i class="fas fa-exclamation-triangle mr-1"></i><span id="uploadErrorMessage"></span>
+                            </div>
+
+                            <div class="alert alert-info py-2 px-3 small mb-3 border-0" style="background:#e8f0fe;color:#1e3a8a;">
+                                <i class="fas fa-folder-open mr-1"></i>File akan disimpan ke folder <code>public/geojson/</code> dan otomatis langsung tampil pada peta interaktif.
+                            </div>
+
+                            <div class="d-flex justify-content-end" id="uploadModalFooter">
+                                <button type="button" class="btn btn-light border mr-2 font-weight-bold" data-dismiss="modal" id="btnBatalUpload">
+                                    <i class="fas fa-times mr-1"></i>Batal
+                                </button>
+                                <button type="submit" class="btn btn-primary font-weight-bold px-4 shadow-sm" id="btnSubmitUpload">
+                                    <i class="fas fa-upload mr-1"></i>Upload Sekarang
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- ===== TAB 2: Konversi Otomatis File Mentah ===== -->
+                    <div class="tab-pane fade" id="tab-konversi" role="tabpanel">
+
+                        <!-- Format badges & Intro -->
+                        <div class="bg-white p-3 rounded border mb-3">
+                            <div class="d-flex align-items-center justify-content-between flex-wrap mb-2">
+                                <div class="font-weight-bold text-dark small">
+                                    <i class="fas fa-bolt text-warning mr-1"></i>Format yang Didukung Sistem:
+                                </div>
+                                <div class="small text-muted">Auto-convert di browser</div>
+                            </div>
+                            <div class="d-flex flex-wrap" style="gap:6px;">
+                                <span class="badge badge-pill px-3 py-1 font-weight-normal" style="background:#e8f0fe;color:#1a73e8;font-size:12px;">
+                                    <i class="fas fa-file-archive mr-1"></i><strong>.zip</strong> (Shapefile SHP+DBF+PRJ)
+                                </span>
+                                <span class="badge badge-pill px-3 py-1 font-weight-normal" style="background:#fce8e6;color:#d32f2f;font-size:12px;">
+                                    <i class="fas fa-map mr-1"></i><strong>.kml</strong> / <strong>.kmz</strong> (Google Earth)
+                                </span>
+                                <span class="badge badge-pill px-3 py-1 font-weight-normal" style="background:#e6f4ea;color:#1e8e3e;font-size:12px;">
+                                    <i class="fas fa-table mr-1"></i><strong>.csv</strong> (Lat &amp; Lng)
+                                </span>
+                                <span class="badge badge-pill px-3 py-1 font-weight-normal" style="background:#fef7e0;color:#b06000;font-size:12px;">
+                                    <i class="fas fa-route mr-1"></i><strong>.gpx</strong> (GPS)
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Drop Zone -->
+                        <div id="gisDropZone" onclick="document.getElementById('inputRawGisFile').click()"
+                             style="border: 2px dashed #3b82f6; border-radius: 12px; background: #f0f7ff; padding: 22px 18px; text-align:center; cursor:pointer; transition:all 0.2s;"
+                             class="mb-3 hover-shadow">
+                            <div class="d-flex align-items-center justify-content-center mb-2">
+                                <div class="rounded-circle bg-white d-flex align-items-center justify-content-center shadow-sm" style="width:50px;height:50px;">
+                                    <i class="fas fa-cloud-upload-alt fa-lg text-primary"></i>
+                                </div>
+                            </div>
+                            <div class="font-weight-bold text-primary mb-1" style="font-size:14px;">Klik atau Tarik File Mentah ke Sini</div>
+                            <div class="text-muted small">Pilih Shapefile (.zip), KML, KMZ, CSV, atau GPX dari komputer Anda</div>
+                            <input type="file" id="inputRawGisFile" multiple
+                                   accept=".zip,.kml,.kmz,.csv,.gpx"
+                                   style="display:none;"
+                                   onchange="handleRawGisFiles(this.files)">
+                        </div>
+
+                        <!-- Daftar file yang dipilih & status konversi -->
+                        <div id="konversiFileList" class="bg-white p-3 rounded border mb-3" style="display:none;">
+                            <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+                                <span class="font-weight-bold small text-dark">
+                                    <i class="fas fa-layer-group text-primary mr-1"></i>File Terpilih:
+                                </span>
+                                <button type="button" class="btn btn-xs btn-outline-secondary btn-sm py-1 px-2" onclick="resetKonversiForm()">
+                                    <i class="fas fa-redo mr-1"></i>Reset / Ganti File
+                                </button>
+                            </div>
+                            <div id="konversiFileItems" style="max-height:180px; overflow-y:auto;"></div>
+                        </div>
+
+                        <!-- Konversi Progress Multi-Tahap -->
+                        <div id="konversiProgressSection" class="bg-white p-3 rounded border mb-3" style="display:none;">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="small font-weight-bold text-primary" id="konversiStatusText">
+                                    <i class="fas fa-spinner fa-spin mr-1"></i>Mempersiapkan konversi...
+                                </span>
+                                <span class="small font-weight-bold text-dark" id="konversiPersenText">0%</span>
+                            </div>
+                            <div class="progress" style="height:14px; border-radius:7px; background:#e2e8f0;">
+                                <div id="konversiProgressBar" class="progress-bar progress-bar-striped progress-bar-animated font-weight-bold" 
+                                     style="width:0%; font-size:10px; background: linear-gradient(90deg, #3b82f6, #10b981);">0%</div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-2 small text-muted" id="konversiSubStatus">
+                                <span id="konversiStepDetail"><i class="fas fa-info-circle mr-1"></i>Memproses data spasial...</span>
+                                <span id="konversiTimerText" class="badge badge-light border">Waktu berjalan</span>
+                            </div>
+                        </div>
+
+                        <!-- Hasil konversi notifikasi -->
+                        <div id="konversiResultSection" class="mb-3" style="display:none;">
+                            <div class="alert py-2 px-3 small mb-0 rounded shadow-sm" id="konversiResultAlert">
+                                <span id="konversiResultText"></span>
+                            </div>
+                        </div>
+
+                        <!-- Note format accordion / compact info -->
+                        <div class="alert py-2 px-3 small mb-3 border-0 rounded" style="background:#fffbeb;border-left:4px solid #f59e0b !important;color:#92400e;">
+                            <div class="font-weight-bold mb-1">
+                                <i class="fas fa-lightbulb text-warning mr-1"></i>Tips Format File:
+                            </div>
+                            <ul class="mb-0 pl-3" style="font-size:11.5px;line-height:1.5;">
+                                <li><strong>Shapefile (.zip):</strong> Satukan file <code>.shp</code>, <code>.dbf</code>, dan <code>.prj</code> dalam satu arsip <code>.zip</code>. File besar (>20MB) membutuhkan waktu ekstra untuk diurai di browser.</li>
+                                <li><strong>CSV Koordinat:</strong> Pastikan memiliki nama kolom <code>latitude</code>/<code>lat</code> dan <code>longitude</code>/<code>lng</code>.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Footer Tombol -->
+                        <div class="d-flex justify-content-end align-items-center pt-2 border-top">
+                            <button type="button" class="btn btn-light border mr-2 font-weight-bold px-3" data-dismiss="modal">
+                                <i class="fas fa-times mr-1"></i>Batal
+                            </button>
+                            <button type="button" class="btn font-weight-bold text-white px-4 shadow-sm" id="btnKonversiUpload"
+                                    onclick="mulaiKonversiDanUpload()"
+                                    style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);" disabled>
+                                <i class="fas fa-magic mr-1"></i>Konversi &amp; Upload
+                            </button>
+                        </div>
+                    </div>
+
+                </div><!-- /tab-content -->
+            </div><!-- /modal-body -->
+        </div><!-- /modal-content -->
     </div>
 </div>
+
+<!-- ================================================================
+     SCRIPT: Konversi File Mentah GIS → GeoJSON
+     Menggunakan library lokal di public/vendor/gis-convert/
+     Fallback otomatis ke CDN jika file lokal tidak ditemukan
+     ================================================================ -->
+<script src="{{ asset('vendor/gis-convert/jszip.min.js') }}"></script>
+<script src="{{ asset('vendor/gis-convert/shp.js') }}"></script>
+<script src="{{ asset('vendor/gis-convert/togeojson.js') }}"></script>
+<script>
+// ──────────────────────────────────────────────────────────────────
+// Fallback CDN jika library lokal belum termuat
+// ──────────────────────────────────────────────────────────────────
+if (typeof JSZip === 'undefined') {
+    var sZip = document.createElement('script');
+    sZip.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+    document.head.appendChild(sZip);
+}
+if (typeof shp === 'undefined') {
+    var sShp = document.createElement('script');
+    sShp.src = 'https://cdn.jsdelivr.net/npm/shpjs@latest/dist/shp.js';
+    document.head.appendChild(sShp);
+}
+if (typeof toGeoJSON === 'undefined') {
+    var sGeo = document.createElement('script');
+    sGeo.src = 'https://cdn.jsdelivr.net/npm/@mapbox/togeojson@0.16.0/togeojson.js';
+    document.head.appendChild(sGeo);
+}
+
+// Tunggu library tertentu siap (polling)
+function waitForLib(checkFn, libName, maxSeconds) {
+    maxSeconds = maxSeconds || 20;
+    return new Promise(function(resolve, reject) {
+        if (checkFn()) { resolve(); return; }
+        var tries = 0;
+        var maxTries = maxSeconds * 10;
+        var iv = setInterval(function() {
+            tries++;
+            if (checkFn()) {
+                clearInterval(iv);
+                resolve();
+            } else if (tries > maxTries) {
+                clearInterval(iv);
+                reject(new Error('Library ' + libName + ' belum selesai dimuat. Periksa koneksi internet Anda lalu muat ulang halaman.'));
+            }
+        }, 100);
+    });
+}
+
+// Helper delay non-blocking untuk repaint browser UI
+function uiYield(ms) {
+    return new Promise(function(resolve) { setTimeout(resolve, ms || 30); });
+}
+
+// ──────────────────────────────────────────────────────────────────
+// Drop zone drag & drop
+// ──────────────────────────────────────────────────────────────────
+var dropZone = document.getElementById('gisDropZone');
+if (dropZone) {
+    dropZone.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        dropZone.style.background = '#dbeafe';
+        dropZone.style.borderColor = '#1d4ed8';
+    });
+    dropZone.addEventListener('dragleave', function() {
+        dropZone.style.background = '#f0f7ff';
+        dropZone.style.borderColor = '#3b82f6';
+    });
+    dropZone.addEventListener('drop', function(e) {
+        e.preventDefault();
+        dropZone.style.background = '#f0f7ff';
+        dropZone.style.borderColor = '#3b82f6';
+        handleRawGisFiles(e.dataTransfer.files);
+    });
+}
+
+// ──────────────────────────────────────────────────────────────────
+// State untuk konversi
+// ──────────────────────────────────────────────────────────────────
+var rawGisFiles = [];
+
+function resetKonversiForm() {
+    rawGisFiles = [];
+    document.getElementById('konversiFileList').style.display = 'none';
+    document.getElementById('konversiFileItems').innerHTML = '';
+    document.getElementById('konversiProgressSection').style.display = 'none';
+    document.getElementById('konversiResultSection').style.display = 'none';
+    document.getElementById('btnKonversiUpload').disabled = true;
+    document.getElementById('inputRawGisFile').value = '';
+}
+
+function handleRawGisFiles(files) {
+    if (!files || files.length === 0) return;
+    var allowed = ['.zip', '.kml', '.kmz', '.csv', '.gpx'];
+
+    for (var i = 0; i < files.length; i++) {
+        var f = files[i];
+        var ext = '.' + f.name.split('.').pop().toLowerCase();
+        if (!allowed.includes(ext)) {
+            alert('⚠️ Format file "' + f.name + '" belum didukung.\nFormat yang diterima: ' + allowed.join(', '));
+            continue;
+        }
+        var dup = rawGisFiles.find(function(r) { return r.file.name === f.name; });
+        if (!dup) {
+            rawGisFiles.push({ file: f, status: 'pending', geojson: null, outputName: null });
+        }
+    }
+
+    renderKonversiFileList();
+    document.getElementById('btnKonversiUpload').disabled = (rawGisFiles.length === 0);
+}
+
+function renderKonversiFileList() {
+    if (rawGisFiles.length === 0) {
+        document.getElementById('konversiFileList').style.display = 'none';
+        return;
+    }
+    document.getElementById('konversiFileList').style.display = 'block';
+    var html = '';
+    var iconMap = {
+        zip: 'fa-file-archive text-primary',
+        kml: 'fa-map text-danger',
+        kmz: 'fa-map text-danger',
+        csv: 'fa-table text-success',
+        gpx: 'fa-route text-warning'
+    };
+
+    rawGisFiles.forEach(function(item, idx) {
+        var ext = item.file.name.split('.').pop().toLowerCase();
+        var icon = iconMap[ext] || 'fa-file text-muted';
+        var sizeMb = (item.file.size / 1048576).toFixed(2);
+        var statusBadge = '';
+        var errorRow = '';
+        var isLarge = item.file.size > 15 * 1024 * 1024; // > 15MB
+
+        if (item.status === 'pending') {
+            statusBadge = '<span class="badge badge-secondary px-2 py-1">Siap</span>';
+        } else if (item.status === 'converting') {
+            statusBadge = '<span class="badge badge-warning text-dark px-2 py-1"><i class="fas fa-spinner fa-spin mr-1"></i>Memproses...</span>';
+        } else if (item.status === 'done') {
+            statusBadge = '<span class="badge badge-success px-2 py-1"><i class="fas fa-check mr-1"></i>Selesai</span>';
+        } else if (item.status === 'error') {
+            statusBadge = '<span class="badge badge-danger px-2 py-1"><i class="fas fa-times mr-1"></i>Gagal</span>';
+            if (item.errorMsg) {
+                errorRow = '<div class="px-3 pb-2 small text-danger"><i class="fas fa-exclamation-circle mr-1"></i>' + item.errorMsg + '</div>';
+            }
+        }
+
+        html += '<div class="mb-2 rounded border bg-white shadow-sm">' +
+            '<div class="d-flex align-items-center justify-content-between py-2 px-3">' +
+            '  <div class="d-flex align-items-center text-truncate mr-2">' +
+            '    <div class="rounded-circle d-flex align-items-center justify-content-center mr-3 bg-light" style="width:36px;height:36px;min-width:36px;">' +
+            '      <i class="fas ' + icon + '" style="font-size:16px;"></i>' +
+            '    </div>' +
+            '    <div class="text-truncate">' +
+            '      <div class="font-weight-bold text-dark text-truncate" style="font-size:13px;" title="' + item.file.name + '">' + item.file.name + '</div>' +
+            '      <div class="text-muted" style="font-size:11px;">' +
+                     sizeMb + ' MB · .' + ext.toUpperCase() +
+                     (isLarge ? ' · <span class="text-warning font-weight-bold"><i class="fas fa-tachometer-alt"></i> File besar</span>' : '') +
+            '      </div>' +
+            '    </div>' +
+            '  </div>' +
+            '  <div class="d-flex align-items-center">' + statusBadge +
+            (item.status === 'pending' ? ' <button type="button" class="btn btn-sm btn-outline-danger py-0 px-2 ml-2" title="Hapus" onclick="hapusFileKonversi(' + idx + ')"><i class="fas fa-trash"></i></button>' : '') +
+            '  </div>' +
+            '</div>' +
+            errorRow +
+            '</div>';
+    });
+    document.getElementById('konversiFileItems').innerHTML = html;
+}
+
+function hapusFileKonversi(idx) {
+    rawGisFiles.splice(idx, 1);
+    renderKonversiFileList();
+    document.getElementById('btnKonversiUpload').disabled = (rawGisFiles.length === 0);
+}
+
+// ──────────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────────
+// Helper: Ekstrak nama layer yang bersih & representatif dari path shapefile
+// ──────────────────────────────────────────────────────────────────
+function extractLayerName(rawFileName, zipBaseName) {
+    if (!rawFileName) return zipBaseName || 'Layer';
+    var parts = String(rawFileName).replace(/\\/g, '/').split('/').filter(Boolean);
+    // Jika bagian pertama adalah nama file ZIP induk, abaikan root zip tersebut jika ada subfolder
+    if (parts.length > 1 && zipBaseName && parts[0].toLowerCase() === zipBaseName.toLowerCase()) {
+        parts.shift();
+    }
+    if (parts.length === 1) {
+        return parts[0].replace(/_/g, ' ').trim();
+    }
+
+    var folder = parts[parts.length - 2].replace(/_/g, ' ').trim();
+    var file = parts[parts.length - 1].replace(/_/g, ' ').trim();
+
+    var cf = folder.toLowerCase().replace(/[\s_-]/g, '');
+    var cfi = file.toLowerCase().replace(/[\s_-]/g, '');
+
+    // Jika nama folder dan file sama persis
+    if (cf === cfi) return folder;
+
+    // Cek apakah semua kata kunci penting dari file sudah ada di folder (contoh: "JS_Kapuas" di "WS KAPUAS JS")
+    var fileWords = file.toLowerCase().split(/[\s_-]+/).filter(Boolean);
+    var allWordsInFolder = fileWords.length > 0 && fileWords.every(function(w) { 
+        return folder.toLowerCase().indexOf(w) !== -1; 
+    });
+    if (allWordsInFolder) return folder;
+
+    if (cf.indexOf(cfi) !== -1) return folder;
+    if (cfi.indexOf(cf) !== -1) return file;
+
+    // Jika berbeda dan saling melengkapi, gabungkan (contoh: "Kabupaten Sambas - Jaringan Saluran")
+    return folder + ' - ' + file;
+}
+
+// ──────────────────────────────────────────────────────────────────
+// KONVERSI SETIAP FILE KE GEOJSON (MENDUKUNG MULTI-LAYER / MULTI-SHAPEFILE)
+// ──────────────────────────────────────────────────────────────────
+async function convertFileToGeoJson(item, onProgress) {
+    var ext = item.file.name.split('.').pop().toLowerCase();
+    var baseName = item.file.name.replace(/\.[^.]+$/, '');
+    var sizeMb = (item.file.size / 1048576).toFixed(1);
+
+    if (ext === 'zip') {
+        onProgress('Memastikan library Shapefile siap...', 15);
+        await waitForLib(function() { return typeof shp !== 'undefined'; }, 'shpjs (Shapefile)', 15);
+        await uiYield(40);
+
+        onProgress('Membaca berkas arsip ZIP (' + sizeMb + ' MB)...', 25);
+        var arrayBuffer = await item.file.arrayBuffer();
+        await uiYield(40);
+
+        onProgress('Mengekstrak Shapefile & Mengurai Geometri Spasial (' + sizeMb + ' MB)... Mohon tunggu...', 45);
+        await uiYield(60);
+
+        var gj = await shp(arrayBuffer);
+        await uiYield(40);
+
+        onProgress('Menyusun dan memisahkan setiap layer spasial...', 80);
+        var rawLayers = Array.isArray(gj) ? gj : [gj];
+        var resultLayers = [];
+        var usedNames = {};
+
+        for (var k = 0; k < rawLayers.length; k++) {
+            var fc = rawLayers[k];
+            if (!fc || !fc.features || !Array.isArray(fc.features) || fc.features.length === 0) continue;
+
+            var rawLayerName = fc.fileName || (baseName + (rawLayers.length > 1 ? ' Layer ' + (k + 1) : ''));
+            var cleanLayerName = extractLayerName(rawLayerName, baseName);
+
+            // Hindari tabrakan nama jika ada shapefile dengan nama mirip
+            if (usedNames[cleanLayerName]) {
+                usedNames[cleanLayerName]++;
+                cleanLayerName += ' (' + usedNames[cleanLayerName] + ')';
+            } else {
+                usedNames[cleanLayerName] = 1;
+            }
+
+            var safeFileName = cleanLayerName.replace(/[/\\?%*:|"<>]/g, '_').trim() + '.geojson';
+            resultLayers.push({
+                outputName: safeFileName,
+                displayName: cleanLayerName,
+                geojson: optimizeGeoJsonCoordinates(fc)
+            });
+        }
+
+        if (resultLayers.length === 0) {
+            throw new Error('Tidak ditemukan layer spasial (.shp) yang valid di dalam file ZIP.');
+        }
+
+        onProgress('Mengoptimalkan koordinat ' + resultLayers.length + ' layer...', 88);
+        return resultLayers;
+
+    } else if (ext === 'kml') {
+        onProgress('Mempersiapkan parser KML...', 20);
+        await waitForLib(function() { return typeof toGeoJSON !== 'undefined'; }, 'toGeoJSON (KML)', 15);
+        onProgress('Membaca file KML...', 40);
+        var text = await item.file.text();
+        onProgress('Mengubah KML ke GeoJSON...', 75);
+        var parser = new DOMParser();
+        var kmlDoc = parser.parseFromString(text, 'text/xml');
+        var kmlGj = optimizeGeoJsonCoordinates(toGeoJSON.kml(kmlDoc));
+        return [{ outputName: baseName + '.geojson', displayName: baseName, geojson: kmlGj }];
+
+    } else if (ext === 'kmz') {
+        onProgress('Mempersiapkan parser KMZ & JSZip...', 20);
+        await waitForLib(function() { return typeof JSZip !== 'undefined'; }, 'JSZip (KMZ)', 15);
+        await waitForLib(function() { return typeof toGeoJSON !== 'undefined'; }, 'toGeoJSON (KMZ)', 15);
+        onProgress('Mengekstrak arsip KMZ...', 40);
+        var ab = await item.file.arrayBuffer();
+        var zip = await JSZip.loadAsync(ab);
+        var kmlFile = null;
+        zip.forEach(function(relPath, zf) {
+            if (!kmlFile && relPath.toLowerCase().endsWith('.kml')) kmlFile = zf;
+        });
+        if (!kmlFile) throw new Error('Tidak ditemukan file .kml di dalam file .kmz ini.');
+        onProgress('Mengubah KML ke GeoJSON...', 75);
+        var kmlText = await kmlFile.async('string');
+        var parser2 = new DOMParser();
+        var kmlDoc2 = parser2.parseFromString(kmlText, 'text/xml');
+        var kmzGj = optimizeGeoJsonCoordinates(toGeoJSON.kml(kmlDoc2));
+        return [{ outputName: baseName + '.geojson', displayName: baseName, geojson: kmzGj }];
+
+    } else if (ext === 'gpx') {
+        onProgress('Mempersiapkan parser GPX...', 20);
+        await waitForLib(function() { return typeof toGeoJSON !== 'undefined'; }, 'toGeoJSON (GPX)', 15);
+        onProgress('Membaca file GPX...', 50);
+        var gpxText = await item.file.text();
+        onProgress('Mengubah rute/titik GPX ke GeoJSON...', 80);
+        var parser3 = new DOMParser();
+        var gpxDoc = parser3.parseFromString(gpxText, 'text/xml');
+        var gpxGj = optimizeGeoJsonCoordinates(toGeoJSON.gpx(gpxDoc));
+        return [{ outputName: baseName + '.geojson', displayName: baseName, geojson: gpxGj }];
+
+    } else if (ext === 'csv') {
+        onProgress('Membaca file tabel CSV...', 30);
+        var csvTxt = await item.file.text();
+        onProgress('Memetakan koordinat baris CSV...', 70);
+        var csvGj = optimizeGeoJsonCoordinates(convertCsvToGeoJson(csvTxt));
+        return [{ outputName: baseName + '.geojson', displayName: baseName, geojson: csvGj }];
+
+    } else {
+        throw new Error('Format .' + ext + ' tidak didukung.');
+    }
+}
+
+function convertCsvToGeoJson(csvText) {
+    var lines = csvText.split(/\r?\n/).filter(function(l) { return l.trim() !== ''; });
+    if (lines.length < 2) throw new Error('File CSV kosong atau hanya memiliki baris header.');
+
+    var sep = lines[0].includes(';') ? ';' : ',';
+    var headers = lines[0].split(sep).map(function(h) { return h.trim().replace(/^["']|["']$/g, ''); });
+
+    var latCol = -1, lngCol = -1;
+    var latNames = ['lat','latitude','lintang','y','lat_dd'];
+    var lngNames = ['lon','lng','longitude','bujur','x','long','lon_dd'];
+    headers.forEach(function(h, i) {
+        var hl = h.toLowerCase();
+        if (latCol === -1 && latNames.some(function(n) { return hl === n; })) latCol = i;
+        if (lngCol === -1 && lngNames.some(function(n) { return hl === n; })) lngCol = i;
+    });
+    if (latCol === -1 || lngCol === -1) {
+        throw new Error('Kolom koordinat tidak ditemukan di CSV.\nPastikan kolom bernama: lat/latitude dan lon/lng/longitude.');
+    }
+
+    var features = [];
+    for (var i = 1; i < lines.length; i++) {
+        var cells = lines[i].split(sep).map(function(c) { return c.trim().replace(/^["']|["']$/g, ''); });
+        var lat = parseFloat(cells[latCol]);
+        var lng = parseFloat(cells[lngCol]);
+        if (isNaN(lat) || isNaN(lng)) continue;
+
+        var props = {};
+        headers.forEach(function(h, hi) { if (hi !== latCol && hi !== lngCol) props[h] = cells[hi] || ''; });
+
+        features.push({
+            type: 'Feature',
+            geometry: { type: 'Point', coordinates: [lng, lat] },
+            properties: props
+        });
+    }
+    if (features.length === 0) throw new Error('Tidak ada baris data koordinat yang valid di CSV.');
+    return { type: 'FeatureCollection', features: features };
+}
+
+// ──────────────────────────────────────────────────────────────────
+// Optimasi Koordinat: Pangkas desimal menjadi 6 angka secara in-place (hemat memori)
+// ──────────────────────────────────────────────────────────────────
+function optimizeGeoJsonCoordinates(gj) {
+    if (!gj) return gj;
+    function roundInPlace(c) {
+        if (!Array.isArray(c) || c.length === 0) return;
+        if (typeof c[0] === 'number') {
+            c[0] = Math.round(c[0] * 1000000) / 1000000;
+            c[1] = Math.round(c[1] * 1000000) / 1000000;
+            return;
+        }
+        for (var i = 0; i < c.length; i++) {
+            roundInPlace(c[i]);
+        }
+    }
+    var features = gj.features || (gj.type === 'Feature' ? [gj] : []);
+    for (var i = 0; i < features.length; i++) {
+        var f = features[i];
+        if (f && f.geometry && f.geometry.coordinates) {
+            roundInPlace(f.geometry.coordinates);
+        }
+    }
+    return gj;
+}
+
+// ──────────────────────────────────────────────────────────────────
+// Helper: Upload file Blob dengan progress byte real-time & timeout aman
+// ──────────────────────────────────────────────────────────────────
+function uploadGeojsonBlobXhr(blob, outputName, csrfToken, onProgress) {
+    return new Promise(function(resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '{{ route("peta.upload-geojson") }}', true);
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+        if (xhr.upload) {
+            xhr.upload.onprogress = function(e) {
+                if (e.lengthComputable && onProgress) {
+                    onProgress(e.loaded, e.total);
+                }
+            };
+        }
+
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                try {
+                    var json = JSON.parse(xhr.responseText);
+                    resolve(json);
+                } catch(e) {
+                    resolve({ success: true });
+                }
+            } else {
+                var errMsg = 'Server error HTTP ' + xhr.status;
+                try {
+                    var errObj = JSON.parse(xhr.responseText);
+                    if (errObj && errObj.message) errMsg = errObj.message;
+                } catch(e) {}
+                reject(new Error(errMsg));
+            }
+        };
+
+        xhr.onerror = function() {
+            reject(new Error('Koneksi terputus saat mengunggah layer. Silakan coba kembali.'));
+        };
+
+        xhr.ontimeout = function() {
+            reject(new Error('Waktu upload habis (timeout). Periksa kestabilan server lokal.'));
+        };
+        xhr.timeout = 300000; // 5 menit
+
+        var formData = new FormData();
+        formData.append('file_geojson', blob, outputName);
+        formData.append('_token', csrfToken);
+        xhr.send(formData);
+    });
+}
+
+// ──────────────────────────────────────────────────────────────────
+// MAIN: Konversi semua file, pisahkan setiap layer, lalu upload ke server
+// ──────────────────────────────────────────────────────────────────
+async function mulaiKonversiDanUpload() {
+    if (rawGisFiles.length === 0) return;
+
+    var btn = document.getElementById('btnKonversiUpload');
+    btn.disabled = true;
+
+    var progressSection = document.getElementById('konversiProgressSection');
+    var progressBar = document.getElementById('konversiProgressBar');
+    var persenText = document.getElementById('konversiPersenText');
+    var statusText = document.getElementById('konversiStatusText');
+    var stepDetail = document.getElementById('konversiStepDetail');
+    var timerText = document.getElementById('konversiTimerText');
+
+    progressSection.style.display = 'block';
+    document.getElementById('konversiResultSection').style.display = 'none';
+
+    var startTime = Date.now();
+    var timerIv = setInterval(function() {
+        var sec = Math.floor((Date.now() - startTime) / 1000);
+        timerText.textContent = sec + ' detik';
+    }, 500);
+
+    function updateProgress(stepMsg, percent) {
+        progressBar.style.width = percent + '%';
+        progressBar.textContent = percent + '%';
+        persenText.textContent = percent + '%';
+        stepDetail.innerHTML = '<i class="fas fa-cog fa-spin mr-1"></i>' + stepMsg;
+    }
+
+    var totalFiles = rawGisFiles.length;
+    var totalLayersUploaded = 0;
+    var successCount = 0, failCount = 0;
+    var uploadedLayerNames = [];
+    var csrfToken = document.querySelector('meta[name="csrf-token"]') ?
+        document.querySelector('meta[name="csrf-token"]').content :
+        '{{ csrf_token() }}';
+
+    for (var i = 0; i < rawGisFiles.length; i++) {
+        var item = rawGisFiles[i];
+        item.status = 'converting';
+        renderKonversiFileList();
+
+        statusText.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>Memproses file ' + (i + 1) + ' dari ' + totalFiles + ': <strong>' + item.file.name + '</strong>';
+        updateProgress('Memulai konversi...', 10);
+
+        try {
+            var layers = await convertFileToGeoJson(item, function(stepMsg, subPct) {
+                var overallPct = Math.round(((i + (subPct / 100)) / totalFiles) * 80);
+                updateProgress(stepMsg, Math.max(10, overallPct));
+            });
+
+            if (!layers || !Array.isArray(layers) || layers.length === 0) {
+                throw new Error('Hasil konversi tidak menghasilkan layer spasial yang valid.');
+            }
+
+            // Upload setiap layer secara terpisah ke server
+            for (var l = 0; l < layers.length; l++) {
+                var layer = layers[l];
+                var layerNum = l + 1;
+                var totalL = layers.length;
+                updateProgress('Mempersiapkan data layer (' + layerNum + '/' + totalL + '): ' + layer.displayName + '...', 80);
+                await uiYield(30);
+
+                var geojsonStr = JSON.stringify(layer.geojson);
+                var blob = new Blob([geojsonStr], { type: 'application/json' });
+                var blobMb = (blob.size / 1048576).toFixed(1);
+
+                await uploadGeojsonBlobXhr(blob, layer.outputName, csrfToken, function(loaded, total) {
+                    var pct = Math.round((loaded / total) * 100);
+                    var loadedMb = (loaded / 1048576).toFixed(1);
+                    var overallPct = 80 + Math.round(((l + (loaded / total)) / totalL) * 18);
+                    updateProgress('Mengunggah layer (' + layerNum + '/' + totalL + '): ' + layer.displayName + ' (' + loadedMb + ' / ' + blobMb + ' MB - ' + pct + '%)...', Math.min(99, overallPct));
+                });
+
+                totalLayersUploaded++;
+                uploadedLayerNames.push(layer.displayName);
+            }
+
+            item.status = 'done';
+            successCount++;
+
+        } catch (err) {
+            item.status = 'error';
+            item.errorMsg = err.message || 'Terjadi kesalahan tidak diketahui saat konversi.';
+            failCount++;
+            console.error('Gagal konversi/upload file:', item.file.name, err);
+        }
+
+        renderKonversiFileList();
+    }
+
+    clearInterval(timerIv);
+    updateProgress('Selesai diproses!', 100);
+    progressBar.className = 'progress-bar bg-success font-weight-bold';
+
+    statusText.innerHTML = '<i class="fas fa-check-circle text-success mr-1"></i>Proses Konversi Selesai';
+
+    var resultSection = document.getElementById('konversiResultSection');
+    var resultAlert = document.getElementById('konversiResultAlert');
+    var resultText = document.getElementById('konversiResultText');
+    resultSection.style.display = 'block';
+
+    if (failCount === 0) {
+        resultAlert.className = 'alert alert-success py-2 px-3 small mb-0 rounded shadow-sm';
+        resultText.innerHTML = '<i class="fas fa-check-circle mr-1"></i><strong>' + totalLayersUploaded + ' layer GIS</strong> (' + uploadedLayerNames.join(', ') + ') berhasil diekstrak dan disimpan ke peta! Halaman akan dimuat ulang...';
+        setTimeout(function() { location.reload(); }, 2000);
+    } else if (totalLayersUploaded > 0) {
+        resultAlert.className = 'alert alert-warning py-2 px-3 small mb-0 rounded shadow-sm';
+        resultText.innerHTML = '<i class="fas fa-exclamation-triangle mr-1"></i><strong>' + totalLayersUploaded + ' layer GIS</strong> berhasil, namun ada file yang gagal. Memuat ulang data yang berhasil...';
+        setTimeout(function() { location.reload(); }, 2500);
+    } else {
+        resultAlert.className = 'alert alert-danger py-2 px-3 small mb-0 rounded shadow-sm';
+        resultText.innerHTML = '<i class="fas fa-times-circle mr-1"></i>Konversi gagal. Pastikan file Shapefile (.zip) berisi .shp, .dbf, dan .prj yang lengkap.';
+        btn.disabled = false;
+    }
+}
+</script>
 
 <!-- Modal Kelola & Hapus File GeoJSON -->
 <div class="modal fade" id="modalKelolaGeojson" tabindex="-1" role="dialog" aria-labelledby="modalKelolaGeojsonLabel" aria-hidden="true">
@@ -391,8 +1103,13 @@
         box-shadow: 0 2px 12px rgba(0,0,0,0.22);
         font-size: 12px;
         line-height: 19px;
-        max-width: 230px;
+        max-width: 290px;
         border: 1px solid #ddd;
+    }
+    .legend-content {
+        max-height: 380px;
+        overflow-y: auto;
+        padding-right: 4px;
     }
     .map-legend h6 {
         font-size: 13px;
@@ -972,7 +1689,15 @@ document.addEventListener('DOMContentLoaded', function () {
             legendItems += '<div class="legend-item"><span class="legend-line" style="background:#00b894;"></span> <b>Saluran Sub Sek.</b> (Teal)</div>';
         }
         if (availableTypes.bangunan)   legendItems += '<div class="legend-item"><span class="legend-circle" style="background:#d63031;"></span> <b>Bangunan Air</b> (Titik)</div>';
-        if (availableTypes.custom)     legendItems += '<div class="legend-item"><span class="legend-circle" style="background:#e74c3c;border-color:#fff;"></span> <b>Data Upload</b> (Titik)</div>';
+        if (availableTypes.custom) {
+            legendItems += '<div id="legend-custom-section" style="display:none;">' +
+                '<div class="legend-separator my-2" style="border-top:1px dashed #cbd5e1;"></div>' +
+                '<div class="small font-weight-bold text-gray-700 mb-1 d-flex align-items-center" style="font-size:11px;letter-spacing:0.2px;">' +
+                    '<i class="fas fa-layer-group text-primary mr-1"></i> Layer Data Upload:' +
+                '</div>' +
+                '<div id="legend-custom-items"></div>' +
+            '</div>';
+        }
 
         // Jika tidak ada item legenda, sembunyikan kontrol ini
         if (!legendItems) {
@@ -1169,6 +1894,19 @@ document.addEventListener('DOMContentLoaded', function () {
     var loadingEl   = document.getElementById('map-loading');
     var infoFiturEl = document.getElementById('info-fitur-termuat');
     var customUploadLayers = {}; // Koleksi layer grup khusus untuk file yang di-upload
+    var loadedCustomLayers = []; // Metadata layer upload untuk sinkronisasi ke legenda dinamis
+    var customColorIndex = 0;
+
+    var CUSTOM_COLOR_PALETTES = [
+        { stroke: '#0284c7', fill: '#38bdf8', fillOpacity: 0.22, name: 'Biru Cerah' },     // Blue
+        { stroke: '#059669', fill: '#34d399', fillOpacity: 0.22, name: 'Hijau Zamrud' },  // Emerald
+        { stroke: '#7c3aed', fill: '#a78bfa', fillOpacity: 0.20, name: 'Ungu Violet' },   // Purple
+        { stroke: '#d97706', fill: '#fbbf24', fillOpacity: 0.22, name: 'Kuning Amber' },  // Amber
+        { stroke: '#e11d48', fill: '#fb7185', fillOpacity: 0.22, name: 'Merah Rose' },    // Rose
+        { stroke: '#0d9488', fill: '#2dd4bf', fillOpacity: 0.22, name: 'Teal' },          // Teal
+        { stroke: '#ea580c', fill: '#fb923c', fillOpacity: 0.22, name: 'Oranye Terang' }, // Orange
+        { stroke: '#4f46e5', fill: '#818cf8', fillOpacity: 0.18, name: 'Biru Indigo' }    // Indigo
+    ];
 
     // Data penampung baris tabel koordinat
     var fileTableRows = [];      // 1 baris per file GIS yang diunggah
@@ -1231,31 +1969,100 @@ document.addEventListener('DOMContentLoaded', function () {
                     } else {
                         // File Kustom / Upload baru
                         isCustomUpload = true;
+
+                        // Deteksi tipe geometri dominan di file ini (Poligon / Garis / Titik)
+                        var polyCount = 0, lineCount = 0, pointCount = 0;
+                        for (var fi = 0; fi < gj.features.length; fi++) {
+                            var gt = (gj.features[fi].geometry ? gj.features[fi].geometry.type : '') || '';
+                            if (gt === 'Polygon' || gt === 'MultiPolygon') polyCount++;
+                            else if (gt === 'LineString' || gt === 'MultiLineString') lineCount++;
+                            else if (gt === 'Point' || gt === 'MultiPoint') pointCount++;
+                        }
+
+                        var geomType = 'polygon';
+                        var geomLabel = 'Area Poligon';
+                        if (lineCount > polyCount && lineCount >= pointCount) {
+                            geomType = 'line';
+                            geomLabel = 'Jaringan Garis';
+                        } else if (pointCount > polyCount && pointCount > lineCount) {
+                            geomType = 'point';
+                            geomLabel = 'Titik Lokasi';
+                        }
+
+                        var nameCleanUpper = fileName.replace(/\.(json|geojson)$/i, '').toUpperCase();
+                        var isDasLayer = (/\bDAS\b/).test(nameCleanUpper) || nameCleanUpper.indexOf('DAS') !== -1;
+                        var isJsLayer  = (/\bJS\b/).test(nameCleanUpper) || nameCleanUpper.indexOf('_JS') !== -1 || nameCleanUpper.indexOf('JS_') !== -1 || nameCleanUpper.indexOf('SUNGAI') !== -1 || nameCleanUpper.indexOf('RIVER') !== -1 || (geomType === 'line' && nameCleanUpper.indexOf('KAPUAS') !== -1);
+                        var isWsLayer  = (/\bWS\b/).test(nameCleanUpper) || nameCleanUpper.indexOf('WILAYAH') !== -1;
+
+                        // Pewarnaan tematik & semantik sesuai jenis data SDA / GIS
+                        if (isDasLayer) {
+                            strokeColor = '#059669'; fillColor = '#10b981'; weight = 2.0; fillOpacity = 0.22;
+                            catName = 'Daerah Aliran Sungai (DAS)';
+                            geomLabel = 'Batas DAS (Poligon)';
+                            catBadge = '<span class="badge badge-success"><i class="fas fa-mountain mr-1"></i>DAS</span>';
+                        } else if (isJsLayer) {
+                            strokeColor = '#0284c7'; fillColor = '#0284c7'; weight = 2.4; fillOpacity = 0;
+                            catName = 'Jaringan Sungai';
+                            geomLabel = 'Jaringan Sungai (Garis)';
+                            catBadge = '<span class="badge badge-info"><i class="fas fa-water mr-1"></i>Sungai</span>';
+                        } else if (isWsLayer) {
+                            strokeColor = '#4f46e5'; fillColor = '#818cf8'; weight = 2.2; fillOpacity = 0.16;
+                            catName = 'Wilayah Sungai (WS)';
+                            geomLabel = 'Wilayah Sungai (Poligon)';
+                            catBadge = '<span class="badge badge-primary"><i class="fas fa-draw-polygon mr-1"></i>WS</span>';
+                        } else {
+                            var pal = CUSTOM_COLOR_PALETTES[customColorIndex % CUSTOM_COLOR_PALETTES.length];
+                            customColorIndex++;
+                            strokeColor = pal.stroke; fillColor = pal.fill;
+                            fillOpacity = (geomType === 'polygon') ? pal.fillOpacity : 0;
+                            weight = (geomType === 'line') ? 2.5 : 2.0;
+                            catName = geomLabel;
+                            catBadge = '<span class="badge badge-secondary"><i class="fas fa-layer-group mr-1"></i>Upload</span>';
+                        }
+
+                        rowClass = 'row-uploaded';
+
                         if (!customUploadLayers[fileName]) {
                             customUploadLayers[fileName] = L.layerGroup().addTo(map);
-                            layerControl.addOverlay(customUploadLayers[fileName], '<i class="fas fa-layer-group text-danger mr-1"></i> ' + cleanName);
+
+                            var swatchIcon = '';
+                            if (geomType === 'polygon') {
+                                swatchIcon = '<span style="display:inline-block;width:12px;height:10px;background:' + fillColor + ';border:1.5px solid ' + strokeColor + ';border-radius:2px;margin-right:6px;vertical-align:middle;opacity:0.85;"></span>';
+                            } else if (geomType === 'line') {
+                                swatchIcon = '<span style="display:inline-block;width:14px;height:3px;background:' + strokeColor + ';border-radius:2px;margin-right:6px;vertical-align:middle;"></span>';
+                            } else {
+                                swatchIcon = '<span style="display:inline-block;width:9px;height:9px;background:' + strokeColor + ';border:1.5px solid #fff;box-shadow:0 0 0 1px #888;border-radius:50%;margin-right:6px;vertical-align:middle;"></span>';
+                            }
+                            layerControl.addOverlay(customUploadLayers[fileName], swatchIcon + '<strong>' + cleanName + '</strong>');
                         }
                         targetLayer = customUploadLayers[fileName];
-                        strokeColor = '#e74c3c'; fillColor = '#e74c3c'; fillOpacity = 0.6; weight = 2.2;
-                        catBadge = '<span class="badge badge-warning text-dark"><i class="fas fa-cloud-upload-alt mr-1"></i>Upload</span>';
-                        catName  = 'Data Kustom';
-                        rowClass = 'row-uploaded';
+
+                        loadedCustomLayers.push({
+                            fileName: fileName,
+                            cleanName: cleanName,
+                            geomType: geomType,
+                            geomLabel: geomLabel,
+                            strokeColor: strokeColor,
+                            fillColor: fillColor,
+                            featCount: featCount,
+                            layerGroup: customUploadLayers[fileName]
+                        });
                     }
 
                     var group = L.geoJSON(gj, {
                         style: function(feature) {
-                            var lc = strokeColor, lw = weight;
+                            var lc = strokeColor, lw = weight, fo = fillOpacity;
                             if (feature.properties && (feature.properties.Jenis || feature.properties.JENIS)) {
                                 var j = String(feature.properties.Jenis || feature.properties.JENIS).toLowerCase();
                                 if      (j.indexOf('primer')   !== -1) { lc = '#e74c3c'; lw = 2.8; }
                                 else if (j.indexOf('sekunder') !== -1) { lc = '#0984e3'; lw = 2.2; }
                                 else if (j.indexOf('sub')      !== -1) { lc = '#00b894'; lw = 1.8; }
                             }
-                            return { color: lc, weight: lw, opacity: 0.9, fillColor: fillColor, fillOpacity: fillOpacity };
+                            return { color: lc, weight: lw, opacity: 0.9, fillColor: fillColor, fillOpacity: fo };
                         },
                         pointToLayer: function(feature, latlng) {
                             if (isCustomUpload) {
-                                return L.circleMarker(latlng, { radius: 7, fillColor: '#e74c3c', color: '#ffffff', weight: 2, opacity: 1, fillOpacity: 0.95 });
+                                return L.circleMarker(latlng, { radius: 6, fillColor: strokeColor, color: '#ffffff', weight: 2, opacity: 1, fillOpacity: 0.95 });
                             }
                             return L.circleMarker(latlng, { radius: 3.5, fillColor: '#e74c3c', color: '#ffffff', weight: 1, opacity: 1, fillOpacity: 0.95 });
                         },
@@ -1372,6 +2179,61 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
         });
 
+        // Update Legenda Peta secara dinamis untuk file yang di-upload
+        function updateCustomLayersLegend() {
+            var container = document.getElementById('legend-custom-section');
+            var itemsBox = document.getElementById('legend-custom-items');
+            if (!container || !itemsBox) return;
+
+            if (loadedCustomLayers.length === 0) {
+                container.style.display = 'none';
+                return;
+            }
+
+            container.style.display = 'block';
+            var html = '';
+            loadedCustomLayers.forEach(function(item, idx) {
+                var swatch = '';
+                if (item.geomType === 'polygon') {
+                    swatch = '<span class="legend-color-box" style="background:' + item.fillColor + ';border-color:' + item.strokeColor + ';opacity:0.85;"></span>';
+                } else if (item.geomType === 'line') {
+                    swatch = '<span class="legend-line" style="background:' + item.strokeColor + ';height:3px;"></span>';
+                } else {
+                    swatch = '<span class="legend-circle" style="background:' + item.strokeColor + ';border-color:#fff;"></span>';
+                }
+
+                var safeId = 'legend-item-custom-' + idx;
+                html += '<div class="legend-item" id="' + safeId + '" style="margin-bottom:6px;align-items:flex-start;transition:opacity 0.2s;">' +
+                    swatch +
+                    '<div style="line-height:1.25;margin-left:2px;">' +
+                        '<div class="font-weight-bold text-dark" style="font-size:11.5px;">' + item.cleanName + '</div>' +
+                        '<div class="text-muted" style="font-size:10px;">' + item.geomLabel + ' (' + item.featCount + ' fitur)</div>' +
+                    '</div>' +
+                '</div>';
+            });
+            itemsBox.innerHTML = html;
+        }
+
+        // Sinkronisasi status layer checkbox di control layers ke legenda peta
+        map.on('overlayadd', function(e) {
+            for (var i = 0; i < loadedCustomLayers.length; i++) {
+                if (loadedCustomLayers[i].layerGroup === e.layer) {
+                    var el = document.getElementById('legend-item-custom-' + i);
+                    if (el) el.style.opacity = '1';
+                    break;
+                }
+            }
+        });
+        map.on('overlayremove', function(e) {
+            for (var i = 0; i < loadedCustomLayers.length; i++) {
+                if (loadedCustomLayers[i].layerGroup === e.layer) {
+                    var el = document.getElementById('legend-item-custom-' + i);
+                    if (el) el.style.opacity = '0.35';
+                    break;
+                }
+            }
+        });
+
         function onAllFilesLoaded() {
             if (loadingEl) loadingEl.style.display = 'none';
             if (infoFiturEl) {
@@ -1383,6 +2245,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             var countObjekEl = document.getElementById('count-mode-objek');
             if (countObjekEl) countObjekEl.textContent = objectTableRows.length;
+            updateCustomLayersLegend();
             renderTabel();
         }
     } else {

@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>@yield('title', 'Bili SHOP')</title>
+    <title>@yield('title', 'SISDA & FEWS - BWS Kalimantan I')</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{asset('sbadmin')}}/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -19,7 +19,61 @@
 
     <!-- Leaflet CSS (untuk peta interaktif) -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-    {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
+    
+    <style>
+        :root {
+            --pu-navy: #0f3b75;
+            --pu-blue: #1e56a0;
+            --pu-yellow: #f6b93b;
+            --pu-gold: #e58e26;
+        }
+        .bg-pu-navy {
+            background-color: #0d2c54 !important;
+        }
+        .bg-gradient-pu {
+            background: linear-gradient(180deg, #0d2c54 0%, #174d8c 100%) !important;
+        }
+        .text-pu-yellow {
+            color: #f6b93b !important;
+        }
+        .badge-pulse-warning {
+            animation: pulse-warn 1.8s infinite;
+        }
+        .badge-pulse-danger {
+            animation: pulse-danger 1.5s infinite;
+        }
+        @keyframes pulse-warn {
+            0% { box-shadow: 0 0 0 0 rgba(246, 185, 59, 0.7); }
+            70% { box-shadow: 0 0 0 8px rgba(246, 185, 59, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(246, 185, 59, 0); }
+        }
+        @keyframes pulse-danger {
+            0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); }
+            70% { box-shadow: 0 0 0 9px rgba(231, 76, 60, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+        }
+        .custom-card-hover {
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .custom-card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+        }
+        .telemetry-live-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #2ecc71;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 0 rgba(46, 204, 113, 0.4);
+            animation: pulse-green 1.5s infinite;
+        }
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
+            70% { box-shadow: 0 0 0 7px rgba(46, 204, 113, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+        }
+    </style>
     @stack('styles')
 </head>
 
@@ -27,14 +81,11 @@
 
 <body id="page-top">
 
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-
-        <!-- Sidebar -->
-        @include('layout.sidebar')
+    <!-- Page Wrapper (Full Width Single Navigation) -->
+    <div id="wrapper" style="min-height: 100vh;">
 
         <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content-wrapper" class="d-flex flex-column w-100">
 
             <!-- Main Content -->
             <div id="content">
@@ -43,7 +94,7 @@
                 @include('layout.navbar')
 
                 <!-- Begin Page Content -->
-                <div class="container-fluid">
+                <div class="container-fluid px-3 py-2">
                     @yield('konten')
                 </div>
                 <!-- /.container-fluid -->

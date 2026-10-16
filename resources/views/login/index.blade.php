@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{{ $title ?? 'Login' }} - Toko Kami</title>
+    <title>{{ $title ?? 'Login' }} - FEWS BWS Kalimantan I</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('sbadmin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
@@ -21,16 +21,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            background: linear-gradient(135deg, #0d2c54 0%, #1e56a0 100%);
         }
         .login-card {
             border-radius: 1rem;
             overflow: hidden;
         }
         .login-icon-circle {
-            width: 68px;
-            height: 68px;
-            background: rgba(78, 115, 223, 0.12);
-            color: #4e73df;
+            width: 72px;
+            height: 72px;
+            background: rgba(15, 59, 117, 0.1);
+            color: #0f3b75;
             border-radius: 50%;
             display: inline-flex;
             align-items: center;
@@ -45,8 +46,8 @@
             transition: all 0.2s ease;
         }
         .form-control-custom:focus {
-            border-color: #4e73df;
-            box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.18);
+            border-color: #0f3b75;
+            box-shadow: 0 0 0 0.2rem rgba(15, 59, 117, 0.18);
         }
         .btn-login-submit {
             height: 48px;
@@ -56,11 +57,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            background-color: #0f3b75;
+            border-color: #0f3b75;
             transition: all 0.2s ease;
         }
         .btn-login-submit:hover {
+            background-color: #092244;
+            border-color: #092244;
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(78, 115, 223, 0.35);
+            box-shadow: 0 4px 12px rgba(15, 59, 117, 0.35);
         }
         .captcha-box {
             border: 1px solid #d1d3e2;
@@ -75,7 +80,7 @@
         .btn-refresh-captcha {
             height: 48px;
             width: 48px;
-            border-radius: 8px;
+            border-radius: 8px; 
             display: flex;
             align-items: center;
             justify-content: center;
@@ -83,7 +88,7 @@
     </style>
 </head>
 
-<body class="bg-gradient-primary py-4">
+<body class="py-4">
 
     <div class="container">
         <!-- Outer Row -->
@@ -93,13 +98,22 @@
                 <div class="card login-card border-0 shadow-lg my-3">
                     <div class="card-body p-4 p-sm-5">
 
-                        <!-- Header Logo & Judul -->
-                        <div class="text-center mb-4">
-                            <div class="login-icon-circle mb-3 shadow-sm">
-                                <i class="fas fa-store fa-2x"></i>
+                        <!-- Header Logo PU & Judul (Persis Screenshot 1) -->
+                        <div class="d-flex align-items-center mb-4">
+                            <!-- Logo PU Kuning Emas -->
+                            <div class="mr-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background: #ffc107; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
+                                <svg viewBox="0 0 100 100" width="38" height="38">
+                                    <circle cx="50" cy="50" r="46" fill="#ffc107" />
+                                    <path d="M 50,8 A 42,42 0 1,0 92,50 A 42,42 0 0,0 50,8 Z" fill="none" stroke="#1b5fb5" stroke-width="5" />
+                                    <path d="M50 15 L55 35 L75 35 L60 48 L68 68 L50 55 L32 68 L40 48 L25 35 L45 35 Z" fill="#1b5fb5" />
+                                    <circle cx="50" cy="50" r="10" fill="#ffc107" />
+                                    <circle cx="50" cy="50" r="5" fill="#1b5fb5" />
+                                </svg>
                             </div>
-                            <h1 class="h4 text-gray-900 font-weight-bold mb-1">Selamat Datang Kembali!</h1>
-                            <p class="text-muted small mb-0">Silakan masuk ke akun Anda</p>
+                            <div>
+                                <h1 class="h5 text-gray-900 font-weight-bold mb-0" style="line-height: 1.2;">Flood Early Warning System</h1>
+                                <div class="text-primary font-weight-bold" style="font-size: 0.85rem;">BWS Kalimantan I Pontianak</div>
+                            </div>
                         </div>
 
                         {{-- Pesan Notifikasi Sukses Logout --}}
@@ -235,21 +249,25 @@
                                 @enderror
                             </div>
 
-                            <!-- Tombol Submit Login -->
-                            <button type="submit" class="btn btn-primary btn-block btn-login-submit shadow">
-                                <i class="fas fa-sign-in-alt mr-2"></i> Masuk Sekarang
+                            <!-- Tombol Submit Login (Persis Screenshot 1) -->
+                            <button type="submit" class="btn btn-primary btn-block btn-login-submit shadow" style="background-color: #1b5fb5; border-color: #1b5fb5;">
+                                <i class="fas fa-sign-in-alt mr-2"></i> Sign In to FEWS
                             </button>
                         </form>
 
-                        <!-- Navigasi Daftar -->
-                        <div class="text-center mt-4 pt-3 border-top">
-                            <span class="small text-muted">Belum punya akun?</span>
-                            <a class="small font-weight-bold text-primary ml-1" href="{{ route('register') }}">
-                                Daftar Sekarang!
-                            </a>
+                        <!-- Versi FEWS -->
+                        <div class="text-center mt-4">
+                            <span class="badge badge-light border text-muted px-3 py-1 font-weight-normal" style="border-radius: 20px; font-size: 0.75rem;">
+                                Version 1.0.0
+                            </span>
                         </div>
 
                     </div>
+                </div>
+
+                <!-- Footer Login BWSK -->
+                <div class="text-center text-white-50 small my-3" style="font-size: 0.78rem;">
+                    &copy; 2026 FEWS BWS Kalimantan I Pontianak
                 </div>
 
             </div>
