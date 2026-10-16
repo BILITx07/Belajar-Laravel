@@ -3,9 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
-use App\Http\Controllers\ProdukController;
-use App\Http\Controllers\KategoriController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\WebGisController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegistrasiController;
 use App\Http\Controllers\UserController;
@@ -13,6 +12,21 @@ use App\Http\Controllers\CaptchaController;
 use App\Http\Controllers\ProfileController;
 use App\Models\User;
 
+/*
+|--------------------------------------------------------------------------
+| Web Routes - WebGIS BWS Kalimantan I
+|--------------------------------------------------------------------------
+*/
+
+// =========================================================================
+// 1. HALAMAN PUBLIK / USER (TANPA LOGIN)
+// =========================================================================
+Route::get('/', [WebGisController::class, 'index'])->name('home');
+Route::get('/peta', [WebGisController::class, 'index'])->name('peta');
+
+// =========================================================================
+// 2. SISTEM AUTENTIKASI (LOGIN & LOGOUT)
+// =========================================================================
 Route::middleware('guest')->group(function () {
     Route::get('/captcha', [CaptchaController::class, 'generate'])->name('captcha');
     Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -21,114 +35,89 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [RegistrasiController::class, 'store']);
 });
 
-// Route Lupa Password & Reset Password (Bisa diakses publik)
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// Reset Password
 Route::get('/forgot-password', function () {
     return view('auth.forgot-password');
 })->name('password.request');
 
 Route::post('/forgot-password', function (Request $request) {
-    $request->validate([
-        'email' => ['required', 'email'],
-    ], [
-        'email.required' => 'Alamat email wajib diisi.',
-        'email.email' => 'Format email tidak valid.',
-    ]);
-
-    $normalizedEmail = trim(strtolower($request->email));
-    $user = User::where('email', $normalizedEmail)->first();
+    $request->validate(['email' => ['required', 'email']]);
+    $user = User::where('email', trim(strtolower($request->email)))->first();
 
     if (!$user) {
-        return back()->withInput()->withErrors([
-            'email' => 'Email tidak terdaftar dalam sistem kami. Pastikan alamat email yang Anda masukkan sudah benar.',
-        ]);
+        return back()->withInput()->withErrors(['email' => 'Email tidak terdaftar dalam sistem kami.']);
     }
 
-    // Buat token reset password resmi Laravel
     $token = Password::broker()->createToken($user);
     $directResetUrl = route('password.reset', ['token' => $token, 'email' => $user->email]);
-
-    // Simpan link langsung ke session untuk kenyamanan (terutama di InfinityFree / hosting tanpa SMTP aktif)
     session()->flash('direct_reset_url', $directResetUrl);
 
-    // Coba kirimkan email notifikasi (abaikan jika server hosting memblokir port SMTP)
     try {
         Password::broker()->sendResetLink(['email' => $user->email]);
-    } catch (\Throwable $e) {
-        // Pada web hosting gratis seperti InfinityFree, port SMTP diblokir
-        // Direct reset link di atas memastikan proses reset password tetap 100% berjalan lancar
-    }
+    } catch (\Throwable $e) {}
 
     return back()->with('status', 'Permintaan reset password berhasil diproses.');
 })->name('password.email');
 
-Route::get('/reset-password/{token}', function (Illuminate\Http\Request $request, string $token) {
+Route::get('/reset-password/{token}', function (Request $request, string $token) {
     return view('auth.reset-password', [
         'token' => $token,
         'email' => $request->query('email') ?? $request->email,
     ]);
 })->name('password.reset');
 
-// Proses Reset Password
 Route::post('/reset-password', function (Request $request) {
     $request->validate([
-        'token' => ['required'],
-        'email' => ['required', 'email'],
+        'token'    => ['required'],
+        'email'    => ['required', 'email'],
         'password' => ['required', 'confirmed', 'min:8'],
-    ], [
-        'token.required' => 'Token reset password tidak valid.',
-        'email.required' => 'Email wajib diisi.',
-        'email.email' => 'Format email tidak valid.',
-        'password.required' => 'Password baru wajib diisi.',
-        'password.confirmed' => 'Konfirmasi password baru tidak cocok.',
-        'password.min' => 'Password baru minimal harus 8 karakter.',
     ]);
 
     $status = Password::reset(
-        $request->only(
-            'email',
-            'password',
-            'password_confirmation',
-            'token'
-        ),
+        $request->only('email', 'password', 'password_confirmation', 'token'),
         function ($user, $password) {
-            $user->forceFill([
-                'password' => Hash::make($password),
-            ])->save();
+            $user->forceFill(['password' => \Illuminate\Support\Facades\Hash::make($password)])->save();
         }
     );
 
     if ($status === Password::PasswordReset) {
-        return redirect()->route('login')
-            ->with('success', 'Password Anda berhasil diperbarui! Silakan login dengan password baru.');
+        return redirect()->route('login')->with('success', 'Password berhasil diperbarui! Silakan login.');
     }
 
-    return back()->withErrors([
-        'email' => 'Token reset password tidak valid atau sudah kedaluwarsa. Silakan ajukan ulang permintaan lupa password.',
-    ]);
+    return back()->withErrors(['email' => 'Token tidak valid atau sudah kedaluwarsa.']);
 })->name('password.update');
 
-// Route Logout (Hanya untuk yang sudah login)
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
 // =========================================================================
-// HALAMAN UTAMA: WEBGIS PETA INTERAKTIF BWS KALIMANTAN I
-// Fokus 1 Halaman Utama untuk Dokumentasi & Laporan Magang
+// 3. HALAMAN ADMIN & DASHBOARD (TERPROTEKSI MIDDLEWARE AUTH)
+//    Mendukung rute /dashboard dan /admin/dashboard tanpa error 404
 // =========================================================================
-Route::get('/', [DashboardController::class, 'peta'])->name('peta');
-Route::get('/peta', [DashboardController::class, 'peta'])->name('peta.index');
-
-// Operasi Pengelolaan Data Spasial GIS (Upload & Hapus Layer)
-Route::post('/upload-geojson', [DashboardController::class, 'uploadGeojson'])->name('peta.upload-geojson');
-Route::delete('/delete-geojson', [DashboardController::class, 'deleteGeojson'])->name('peta.delete-geojson');
-Route::delete('/delete-geojson-bulk', [DashboardController::class, 'deleteGeojsonBulk'])->name('peta.delete-geojson-bulk');
-
-// Route yang Memerlukan Login (Khusus Manajemen Profil / User jika diperlukan)
 Route::middleware('auth')->group(function () {
+
+    // Route /dashboard utama (menghindari error 404 saat redirect login default Laravel)
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+
+    // Grup rute /admin/*
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('/', [AdminController::class, 'dashboard'])->name('index');
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+        Route::get('/kelola-gis', [AdminController::class, 'dashboard'])->name('kelola-gis');
+        Route::get('/data-gis', [AdminController::class, 'dashboard'])->name('data-gis');
+
+        // Aksi CRUD Data Spasial
+        Route::post('/upload', [AdminController::class, 'upload'])->name('upload');
+        Route::post('/rename', [AdminController::class, 'rename'])->name('rename');
+        Route::delete('/delete', [AdminController::class, 'delete'])->name('delete');
+        Route::delete('/delete-bulk', [AdminController::class, 'deleteBulk'])->name('delete-bulk');
+    });
+
+    // Profile & Akun
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
 
-    // Route Manajemen User (Superadmin & Admin)
+    // Manajemen User
     Route::middleware('role:superadmin,admin')->group(function () {
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
     });
@@ -138,7 +127,9 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-// Route penampil file storage (memastikan gambar selalu bisa diakses)
+// =========================================================================
+// 4. ROUTE UTILITAS
+// =========================================================================
 Route::get('/storage/{path}', function ($path) {
     $filePath = storage_path('app/public/' . $path);
     if (!file_exists($filePath)) {
@@ -147,21 +138,11 @@ Route::get('/storage/{path}', function ($path) {
     return response()->file($filePath);
 })->where('path', '.*')->name('storage.file');
 
-// Route Health Check & Diagnostik Sistem
 Route::get('/health-check', function () {
-    try {
-        \Illuminate\Support\Facades\DB::connection()->getPdo();
-        $dbStatus = 'Connected: ' . \Illuminate\Support\Facades\DB::connection()->getDatabaseName();
-    } catch (\Throwable $e) {
-        $dbStatus = 'Error: ' . $e->getMessage();
-    }
-
     return response()->json([
         'status' => 'ok',
-        'php' => PHP_VERSION,
-        'app_key' => !empty(config('app.key')),
-        'db_connection' => config('database.default'),
-        'db_status' => $dbStatus,
-        'session_driver' => config('session.driver'),
+        'php'    => PHP_VERSION,
+        'app_key'=> !empty(config('app.key')),
+        'db'     => config('database.default'),
     ]);
 });

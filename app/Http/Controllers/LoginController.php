@@ -61,6 +61,7 @@ class LoginController extends Controller
             ->withInput($request->only('email'))
             ->with('loginError', 'Login gagal! Periksa kembali email dan password Anda.');
     }
+
     public function logout(Request $request)
     {
         Auth::logout();
@@ -68,9 +69,9 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login')->with(
+        return redirect()->route('peta')->with(
             'success',
-            'Anda telah berhasil logout.'
+            'Anda telah berhasil keluar dari akun petugas.'
         );
     }
 }

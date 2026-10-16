@@ -33,23 +33,9 @@
             </span>
         </li>
 
-        <!-- Tombol Cepat: Kelola File GIS -->
-        <li class="nav-item mr-2">
-            <button type="button" class="btn btn-sm btn-outline-light font-weight-bold shadow-sm px-2 px-sm-3" data-toggle="modal" data-target="#modalKelolaGeojson" title="Kelola file layer GeoJSON di server">
-                <i class="fas fa-folder-open text-warning mr-1"></i> <span class="d-none d-md-inline">Kelola File GIS</span>
-            </button>
-        </li>
-
-        <!-- Tombol Cepat: Upload GeoJSON -->
-        <li class="nav-item mr-2">
-            <button type="button" class="btn btn-sm btn-warning text-dark font-weight-bold shadow-sm px-2 px-sm-3" data-toggle="modal" data-target="#modalUploadGeojson" title="Upload data spasial (GeoJSON, SHP, KML)">
-                <i class="fas fa-cloud-upload-alt mr-1"></i> <span class="d-none d-md-inline">Upload GIS</span>
-            </button>
-        </li>
-
         <!-- Tombol Modal Info Laporan Magang -->
         <li class="nav-item mr-2">
-            <button type="button" class="btn btn-sm btn-link text-white text-decoration-none px-2" data-toggle="modal" data-target="#modalInfoMagang" title="Informasi Laporan & Dokumentasi Magang">
+            <button type="button" class="btn btn-sm btn-link text-white text-decoration-none px-2" data-toggle="modal" data-target="#modalInfoMagang" title="Informasi Laporan & Dokumentasi">
                 <i class="fas fa-info-circle fa-lg"></i>
             </button>
         </li>
@@ -63,7 +49,14 @@
 
         <div class="topbar-divider d-none d-sm-block" style="border-right: 1px solid rgba(255,255,255,0.25);"></div>
 
-        @if(Auth::check())
+        @auth
+            <!-- TAMPILAN JIKA ADMIN SUDAH LOGIN -->
+            <li class="nav-item mr-2">
+                <a href="{{ route('admin.kelola-gis') }}" class="btn btn-sm btn-outline-light font-weight-bold shadow-sm px-2 px-sm-3" style="border-radius:20px;">
+                    <i class="fas fa-database text-warning mr-1"></i> <span class="d-none d-md-inline">Manajemen Data GIS</span>
+                </a>
+            </li>
+
             <!-- Profil User Login -->
             <li class="nav-item dropdown no-arrow">
                 <a class="nav-link dropdown-toggle text-white pl-2" href="#" id="userMenu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -72,30 +65,42 @@
                     </div>
                     <span class="d-none d-md-inline small font-weight-bold">{{ Auth::user()->name ?? 'Admin' }} <i class="fas fa-caret-down ml-1"></i></span>
                 </a>
-                <div class="dropdown-menu dropdown-menu-right shadow-lg border-0 animated--grow-in mt-2" aria-labelledby="userMenu" style="border-radius: 8px; width: 190px;">
-                    <div class="dropdown-header small text-muted font-weight-bold">Petugas / Pengguna</div>
+                <div class="dropdown-menu dropdown-menu-right shadow-lg border-0 animated--grow-in mt-2" aria-labelledby="userMenu" style="border-radius: 8px; width: 200px;">
+                    <div class="dropdown-header small text-muted font-weight-bold">Akun Terautentikasi</div>
+                    <a class="dropdown-item py-2 text-dark font-weight-bold" href="{{ route('admin.dashboard') }}">
+                        <i class="fas fa-tachometer-alt fa-sm fa-fw mr-2 text-primary"></i> Dashboard Admin
+                    </a>
+                    <a class="dropdown-item py-2 text-dark font-weight-bold" href="{{ route('admin.kelola-gis') }}">
+                        <i class="fas fa-database fa-sm fa-fw mr-2 text-primary"></i> Manajemen Data GIS
+                    </a>
+                    <div class="dropdown-divider my-1"></div>
                     <a class="dropdown-item py-2 text-dark" href="{{ route('profile') }}">
-                        <i class="fas fa-user-cog fa-sm fa-fw mr-2 text-primary"></i> Pengaturan Akun
+                        <i class="fas fa-user-cog fa-sm fa-fw mr-2 text-info"></i> Pengaturan Akun
                     </a>
                     @if(in_array(Auth::user()->role, ['admin', 'superadmin']))
-                        <a class="dropdown-item py-2 text-dark font-weight-bold" href="{{ route('users.index') }}">
+                        <a class="dropdown-item py-2 text-dark" href="{{ route('users.index') }}">
                             <i class="fas fa-users-cog fa-sm fa-fw mr-2 text-info"></i> Kelola Petugas
                         </a>
                     @endif
                     <div class="dropdown-divider my-1"></div>
-                    <a class="dropdown-item py-2 text-danger font-weight-bold" href="#" data-toggle="modal" data-target="#logoutModal">
-                        <i class="fas fa-power-off fa-sm fa-fw mr-2"></i> Keluar
-                    </a>
+                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="dropdown-item py-2 text-danger font-weight-bold border-0 bg-transparent">
+                            <i class="fas fa-power-off fa-sm fa-fw mr-2"></i> Keluar
+                        </button>
+                    </form>
                 </div>
             </li>
-        @else
-            <!-- Link Login Jika Belum Login -->
+        @endauth
+
+        @guest
+            <!-- TAMPILAN USER / PUBLIK: HANYA TOMBOL LOGIN PETUGAS -->
             <li class="nav-item">
-                <a href="{{ route('login') }}" class="btn btn-sm btn-outline-light font-weight-bold px-3 shadow-sm">
+                <a href="{{ route('login') }}" class="btn btn-sm btn-warning text-dark font-weight-bold px-3 shadow-sm" style="border-radius:20px;letter-spacing:0.3px;">
                     <i class="fas fa-sign-in-alt mr-1"></i> Login Petugas
                 </a>
             </li>
-        @endif
+        @endguest
 
     </ul>
 

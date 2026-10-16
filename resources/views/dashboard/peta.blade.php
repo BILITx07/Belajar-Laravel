@@ -53,7 +53,7 @@
 </div>
 @endif
 
-@if($errors->any())
+@if(isset($errors) && $errors->any())
 <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
     <div class="font-weight-bold mb-1"><i class="fas fa-exclamation-circle mr-1"></i>Terjadi Kesalahan:</div>
     <ul class="mb-0 pl-3">
