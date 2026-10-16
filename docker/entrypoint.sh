@@ -3,6 +3,13 @@ set -e
 
 PORT=${PORT:-80}
 
+# Bersihkan karakter aneh atau trailing parenthesis dari Railway variables
+if [ -n "$MYSQLDATABASE" ]; then export MYSQLDATABASE=$(echo "$MYSQLDATABASE" | tr -d "')\" "); fi
+if [ -n "$MYSQL_URL" ]; then export MYSQL_URL=$(echo "$MYSQL_URL" | tr -d "')\" "); fi
+if [ -n "$MYSQL_URI" ]; then export MYSQL_URI=$(echo "$MYSQL_URI" | tr -d "')\" "); fi
+if [ -n "$DB_DATABASE" ]; then export DB_DATABASE=$(echo "$DB_DATABASE" | tr -d "')\" "); fi
+if [ -n "$DB_URL" ]; then export DB_URL=$(echo "$DB_URL" | tr -d "')\" "); fi
+
 # Update Nginx listen port
 sed -i "s/\${PORT}/$PORT/g" /etc/nginx/http.d/default.conf 2>/dev/null || sed -i "s/\${PORT}/$PORT/g" /etc/nginx/conf.d/default.conf 2>/dev/null || true
 

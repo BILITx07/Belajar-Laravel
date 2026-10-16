@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Str;
-use PDO;
 
 return [
 
@@ -46,11 +45,11 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'url' => env('DB_URL', env('MYSQL_URL', env('MYSQL_URI'))),
-            'host' => env('DB_HOST', env('MYSQLHOST', env('MYSQL_HOST', '127.0.0.1'))),
-            'port' => env('DB_PORT', env('MYSQLPORT', env('MYSQL_PORT', '3306'))),
-            'database' => env('DB_DATABASE', env('MYSQLDATABASE', env('MYSQL_DATABASE', 'laravel'))),
-            'username' => env('DB_USERNAME', env('MYSQLUSER', env('MYSQL_USER', 'root'))),
+            'url' => ($mysqlUrl = env('DB_URL', env('MYSQL_URL', env('MYSQL_URI')))) ? trim($mysqlUrl, " )'\"") : null,
+            'host' => trim((string) env('DB_HOST', env('MYSQLHOST', env('MYSQL_HOST', '127.0.0.1'))), " )'\""),
+            'port' => trim((string) env('DB_PORT', env('MYSQLPORT', env('MYSQL_PORT', '3306'))), " )'\""),
+            'database' => trim((string) env('DB_DATABASE', env('MYSQLDATABASE', env('MYSQL_DATABASE', 'railway'))), " )'\""),
+            'username' => trim((string) env('DB_USERNAME', env('MYSQLUSER', env('MYSQL_USER', 'root'))), " )'\""),
             'password' => env('DB_PASSWORD', env('MYSQLPASSWORD', env('MYSQL_PASSWORD', ''))),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => env('DB_CHARSET', 'utf8mb4'),
@@ -60,7 +59,7 @@ return [
             'strict' => true,
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                (PHP_VERSION_ID >= 80500 ? Mysql::ATTR_SSL_CA : PDO::MYSQL_ATTR_SSL_CA) => env('MYSQL_ATTR_SSL_CA'),
+                \PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
 
