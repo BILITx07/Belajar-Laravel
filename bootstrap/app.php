@@ -17,13 +17,15 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (\Throwable $e, \Illuminate\Http\Request $request) {
-            return response()->json([
-                'status' => 'error',
-                'exception' => get_class($e),
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'url' => $request->fullUrl(),
-            ], 500);
+            if ($request->has('debug') && !$e instanceof \Illuminate\Auth\AuthenticationException) {
+                return response()->json([
+                    'status' => 'error',
+                    'exception' => get_class($e),
+                    'message' => $e->getMessage(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'url' => $request->fullUrl(),
+                ], 500);
+            }
         });
     })->create();
