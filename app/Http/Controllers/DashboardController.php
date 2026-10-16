@@ -273,6 +273,7 @@ class DashboardController extends Controller
         $fileList       = [];
         $defaultFiles   = ['baku', 'fungsional', 'potensial', 'saluran', 'bangunan']; // prefix file sistem
         $availableTypes = [
+            'ws_kapuas'  => false,
             'baku'       => false,
             'fungsional' => false,
             'potensial'  => false,
@@ -291,13 +292,21 @@ class DashboardController extends Controller
 
                     $nameLower = strtolower($file->getFilenameWithoutExtension());
                     $isDefault = false;
-                    foreach ($defaultFiles as $prefix) {
-                        if (str_starts_with($nameLower, $prefix)) {
-                            $isDefault = true;
-                            $availableTypes[$prefix] = true;
-                            break;
+
+                    // Deteksi Wilayah Sungai / DAS / Jaringan Sungai Kapuas
+                    if (str_contains($nameLower, 'kapuas') || str_starts_with($nameLower, 'ws') || str_contains($nameLower, 'das')) {
+                        $isDefault = true;
+                        $availableTypes['ws_kapuas'] = true;
+                    } else {
+                        foreach ($defaultFiles as $prefix) {
+                            if (str_starts_with($nameLower, $prefix)) {
+                                $isDefault = true;
+                                $availableTypes[$prefix] = true;
+                                break;
+                            }
                         }
                     }
+
                     if (!$isDefault) {
                         $availableTypes['custom'] = true;
                     }

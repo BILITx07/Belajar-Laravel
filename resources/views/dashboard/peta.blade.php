@@ -12,16 +12,16 @@
     ];
 @endphp
 
-@section('title', 'Peta Interaktif Daerah Irigasi (DIR) - BWS Kalimantan I')
+@section('title', 'WebGIS Daerah Irigasi & Wilayah Sungai Kapuas - BWS Kalimantan I')
 
 @section('konten')
 <!-- Page Heading -->
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
+<div class="d-sm-flex align-items-center justify-content-between mb-3">
     <div>
-        <h1 class="h3 mb-1 text-gray-800 font-weight-bold">
-            <i class="fas fa-map-marked-alt text-primary mr-2"></i>Peta Interaktif Daerah Irigasi (DIR)
+        <h1 class="h4 mb-1 text-gray-800 font-weight-bold">
+            <i class="fas fa-map-marked-alt text-primary mr-2"></i>WebGIS Daerah Irigasi (DIR) &amp; Wilayah Sungai Kapuas
         </h1>
-        <p class="text-muted mb-0 small">Sistem Informasi Geografis (SIG) Terintegrasi Data ArcMap - Balai Wilayah Sungai Kalimantan I Pontianak</p>
+        <p class="text-muted mb-0 small">Sistem Informasi Geospasial (SIG) Terintegrasi Data ArcMap - Balai Wilayah Sungai Kalimantan I Pontianak</p>
     </div>
     <div class="mt-3 mt-sm-0 d-flex flex-wrap align-items-center">
         <button type="button" class="btn btn-sm btn-outline-secondary shadow-sm mr-2 font-weight-bold" data-toggle="modal" data-target="#modalKelolaGeojson">
@@ -1000,7 +1000,7 @@ async function mulaiKonversiDanUpload() {
         </div>
     </div>
     <div class="card-body p-0 position-relative">
-        <div id="map" style="height: 600px; width: 100%; z-index: 1;"></div>
+        <div id="map" style="height: calc(100vh - 220px); min-height: 620px; width: 100%; z-index: 1;"></div>
     </div>
     <div class="card-footer bg-light text-muted small d-flex flex-wrap justify-content-between align-items-center py-2">
         <div>
@@ -1612,6 +1612,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var hasFiles = {{ $hasFiles ? 'true' : 'false' }};
 
     // Selalu buat semua layer group (agar referensi JS tidak error), tapi hanya tampilkan di peta jika ada file-nya
+    var layerWsKapuas   = L.layerGroup(); if (availableTypes.ws_kapuas)  layerWsKapuas.addTo(map);
     var layerBaku       = L.layerGroup(); if (availableTypes.baku)       layerBaku.addTo(map);
     var layerFungsional = L.layerGroup(); if (availableTypes.fungsional) layerFungsional.addTo(map);
     var layerPotensial  = L.layerGroup(); if (availableTypes.potensial)  layerPotensial.addTo(map);
@@ -1623,13 +1624,14 @@ document.addEventListener('DOMContentLoaded', function () {
         "Satelit (Google Hybrid)": googleSat
     };
 
-    // Overlay hanya ditambahkan jika ada file untuk tipe tersebut
+    // Overlay dikelompokkan dengan ikon yang rapi
     var overlayMaps = {};
-    if (availableTypes.baku)       overlayMaps["Daerah Irigasi Baku (Hijau)"]       = layerBaku;
-    if (availableTypes.fungsional) overlayMaps["Daerah Irigasi Fungsional (Biru)"]  = layerFungsional;
-    if (availableTypes.potensial)  overlayMaps["Daerah Irigasi Potensial (Oranye)"] = layerPotensial;
-    if (availableTypes.saluran)    overlayMaps["Jaringan Saluran Irigasi"]           = layerSaluran;
-    if (availableTypes.bangunan)   overlayMaps["Bangunan Air / Pelengkap"]           = layerBangunan;
+    if (availableTypes.ws_kapuas)  overlayMaps["🌊 WS & DAS Kapuas"]                = layerWsKapuas;
+    if (availableTypes.baku)       overlayMaps["🌾 Daerah Irigasi Baku (Hijau)"]       = layerBaku;
+    if (availableTypes.fungsional) overlayMaps["🌾 Daerah Irigasi Fungsional (Biru)"]  = layerFungsional;
+    if (availableTypes.potensial)  overlayMaps["🌾 Daerah Irigasi Potensial (Oranye)"] = layerPotensial;
+    if (availableTypes.saluran)    overlayMaps["💧 Jaringan Saluran Irigasi"]          = layerSaluran;
+    if (availableTypes.bangunan)   overlayMaps["🏛️ Bangunan Air / Pelengkap"]          = layerBangunan;
 
     // LAYER CONTROL DENGAN HEADER & TOMBOL MINIMIZE
     var layerControl = L.control.layers(baseMaps, overlayMaps, { collapsed: false, position: 'topright' }).addTo(map);
@@ -1680,6 +1682,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Bangun item legenda dinamis berdasarkan tipe file yang tersedia
         var legendItems = '';
+        if (availableTypes.ws_kapuas)  legendItems += '<div class="legend-item"><span class="legend-color-box" style="background:#4f46e5;border-color:#3730a3;"></span> <b>WS &amp; DAS Kapuas</b> (Ungu/Hijau)</div>';
         if (availableTypes.baku)       legendItems += '<div class="legend-item"><span class="legend-color-box" style="background:#27ae60;border-color:#1b7a43;"></span> <b>DIR Baku</b> (Hijau)</div>';
         if (availableTypes.fungsional) legendItems += '<div class="legend-item"><span class="legend-color-box" style="background:#2980b9;border-color:#1a5276;"></span> <b>DIR Fungsional</b> (Biru)</div>';
         if (availableTypes.potensial)  legendItems += '<div class="legend-item"><span class="legend-color-box" style="background:#e67e22;border-color:#b95c00;"></span> <b>DIR Potensial</b> (Oranye)</div>';
@@ -1941,6 +1944,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     var catName     = 'Data GIS';
                     var rowClass    = 'row-custom';
 
+                    var nameCleanUpper = nameUpper.replace(/\.(JSON|GEOJSON)$/i, '');
+                    var isKapuasLayer  = nameCleanUpper.indexOf('KAPUAS') !== -1 || (nameCleanUpper.indexOf('WS') !== -1 && nameCleanUpper.indexOf('DAS') !== -1);
+
                     if (nameUpper.indexOf('BAKU') === 0) {
                         targetLayer = layerBaku; strokeColor = '#1e824c'; fillColor = '#27ae60'; fillOpacity = 0.45;
                         catBadge = '<span class="badge badge-success"><i class="fas fa-seedling mr-1"></i>DIR Baku</span>';
@@ -1966,6 +1972,24 @@ document.addEventListener('DOMContentLoaded', function () {
                         catBadge = '<span class="badge badge-danger"><i class="fas fa-map-pin mr-1"></i>Bangunan</span>';
                         catName  = 'Bangunan Air';
                         rowClass = 'row-bangunan';
+                    } else if (isKapuasLayer) {
+                        targetLayer = layerWsKapuas;
+                        var isDas = (/\bDAS\b/).test(nameCleanUpper) || nameCleanUpper.indexOf('DAS') !== -1;
+                        var isJs  = (/\bJS\b/).test(nameCleanUpper) || nameCleanUpper.indexOf('_JS') !== -1 || nameCleanUpper.indexOf('JS_') !== -1 || nameCleanUpper.indexOf('SUNGAI') !== -1;
+                        if (isDas) {
+                            strokeColor = '#059669'; fillColor = '#10b981'; weight = 2.0; fillOpacity = 0.22;
+                            catName = 'Daerah Aliran Sungai (DAS)';
+                            catBadge = '<span class="badge badge-success"><i class="fas fa-mountain mr-1"></i>DAS Kapuas</span>';
+                        } else if (isJs) {
+                            strokeColor = '#0284c7'; fillColor = '#0284c7'; weight = 2.4; fillOpacity = 0;
+                            catName = 'Jaringan Sungai';
+                            catBadge = '<span class="badge badge-info"><i class="fas fa-water mr-1"></i>Sungai Kapuas</span>';
+                        } else {
+                            strokeColor = '#4f46e5'; fillColor = '#818cf8'; weight = 2.2; fillOpacity = 0.16;
+                            catName = 'Wilayah Sungai (WS)';
+                            catBadge = '<span class="badge badge-primary"><i class="fas fa-draw-polygon mr-1"></i>WS Kapuas</span>';
+                        }
+                        rowClass = 'row-kapuas';
                     } else {
                         // File Kustom / Upload baru
                         isCustomUpload = true;

@@ -110,45 +110,28 @@ Route::post('/reset-password', function (Request $request) {
 // Route Logout (Hanya untuk yang sudah login)
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// Route Halaman Publik (Opsional)
-Route::get('/contact', function () {
-    return view('contact');
-});
-Route::get('/about', function () {
-    return view('About');
-});
+// =========================================================================
+// HALAMAN UTAMA: WEBGIS PETA INTERAKTIF BWS KALIMANTAN I
+// Fokus 1 Halaman Utama untuk Dokumentasi & Laporan Magang
+// =========================================================================
+Route::get('/', [DashboardController::class, 'peta'])->name('peta');
+Route::get('/peta', [DashboardController::class, 'peta'])->name('peta.index');
 
-// Route yang Memerlukan Login (Auth Middleware)
+// Operasi Pengelolaan Data Spasial GIS (Upload & Hapus Layer)
+Route::post('/upload-geojson', [DashboardController::class, 'uploadGeojson'])->name('peta.upload-geojson');
+Route::delete('/delete-geojson', [DashboardController::class, 'deleteGeojson'])->name('peta.delete-geojson');
+Route::delete('/delete-geojson-bulk', [DashboardController::class, 'deleteGeojsonBulk'])->name('peta.delete-geojson-bulk');
+
+// Route yang Memerlukan Login (Khusus Manajemen Profil / User jika diperlukan)
 Route::middleware('auth')->group(function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/home', [DashboardController::class, 'index'])->name('home');
-    Route::get('/dashboard', [DashboardController::class, 'index']);
-
-    // Route Profil & Ubah Password Pengguna
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
-    Route::get('/peta', [DashboardController::class, 'peta'])->name('peta');
-    Route::get('/hidrologi-data', [DashboardController::class, 'dataHidrologi'])->name('hidrologi.data');
-    Route::post('/upload-geojson', [DashboardController::class, 'uploadGeojson'])->name('peta.upload-geojson');
-    Route::delete('/delete-geojson', [DashboardController::class, 'deleteGeojson'])->name('peta.delete-geojson');
-    Route::delete('/delete-geojson-bulk', [DashboardController::class, 'deleteGeojsonBulk'])->name('peta.delete-geojson-bulk');
-    Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
-    Route::get('/produk/create', [ProdukController::class, 'create'])->name('produk.create');
-    Route::post('/produk', [ProdukController::class, 'store'])->name('produk.store');
-    Route::get('/produk/{id}', [ProdukController::class, 'show'])->name('produk.show');
-    Route::get('/produk/{id}/edit', [ProdukController::class, 'edit'])->name('produk.edit');
-    Route::put('/produk/{id}', [ProdukController::class, 'update'])->name('produk.update');
-    Route::delete('/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
-    Route::resource('kategori', KategoriController::class);
 
-    // Route Manajemen User
-    // GET /users: bisa diakses superadmin DAN admin (tampilan berbeda)
+    // Route Manajemen User (Superadmin & Admin)
     Route::middleware('role:superadmin,admin')->group(function () {
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
     });
-
-    // Update & Delete: hanya superadmin
     Route::middleware('role:superadmin')->group(function () {
         Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
