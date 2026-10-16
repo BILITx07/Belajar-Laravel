@@ -1,0 +1,10 @@
+.git
+.github
+node_modules
+vendor
+.env
+.env.backup
+storage/*.key
+storage/logs/*.log
+*.zip
+nixpacks.toml
