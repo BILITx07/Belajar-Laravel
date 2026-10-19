@@ -2,15 +2,6 @@
 
 @section('title', 'Manajemen User — FEWS BWS Kalimantan I')
 
-@section('breadcrumb')
-    <div class="d-flex align-items-center justify-content-between w-100">
-        <h4 class="font-weight-bold text-dark mb-0" style="letter-spacing: 0.5px; font-size: 1.15rem;">
-            MANAJEMEN USER
-        </h4>
-        <span class="text-muted small">Menu Utama</span>
-    </div>
-@endsection
-
 @section('content')
 <div class="anim-fade-in">
 
