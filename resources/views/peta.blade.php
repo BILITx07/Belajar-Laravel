@@ -412,7 +412,8 @@
             </select>
         </div>
 
-        <!-- 3. Kelola File GIS Button (Menuju Halaman Manajemen Data GIS) -->
+        @auth
+        <!-- 3. Kelola File GIS Button (Khusus Admin / Petugas) -->
         <a href="{{ route('admin.kelola-gis') }}" class="btn-kelola-gis" title="Buka Manajemen Master Data GIS">
             <span class="d-flex align-items-center">
                 <i class="fas fa-folder mr-2" style="color: #3b82f6; font-size: 15px;"></i>
@@ -420,6 +421,7 @@
             </span>
             <span class="badge-count">{{ count($geojsonFiles ?? []) > 0 ? count($geojsonFiles ?? []) : 54 }}</span>
         </a>
+        @endauth
 
         <!-- 4. Ringkasan Luas & DIR (Sesuai Desain Rapi) -->
         <div class="card border-0 bg-white shadow-sm mt-auto" style="border-radius: 12px; border: 1px solid #e2e8f0; padding: 14px 16px;">
@@ -662,24 +664,29 @@ document.addEventListener('DOMContentLoaded', function () {
         var targetLayer = null;
         var strokeColor = '#0284c7', fillColor = '#38bdf8', fillOpacity = 0.5, weight = 2;
 
-        if (fileLower.startsWith('baku')) {
+        if (fileLower.startsWith('baku') || fileLower.includes('baku')) {
             targetLayer = layerBaku;
             strokeColor = '#16a34a'; fillColor = '#22c55e'; fillOpacity = 0.6;
-        } else if (fileLower.startsWith('fungsional')) {
+        } else if (fileLower.startsWith('fungsional') || fileLower.includes('fungsional')) {
             targetLayer = layerFungsional;
             strokeColor = '#0284c7'; fillColor = '#38bdf8'; fillOpacity = 0.6;
-        } else if (fileLower.startsWith('potensial')) {
+        } else if (fileLower.startsWith('potensial') || fileLower.includes('potensial')) {
             targetLayer = layerPotensial;
             strokeColor = '#ea580c'; fillColor = '#f97316'; fillOpacity = 0.6;
-        } else if (fileLower.startsWith('saluran')) {
+        } else if (fileLower.startsWith('saluran') || fileLower.includes('saluran')) {
             targetLayer = layerSaluran;
             strokeColor = '#0284c7'; fillColor = '#0284c7'; fillOpacity = 0; weight = 2.5;
-        } else if (fileLower.startsWith('bangunan')) {
+        } else if (fileLower.startsWith('bangunan') || fileLower.includes('bangunan')) {
             targetLayer = layerBangunan;
             strokeColor = '#dc2626'; fillColor = '#ef4444'; fillOpacity = 0.9;
+        } else if (fileLower.includes('kapuas') || fileLower.startsWith('ws') || fileLower.includes('das') || fileLower.includes('sungai')) {
+            targetLayer = layerSaluran;
+            strokeColor = '#06b6d4'; fillColor = '#06b6d4'; fillOpacity = 0; weight = 2;
+        } else {
+            // Layer Tambahan / Kustom tetap ditampilkan di peta
+            targetLayer = layerFungsional;
+            strokeColor = '#64748b'; fillColor = '#94a3b8'; fillOpacity = 0.4;
         }
-
-        if (!targetLayer) return;
 
         fetch('{{ asset("geojson") }}/' + encodeURIComponent(fileName))
             .then(function(r) { return r.json(); })
@@ -787,6 +794,19 @@ function toggleLegendCard(e) {
         icon.className = 'fas fa-chevron-up';
     } else {
         icon.className = 'fas fa-minus';
+    }
+}
+
+// Fokus ke Lokasi DIR dari Tabel
+function focusToLocation(lat, lng, name) {
+    if (map) {
+        map.flyTo([lat, lng], 13, { duration: 1.2 });
+        var found = dirMarkers.find(function(item) {
+            return item.name === name.toLowerCase();
+        });
+        if (found) {
+            found.marker.openPopup();
+        }
     }
 }
 </script>

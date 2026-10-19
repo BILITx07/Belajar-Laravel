@@ -89,15 +89,20 @@
 
     <div class="row mb-3">
         @foreach($stats['categories'] as $cat => $count)
-            @php $info = $catLabels[$cat] ?? ['Lainnya', '#64748b', 'fa-file']; @endphp
+            @php 
+                $info = $catLabels[$cat] ?? ['Lainnya', '#64748b', 'fa-file']; 
+                $isActiveCat = ($filterType ?? '') === $cat;
+            @endphp
             <div class="col-6 col-sm-4 col-md-3 col-xl mb-2">
-                <div class="bg-white border p-2 px-3 rounded shadow-sm d-flex align-items-center justify-content-between" style="border-radius:10px !important;">
-                    <div class="d-flex align-items-center text-truncate">
-                        <i class="fas {{ $info[2] }} mr-2" style="color:{{ $info[1] }}; font-size:0.9rem;"></i>
-                        <span class="text-truncate text-muted small font-weight-bold">{{ $info[0] }}</span>
+                <a href="{{ route('admin.kelola-gis', ['type' => $cat]) }}" class="text-decoration-none d-block">
+                    <div class="bg-white border p-2 px-3 rounded shadow-sm d-flex align-items-center justify-content-between transition-all" style="border-radius:10px !important; {{ $isActiveCat ? 'border-color:'.$info[1].' !important; background: '.$info[1].'08 !important;' : '' }}">
+                        <div class="d-flex align-items-center text-truncate">
+                            <i class="fas {{ $info[2] }} mr-2" style="color:{{ $info[1] }}; font-size:0.9rem;"></i>
+                            <span class="text-truncate text-muted small font-weight-bold">{{ $info[0] }}</span>
+                        </div>
+                        <span class="badge {{ $isActiveCat ? 'badge-primary' : 'badge-light border' }} font-weight-bold ml-2" style="{{ $isActiveCat ? 'background:'.$info[1].';' : 'color:'.$info[1].';' }}">{{ $count }}</span>
                     </div>
-                    <span class="badge badge-light border font-weight-bold ml-2" style="color:{{ $info[1] }};">{{ $count }}</span>
-                </div>
+                </a>
             </div>
         @endforeach
     </div>
@@ -204,8 +209,8 @@
                                     </div>
                                 </td>
                                 <td class="align-middle">
-                                    <span class="badge px-2 py-1 font-weight-bold" style="background:{{ $info[1] }}18;color:{{ $info[1] }};border-radius:6px;font-size:0.75rem;">
-                                        <i class="fas {{ $info[2] }} mr-1"></i>{{ $info[0] }}
+                                    <span class="badge px-2 py-1 font-weight-bold" style="background:{{ $catInfo[1] }}18;color:{{ $catInfo[1] }};border-radius:6px;font-size:0.75rem;">
+                                        <i class="fas {{ $catInfo[2] }} mr-1"></i>{{ $catInfo[0] }}
                                     </span>
                                 </td>
                                 <td class="align-middle font-weight-bold text-secondary">

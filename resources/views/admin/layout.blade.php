@@ -351,49 +351,30 @@
         </div>
     </header>
 
-    <!-- ═══ 2. MENU NAVIGASI ADMIN SEKUNDER (SESUAI GAMBAR REFERENSI BWS) ═══ -->
+    <!-- ═══ 2. MENU NAVIGASI ADMIN SEKUNDER ═══ -->
     <nav class="bws-subnavbar">
-        <!-- 1. Dashboard -->
-        <a href="{{ route('admin.dashboard') }}" class="bws-nav-link {{ request()->routeIs('admin.dashboard', 'dashboard', 'admin.index') && !request()->has('type') ? 'active' : '' }}">
-            <i class="fas fa-th-large"></i>
-            <span>Dashboard</span>
+        <!-- 1. Peta Dashboard -->
+        <a href="{{ route('admin.dashboard') }}" class="bws-nav-link {{ request()->routeIs('admin.dashboard', 'dashboard', 'admin.index') ? 'active' : '' }}">
+            <i class="fas fa-map-marked-alt text-primary"></i>
+            <span>Peta Dashboard</span>
         </a>
 
-        <!-- 2. Master Data GIS (Dengan Dropdown) -->
-        <div class="dropdown">
-            <a href="#" class="bws-nav-link dropdown-toggle {{ request()->has('type') ? 'active' : '' }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-database"></i>
-                <span>Master Data GIS</span>
-                <i class="fas fa-chevron-down ml-1" style="font-size:0.7rem;"></i>
-            </a>
-            <div class="dropdown-menu bws-dropdown-menu">
-                <a class="dropdown-item bws-dropdown-item" href="{{ route('admin.dashboard', ['type' => 'irigasi']) }}">
-                    <i class="fas fa-seedling mr-2 text-success"></i> Daerah Irigasi (Baku, Fung, Pot)
-                </a>
-                <a class="dropdown-item bws-dropdown-item" href="{{ route('admin.dashboard', ['type' => 'saluran']) }}">
-                    <i class="fas fa-stream mr-2 text-primary"></i> Jaringan Saluran Irigasi
-                </a>
-                <a class="dropdown-item bws-dropdown-item" href="{{ route('admin.dashboard', ['type' => 'bangunan']) }}">
-                    <i class="fas fa-landmark mr-2 text-danger"></i> Bangunan Air &amp; Pelengkap
-                </a>
-                <div class="dropdown-divider my-1"></div>
-                <a class="dropdown-item bws-dropdown-item font-weight-bold" href="{{ route('admin.dashboard', ['type' => 'semua']) }}">
-                    <i class="fas fa-layer-group mr-2 text-info"></i> Tampilkan Semua Data
-                </a>
-            </div>
-        </div>
+        <!-- 2. Manajemen File GIS -->
+        <a href="{{ route('admin.kelola-gis') }}" class="bws-nav-link {{ request()->routeIs('admin.kelola-gis', 'admin.data-gis') ? 'active' : '' }}">
+            <i class="fas fa-folder-open text-warning"></i>
+            <span>Manajemen File GIS</span>
+        </a>
 
-        <!-- 3. Peta Utama / WebGIS -->
-        <a href="{{ route('peta') }}" class="bws-nav-link" target="_blank" title="Buka Halaman Peta Interaktif Publik">
-            <i class="fas fa-map-marked-alt text-warning"></i>
-            <span>Peta Utama</span>
-            <i class="fas fa-external-link-alt ml-1" style="font-size:0.65rem; opacity:0.6;"></i>
+        <!-- 3. Buka Halaman Publik -->
+        <a href="{{ route('peta') }}" class="bws-nav-link" target="_blank" title="Buka Halaman Peta Publik">
+            <i class="fas fa-external-link-alt text-success"></i>
+            <span>Lihat Peta Publik</span>
         </a>
 
         <!-- 4. Manajemen User -->
         @if(Auth::check() && in_array(Auth::user()->role, ['admin', 'superadmin']))
         <a href="{{ route('users.index') }}" class="bws-nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}">
-            <i class="fas fa-users-cog"></i>
+            <i class="fas fa-users-cog text-info"></i>
             <span>Manajemen User</span>
         </a>
         @endif

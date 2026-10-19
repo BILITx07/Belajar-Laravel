@@ -216,7 +216,7 @@ class AdminController extends Controller
             return response()->json(['success' => true, 'message' => $msg, 'uploaded' => $uploaded]);
         }
 
-        return redirect()->route('admin.dashboard')->with('success', $msg);
+        return redirect()->back()->with('success', $msg);
     }
 
     /**
@@ -254,7 +254,7 @@ class AdminController extends Controller
 
         rename($oldPath, $newPath);
 
-        return redirect()->route('admin.dashboard')->with('success', 'File berhasil diubah nama menjadi "' . $newName . '".');
+        return redirect()->back()->with('success', 'File berhasil diubah nama menjadi "' . $newName . '".');
     }
 
     /**
@@ -273,7 +273,7 @@ class AdminController extends Controller
 
         File::delete($filePath);
 
-        return redirect()->route('admin.dashboard')->with('success', 'File "' . $fileName . '" berhasil dihapus dari server.');
+        return redirect()->back()->with('success', 'File "' . $fileName . '" berhasil dihapus dari server.');
     }
 
     /**
@@ -299,10 +299,10 @@ class AdminController extends Controller
         }
 
         if (count($deleted) > 0) {
-            return redirect()->route('admin.dashboard')->with('success', count($deleted) . ' file GeoJSON berhasil dihapus.');
+            return redirect()->back()->with('success', count($deleted) . ' file GeoJSON berhasil dihapus.');
         }
 
-        return redirect()->route('admin.dashboard')->with('error', 'Tidak ada file yang berhasil dihapus.');
+        return redirect()->back()->with('error', 'Tidak ada file yang berhasil dihapus.');
     }
 
     // ─────────────────────────────────────────────────────────────
@@ -333,7 +333,7 @@ class AdminController extends Controller
                 $category = 'ws_kapuas';
             } else {
                 foreach ($defaultPrefixes as $prefix) {
-                    if (str_starts_with($nameLower, $prefix)) {
+                    if (str_starts_with($nameLower, $prefix) || str_contains($nameLower, $prefix)) {
                         $category = $prefix;
                         break;
                     }

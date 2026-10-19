@@ -43,59 +43,57 @@
             </a>
         </li>
 
-        <!-- Notifikasi Lonceng dengan Badge 54 -->
+        @auth
+        <!-- Notifikasi Lonceng dengan Link Kelola GIS (Khusus Admin / Petugas) -->
         <li class="nav-item mr-3 position-relative">
-            <a href="{{ route('admin.dashboard') }}" class="nav-link text-white p-2 position-relative d-flex align-items-center justify-content-center" title="Kelola File Data Spasial">
+            <a href="{{ route('admin.kelola-gis') }}" class="nav-link text-white p-2 position-relative d-flex align-items-center justify-content-center" title="Kelola File Data Spasial">
                 <i class="fas fa-bell fa-lg"></i>
                 <span class="badge badge-danger position-absolute" style="top: 0px; right: 0px; font-size: 0.65rem; border-radius: 12px; padding: 2px 6px; background: #ef4444; font-weight: 800; border: 2px solid #1d64d8;">54</span>
             </a>
         </li>
 
-        <!-- Profil User Pill: Admin Dinar -->
+        <!-- Profil User Pill: Petugas Login -->
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle text-white d-flex align-items-center py-1 px-3" href="#" id="userMenuBtn" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background: rgba(255, 255, 255, 0.16); border-radius: 25px; transition: background 0.2s ease;">
                 <div class="rounded-circle bg-white d-flex align-items-center justify-content-center mr-2 shadow-sm" style="width: 32px; height: 32px;">
                     <i class="fas fa-user" style="color: #1d64d8; font-size: 14px;"></i>
                 </div>
                 <span class="font-weight-bold" style="font-size: 0.88rem; color: #ffffff;">
-                    {{ Auth::check() ? Auth::user()->name : 'Admin Dinar' }}
+                    {{ Auth::user()->name }}
                 </span>
                 <i class="fas fa-chevron-down ml-2" style="font-size: 10px; opacity: 0.8;"></i>
             </a>
             
             <div class="dropdown-menu dropdown-menu-right shadow-lg border-0 animated--grow-in mt-2" aria-labelledby="userMenuBtn" style="border-radius: 10px; min-width: 220px;">
                 <div class="dropdown-header small text-muted font-weight-bold">
-                    {{ Auth::check() ? 'Petugas Terautentikasi' : 'Profil Petugas WebGIS' }}
+                    Petugas Terautentikasi
                 </div>
-                
-                @auth
-                    <a class="dropdown-item py-2 text-dark font-weight-bold" href="{{ route('admin.dashboard') }}">
-                        <i class="fas fa-tachometer-alt fa-sm fa-fw mr-2 text-primary"></i> Dashboard Admin
-                    </a>
-                    <a class="dropdown-item py-2 text-dark font-weight-bold" href="{{ route('admin.kelola-gis') }}">
-                        <i class="fas fa-database fa-sm fa-fw mr-2 text-primary"></i> Kelola File GIS (54)
-                    </a>
-                    <a class="dropdown-item py-2 text-dark" href="{{ route('profile') }}">
-                        <i class="fas fa-user-cog fa-sm fa-fw mr-2 text-info"></i> Pengaturan Akun
-                    </a>
-                    <div class="dropdown-divider my-1"></div>
-                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                        @csrf
-                        <button type="submit" class="dropdown-item py-2 text-danger font-weight-bold border-0 bg-transparent">
-                            <i class="fas fa-power-off fa-sm fa-fw mr-2"></i> Keluar
-                        </button>
-                    </form>
-                @else
-                    <a class="dropdown-item py-2 text-dark font-weight-bold" href="{{ route('admin.dashboard') }}">
-                        <i class="fas fa-folder-open fa-sm fa-fw mr-2 text-primary"></i> Kelola File GIS (54)
-                    </a>
-                    <a class="dropdown-item py-2 text-dark font-weight-bold" href="{{ route('login') }}">
-                        <i class="fas fa-sign-in-alt fa-sm fa-fw mr-2 text-success"></i> Masuk Akun Petugas
-                    </a>
-                @endauth
+                <a class="dropdown-item py-2 text-dark font-weight-bold" href="{{ route('admin.dashboard') }}">
+                    <i class="fas fa-tachometer-alt fa-sm fa-fw mr-2 text-primary"></i> Dashboard Admin
+                </a>
+                <a class="dropdown-item py-2 text-dark font-weight-bold" href="{{ route('admin.kelola-gis') }}">
+                    <i class="fas fa-database fa-sm fa-fw mr-2 text-primary"></i> Kelola File GIS
+                </a>
+                <a class="dropdown-item py-2 text-dark" href="{{ route('profile') }}">
+                    <i class="fas fa-user-cog fa-sm fa-fw mr-2 text-info"></i> Pengaturan Akun
+                </a>
+                <div class="dropdown-divider my-1"></div>
+                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="submit" class="dropdown-item py-2 text-danger font-weight-bold border-0 bg-transparent">
+                        <i class="fas fa-power-off fa-sm fa-fw mr-2"></i> Keluar
+                    </button>
+                </form>
             </div>
         </li>
-
+        @else
+        <!-- Tombol Masuk Petugas untuk Pengunjung Publik -->
+        <li class="nav-item">
+            <a href="{{ route('login') }}" class="btn btn-sm btn-light font-weight-bold d-flex align-items-center px-3 py-1 shadow-sm" style="border-radius: 20px; font-size: 0.85rem; color: #1d64d8;">
+                <i class="fas fa-sign-in-alt mr-2" style="color: #1d64d8;"></i> Masuk Petugas
+            </a>
+        </li>
+        @endauth
     </ul>
 
 </nav>
