@@ -568,17 +568,23 @@
             }
 
             var resData = await response.json().catch(function() { return null; });
-            if (resData && resData.success) {
+            if (response.ok && resData && resData.success) {
+                alert('✅ Berhasil!\n\n' + resData.message);
                 window.location.reload();
             } else if (resData && !resData.success) {
-                alert(resData.message || 'Gagal mengunggah file.');
+                alert('❌ Gagal Mengunggah:\n\n' + (resData.message || 'File tidak dapat diproses oleh server.'));
                 submitBtn.disabled = false;
                 statusText.style.display = 'none';
             } else {
-                window.location.reload();
+                var errDetail = response.status === 413 ? 'Ukuran file terlalu besar (melebihi batas server).' : 'Format file di dalam ZIP tidak sesuai atau struktur tidak valid.';
+                alert('❌ Gagal Mengunggah (HTTP ' + response.status + '):\n\n' + errDetail + '\n\nCatatan: Arsip ZIP harus berisi file berekstensi .geojson atau .json.');
+                submitBtn.disabled = false;
+                statusText.style.display = 'none';
             }
         } catch (e) {
-            form.submit();
+            alert('❌ Terjadi kesalahan saat proses upload:\n\n' + (e.message || 'Koneksi terputus atau proses konversi memori melebihi batas.'));
+            submitBtn.disabled = false;
+            statusText.style.display = 'none';
         }
     }
 </script>

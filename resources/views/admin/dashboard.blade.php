@@ -33,19 +33,14 @@
             </select>
         </div>
 
-        <!-- Tombol Kelola File GIS (Khusus Staf / Admin) -->
-        <a href="{{ route('admin.kelola-gis') }}" class="btn-kelola-gis mt-2 text-decoration-none shadow-sm" title="Kelola File Geospasial">
-            <span class="d-flex align-items-center">
-                <i class="fas fa-folder mr-2" style="color:#2563eb;"></i>
-                <span class="font-weight-bold" style="color:#1e40af;">Kelola File GIS</span>
-            </span>
-            <span class="badge badge-primary px-2 py-1 font-weight-bold" style="background:#2563eb; border-radius:12px;">{{ count($geojsonFiles ?? []) }}</span>
-        </a>
-
-        <!-- Tombol Akses Kelola File Cepat -->
-        <a href="{{ route('admin.kelola-gis') }}" class="btn btn-sm btn-primary font-weight-bold mt-2 shadow-sm py-2 d-flex align-items-center justify-content-center" style="border-radius: 8px; background:#2563eb; border-color:#2563eb;">
-            <i class="fas fa-upload mr-2"></i> Upload File GIS
-        </a>
+        <!-- Tombol Akses Kelola / Upload File GIS -->
+        <div class="mt-3 pt-2">
+            <a href="{{ route('admin.kelola-gis') }}" 
+               class="btn btn-primary btn-block font-weight-bold shadow-sm py-2 d-flex align-items-center justify-content-center" 
+               style="border-radius: 8px; background: #2563eb; border-color: #2563eb; font-size: 13px;">
+                <i class="fas fa-cloud-upload-alt mr-2"></i> Upload File GIS
+            </a>
+        </div>
 
     </aside>
 

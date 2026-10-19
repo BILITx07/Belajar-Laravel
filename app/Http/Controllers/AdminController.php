@@ -38,6 +38,7 @@ class AdminController extends Controller
         ];
 
         $availableTypes = [
+            'ws_kapuas'  => true,
             'baku'       => true,
             'fungsional' => true,
             'potensial'  => true,

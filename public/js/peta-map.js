@@ -117,6 +117,7 @@ var layerFungsional = L.layerGroup(); if (window.availableTypes && window.availa
 var layerPotensial  = L.layerGroup(); if (window.availableTypes && window.availableTypes.potensial)  layerPotensial.addTo(map);
 var layerSaluran    = L.layerGroup(); if (window.availableTypes && window.availableTypes.saluran)    layerSaluran.addTo(map);
 var layerBangunan   = L.layerGroup(); if (window.availableTypes && window.availableTypes.bangunan)   layerBangunan.addTo(map);
+var layerWsKapuas   = L.layerGroup();
 
 var baseMaps = { "Peta (OpenStreetMap)": osm, "Satelit (Google Hybrid)": googleSat };
 var overlayMaps = {};
@@ -126,6 +127,7 @@ if (window.availableTypes) {
     if (window.availableTypes.potensial)  overlayMaps["Daerah Irigasi Potensial (Oranye)"] = layerPotensial;
     if (window.availableTypes.saluran)    overlayMaps["Jaringan Saluran Irigasi"]           = layerSaluran;
     if (window.availableTypes.bangunan)   overlayMaps["Bangunan Air / Pelengkap"]           = layerBangunan;
+    if (window.availableTypes.ws_kapuas)  overlayMaps["Batas WS & DAS Kapuas"]             = layerWsKapuas;
 }
 var layerControl = L.control.layers(baseMaps, overlayMaps, { collapsed: false, position: 'topright' }).addTo(map);
 
@@ -375,11 +377,15 @@ if (window.geojsonFiles && window.geojsonFiles.length > 0) {
                     targetLayer = layerBangunan; categoryType = 'bangunan';
                     categoryBadge = '<span class="badge badge-bangunan px-2 py-1">Bangunan Air</span>';
                     strokeColor = '#d63031'; fillColor = '#d63031';
+                } else if (nameUpper.indexOf('KAPUAS') !== -1 || nameUpper.indexOf('WS') === 0 || nameUpper.indexOf('DAS') !== -1) {
+                    targetLayer = layerWsKapuas; categoryType = 'ws_kapuas';
+                    categoryBadge = '<span class="badge px-2 py-1" style="background:#06b6d4;color:#fff;">WS Kapuas</span>';
+                    strokeColor = '#0891b2'; fillColor = '#06b6d4';
                 }
 
                 var gjLayer = L.geoJSON(gj, {
                     style: function() {
-                        return { color: strokeColor, weight: (categoryType === 'saluran') ? 2.5 : 1.8, fillOpacity: 0.45, fillColor: fillColor };
+                        return { color: strokeColor, weight: (categoryType === 'saluran') ? 2.5 : 1.8, fillOpacity: (categoryType === 'ws_kapuas' ? 0.2 : 0.45), fillColor: fillColor };
                     },
                     pointToLayer: function(feat, latlng) {
                         return L.circleMarker(latlng, { radius: 6, fillColor: fillColor, color: '#ffffff', weight: 1.5, fillOpacity: 0.9 });
@@ -406,7 +412,9 @@ if (window.geojsonFiles && window.geojsonFiles.length > 0) {
 
                 var b = gjLayer.getBounds();
                 if (b.isValid()) {
-                    mapBounds.extend(b);
+                    if (categoryType !== 'ws_kapuas') {
+                        mapBounds.extend(b);
+                    }
                     var center = b.getCenter();
                     allTableRows.push({ name: cleanName, categoryType: categoryType, categoryBadge: categoryBadge, lat: center.lat, lng: center.lng, fileName: fileName, bounds: b, layerObj: gjLayer });
                 }
