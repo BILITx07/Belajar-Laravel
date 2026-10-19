@@ -321,7 +321,7 @@
 <body>
 
     <!-- ═══ 1. NAVBAR UTAMA ATAS (TEMA BIRU PU BWS KALIMANTAN I SESUAI REFERENSI) ═══ -->
-    <header class="bws-topbar-primary" style="background: #1d64d8; height: 66px;">
+    <header class="bws-topbar-primary" style="background: #1b4f9c; height: 66px; border-bottom: 3.5px solid #f59e0b;">
         <!-- Logo & Instansi -->
         <div class="bws-brand-section">
             <a href="{{ route('admin.dashboard') }}" class="btn rounded-circle bg-white shadow-sm d-flex align-items-center justify-content-center mr-3" style="width:36px;height:36px;border:none;text-decoration:none;" title="Kembali ke Dashboard">
@@ -469,6 +469,11 @@
 
     <!-- ═══ 3. KONTEN UTAMA HALAMAN ═══ -->
     <main class="admin-main-container">
+        @if(View::hasSection('breadcrumb'))
+            <div class="mb-3">
+                @yield('breadcrumb')
+            </div>
+        @endif
         @yield('content')
     </main>
 
