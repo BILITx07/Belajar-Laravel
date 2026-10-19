@@ -80,15 +80,19 @@ class AdminController extends Controller
             });
         }
 
-        // Filter kategori spasial (Master Data GIS)
-        if ($filterType !== 'semua') {
+        // Filter kategori spasial (Master Data GIS Sesuai Referensi FEWS)
+        if ($filterType !== 'semua' && !empty($filterType)) {
             if ($filterType === 'irigasi') {
                 $allFiles = array_filter($allFiles, function ($f) {
-                    return in_array($f['category'], ['baku', 'fungsional', 'potensial']);
+                    return in_array($f['category'], ['baku', 'fungsional', 'potensial', 'saluran', 'bangunan']);
+                });
+            } elseif ($filterType === 'ws_kapuas' || $filterType === 'skema_sungai') {
+                $allFiles = array_filter($allFiles, function ($f) {
+                    return $f['category'] === 'ws_kapuas' || stripos($f['name'], 'kapuas') !== false || stripos($f['name'], 'ws') !== false;
                 });
             } else {
                 $allFiles = array_filter($allFiles, function ($f) use ($filterType) {
-                    return $f['category'] === $filterType;
+                    return $f['category'] === $filterType || stripos($f['name'], $filterType) !== false;
                 });
             }
         }

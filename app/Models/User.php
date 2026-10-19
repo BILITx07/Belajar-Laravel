@@ -20,9 +20,12 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
+        'phone',
         'password',
         'role',
+        'last_login_at',
     ];
 
     /**
@@ -44,7 +47,35 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'last_login_at'     => 'datetime',
+            'password'          => 'hashed',
         ];
+    }
+
+    /**
+     * Accessor untuk Username (fallback ke prefix email jika kosong)
+     */
+    public function getDisplayUsernameAttribute(): string
+    {
+        if (!empty($this->attributes['username'])) {
+            return $this->attributes['username'];
+        }
+        if (!empty($this->email)) {
+            return explode('@', $this->email)[0];
+        }
+        return strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $this->name ?? 'user'));
+    }
+
+    /**
+     * Accessor untuk Role Label
+     */
+    public function getRoleLabelAttribute(): string
+    {
+        return match (strtolower($this->role ?? 'user')) {
+            'superadmin' => 'Super Admin',
+            'admin'      => 'Administrator',
+            'operator'   => 'Operator',
+            default      => 'User',
+        };
     }
 }

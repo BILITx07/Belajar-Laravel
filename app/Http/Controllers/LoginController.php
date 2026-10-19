@@ -52,6 +52,7 @@ class LoginController extends Controller
         // Proses autentikasi login
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            Auth::user()->update(['last_login_at' => now()]);
 
             return redirect()->intended('/dashboard');
         }

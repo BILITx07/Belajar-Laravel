@@ -216,6 +216,47 @@
             color: #1d4ed8;
         }
 
+        /* ── MULTI-LEVEL NESTED DROPDOWN (MASTER DATA > INFRASTRUKTUR) ── */
+        .dropdown-submenu {
+            position: relative;
+        }
+
+        .dropdown-submenu > .dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-top: -6px;
+            margin-left: -1px;
+            border-radius: 10px;
+            display: none;
+            border: none;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+            padding: 6px 0;
+            min-width: 220px;
+        }
+
+        .dropdown-submenu:hover > .dropdown-menu,
+        .dropdown-submenu:focus-within > .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-submenu > a.dropdown-item::after {
+            display: block;
+            content: " ";
+            float: right;
+            width: 0;
+            height: 0;
+            border-color: transparent;
+            border-style: solid;
+            border-width: 5px 0 5px 5px;
+            border-left-color: #64748b;
+            margin-top: 6px;
+            margin-right: -4px;
+        }
+
+        .dropdown-submenu:hover > a.dropdown-item::after {
+            border-left-color: #1d4ed8;
+        }
+
         /* ── PROFIL DROPDOWN MENU POJOK KANAN (PERSIS GAMBAR REFERENSI BWS) ── */
         .profile-popup-menu {
             width: 210px;
@@ -352,29 +393,67 @@
     </header>
 
     <!-- ═══ 2. MENU NAVIGASI ADMIN SEKUNDER ═══ -->
+    <!-- ═══ 2. MENU NAVIGASI ADMIN SEKUNDER (SESUAI GAMBAR REFERENSI FEWS BWS) ═══ -->
     <nav class="bws-subnavbar">
-        <!-- 1. Peta Dashboard -->
+        <!-- 1. Dashboard -->
         <a href="{{ route('admin.dashboard') }}" class="bws-nav-link {{ request()->routeIs('admin.dashboard', 'dashboard', 'admin.index') ? 'active' : '' }}">
-            <i class="fas fa-map-marked-alt text-primary"></i>
-            <span>Peta Dashboard</span>
+            <i class="fas fa-th-large text-primary"></i>
+            <span>Dashboard</span>
         </a>
 
-        <!-- 2. Manajemen File GIS -->
-        <a href="{{ route('admin.kelola-gis') }}" class="bws-nav-link {{ request()->routeIs('admin.kelola-gis', 'admin.data-gis') ? 'active' : '' }}">
-            <i class="fas fa-folder-open text-warning"></i>
-            <span>Manajemen File GIS</span>
-        </a>
+        <!-- 2. Master Data (Dropdown Bertingkat Sesuai Gambar 1 & 2) -->
+        <div class="dropdown">
+            <a href="#" class="bws-nav-link dropdown-toggle {{ request()->routeIs('admin.kelola-gis', 'admin.data-gis') ? 'active' : '' }}" id="dropdownMasterData" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-database text-warning"></i>
+                <span>Master Data</span>
+            </a>
+            <ul class="dropdown-menu bws-dropdown-menu" aria-labelledby="dropdownMasterData" style="min-width: 220px;">
+                <li>
+                    <a class="dropdown-item bws-dropdown-item" href="{{ route('admin.kelola-gis', ['type' => 'cctv']) }}">
+                        <i class="fas fa-video fa-fw mr-2 text-muted"></i> CCTV
+                    </a>
+                </li>
 
-        <!-- 3. Buka Halaman Publik -->
-        <a href="{{ route('peta') }}" class="bws-nav-link" target="_blank" title="Buka Halaman Peta Publik">
-            <i class="fas fa-external-link-alt text-success"></i>
-            <span>Lihat Peta Publik</span>
+                <!-- Submenu Infrastruktur ❯ (Sesuai Gambar 2) -->
+                <li class="dropdown-submenu">
+                    <a class="dropdown-item bws-dropdown-item d-flex align-items-center justify-content-between" href="#">
+                        <span><i class="fas fa-monument fa-fw mr-2 text-muted"></i> Infrastruktur</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item bws-dropdown-item" href="{{ route('admin.kelola-gis', ['type' => 'danau']) }}">Danau</a></li>
+                        <li><a class="dropdown-item bws-dropdown-item" href="{{ route('admin.kelola-gis', ['type' => 'embung']) }}">Embung</a></li>
+                        <li><a class="dropdown-item bws-dropdown-item" href="{{ route('admin.kelola-gis', ['type' => 'pantai']) }}">Pantai</a></li>
+                        <li><a class="dropdown-item bws-dropdown-item" href="{{ route('admin.kelola-gis', ['type' => 'tebing']) }}">Sungai (Perkuatan Tebing)</a></li>
+                        <li><a class="dropdown-item bws-dropdown-item font-weight-bold text-primary" href="{{ route('admin.kelola-gis', ['type' => 'irigasi']) }}"><i class="fas fa-check-circle fa-xs mr-1 text-primary"></i> Irigasi</a></li>
+                        <li><a class="dropdown-item bws-dropdown-item" href="{{ route('admin.kelola-gis', ['type' => 'sungai']) }}">Sungai</a></li>
+                        <li><a class="dropdown-item bws-dropdown-item" href="{{ route('admin.kelola-gis', ['type' => 'air_baku']) }}">Air Baku</a></li>
+                        <li><a class="dropdown-item bws-dropdown-item" href="{{ route('admin.kelola-gis', ['type' => 'air_tanah']) }}">Air Tanah</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a class="dropdown-item bws-dropdown-item" href="{{ route('admin.kelola-gis', ['type' => 'alat_berat']) }}">
+                        <i class="fas fa-truck-monster fa-fw mr-2 text-muted"></i> Alat Berat
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item bws-dropdown-item font-weight-bold text-info" href="{{ route('admin.kelola-gis', ['type' => 'ws_kapuas']) }}">
+                        <i class="fas fa-water fa-fw mr-2 text-info"></i> Skema Sungai
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 3. Pos Hidrologi -->
+        <a href="{{ route('peta') }}" class="bws-nav-link" target="_blank" title="Lihat Peta Pos Hidrologi & Spasial">
+            <i class="fas fa-map-marker-alt text-success"></i>
+            <span>Pos Hidrologi</span>
         </a>
 
         <!-- 4. Manajemen User -->
         @if(Auth::check() && in_array(Auth::user()->role, ['admin', 'superadmin']))
-        <a href="{{ route('users.index') }}" class="bws-nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}">
-            <i class="fas fa-users-cog text-info"></i>
+        <a href="{{ route('users.index') }}" class="bws-nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
+            <i class="fas fa-user-friends text-info"></i>
             <span>Manajemen User</span>
         </a>
         @endif
