@@ -493,12 +493,12 @@
                 <div id="layerControlBody">
                     <!-- Radio Pilihan Basemap -->
                     <label class="layer-radio-item">
-                        <input type="radio" name="basemap_choice" value="osm" onchange="switchBaseMap('osm')">
-                        <span>Peta (OpenStreetMap)</span>
-                    </label>
-                    <label class="layer-radio-item">
                         <input type="radio" name="basemap_choice" value="satellite" checked onchange="switchBaseMap('satellite')">
                         <span>Satelit (Google Hybrid)</span>
+                    </label>
+                    <label class="layer-radio-item">
+                        <input type="radio" name="basemap_choice" value="osm" onchange="switchBaseMap('osm')">
+                        <span>Peta (OpenStreetMap)</span>
                     </label>
 
                     <div class="layer-divider"></div>
@@ -633,8 +633,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Google Satellite Hybrid (sesuai referensi gambar)
-    satelliteLayer = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+    satelliteLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
         maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
         attribution: '&copy; Google Satellite'
     });
 
@@ -691,26 +692,31 @@ document.addEventListener('DOMContentLoaded', function () {
         var targetLayer = null;
         var strokeColor = '#0284c7', fillColor = '#38bdf8', fillOpacity = 0.5, weight = 2;
 
-        if (fileLower.startsWith('baku')) {
+        if (fileLower.startsWith('baku') || fileLower.includes('baku')) {
             targetLayer = layerBaku;
             strokeColor = '#16a34a'; fillColor = '#22c55e'; fillOpacity = 0.6;
-        } else if (fileLower.startsWith('fungsional')) {
+        } else if (fileLower.startsWith('fungsional') || fileLower.includes('fungsional')) {
             targetLayer = layerFungsional;
             strokeColor = '#0284c7'; fillColor = '#38bdf8'; fillOpacity = 0.6;
-        } else if (fileLower.startsWith('potensial')) {
+        } else if (fileLower.startsWith('potensial') || fileLower.includes('potensial')) {
             targetLayer = layerPotensial;
             strokeColor = '#ea580c'; fillColor = '#f97316'; fillOpacity = 0.6;
-        } else if (fileLower.startsWith('saluran')) {
+        } else if (fileLower.startsWith('saluran') || fileLower.includes('saluran')) {
             targetLayer = layerSaluran;
             strokeColor = '#0284c7'; fillColor = '#0284c7'; fillOpacity = 0; weight = 2.5;
-        } else if (fileLower.startsWith('bangunan')) {
+        } else if (fileLower.startsWith('bangunan') || fileLower.includes('bangunan')) {
             targetLayer = layerBangunan;
             strokeColor = '#dc2626'; fillColor = '#ef4444'; fillOpacity = 0.9;
+        } else if (fileLower.includes('kapuas') || fileLower.startsWith('ws') || fileLower.includes('das') || fileLower.includes('sungai')) {
+            targetLayer = layerSaluran;
+            strokeColor = '#06b6d4'; fillColor = '#06b6d4'; fillOpacity = 0; weight = 2;
+        } else {
+            // Layer Tambahan / Kustom tetap ditampilkan di peta
+            targetLayer = layerFungsional;
+            strokeColor = '#64748b'; fillColor = '#94a3b8'; fillOpacity = 0.4;
         }
 
-        if (!targetLayer) return;
-
-        fetch('{{ asset("geojson") }}/' + encodeURIComponent(fileName))
+        fetch(window.location.origin + '/geojson/' + encodeURIComponent(fileName))
             .then(function(r) { return r.json(); })
             .then(function (gj) {
                 if (!gj || !gj.features) return;
@@ -816,6 +822,19 @@ function toggleLegendCard(e) {
         icon.className = 'fas fa-chevron-up';
     } else {
         icon.className = 'fas fa-minus';
+    }
+}
+
+// Fokus ke Lokasi DIR dari Tabel
+function focusToLocation(lat, lng, name) {
+    if (map) {
+        map.flyTo([lat, lng], 13, { duration: 1.2 });
+        var found = dirMarkers.find(function(item) {
+            return item.name === name.toLowerCase();
+        });
+        if (found) {
+            found.marker.openPopup();
+        }
     }
 }
 </script>

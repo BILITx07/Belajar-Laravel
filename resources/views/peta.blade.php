@@ -471,12 +471,12 @@
                 <div id="layerControlBody">
                     <!-- Radio Pilihan Basemap -->
                     <label class="layer-radio-item">
-                        <input type="radio" name="basemap_choice" value="osm" onchange="switchBaseMap('osm')">
-                        <span>Peta (OpenStreetMap)</span>
-                    </label>
-                    <label class="layer-radio-item">
                         <input type="radio" name="basemap_choice" value="satellite" checked onchange="switchBaseMap('satellite')">
                         <span>Satelit (Google Hybrid)</span>
+                    </label>
+                    <label class="layer-radio-item">
+                        <input type="radio" name="basemap_choice" value="osm" onchange="switchBaseMap('osm')">
+                        <span>Peta (OpenStreetMap)</span>
                     </label>
 
                     <div class="layer-divider"></div>
@@ -606,8 +606,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Google Satellite Hybrid (sesuai referensi gambar)
-    satelliteLayer = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+    satelliteLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
         maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
         attribution: '&copy; Google Satellite'
     });
 
@@ -688,7 +689,7 @@ document.addEventListener('DOMContentLoaded', function () {
             strokeColor = '#64748b'; fillColor = '#94a3b8'; fillOpacity = 0.4;
         }
 
-        fetch('{{ asset("geojson") }}/' + encodeURIComponent(fileName))
+        fetch(window.location.origin + '/geojson/' + encodeURIComponent(fileName))
             .then(function(r) { return r.json(); })
             .then(function (gj) {
                 if (!gj || !gj.features) return;
