@@ -462,11 +462,6 @@
 
     <!-- ═══ 3. KONTEN UTAMA HALAMAN ═══ -->
     <main class="admin-main-container">
-        @if(View::hasSection('breadcrumb'))
-            <div class="mb-3">
-                @yield('breadcrumb')
-            </div>
-        @endif
         @yield('content')
     </main>
 
