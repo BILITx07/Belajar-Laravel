@@ -216,6 +216,12 @@
             color: #1d4ed8;
         }
 
+        /* Auto open on hover for subnavbar dropdown */
+        .bws-subnavbar .dropdown:hover > .bws-dropdown-menu,
+        .bws-subnavbar .dropdown:focus-within > .bws-dropdown-menu {
+            display: block;
+        }
+
         /* ── MULTI-LEVEL NESTED DROPDOWN (MASTER DATA > INFRASTRUKTUR) ── */
         .dropdown-submenu {
             position: relative;
