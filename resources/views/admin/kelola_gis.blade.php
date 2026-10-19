@@ -54,27 +54,14 @@
     </div>
     @endif
 
-    <!-- Section Header ala Referensi BWS -->
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3">
-        <div>
-            <div class="text-uppercase text-muted font-weight-bold" style="font-size:0.75rem; letter-spacing:1px;">
-                Manajemen Data GIS
-            </div>
-            <h4 class="font-weight-bold text-gray-800 mb-0">
-                Daftar File Geospasial
-            </h4>
-        </div>
-        <div class="mt-3 mt-md-0 d-flex align-items-center" style="gap:10px;">
-            <a href="{{ route('peta') }}" target="_blank" class="btn btn-outline-primary btn-sm font-weight-bold px-3 shadow-sm" style="border-radius:20px;height:38px;display:inline-flex;align-items:center;">
-                <i class="fas fa-map-marked-alt mr-2"></i>Buka Peta Publik
-            </a>
-            <button type="button" class="btn btn-primary btn-sm font-weight-bold px-4 shadow-sm" data-toggle="modal" data-target="#modalUpload" style="background:#2563eb;border-color:#2563eb;border-radius:20px;height:38px;display:inline-flex;align-items:center;">
-                <i class="fas fa-file-archive mr-2"></i>Upload File Spasial (ZIP / GeoJSON)
-            </button>
-        </div>
+    <!-- Header Title & Breadcrumb Persis Referensi FEWS BWS Kalimantan I -->
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h4 class="font-weight-bold mb-0" style="letter-spacing: 0.5px; font-size: 1.05rem; color: #495057;">
+            MASTER DATA GIS
+        </h4>
+        <span class="text-muted small" style="font-weight: 500;">Menu Utama</span>
     </div>
 
-    <!-- Mini Ringkasan Kategori -->
     @php
         $catLabels = [
             'baku'       => ['DIR Baku', '#10b981', 'fa-leaf'],
@@ -87,29 +74,24 @@
         ];
     @endphp
 
-    <div class="row mb-3">
-        @foreach($stats['categories'] as $cat => $count)
-            @php 
-                $info = $catLabels[$cat] ?? ['Lainnya', '#64748b', 'fa-file']; 
-                $isActiveCat = ($filterType ?? '') === $cat;
-            @endphp
-            <div class="col-6 col-sm-4 col-md-3 col-xl mb-2">
-                <a href="{{ route('admin.kelola-gis', ['type' => $cat]) }}" class="text-decoration-none d-block">
-                    <div class="bg-white border p-2 px-3 rounded shadow-sm d-flex align-items-center justify-content-between transition-all" style="border-radius:10px !important; {{ $isActiveCat ? 'border-color:'.$info[1].' !important; background: '.$info[1].'08 !important;' : '' }}">
-                        <div class="d-flex align-items-center text-truncate">
-                            <i class="fas {{ $info[2] }} mr-2" style="color:{{ $info[1] }}; font-size:0.9rem;"></i>
-                            <span class="text-truncate text-muted small font-weight-bold">{{ $info[0] }}</span>
-                        </div>
-                        <span class="badge {{ $isActiveCat ? 'badge-primary' : 'badge-light border' }} font-weight-bold ml-2" style="{{ $isActiveCat ? 'background:'.$info[1].';' : 'color:'.$info[1].';' }}">{{ $count }}</span>
-                    </div>
-                </a>
-            </div>
-        @endforeach
-    </div>
-
     <!-- Card Tabel Data Bersih ala Referensi FEWS BWS -->
     <div class="card border-0 shadow-sm" style="border-radius:12px;overflow:hidden;background:#fff;">
         <div class="card-body p-4">
+
+            <!-- Card Header: Judul & Tombol Aksi -->
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-4 pb-2 border-bottom" style="gap: 12px;">
+                <h5 class="font-weight-bold text-dark mb-0" style="font-size: 1.15rem;">
+                    Daftar File Geospasial
+                </h5>
+                <div class="d-flex align-items-center" style="gap:10px;">
+                    <a href="{{ route('peta') }}" target="_blank" class="btn btn-outline-primary font-weight-bold px-3 py-2 shadow-sm d-inline-flex align-items-center" style="border-radius:25px;font-size:0.85rem;height:38px;">
+                        <i class="fas fa-map-marked-alt mr-2"></i>Buka Peta Publik
+                    </a>
+                    <button type="button" class="btn text-white font-weight-bold px-4 py-2 shadow-sm d-inline-flex align-items-center justify-content-center" style="background:#2563eb;border-radius:25px;font-size:0.88rem;height:38px;transition:all 0.2s ease;" data-toggle="modal" data-target="#modalUpload">
+                        <i class="fas fa-cloud-upload-alt mr-2"></i>Upload File Baru
+                    </button>
+                </div>
+            </div>
 
             <!-- Filter Bar: Entri & Pencarian -->
             <form method="GET" action="{{ route('admin.kelola-gis') }}" id="filterForm">
@@ -136,8 +118,6 @@
                             <option value="potensial" {{ ($filterType ?? '') === 'potensial' ? 'selected' : '' }}>DIR Potensial</option>
                             <option value="saluran" {{ ($filterType ?? '') === 'saluran' ? 'selected' : '' }}>Jaringan Saluran</option>
                             <option value="bangunan" {{ ($filterType ?? '') === 'bangunan' ? 'selected' : '' }}>Bangunan Air</option>
-                            <option value="ws_kapuas" {{ ($filterType ?? '') === 'ws_kapuas' ? 'selected' : '' }}>WS & DAS Kapuas</option>
-                            <option value="custom" {{ ($filterType ?? '') === 'custom' ? 'selected' : '' }}>Layer Kustom</option>
                         </select>
 
                         <!-- Tombol Hapus Masal -->

@@ -33,42 +33,23 @@
     </div>
     @endif
 
-    <!-- Page Header -->
-    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap" style="gap:12px;">
-        <div>
-            <h4 class="mb-1" style="font-weight:800;letter-spacing:-0.5px;">Manajemen Data GIS</h4>
-            <p class="mb-0 text-muted" style="font-size:0.82rem;">
-                Kelola file GeoJSON yang ditampilkan pada peta publik.
-                <span class="font-weight-bold text-primary ml-1">{{ $stats['total_files'] }} file</span> &bull; {{ $stats['total_size'] }}
-            </p>
-        </div>
-        <button type="button" class="btn btn-primary font-weight-bold shadow-sm px-4" data-toggle="modal" data-target="#modalUpload" style="border-radius:8px;">
-            <i class="fas fa-cloud-upload-alt mr-2"></i>Upload File Baru
-        </button>
+    <!-- Header Title & Breadcrumb Persis Referensi FEWS BWS Kalimantan I -->
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h4 class="font-weight-bold mb-0" style="letter-spacing: 0.5px; font-size: 1.05rem; color: #495057;">
+            MASTER DATA GIS
+        </h4>
+        <span class="text-muted small" style="font-weight: 500;">Menu Utama</span>
     </div>
 
-    <!-- Stat Summary Mini Cards -->
-    <div class="row mb-4">
-        @php
-            $catLabels = [
-                'baku'       => ['DIR Baku', '#22c55e', 'fa-leaf'],
-                'fungsional' => ['DIR Fungsional', '#3b82f6', 'fa-water'],
-                'potensial'  => ['DIR Potensial', '#f97316', 'fa-seedling'],
-                'saluran'    => ['Jaringan Saluran', '#ec4899', 'fa-stream'],
-                'bangunan'   => ['Bangunan Air', '#8b5cf6', 'fa-landmark'],
-            ];
-        @endphp
-        @foreach($catLabels as $cat => $info)
-            @php $count = $stats['categories'][$cat] ?? 0; @endphp
-            <div class="col-auto mb-2">
-                <div class="d-flex align-items-center px-3 py-2 bg-white border" style="border-radius:10px;gap:8px;">
-                    <i class="fas {{ $info[2] }}" style="color:{{ $info[1] }};font-size:0.85rem;"></i>
-                    <span style="font-size:0.78rem;font-weight:600;">{{ $info[0] }}</span>
-                    <span class="font-weight-bold" style="font-size:0.85rem;color:{{ $info[1] }};">{{ $count }}</span>
-                </div>
-            </div>
-        @endforeach
-    </div>
+    @php
+        $catLabels = [
+            'baku'       => ['DIR Baku', '#22c55e', 'fa-leaf'],
+            'fungsional' => ['DIR Fungsional', '#3b82f6', 'fa-water'],
+            'potensial'  => ['DIR Potensial', '#f97316', 'fa-seedling'],
+            'saluran'    => ['Jaringan Saluran', '#ec4899', 'fa-stream'],
+            'bangunan'   => ['Bangunan Air', '#8b5cf6', 'fa-landmark'],
+        ];
+    @endphp
 
     <!-- Data Table Card -->
     <div class="data-card">

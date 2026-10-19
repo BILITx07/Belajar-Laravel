@@ -198,9 +198,21 @@
             border: none;
             border-radius: 10px;
             box-shadow: 0 10px 28px rgba(0,0,0,0.12);
-            margin-top: 6px;
+            margin-top: 2px;
             padding: 6px 0;
             font-size: 0.85rem;
+            position: absolute;
+        }
+
+        /* Area jembatan tak terlihat di atas dropdown agar kursor tidak kehilangan fokus saat berpindah */
+        .bws-dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 0;
+            right: 0;
+            height: 14px;
+            background: transparent;
         }
 
         .bws-dropdown-item {
@@ -217,9 +229,9 @@
             color: #1d4ed8;
         }
 
-        /* Auto open on hover & click for subnavbar dropdown */
-        .bws-subnavbar .dropdown:hover > .bws-dropdown-menu,
+        /* Tampilkan dropdown saat class .show aktif (dikontrol via JS dengan jeda waktu / delay toleransi) */
         .bws-subnavbar .dropdown.show > .bws-dropdown-menu,
+        .bws-subnavbar .dropdown:focus-within > .bws-dropdown-menu,
         .bws-dropdown-menu.show {
             display: block !important;
         }
@@ -479,6 +491,44 @@
                 if (document.exitFullscreen) document.exitFullscreen();
             }
         }
+
+        // Delay / Jeda waktu toleransi saat memilih menu dropdown (Master Data)
+        $(document).ready(function() {
+            var dropdownTimers = {};
+
+            $('.bws-subnavbar .dropdown').each(function(idx) {
+                var $dropdown = $(this);
+                var $menu = $dropdown.find('> .bws-dropdown-menu');
+                var $toggle = $dropdown.find('> [data-toggle="dropdown"]');
+                var timerKey = 'dd_timer_' + idx;
+
+                $dropdown.on('mouseenter', function() {
+                    if (dropdownTimers[timerKey]) {
+                        clearTimeout(dropdownTimers[timerKey]);
+                        dropdownTimers[timerKey] = null;
+                    }
+                    $dropdown.addClass('show');
+                    $menu.addClass('show');
+                    $toggle.attr('aria-expanded', 'true');
+                });
+
+                $dropdown.on('mouseleave', function() {
+                    dropdownTimers[timerKey] = setTimeout(function() {
+                        $dropdown.removeClass('show');
+                        $menu.removeClass('show');
+                        $toggle.attr('aria-expanded', 'false');
+                    }, 400); // Delay 400ms agar kursor tidak langsung keluar/tertutup saat hendak memilih
+                });
+            });
+
+            // Tutup dropdown jika user klik di luar
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('.bws-subnavbar .dropdown').length) {
+                    $('.bws-subnavbar .dropdown').removeClass('show');
+                    $('.bws-subnavbar .bws-dropdown-menu').removeClass('show');
+                }
+            });
+        });
     </script>
     @stack('scripts')
 </body>
