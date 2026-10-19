@@ -84,7 +84,11 @@ class AdminController extends Controller
         if ($filterType !== 'semua' && !empty($filterType)) {
             if ($filterType === 'irigasi') {
                 $allFiles = array_filter($allFiles, function ($f) {
-                    return in_array($f['category'], ['baku', 'fungsional', 'potensial', 'saluran', 'bangunan']);
+                    return in_array($f['category'], ['baku', 'fungsional', 'potensial']);
+                });
+            } elseif ($filterType === 'infrastruktur') {
+                $allFiles = array_filter($allFiles, function ($f) {
+                    return in_array($f['category'], ['saluran', 'bangunan']);
                 });
             } elseif ($filterType === 'ws_kapuas' || $filterType === 'skema_sungai') {
                 $allFiles = array_filter($allFiles, function ($f) {

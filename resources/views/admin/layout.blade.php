@@ -254,6 +254,17 @@
             min-width: 220px;
         }
 
+        /* Bridge area so mouse moving diagonally into submenu does not close */
+        .dropdown-submenu > .dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -15px;
+            width: 18px;
+            bottom: 0;
+            background: transparent;
+        }
+
         .dropdown-submenu:hover > .dropdown-menu,
         .dropdown-submenu.show > .dropdown-menu,
         .dropdown-submenu:focus-within > .dropdown-menu {
@@ -422,43 +433,61 @@
             <span>Dashboard</span>
         </a>
 
-        <!-- 2. Master Data (Sesuai Data Aktual: 5 Kategori GIS) -->
+        <!-- 2. Master Data (Dropdown Bertingkat Sesuai Data GIS Aktual) -->
         <div class="dropdown">
             <a href="#" class="bws-nav-link dropdown-toggle {{ request()->routeIs('admin.kelola-gis', 'admin.data-gis') ? 'active' : '' }}" id="dropdownMasterData" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-layer-group text-warning"></i>
                 <span>Master Data</span>
             </a>
-            <ul class="dropdown-menu bws-dropdown-menu" aria-labelledby="dropdownMasterData" style="min-width: 210px;">
+            <ul class="dropdown-menu bws-dropdown-menu" aria-labelledby="dropdownMasterData" style="min-width: 215px;">
                 <li>
                     <a class="dropdown-item bws-dropdown-item" href="{{ route('admin.data-gis', ['type' => 'semua']) }}">
                         <i class="fas fa-list fa-fw mr-2" style="color:#64748b;"></i> Semua File
                     </a>
                 </li>
                 <li><div class="dropdown-divider my-1"></div></li>
-                <li>
-                    <a class="dropdown-item bws-dropdown-item" href="{{ route('admin.data-gis', ['type' => 'baku']) }}">
-                        <i class="fas fa-leaf fa-fw mr-2" style="color:#22c55e;"></i> DIR Baku
+
+                <!-- Submenu 1: Irigasi (DIR) -->
+                <li class="dropdown-submenu">
+                    <a class="dropdown-item bws-dropdown-item" href="{{ route('admin.data-gis', ['type' => 'irigasi']) }}">
+                        <i class="fas fa-seedling fa-fw mr-2" style="color:#10b981;"></i> Irigasi
                     </a>
+                    <ul class="dropdown-menu bws-dropdown-menu">
+                        <li>
+                            <a class="dropdown-item bws-dropdown-item" href="{{ route('admin.data-gis', ['type' => 'baku']) }}">
+                                <i class="fas fa-leaf fa-fw mr-2" style="color:#22c55e;"></i> DIR Baku
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item bws-dropdown-item" href="{{ route('admin.data-gis', ['type' => 'fungsional']) }}">
+                                <i class="fas fa-water fa-fw mr-2" style="color:#3b82f6;"></i> DIR Fungsional
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item bws-dropdown-item" href="{{ route('admin.data-gis', ['type' => 'potensial']) }}">
+                                <i class="fas fa-seedling fa-fw mr-2" style="color:#f97316;"></i> DIR Potensial
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                <li>
-                    <a class="dropdown-item bws-dropdown-item" href="{{ route('admin.data-gis', ['type' => 'fungsional']) }}">
-                        <i class="fas fa-water fa-fw mr-2" style="color:#3b82f6;"></i> DIR Fungsional
+
+                <!-- Submenu 2: Infrastruktur (Jaringan Saluran & Bangunan Air) -->
+                <li class="dropdown-submenu">
+                    <a class="dropdown-item bws-dropdown-item" href="{{ route('admin.data-gis', ['type' => 'infrastruktur']) }}">
+                        <i class="fas fa-landmark fa-fw mr-2" style="color:#2563eb;"></i> Infrastruktur
                     </a>
-                </li>
-                <li>
-                    <a class="dropdown-item bws-dropdown-item" href="{{ route('admin.data-gis', ['type' => 'potensial']) }}">
-                        <i class="fas fa-seedling fa-fw mr-2" style="color:#f97316;"></i> DIR Potensial
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item bws-dropdown-item" href="{{ route('admin.data-gis', ['type' => 'saluran']) }}">
-                        <i class="fas fa-stream fa-fw mr-2" style="color:#ec4899;"></i> Jaringan Saluran
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item bws-dropdown-item" href="{{ route('admin.data-gis', ['type' => 'bangunan']) }}">
-                        <i class="fas fa-landmark fa-fw mr-2" style="color:#8b5cf6;"></i> Bangunan Air
-                    </a>
+                    <ul class="dropdown-menu bws-dropdown-menu">
+                        <li>
+                            <a class="dropdown-item bws-dropdown-item" href="{{ route('admin.data-gis', ['type' => 'saluran']) }}">
+                                <i class="fas fa-stream fa-fw mr-2" style="color:#ec4899;"></i> Jaringan Saluran
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item bws-dropdown-item" href="{{ route('admin.data-gis', ['type' => 'bangunan']) }}">
+                                <i class="fas fa-landmark fa-fw mr-2" style="color:#8b5cf6;"></i> Bangunan Air
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>
@@ -517,7 +546,32 @@
                         $dropdown.removeClass('show');
                         $menu.removeClass('show');
                         $toggle.attr('aria-expanded', 'false');
+                        $dropdown.find('.dropdown-submenu').removeClass('show');
+                        $dropdown.find('.dropdown-submenu > .dropdown-menu').removeClass('show');
                     }, 400); // Delay 400ms agar kursor tidak langsung keluar/tertutup saat hendak memilih
+                });
+            });
+
+            // Submenu delay (Irigasi & Infrastruktur)
+            $('.dropdown-submenu').each(function(sIdx) {
+                var $submenu = $(this);
+                var $subMenuList = $submenu.find('> .dropdown-menu');
+                var sTimerKey = 'sub_timer_' + sIdx;
+
+                $submenu.on('mouseenter', function() {
+                    if (dropdownTimers[sTimerKey]) {
+                        clearTimeout(dropdownTimers[sTimerKey]);
+                        dropdownTimers[sTimerKey] = null;
+                    }
+                    $submenu.addClass('show');
+                    $subMenuList.addClass('show');
+                });
+
+                $submenu.on('mouseleave', function() {
+                    dropdownTimers[sTimerKey] = setTimeout(function() {
+                        $submenu.removeClass('show');
+                        $subMenuList.removeClass('show');
+                    }, 350); // Delay 350ms toleransi kursor berpindah
                 });
             });
 
@@ -526,6 +580,8 @@
                 if (!$(e.target).closest('.bws-subnavbar .dropdown').length) {
                     $('.bws-subnavbar .dropdown').removeClass('show');
                     $('.bws-subnavbar .bws-dropdown-menu').removeClass('show');
+                    $('.dropdown-submenu').removeClass('show');
+                    $('.dropdown-submenu > .dropdown-menu').removeClass('show');
                 }
             });
         });

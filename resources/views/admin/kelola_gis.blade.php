@@ -111,13 +111,19 @@
                         </div>
 
                         <!-- Dropdown Filter Kategori -->
-                        <select name="type" class="form-control form-control-sm" style="width:160px;border-radius:6px;" onchange="document.getElementById('filterForm').submit()">
+                        <select name="type" class="form-control form-control-sm" style="width:175px;border-radius:6px;" onchange="document.getElementById('filterForm').submit()">
                             <option value="semua" {{ ($filterType ?? 'semua') === 'semua' ? 'selected' : '' }}>Semua Kategori</option>
-                            <option value="baku" {{ ($filterType ?? '') === 'baku' ? 'selected' : '' }}>DIR Baku</option>
-                            <option value="fungsional" {{ ($filterType ?? '') === 'fungsional' ? 'selected' : '' }}>DIR Fungsional</option>
-                            <option value="potensial" {{ ($filterType ?? '') === 'potensial' ? 'selected' : '' }}>DIR Potensial</option>
-                            <option value="saluran" {{ ($filterType ?? '') === 'saluran' ? 'selected' : '' }}>Jaringan Saluran</option>
-                            <option value="bangunan" {{ ($filterType ?? '') === 'bangunan' ? 'selected' : '' }}>Bangunan Air</option>
+                            <optgroup label="🌾 Irigasi">
+                                <option value="irigasi" {{ ($filterType ?? '') === 'irigasi' ? 'selected' : '' }}>Semua Irigasi</option>
+                                <option value="baku" {{ ($filterType ?? '') === 'baku' ? 'selected' : '' }}>DIR Baku</option>
+                                <option value="fungsional" {{ ($filterType ?? '') === 'fungsional' ? 'selected' : '' }}>DIR Fungsional</option>
+                                <option value="potensial" {{ ($filterType ?? '') === 'potensial' ? 'selected' : '' }}>DIR Potensial</option>
+                            </optgroup>
+                            <optgroup label="🏗️ Infrastruktur">
+                                <option value="infrastruktur" {{ ($filterType ?? '') === 'infrastruktur' ? 'selected' : '' }}>Semua Infrastruktur</option>
+                                <option value="saluran" {{ ($filterType ?? '') === 'saluran' ? 'selected' : '' }}>Jaringan Saluran</option>
+                                <option value="bangunan" {{ ($filterType ?? '') === 'bangunan' ? 'selected' : '' }}>Bangunan Air</option>
+                            </optgroup>
                         </select>
 
                         <!-- Tombol Hapus Masal -->
