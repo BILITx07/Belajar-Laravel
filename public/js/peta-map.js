@@ -208,6 +208,28 @@ window.resetMapView = function() {
     }
 };
 
+// Fungsi Pintas Fokus Wilayah (Sambas / Pemangkat, Kubu Raya, Ketapang, Semua)
+window.focusRegion = function(region) {
+    if (!window.map) return;
+    if (region === 'sambas') {
+        map.flyTo([1.16, 108.98], 11, { animate: true, duration: 1.2 });
+    } else if (region === 'kubu_raya') {
+        map.flyTo([-0.55, 109.50], 10, { animate: true, duration: 1.2 });
+    } else if (region === 'ketapang') {
+        map.flyTo([-1.90, 110.05], 10, { animate: true, duration: 1.2 });
+    } else {
+        if (mapBounds && mapBounds.isValid()) {
+            map.fitBounds(mapBounds, { padding: [40, 40] });
+        } else {
+            map.setView(defaultCenter, 8);
+        }
+    }
+    var mapSec = document.getElementById('section-map');
+    if (mapSec && window.scrollY > mapSec.offsetTop) {
+        window.scrollTo({ top: mapSec.offsetTop - 85, behavior: 'smooth' });
+    }
+};
+
 /* ============================================================
    4. REPROYEKSI KOORDINAT (WKID 54034, 3857, UTM 49, WGS84)
    Fungsi: Mengkonversi koordinat dari sistem proyeksi ArcMap

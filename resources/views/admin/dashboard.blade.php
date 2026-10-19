@@ -52,11 +52,28 @@
     <!-- ── KONTEN AREA KANAN (MAP & TABEL) ── -->
     <main class="bws-content">
 
-        <!-- Breadcrumb -->
-        <div class="bws-breadcrumb">
-            <span class="bws-breadcrumb-parent">Dashboard Data</span>
-            <i class="fas fa-chevron-right bws-breadcrumb-arrow"></i>
-            <span class="bws-breadcrumb-current">Peta Daerah Irigasi (DIR)</span>
+        <!-- Breadcrumb & Quick Focus Toolbar -->
+        <div class="bws-breadcrumb d-flex align-items-center justify-content-between flex-wrap" style="gap: 10px;">
+            <div class="d-flex align-items-center">
+                <span class="bws-breadcrumb-parent">Dashboard Data</span>
+                <i class="fas fa-chevron-right bws-breadcrumb-arrow"></i>
+                <span class="bws-breadcrumb-current">Peta Daerah Irigasi (DIR)</span>
+            </div>
+            <div class="d-flex align-items-center flex-wrap" style="gap: 6px;">
+                <span class="small font-weight-bold text-muted mr-1" style="font-size:11.5px;"><i class="fas fa-crosshairs text-primary mr-1"></i>Fokus Wilayah:</span>
+                <button type="button" class="btn btn-sm btn-outline-primary font-weight-bold py-1 px-2 shadow-sm" style="font-size: 11px; border-radius: 6px;" onclick="focusRegion('sambas')" title="Fokus ke Daerah Irigasi Sambas / Pemangkat">
+                    📍 Sambas / Pemangkat
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-secondary font-weight-bold py-1 px-2 shadow-sm" style="font-size: 11px; border-radius: 6px;" onclick="focusRegion('kubu_raya')" title="Fokus ke Daerah Irigasi Kubu Raya">
+                    📍 Kubu Raya
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-secondary font-weight-bold py-1 px-2 shadow-sm" style="font-size: 11px; border-radius: 6px;" onclick="focusRegion('ketapang')" title="Fokus ke Daerah Irigasi Ketapang">
+                    📍 Ketapang
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-dark font-weight-bold py-1 px-2 shadow-sm" style="font-size: 11px; border-radius: 6px;" onclick="focusRegion('all')" title="Tampilkan Semua Wilayah Kalimantan Barat">
+                    🗺️ Semua
+                </button>
+            </div>
         </div>
 
         <!-- Map Card Container -->
