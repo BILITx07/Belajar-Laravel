@@ -338,16 +338,7 @@
             </select>
         </div>
 
-        <!-- 2. Filter Tanggal -->
-        <div class="gis-form-group">
-            <label class="gis-form-label">Filter Tanggal</label>
-            <div class="position-relative">
-                <input type="text" class="gis-input w-100 pr-4" id="filterTanggal" value="{{ date('d F Y') }}" readonly>
-                <i class="far fa-calendar-alt position-absolute text-muted" style="right: 12px; top: 12px; font-size: 15px;"></i>
-            </div>
-        </div>
-
-        <!-- 3. View -->
+        <!-- 2. View Mode -->
         <div class="gis-form-group">
             <label class="gis-form-label">View</label>
             <select class="gis-select" id="selectViewMode" onchange="toggleViewMode(this.value)">
@@ -356,34 +347,34 @@
             </select>
         </div>
 
-        <!-- 4. Kelola File GIS Button -->
+        <!-- 3. Kelola File GIS Button -->
         <a href="{{ route('admin.dashboard') }}" class="btn-kelola-gis" title="Buka Manajemen Master Data GIS">
             <span class="d-flex align-items-center">
-                <i class="fas fa-folder-open mr-2 text-primary" style="font-size: 14px;"></i>
+                <i class="fas fa-folder mr-2" style="color: #3b82f6; font-size: 15px;"></i>
                 Kelola File GIS
             </span>
             <span class="badge-count">{{ count($geojsonFiles ?? []) > 0 ? count($geojsonFiles ?? []) : 54 }}</span>
         </a>
 
-        <!-- 5. Upload GeoJSON Button -->
+        <!-- 4. Upload GeoJSON Button -->
         <button type="button" class="btn-upload-geojson" data-toggle="modal" data-target="#uploadGeojsonModal">
             <i class="fas fa-cloud-upload-alt fa-lg"></i>
             <span>Upload GeoJSON</span>
         </button>
 
-        <!-- Informasi Tambahan Ringkas -->
-        <div class="card border-0 bg-white shadow-sm mt-auto p-3" style="border-radius: 10px; border: 1px solid #e2e8f0;">
+        <!-- 5. Ringkasan Luas & DIR (Sesuai Desain Rapi) -->
+        <div class="card border-0 bg-white shadow-sm mt-auto" style="border-radius: 12px; border: 1px solid #e2e8f0; padding: 14px 16px;">
             <div class="d-flex align-items-center justify-content-between mb-2">
-                <span class="small font-weight-bold text-muted">Total DIR</span>
-                <span class="font-weight-bold text-primary">{{ $statistik['total_dir'] ?? count($lokasi) }} DIR</span>
+                <span style="color: #64748b; font-size: 0.84rem; font-weight: 500;">Total DIR</span>
+                <span class="font-weight-bold" style="color: #3b82f6; font-size: 0.95rem;">{{ $statistik['total_dir'] ?? count($lokasi) }} DIR</span>
             </div>
             <div class="d-flex align-items-center justify-content-between mb-2">
-                <span class="small font-weight-bold text-muted">Luas Fungsional</span>
-                <span class="font-weight-bold text-success">{{ $statistik['total_luas_fung'] ?? '-' }}</span>
+                <span style="color: #64748b; font-size: 0.84rem; font-weight: 500;">Luas Fungsional</span>
+                <span class="font-weight-bold" style="color: #10b981; font-size: 0.95rem;">{{ $statistik['total_luas_fung'] ?? '-' }}</span>
             </div>
             <div class="d-flex align-items-center justify-content-between">
-                <span class="small font-weight-bold text-muted">Luas Baku</span>
-                <span class="font-weight-bold text-warning">{{ $statistik['total_luas_baku'] ?? '-' }}</span>
+                <span style="color: #64748b; font-size: 0.84rem; font-weight: 500;">Luas Baku</span>
+                <span class="font-weight-bold" style="color: #f59e0b; font-size: 0.95rem;">{{ $statistik['total_luas_baku'] ?? '-' }}</span>
             </div>
         </div>
 
