@@ -250,7 +250,7 @@
                         <!-- Versi FEWS -->
                         <div class="text-center mt-4">
                             <span class="badge badge-light border text-muted px-3 py-1 font-weight-normal" style="border-radius: 20px; font-size: 0.75rem;">
-                                Version 1.0.0
+                                Version BILI-BOY
                             </span>
                         </div>
 
