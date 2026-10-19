@@ -272,21 +272,21 @@
         }
 
         .dropdown-submenu > a.dropdown-item::after {
-            display: block;
-            content: " ";
-            float: right;
-            width: 0;
-            height: 0;
-            border-color: transparent;
-            border-style: solid;
-            border-width: 5px 0 5px 5px;
-            border-left-color: #64748b;
-            margin-top: 6px;
-            margin-right: -4px;
+            display: none !important;
         }
 
-        .dropdown-submenu:hover > a.dropdown-item::after {
-            border-left-color: #1d4ed8;
+        .submenu-arrow {
+            font-size: 0.68rem;
+            color: #94a3b8;
+            margin-left: auto;
+            padding-left: 18px;
+            transition: color 0.15s ease, transform 0.15s ease;
+        }
+
+        .dropdown-submenu:hover .submenu-arrow,
+        .dropdown-submenu.show .submenu-arrow {
+            color: #1d4ed8;
+            transform: translateX(3px);
         }
 
         /* ── PROFIL DROPDOWN MENU POJOK KANAN (PERSIS GAMBAR REFERENSI BWS) ── */
@@ -449,8 +449,12 @@
 
                 <!-- Submenu 1: Irigasi (DIR) -->
                 <li class="dropdown-submenu">
-                    <a class="dropdown-item bws-dropdown-item" href="{{ route('admin.data-gis', ['type' => 'irigasi']) }}">
-                        <i class="fas fa-seedling fa-fw mr-2" style="color:#10b981;"></i> Irigasi
+                    <a class="dropdown-item bws-dropdown-item d-flex align-items-center justify-content-between" href="{{ route('admin.data-gis', ['type' => 'irigasi']) }}">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-seedling fa-fw mr-2" style="color:#10b981;"></i>
+                            <span>Irigasi</span>
+                        </div>
+                        <i class="fas fa-chevron-right submenu-arrow"></i>
                     </a>
                     <ul class="dropdown-menu bws-dropdown-menu">
                         <li>
@@ -473,8 +477,12 @@
 
                 <!-- Submenu 2: Infrastruktur (Jaringan Saluran & Bangunan Air) -->
                 <li class="dropdown-submenu">
-                    <a class="dropdown-item bws-dropdown-item" href="{{ route('admin.data-gis', ['type' => 'infrastruktur']) }}">
-                        <i class="fas fa-landmark fa-fw mr-2" style="color:#2563eb;"></i> Infrastruktur
+                    <a class="dropdown-item bws-dropdown-item d-flex align-items-center justify-content-between" href="{{ route('admin.data-gis', ['type' => 'infrastruktur']) }}">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-landmark fa-fw mr-2" style="color:#2563eb;"></i>
+                            <span>Infrastruktur</span>
+                        </div>
+                        <i class="fas fa-chevron-right submenu-arrow"></i>
                     </a>
                     <ul class="dropdown-menu bws-dropdown-menu">
                         <li>
