@@ -351,15 +351,7 @@
             <a href="{{ route('admin.dashboard') }}" class="btn rounded-circle bg-white shadow-sm d-flex align-items-center justify-content-center mr-3" style="width:36px;height:36px;border:none;text-decoration:none;" title="Kembali ke Dashboard">
                 <i class="fas fa-chevron-left" style="font-size:13px; color:#1e293b; font-weight:700;"></i>
             </a>
-            <div class="mr-3 d-flex align-items-center justify-content-center" style="width:44px; height:44px; background:#ffc107; border-radius:9px; box-shadow:0 2px 6px rgba(0,0,0,0.18);">
-                <svg viewBox="0 0 100 100" width="34" height="34">
-                    <circle cx="50" cy="50" r="46" fill="#ffc107" />
-                    <path d="M 50,8 A 42,42 0 1,0 92,50 A 42,42 0 0,0 50,8 Z" fill="none" stroke="#1b5fb5" stroke-width="5" />
-                    <path d="M50 15 L55 35 L75 35 L60 48 L68 68 L50 55 L32 68 L40 48 L25 35 L45 35 Z" fill="#1b5fb5" />
-                    <circle cx="50" cy="50" r="10" fill="#ffc107" />
-                    <circle cx="50" cy="50" r="5" fill="#1b5fb5" />
-                </svg>
-            </div>
+            <img src="{{ asset('img/logo-pu.png') }}" alt="Logo Kementerian PU" class="mr-3 shadow-sm" style="width: 44px; height: 44px; border-radius: 9px; object-fit: contain;">
             <div class="d-flex flex-column text-white">
                 <span class="font-weight-bold" style="font-size:0.95rem; letter-spacing:0.4px; line-height:1.2;">
                     WEBGIS BWS KALIMANTAN I

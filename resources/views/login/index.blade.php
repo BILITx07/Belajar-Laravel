@@ -98,18 +98,10 @@
                 <div class="card login-card border-0 shadow-lg my-3">
                     <div class="card-body p-4 p-sm-5">
 
-                        <!-- Header Logo PU & Judul (Persis Screenshot 1) -->
+                        <!-- Header Logo KemenPU & Judul (Sesuai Gambar Referensi) -->
                         <div class="d-flex align-items-center mb-4">
-                            <!-- Logo PU Kuning Emas -->
-                            <div class="mr-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background: #ffc107; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
-                                <svg viewBox="0 0 100 100" width="38" height="38">
-                                    <circle cx="50" cy="50" r="46" fill="#ffc107" />
-                                    <path d="M 50,8 A 42,42 0 1,0 92,50 A 42,42 0 0,0 50,8 Z" fill="none" stroke="#1b5fb5" stroke-width="5" />
-                                    <path d="M50 15 L55 35 L75 35 L60 48 L68 68 L50 55 L32 68 L40 48 L25 35 L45 35 Z" fill="#1b5fb5" />
-                                    <circle cx="50" cy="50" r="10" fill="#ffc107" />
-                                    <circle cx="50" cy="50" r="5" fill="#1b5fb5" />
-                                </svg>
-                            </div>
+                            <!-- Logo Resmi Kementerian PU -->
+                            <img src="{{ asset('img/logo-pu.png') }}" alt="Logo Kementerian PU" class="mr-3 shadow-sm" style="width: 48px; height: 48px; border-radius: 10px; object-fit: contain;">
                             <div>
                                 <h1 class="h5 text-gray-900 font-weight-bold mb-0" style="line-height: 1.2;">Flood Early Warning System</h1>
                                 <div class="text-primary font-weight-bold" style="font-size: 0.85rem;">BWS Kalimantan I Pontianak</div>
