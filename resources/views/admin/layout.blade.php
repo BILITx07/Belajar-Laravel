@@ -407,6 +407,8 @@
     <!-- Scripts -->
     <script src="{{ asset('sbadmin/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('sbadmin/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- shpjs: Otomatis membaca & mengekstrak file .zip Shapefile (ArcGIS/QGIS) ke GeoJSON -->
+    <script src="https://cdn.jsdelivr.net/npm/shpjs@6.2.0/dist/shp.js"></script>
     <script>
         function toggleFullScreen(e) {
             if (e) e.preventDefault();

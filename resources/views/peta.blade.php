@@ -412,8 +412,8 @@
             </select>
         </div>
 
-        <!-- 3. Kelola File GIS Button -->
-        <a href="{{ route('admin.dashboard') }}" class="btn-kelola-gis" title="Buka Manajemen Master Data GIS">
+        <!-- 3. Kelola File GIS Button (Menuju Halaman Manajemen Data GIS) -->
+        <a href="{{ route('admin.kelola-gis') }}" class="btn-kelola-gis" title="Buka Manajemen Master Data GIS">
             <span class="d-flex align-items-center">
                 <i class="fas fa-folder mr-2" style="color: #3b82f6; font-size: 15px;"></i>
                 Kelola File GIS
@@ -421,13 +421,7 @@
             <span class="badge-count">{{ count($geojsonFiles ?? []) > 0 ? count($geojsonFiles ?? []) : 54 }}</span>
         </a>
 
-        <!-- 4. Upload Spasial ZIP / GeoJSON Button -->
-        <button type="button" class="btn-upload-geojson" data-toggle="modal" data-target="#uploadGeojsonModal" title="Upload File ZIP (Shapefile ArcGIS) atau GeoJSON">
-            <i class="fas fa-file-archive fa-lg"></i>
-            <span>Upload ZIP / GeoJSON</span>
-        </button>
-
-        <!-- 5. Ringkasan Luas & DIR (Sesuai Desain Rapi) -->
+        <!-- 4. Ringkasan Luas & DIR (Sesuai Desain Rapi) -->
         <div class="card border-0 bg-white shadow-sm mt-auto" style="border-radius: 12px; border: 1px solid #e2e8f0; padding: 14px 16px;">
             <div class="d-flex align-items-center justify-content-between mb-2">
                 <span style="color: #64748b; font-size: 0.84rem; font-weight: 500;">Total DIR</span>
@@ -590,63 +584,6 @@
 
     </main>
 
-</div>
-
-<!-- Modal Upload File Spasial (ZIP / GeoJSON) -->
-<div class="modal fade" id="uploadGeojsonModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content border-0 shadow-lg" style="border-radius: 14px; overflow: hidden;">
-            <div class="modal-header text-white" style="background: #1d64d8;">
-                <div class="d-flex align-items-center">
-                    <i class="fas fa-file-archive mr-2 fa-lg"></i>
-                    <h6 class="modal-title font-weight-bold mb-0" id="uploadModalLabel">Upload File Spasial (ZIP / GeoJSON)</h6>
-                </div>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            
-            @auth
-            <form id="gisUploadForm" action="{{ route('admin.upload') }}" method="POST" enctype="multipart/form-data" onsubmit="handleGisUpload(this, event)">
-                @csrf
-                <div class="modal-body p-4">
-                    <div class="alert alert-info py-2 px-3 small mb-3 border-0" style="background: #e0f2fe; color: #0369a1; border-radius: 8px;">
-                        <i class="fas fa-check-circle mr-1"></i> <strong>Mendukung File ZIP Shapefile ArcGIS / QGIS!</strong><br>
-                        Anda dapat langsung mengunggah file <code>.zip</code> (berisi <code>.shp</code>, <code>.dbf</code>, <code>.shx</code>, <code>.prj</code>) tanpa perlu konversi manual. Sistem akan otomatis memprosesnya.
-                    </div>
-                    <div class="form-group mb-2">
-                        <label class="font-weight-bold small text-dark">Pilih File ZIP atau GeoJSON</label>
-                        <input type="file" id="inputGisFiles" name="file_geojson[]" class="form-control-file border p-2 rounded w-100" accept=".zip,.json,.geojson" multiple required>
-                        <small class="text-muted d-block mt-1">Dapat memilih lebih dari 1 file sekaligus (maksimal 256 MB per file).</small>
-                    </div>
-                    <div id="uploadStatusText" class="small font-weight-bold text-primary mt-2" style="display: none;"></div>
-                </div>
-                <div class="modal-footer bg-light py-2">
-                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Batal</button>
-                    <button type="submit" id="btnSubmitUpload" class="btn btn-primary btn-sm px-4 font-weight-bold" style="background: #2563eb;">
-                        <i class="fas fa-cloud-upload-alt mr-1"></i> Mulai Unggah
-                    </button>
-                </div>
-            </form>
-            @else
-            <div class="modal-body p-4 text-center">
-                <div class="mb-3 text-warning">
-                    <i class="fas fa-lock fa-3x"></i>
-                </div>
-                <h6 class="font-weight-bold text-dark mb-2">Autentikasi Diperlukan</h6>
-                <p class="small text-muted mb-3">
-                    Fitur upload file spasial (ZIP / GeoJSON) hanya dapat diakses oleh petugas atau administrator yang telah login.
-                </p>
-                <a href="{{ route('login') }}" class="btn btn-primary btn-sm px-4 font-weight-bold" style="background: #2563eb;">
-                    <i class="fas fa-sign-in-alt mr-1"></i> Login Sekarang
-                </a>
-            </div>
-            <div class="modal-footer bg-light py-2">
-                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Tutup</button>
-            </div>
-            @endauth
-        </div>
-    </div>
 </div>
 @endsection
 
@@ -850,94 +787,6 @@ function toggleLegendCard(e) {
         icon.className = 'fas fa-chevron-up';
     } else {
         icon.className = 'fas fa-minus';
-    }
-}
-
-// Handle Upload Form dengan Konversi Otomatis Shapefile ZIP via shpjs
-async function handleGisUpload(form, event) {
-    event.preventDefault();
-    var fileInput = document.getElementById('inputGisFiles');
-    var files = fileInput.files;
-    if (!files || files.length === 0) {
-        alert('Silakan pilih file terlebih dahulu.');
-        return false;
-    }
-
-    var submitBtn = document.getElementById('btnSubmitUpload');
-    var statusText = document.getElementById('uploadStatusText');
-    submitBtn.disabled = true;
-    statusText.style.display = 'block';
-
-    var formData = new FormData();
-    formData.append('_token', form.querySelector('input[name="_token"]').value);
-
-    for (var i = 0; i < files.length; i++) {
-        var file = files[i];
-        var ext = file.name.split('.').pop().toLowerCase();
-
-        if (ext === 'zip') {
-            statusText.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Mengekstrak paket Shapefile ZIP: ' + file.name + '...';
-            try {
-                if (typeof shp !== 'undefined') {
-                    var buffer = await file.arrayBuffer();
-                    var geojson = await shp(buffer);
-
-                    if (Array.isArray(geojson)) {
-                        geojson.forEach(function(gj, idx) {
-                            var rawName = gj.fileName || (file.name.replace(/\.zip$/i, '') + (idx > 0 ? '_' + idx : ''));
-                            var cleanName = rawName.replace(/[^a-zA-Z0-9_\-]/g, '_') + '.geojson';
-                            var blob = new Blob([JSON.stringify(gj)], { type: 'application/geo+json' });
-                            formData.append('file_geojson[]', blob, cleanName);
-                        });
-                    } else if (geojson && geojson.type) {
-                        var rawName = geojson.fileName || file.name.replace(/\.zip$/i, '');
-                        var cleanName = rawName.replace(/[^a-zA-Z0-9_\-]/g, '_') + '.geojson';
-                        var blob = new Blob([JSON.stringify(geojson)], { type: 'application/geo+json' });
-                        formData.append('file_geojson[]', blob, cleanName);
-                    } else {
-                        formData.append('file_geojson[]', file, file.name);
-                    }
-                } else {
-                    formData.append('file_geojson[]', file, file.name);
-                }
-            } catch (err) {
-                console.warn('shpjs conversion fallback:', err);
-                formData.append('file_geojson[]', file, file.name);
-            }
-        } else {
-            formData.append('file_geojson[]', file, file.name);
-        }
-    }
-
-    statusText.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Mengirim data ke server WebGIS...';
-
-    try {
-        var response = await fetch(form.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        });
-
-        if (response.redirected) {
-            window.location.href = response.url;
-            return;
-        }
-
-        var resData = await response.json().catch(function() { return null; });
-        if (resData && resData.success) {
-            window.location.reload();
-        } else if (resData && !resData.success) {
-            alert(resData.message || 'Gagal mengunggah file.');
-            submitBtn.disabled = false;
-            statusText.style.display = 'none';
-        } else {
-            window.location.reload();
-        }
-    } catch (e) {
-        // Fallback standard submit
-        form.submit();
     }
 }
 </script>
