@@ -117,14 +117,6 @@
                                placeholder="Cari nama pos/objek/file..."
                                onkeyup="filterTabelKoordinat(this.value)">
                     </div>
-
-                    <button type="button"
-                            class="btn-export-green"
-                            onclick="exportDataToCsv()"
-                            title="Unduh data dalam format CSV/Excel">
-                        <i class="fas fa-file-excel mr-1"></i>
-                        <span>Export Data</span>
-                    </button>
                 </div>
             </div>
 

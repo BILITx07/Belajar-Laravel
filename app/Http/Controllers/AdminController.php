@@ -46,6 +46,8 @@ class AdminController extends Controller
             'custom'     => false,
         ];
 
+        $stats = $this->getGisStats();
+
         return view('admin.dashboard', compact(
             'lokasi',
             'kabupatenList',
