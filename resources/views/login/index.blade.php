@@ -103,7 +103,7 @@
                             <!-- Logo Resmi Kementerian PU -->
                             <img src="{{ asset('img/logo-pu.png') }}" alt="Logo Kementerian PU" class="mr-3 shadow-sm" style="width: 48px; height: 48px; border-radius: 10px; object-fit: contain;">
                             <div>
-                                <h1 class="h5 text-gray-900 font-weight-bold mb-0" style="line-height: 1.2;">Flood Early Warning System</h1>
+                                <h1 class="h5 text-gray-900 font-weight-bold mb-0" style="line-height: 1.2;">LOGIN WEBGIS</h1>
                                 <div class="text-primary font-weight-bold" style="font-size: 0.85rem;">BWS Kalimantan I Pontianak</div>
                             </div>
                         </div>
