@@ -149,12 +149,14 @@
                                     {{ $user->email }}
                                 </td>
                                 <td class="align-middle">
-                                    @if(in_array(strtolower($user->role), ['superadmin', 'admin']))
-                                        <span class="text-primary font-weight-bold">Administrator</span>
-                                    @elseif(strtolower($user->role) === 'operator')
-                                        <span class="text-dark font-weight-bold">Operator</span>
+                                    @if(strtolower($user->role) === 'superadmin')
+                                        <span class="badge badge-light border font-weight-bold px-2 py-1" style="font-size:0.78rem; border-radius:6px; background:#eff6ff; color:#1d4ed8; border-color:#bfdbfe;">
+                                            <i class="fas fa-shield-alt mr-1"></i> Super Admin
+                                        </span>
                                     @else
-                                        <span class="text-secondary font-weight-bold">User</span>
+                                        <span class="badge badge-light border font-weight-bold px-2 py-1" style="font-size:0.78rem; border-radius:6px; background:#f0fdf4; color:#15803d; border-color:#bbf7d0;">
+                                            <i class="fas fa-user-tie mr-1"></i> Admin
+                                        </span>
                                     @endif
                                 </td>
                                 <td class="align-middle text-muted" style="font-size: 0.82rem;">
@@ -291,10 +293,8 @@
                         <div class="col-md-6 form-group mb-3">
                             <label class="font-weight-bold small text-dark mb-1">Role / Peran <span class="text-danger">*</span></label>
                             <select name="role" class="form-control" required>
-                                <option value="operator" selected>Operator</option>
-                                <option value="admin">Administrator</option>
+                                <option value="admin" selected>Admin</option>
                                 <option value="superadmin">Super Admin</option>
-                                <option value="user">User Biasa</option>
                             </select>
                         </div>
                         <div class="col-md-6 form-group mb-3">
@@ -359,10 +359,8 @@
                         <div class="col-md-6 form-group mb-3">
                             <label class="font-weight-bold small text-dark mb-1">Role / Peran <span class="text-danger">*</span></label>
                             <select name="role" id="editUserRole" class="form-control" required>
-                                <option value="operator">Operator</option>
-                                <option value="admin">Administrator</option>
+                                <option value="admin">Admin</option>
                                 <option value="superadmin">Super Admin</option>
-                                <option value="user">User Biasa</option>
                             </select>
                         </div>
                         <div class="col-md-6 form-group mb-3">

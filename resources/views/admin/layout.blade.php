@@ -500,8 +500,8 @@
             </ul>
         </div>
 
-        <!-- 3. Manajemen User -->
-        @if(Auth::check() && in_array(Auth::user()->role, ['admin', 'superadmin']))
+        <!-- 3. Manajemen User (Hanya Super Admin) -->
+        @if(Auth::check() && Auth::user()->role === 'superadmin')
         <a href="{{ route('users.index') }}" class="bws-nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
             <i class="fas fa-user-friends text-info"></i>
             <span>Manajemen User</span>

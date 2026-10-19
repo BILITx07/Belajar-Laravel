@@ -37,9 +37,7 @@ class UserController extends Controller
 
         $totalUsers       = User::count();
         $totalSuperadmin  = User::where('role', 'superadmin')->count();
-        $totalAdmin       = User::where('role', 'admin')->count();
-        $totalOperator    = User::where('role', 'operator')->count();
-        $totalRegularUser = User::where('role', 'user')->count();
+        $totalAdmin       = User::where('role', '!=', 'superadmin')->count();
 
         return view('admin.users', compact(
             'users',
@@ -47,9 +45,7 @@ class UserController extends Controller
             'perPage',
             'totalUsers',
             'totalSuperadmin',
-            'totalAdmin',
-            'totalOperator',
-            'totalRegularUser'
+            'totalAdmin'
         ));
     }
 
@@ -63,7 +59,7 @@ class UserController extends Controller
             'username' => 'nullable|string|max:100|unique:users,username',
             'email'    => 'required|email|max:255|unique:users,email',
             'phone'    => 'nullable|string|max:30',
-            'role'     => 'required|in:superadmin,admin,operator,user',
+            'role'     => 'required|in:superadmin,admin',
             'password' => 'required|string|min:6',
         ], [
             'name.required'     => 'Nama pengguna wajib diisi.',
@@ -73,6 +69,7 @@ class UserController extends Controller
             'password.required' => 'Password wajib diisi.',
             'password.min'      => 'Password minimal harus 6 karakter.',
             'role.required'     => 'Role pengguna wajib dipilih.',
+            'role.in'           => 'Role pengguna harus Super Admin atau Admin.',
         ]);
 
         $username = $request->username;
@@ -104,7 +101,7 @@ class UserController extends Controller
             'username' => ['nullable', 'string', 'max:100', Rule::unique('users')->ignore($user->id)],
             'email'    => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'phone'    => 'nullable|string|max:30',
-            'role'     => 'required|in:superadmin,admin,operator,user',
+            'role'     => 'required|in:superadmin,admin',
             'password' => 'nullable|string|min:6',
         ], [
             'name.required'   => 'Nama pengguna wajib diisi.',
@@ -113,6 +110,7 @@ class UserController extends Controller
             'username.unique' => 'Username sudah digunakan oleh akun lain.',
             'password.min'    => 'Password baru minimal harus 6 karakter.',
             'role.required'   => 'Role pengguna wajib dipilih.',
+            'role.in'         => 'Role pengguna harus Super Admin atau Admin.',
         ]);
 
         // Cegah superadmin mengubah role dirinya sendiri

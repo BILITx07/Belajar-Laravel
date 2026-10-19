@@ -71,11 +71,9 @@ class User extends Authenticatable
      */
     public function getRoleLabelAttribute(): string
     {
-        return match (strtolower($this->role ?? 'user')) {
+        return match (strtolower($this->role ?? 'admin')) {
             'superadmin' => 'Super Admin',
-            'admin'      => 'Administrator',
-            'operator'   => 'Operator',
-            default      => 'User',
+            default      => 'Admin',
         };
     }
 }
