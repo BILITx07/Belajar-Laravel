@@ -271,55 +271,60 @@
 </head>
 <body>
 
-    <!-- ═══ 1. NAVBAR UTAMA ATAS (TEMA BIRU PU BWS KALIMANTAN I) ═══ -->
-    <header class="bws-topbar-primary">
+    <!-- ═══ 1. NAVBAR UTAMA ATAS (TEMA BIRU PU BWS KALIMANTAN I SESUAI REFERENSI) ═══ -->
+    <header class="bws-topbar-primary" style="background: #1d64d8; height: 66px;">
         <!-- Logo & Instansi -->
         <div class="bws-brand-section">
-            <a href="{{ route('peta') }}" class="mr-3 text-white text-decoration-none" title="Lihat Peta Utama">
-                <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:34px;height:34px;background:rgba(255,255,255,0.18);">
-                    <i class="fas fa-arrow-left fa-sm text-white"></i>
-                </div>
+            <a href="{{ route('admin.dashboard') }}" class="btn rounded-circle bg-white shadow-sm d-flex align-items-center justify-content-center mr-3" style="width:36px;height:36px;border:none;text-decoration:none;" title="Kembali ke Dashboard">
+                <i class="fas fa-chevron-left" style="font-size:13px; color:#1e293b; font-weight:700;"></i>
             </a>
-            <div class="bws-logo-circle">
-                <svg viewBox="0 0 100 100" width="28" height="28">
+            <div class="mr-3 d-flex align-items-center justify-content-center" style="width:44px; height:44px; background:#ffc107; border-radius:9px; box-shadow:0 2px 6px rgba(0,0,0,0.18);">
+                <svg viewBox="0 0 100 100" width="34" height="34">
                     <circle cx="50" cy="50" r="46" fill="#ffc107" />
-                    <path d="M 50,8 A 42,42 0 1,0 92,50 A 42,42 0 0,0 50,8 Z" fill="none" stroke="#0d3875" stroke-width="6" />
-                    <path d="M50 15 L55 35 L75 35 L60 48 L68 68 L50 55 L32 68 L40 48 L25 35 L45 35 Z" fill="#0d3875" />
+                    <path d="M 50,8 A 42,42 0 1,0 92,50 A 42,42 0 0,0 50,8 Z" fill="none" stroke="#1b5fb5" stroke-width="5" />
+                    <path d="M50 15 L55 35 L75 35 L60 48 L68 68 L50 55 L32 68 L40 48 L25 35 L45 35 Z" fill="#1b5fb5" />
                     <circle cx="50" cy="50" r="10" fill="#ffc107" />
-                    <circle cx="50" cy="50" r="5" fill="#0d3875" />
+                    <circle cx="50" cy="50" r="5" fill="#1b5fb5" />
                 </svg>
             </div>
-            <div>
-                <div class="bws-brand-title">FEWS BWS KALIMANTAN I</div>
-                <div class="bws-brand-sub">Direktorat Jenderal Sumber Daya Air &bull; Kementerian Pekerjaan Umum</div>
+            <div class="d-flex flex-column text-white">
+                <span class="font-weight-bold" style="font-size:0.95rem; letter-spacing:0.4px; line-height:1.2;">
+                    WEBGIS BWS KALIMANTAN I
+                </span>
+                <span style="font-size:0.72rem; color:rgba(255,255,255,0.9); line-height:1.15; font-weight:500;">
+                    Direktorat Jenderal Sumber Daya Air
+                </span>
+                <span style="font-size:0.72rem; color:rgba(255,255,255,0.9); line-height:1.15; font-weight:500;">
+                    Kementerian Pekerjaan Umum
+                </span>
             </div>
         </div>
 
         <!-- Tombol Aksi & Profil Petugas -->
         <div class="bws-topbar-actions">
             <!-- Fullscreen Toggle -->
-            <a href="#" class="bws-action-icon d-none d-sm-flex" onclick="toggleFullScreen(event)" title="Layar Penuh">
-                <i class="fas fa-expand"></i>
+            <a href="#" class="bws-action-icon d-none d-sm-flex" onclick="toggleFullScreen(event)" title="Layar Penuh" style="opacity:0.95;">
+                <i class="fas fa-expand fa-lg text-white"></i>
             </a>
 
-            <!-- Notifikasi Bell -->
+            <!-- Notifikasi Bell 54 -->
             <div class="position-relative">
-                <a href="#" class="bws-action-icon" title="Notifikasi Sistem">
-                    <i class="far fa-bell"></i>
-                    <span class="bws-notif-badge">3</span>
+                <a href="{{ route('admin.kelola-gis') }}" class="bws-action-icon" title="Kelola File Data Spasial">
+                    <i class="fas fa-bell fa-lg text-white"></i>
+                    <span class="bws-notif-badge" style="background:#ef4444; border:2px solid #1d64d8; font-weight:800;">54</span>
                 </a>
             </div>
 
             <!-- Profile Dropdown (Sesuai Referensi Gambar BWS) -->
             <div class="dropdown">
-                <div class="bws-user-trigger" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownUserMenu">
-                    <div class="bws-user-avatar">
-                        {{ strtoupper(substr(Auth::user()->name ?? 'A', 0, 1)) }}
+                <div class="bws-user-trigger" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownUserMenu" style="background:rgba(255,255,255,0.16); border-radius:25px; padding:3px 12px 3px 4px;">
+                    <div class="rounded-circle bg-white d-flex align-items-center justify-content-center mr-2 shadow-sm" style="width:32px; height:32px;">
+                        <i class="fas fa-user" style="color:#1d64d8; font-size:14px;"></i>
                     </div>
-                    <span class="font-weight-bold mr-1" style="font-size:0.86rem;">
-                        {{ Auth::user()->name ?? 'Admin' }}
+                    <span class="font-weight-bold mr-1 text-white" style="font-size:0.86rem;">
+                        {{ Auth::user()->name ?? 'Admin Dinar' }}
                     </span>
-                    <i class="fas fa-chevron-down" style="font-size:0.7rem; opacity:0.8;"></i>
+                    <i class="fas fa-chevron-down" style="font-size:0.65rem; opacity:0.8; color:#fff;"></i>
                 </div>
 
                 <!-- Dropdown Menu Profil -->

@@ -8,10 +8,50 @@ use Illuminate\Support\Facades\File;
 class AdminController extends Controller
 {
     /**
-     * Halaman Dashboard Admin & Manajemen Master Data GIS
-     * Mendukung filter tipe data: semua, irigasi (baku, fungsional, potensial), saluran, bangunan
+     * Halaman Depan Admin (WebGIS Interactive Dashboard Sesuai Gambar Referensi)
      */
     public function dashboard(Request $request)
+    {
+        $lokasi = WebGisController::getLokasiData();
+        $kabupatenList = array_values(array_unique(array_map(fn($item) => $item['kabupaten'], $lokasi)));
+        sort($kabupatenList);
+
+        $geojsonFiles = [];
+        $path = public_path('geojson');
+        if (file_exists($path)) {
+            $files = File::files($path);
+            foreach ($files as $file) {
+                $ext = strtolower($file->getExtension());
+                if (in_array($ext, ['json', 'geojson'])) {
+                    $geojsonFiles[] = $file->getFilename();
+                }
+            }
+        }
+
+        $totalLuasBaku = array_sum(array_column($lokasi, 'luas_baku'));
+        $totalLuasFung = array_sum(array_column($lokasi, 'luas_fung'));
+        $statistik = [
+            'total_dir'       => count($lokasi),
+            'total_luas_baku' => number_format($totalLuasBaku, 0, ',', '.') . ' Ha',
+            'total_luas_fung' => number_format($totalLuasFung, 0, ',', '.') . ' Ha',
+            'total_file'      => count($geojsonFiles),
+        ];
+
+        $stats = $this->getGisStats();
+
+        return view('admin.dashboard', compact(
+            'lokasi',
+            'kabupatenList',
+            'geojsonFiles',
+            'statistik',
+            'stats'
+        ));
+    }
+
+    /**
+     * Halaman Manajemen Master Data GIS (CRUD File Spasial)
+     */
+    public function kelolaGis(Request $request)
     {
         $search = $request->input('search');
         $filterType = $request->input('type', 'semua');
@@ -56,8 +96,8 @@ class AdminController extends Controller
 
         $stats = $this->getGisStats();
 
-        return view('admin.dashboard', [
-            'title'       => 'Dashboard & Master Data GIS — BWS Kalimantan I',
+        return view('admin.kelola_gis', [
+            'title'       => 'Manajemen Master Data GIS — BWS Kalimantan I',
             'fileList'    => $fileList,
             'stats'       => $stats,
             'search'      => $search,

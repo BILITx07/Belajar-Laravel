@@ -8,13 +8,11 @@ use Illuminate\Support\Facades\File;
 class WebGisController extends Controller
 {
     /**
-     * Halaman Publik WebGIS Interaktif (Tanpa Login)
-     * Layout dengan Sidebar Kiri Fungsional (Filter Kabupaten, Layer Control, Search, Statistik, Legenda)
+     * Data Daerah Irigasi (DIR) Kewenangan BWS Kalimantan I
      */
-    public function index()
+    public static function getLokasiData(): array
     {
-        // 1. Data Daerah Irigasi (DIR) Kewenangan BWS Kalimantan I
-        $lokasi = [
+        return [
             // Kabupaten Ketapang
             [
                 'kode'       => 'SKJ',
@@ -217,6 +215,16 @@ class WebGisController extends Controller
                 'keterangan' => 'DATA IGT DIR KEWENANGAN BWSK I PTK - SAMBAS',
             ],
         ];
+    }
+
+    /**
+     * Halaman Publik WebGIS Interaktif (Tanpa Login)
+     * Layout dengan Sidebar Kiri Fungsional (Filter Kabupaten, Layer Control, Search, Statistik, Legenda)
+     */
+    public function index()
+    {
+        // 1. Data Daerah Irigasi (DIR) Kewenangan BWS Kalimantan I
+        $lokasi = self::getLokasiData();
 
         // 2. Daftar Kabupaten unik
         $kabupatenList = array_values(array_unique(array_map(fn($item) => $item['kabupaten'], $lokasi)));

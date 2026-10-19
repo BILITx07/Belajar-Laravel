@@ -17,67 +17,30 @@
     <!-- Custom styles for this template-->
     <link href="{{asset('sbadmin')}}/css/sb-admin-2.min.css" rel="stylesheet">
 
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <!-- Leaflet CSS (untuk peta interaktif) -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     
     <style>
+        body, #content-wrapper, input, select, button {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+        }
+        #content-wrapper {
+            background-color: #f1f5f9;
+        }
         :root {
             --pu-navy: #0f3b75;
             --pu-blue: #1e56a0;
             --pu-yellow: #f6b93b;
             --pu-gold: #e58e26;
         }
-        .bg-pu-navy {
-            background-color: #0d2c54 !important;
-        }
-        .bg-gradient-pu {
-            background: linear-gradient(180deg, #0d2c54 0%, #174d8c 100%) !important;
-        }
-        .text-pu-yellow {
-            color: #f6b93b !important;
-        }
-        .badge-pulse-warning {
-            animation: pulse-warn 1.8s infinite;
-        }
-        .badge-pulse-danger {
-            animation: pulse-danger 1.5s infinite;
-        }
-        @keyframes pulse-warn {
-            0% { box-shadow: 0 0 0 0 rgba(246, 185, 59, 0.7); }
-            70% { box-shadow: 0 0 0 8px rgba(246, 185, 59, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(246, 185, 59, 0); }
-        }
-        @keyframes pulse-danger {
-            0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); }
-            70% { box-shadow: 0 0 0 9px rgba(231, 76, 60, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
-        }
-        .custom-card-hover {
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
-        }
-        .custom-card-hover:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
-        }
-        .telemetry-live-dot {
-            width: 10px;
-            height: 10px;
-            background-color: #2ecc71;
-            border-radius: 50%;
-            display: inline-block;
-            box-shadow: 0 0 0 rgba(46, 204, 113, 0.4);
-            animation: pulse-green 1.5s infinite;
-        }
-        @keyframes pulse-green {
-            0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
-            70% { box-shadow: 0 0 0 7px rgba(46, 204, 113, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
-        }
     </style>
     @stack('styles')
 </head>
-
-
 
 <body id="page-top">
 
@@ -88,13 +51,13 @@
         <div id="content-wrapper" class="d-flex flex-column w-100">
 
             <!-- Main Content -->
-            <div id="content">
+            <div id="content" class="d-flex flex-column" style="flex: 1;">
 
                 <!-- Topbar -->
                 @include('layout.navbar')
 
                 <!-- Begin Page Content -->
-                <div class="container-fluid px-3 py-2">
+                <div class="container-fluid px-3 py-3" style="flex: 1; display: flex; flex-direction: column;">
                     @yield('konten')
                 </div>
                 <!-- /.container-fluid -->
@@ -102,8 +65,10 @@
             </div>
             <!-- End of Main Content -->
 
-            <!-- Footer -->
-            @include('layout.footer')
+            @if(!View::hasSection('hide_footer'))
+                <!-- Footer -->
+                @include('layout.footer')
+            @endif
 
         </div>
         <!-- End of Content Wrapper -->

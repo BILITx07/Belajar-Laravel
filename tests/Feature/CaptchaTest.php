@@ -64,8 +64,8 @@ class CaptchaTest extends TestCase
         $response->assertSessionHas('error', 'Akses diblokir: Terdeteksi aktivitas bot.');
     }
 
-    public function test_storage_image_exists(): void
+    public function test_geojson_directory_exists(): void
     {
-        $this->assertTrue(file_exists(public_path('storage/produk/qTXhIpHcFqMAiozH5K0fle6u0ItULFTLZ11qMtNB.jpg')));
+        $this->assertTrue(file_exists(public_path('geojson')));
     }
 }

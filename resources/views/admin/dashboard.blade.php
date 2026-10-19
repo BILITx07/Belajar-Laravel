@@ -1,449 +1,775 @@
-@extends('admin.layout')
+@extends('layout.master')
 
-@section('title', 'Master Data GIS — FEWS BWS Kalimantan I')
+@section('title', 'Dashboard Admin > Peta Daerah Irigasi (DIR) — BWS Kalimantan I')
+@section('hide_footer', true)
 
-@section('content')
-<div class="anim-fade-in">
+@push('styles')
+<style>
+    /* ── TATA LETAK UTAMA WEBGIS ADMIN SESUAI GAMBAR ── */
+    .webgis-container {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: calc(100vh - 100px);
+        min-height: 600px;
+        gap: 20px;
+    }
 
-    <!-- Flash Alert Sukses / Error -->
-    @if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert" style="border-radius:10px;border-left:4px solid #10b981;">
-        <div class="d-flex align-items-center">
-            <i class="fas fa-check-circle mr-2 text-success fa-lg"></i>
-            <div><strong>Berhasil!</strong> {{ session('success') }}</div>
+    /* ── SIDEBAR KIRI ── */
+    .gis-sidebar {
+        width: 270px;
+        min-width: 270px;
+        max-width: 270px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .gis-form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .gis-form-label {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #334155;
+        margin-bottom: 6px;
+    }
+
+    .gis-select, .gis-input {
+        background-color: #ffffff;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        padding: 9px 12px;
+        font-size: 0.88rem;
+        color: #1e293b;
+        font-weight: 500;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .gis-select:focus, .gis-input:focus {
+        border-color: #2563eb;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* Tombol Kelola File GIS */
+    .btn-kelola-gis {
+        background: #ffffff;
+        border: 1px solid #3b82f6;
+        color: #2563eb;
+        font-weight: 600;
+        font-size: 0.88rem;
+        padding: 10px 14px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 3px rgba(37, 99, 235, 0.08);
+    }
+
+    .btn-kelola-gis:hover {
+        background: #eff6ff;
+        color: #1d4ed8;
+        border-color: #2563eb;
+        text-decoration: none;
+    }
+
+    .btn-kelola-gis .badge-count {
+        background-color: #2563eb;
+        color: #ffffff;
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 12px;
+    }
+
+    /* Tombol Upload GeoJSON */
+    .btn-upload-geojson {
+        background-color: #2563eb;
+        border: 1px solid #2563eb;
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 0.92rem;
+        padding: 11px 16px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+    }
+
+    .btn-upload-geojson:hover {
+        background-color: #1d4ed8;
+        border-color: #1d4ed8;
+        color: #ffffff;
+        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.35);
+    }
+
+    /* ── KONTEN AREA KANAN (MAP) ── */
+    .gis-content-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+    }
+
+    /* Breadcrumb Header */
+    .gis-breadcrumb-title {
+        font-size: 1.25rem;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        line-height: 1.3;
+    }
+
+    .gis-breadcrumb-title .crumb-parent {
+        color: #64748b;
+        font-weight: 600;
+    }
+
+    .gis-breadcrumb-title .crumb-sep {
+        color: #94a3b8;
+        margin: 0 8px;
+        font-size: 0.95rem;
+    }
+
+    .gis-breadcrumb-title .crumb-active {
+        color: #0f172a;
+        font-weight: 800;
+    }
+
+    /* Map Card Wrapper */
+    .gis-map-card {
+        flex: 1;
+        width: 100%;
+        background: #e2e8f0;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    #map {
+        width: 100%;
+        height: 100%;
+        min-height: 520px;
+        z-index: 1;
+    }
+
+    /* ── FLOATING OVERLAYS PADA PETA ── */
+
+    /* 1. Floating Layer Control (Kanan Atas) */
+    .gis-layer-control-card {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(226, 232, 240, 0.9);
+        border-radius: 10px;
+        padding: 12px 14px;
+        z-index: 1000;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        width: 250px;
+        font-size: 0.82rem;
+    }
+
+    .layer-radio-item, .layer-checkbox-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 6px;
+        cursor: pointer;
+        font-weight: 500;
+        color: #334155;
+        user-select: none;
+    }
+
+    .layer-radio-item input[type="radio"],
+    .layer-checkbox-item input[type="checkbox"] {
+        margin-right: 8px;
+        width: 16px;
+        height: 16px;
+        accent-color: #2563eb;
+        cursor: pointer;
+    }
+
+    .layer-divider {
+        height: 1px;
+        background: #e2e8f0;
+        margin: 8px 0;
+    }
+
+    /* 2. Floating Legenda Peta (Kiri Bawah) */
+    .gis-legend-card {
+        position: absolute;
+        bottom: 24px;
+        left: 20px;
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(226, 232, 240, 0.9);
+        border-radius: 12px;
+        padding: 12px 16px;
+        z-index: 1000;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        min-width: 190px;
+        font-size: 0.8rem;
+    }
+
+    .gis-legend-header {
+        font-weight: 700;
+        font-size: 0.84rem;
+        color: #0f172a;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .legend-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 6px;
+        font-weight: 500;
+        color: #334155;
+    }
+
+    .legend-swatch-box {
+        width: 14px;
+        height: 10px;
+        border-radius: 3px;
+        margin-right: 8px;
+        flex-shrink: 0;
+    }
+
+    .legend-swatch-line {
+        width: 14px;
+        height: 3px;
+        background-color: #2563eb;
+        margin-right: 8px;
+        flex-shrink: 0;
+    }
+
+    .legend-swatch-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #ef4444;
+        border: 2px solid #ffffff;
+        box-shadow: 0 0 0 1px #dc2626;
+        margin-right: 10px;
+        margin-left: 2px;
+        flex-shrink: 0;
+    }
+
+    /* Custom Leaflet Zoom Button Style */
+    .leaflet-bar {
+        border: 1px solid #d1d5db !important;
+        border-radius: 8px !important;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.12) !important;
+    }
+
+    .leaflet-bar a {
+        background-color: #ffffff !important;
+        color: #1e293b !important;
+        width: 32px !important;
+        height: 32px !important;
+        line-height: 32px !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+    }
+
+    /* Red Pin Marker */
+    .gis-red-marker {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #ef4444;
+        border: 3px solid #ffffff;
+        box-shadow: 0 2px 6px rgba(220, 38, 38, 0.6);
+        cursor: pointer;
+        animation: marker-pulse 2s infinite;
+    }
+
+    @keyframes marker-pulse {
+        0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+        70% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+
+    @media (max-width: 991px) {
+        .webgis-container {
+            flex-direction: column;
+            height: auto;
+        }
+        .gis-sidebar {
+            width: 100%;
+            max-width: 100%;
+        }
+        .gis-map-card {
+            height: 520px;
+        }
+    }
+</style>
+@endpush
+
+@section('konten')
+<!-- Flash Message Notifikasi -->
+@if(session('success'))
+<div class="alert alert-success alert-dismissible fade show shadow-sm mb-3" role="alert" style="border-radius:10px;border-left:4px solid #10b981;">
+    <div class="d-flex align-items-center">
+        <i class="fas fa-check-circle mr-2 text-success fa-lg"></i>
+        <div><strong>Berhasil!</strong> {{ session('success') }}</div>
+    </div>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+
+@if(session('error'))
+<div class="alert alert-danger alert-dismissible fade show shadow-sm mb-3" role="alert" style="border-radius:10px;border-left:4px solid #ef4444;">
+    <div class="d-flex align-items-center">
+        <i class="fas fa-exclamation-triangle mr-2 text-danger fa-lg"></i>
+        <div><strong>Gagal!</strong> {{ session('error') }}</div>
+    </div>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+
+<div class="webgis-container">
+
+    <!-- ── SIDEBAR KIRI (FILTER & ACTION BUTTONS) ── -->
+    <aside class="gis-sidebar">
+        
+        <!-- 1. Dashboard Type -->
+        <div class="gis-form-group">
+            <label class="gis-form-label">Dashboard Type</label>
+            <select class="gis-select" id="selectDashboardType">
+                <option value="data" selected>Dashboard Data</option>
+                <option value="analisis">Dashboard Analisis</option>
+            </select>
         </div>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    @endif
 
-    @if(session('error'))
-    <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert" style="border-radius:10px;border-left:4px solid #ef4444;">
-        <div class="d-flex align-items-center">
-            <i class="fas fa-exclamation-triangle mr-2 text-danger fa-lg"></i>
-            <div><strong>Gagal!</strong> {{ session('error') }}</div>
-        </div>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    @endif
-
-    @if(isset($errors) && $errors->any())
-    <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert" style="border-radius:10px;">
-        <div class="font-weight-bold mb-1"><i class="fas fa-exclamation-circle mr-1"></i>Terdapat kesalahan input:</div>
-        <ul class="mb-0 pl-3">
-            @foreach($errors->all() as $err)
-                <li>{{ $err }}</li>
-            @endforeach
-        </ul>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    @endif
-
-    <!-- ═══ HEADER HALAMAN (PERSIS REFERENSI VISUAL BWS) ═══ -->
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3">
-        <div>
-            <div class="text-uppercase text-muted font-weight-bold" style="font-size:0.75rem; letter-spacing:1px;">
-                Manajemen Data GIS
+        <!-- 2. Filter Tanggal -->
+        <div class="gis-form-group">
+            <label class="gis-form-label">Filter Tanggal</label>
+            <div class="position-relative">
+                <input type="text" class="gis-input w-100 pr-4" id="filterTanggal" value="{{ date('d F Y') }}" readonly>
+                <i class="far fa-calendar-alt position-absolute text-muted" style="right: 12px; top: 12px; font-size: 15px;"></i>
             </div>
-            <h4 class="font-weight-bold text-gray-800 mb-0">
-                Daftar File GeoJSON / Spasial
-            </h4>
         </div>
-        <div class="mt-3 mt-md-0 d-flex align-items-center" style="gap:10px;">
-            <button type="button" class="btn btn-primary btn-sm font-weight-bold px-4 shadow-sm" data-toggle="modal" data-target="#modalUploadGeojson" style="background:#2563eb;border-color:#2563eb;border-radius:20px;height:38px;display:inline-flex;align-items:center;">
-                <i class="fas fa-plus mr-2"></i>Upload File GeoJSON Baru
-            </button>
+
+        <!-- 3. View -->
+        <div class="gis-form-group">
+            <label class="gis-form-label">View</label>
+            <select class="gis-select" id="selectViewMode" onchange="toggleViewMode(this.value)">
+                <option value="table_maps" selected>Table + Maps</option>
+                <option value="maps_only">Maps Only</option>
+            </select>
         </div>
-    </div>
 
-    <!-- ═══ KARTU TABEL DATA UTAMA (PERSIS REFERENSI VISUAL BWS) ═══ -->
-    <div class="card border-0 shadow-sm" style="border-radius:12px;overflow:hidden;background:#fff;">
-        <div class="card-body p-4">
+        <!-- 4. Kelola File GIS Button -->
+        <a href="{{ route('admin.kelola-gis') }}" class="btn-kelola-gis" title="Buka Manajemen Master Data GIS">
+            <span class="d-flex align-items-center">
+                <i class="fas fa-folder-open mr-2 text-primary" style="font-size: 14px;"></i>
+                Kelola File GIS
+            </span>
+            <span class="badge-count">{{ count($geojsonFiles ?? []) > 0 ? count($geojsonFiles ?? []) : 54 }}</span>
+        </a>
 
-            <!-- Filter Bar: Entri & Pencarian -->
-            <form method="GET" action="{{ route('admin.dashboard') }}" id="filterForm">
-                <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between mb-3" style="gap:14px;">
-                    
-                    <!-- Left: Tampilkan X entri & Filter Kategori -->
-                    <div class="d-flex align-items-center flex-wrap" style="gap:12px;">
-                        <div class="d-flex align-items-center text-muted small">
-                            <span class="mr-2">Tampilkan</span>
-                            <select name="per_page" class="form-control form-control-sm" style="width:75px;border-radius:6px;" onchange="document.getElementById('filterForm').submit()">
-                                <option value="10" {{ ($perPage ?? 10) == 10 ? 'selected' : '' }}>10</option>
-                                <option value="25" {{ ($perPage ?? 10) == 25 ? 'selected' : '' }}>25</option>
-                                <option value="50" {{ ($perPage ?? 10) == 50 ? 'selected' : '' }}>50</option>
-                                <option value="100" {{ ($perPage ?? 10) == 100 ? 'selected' : '' }}>100</option>
-                            </select>
-                            <span class="ml-2">entri</span>
-                        </div>
+        <!-- 5. Upload GeoJSON Button (Petugas / Admin) -->
+        <button type="button" class="btn-upload-geojson" data-toggle="modal" data-target="#uploadGeojsonModal">
+            <i class="fas fa-cloud-upload-alt fa-lg"></i>
+            <span>Upload GeoJSON</span>
+        </button>
 
-                        <!-- Dropdown Kategori Master Data GIS -->
-                        <select name="type" class="form-control form-control-sm" style="width:180px;border-radius:6px;" onchange="document.getElementById('filterForm').submit()">
-                            <option value="semua" {{ ($filterType ?? 'semua') === 'semua' ? 'selected' : '' }}>Semua Master Data</option>
-                            <option value="irigasi" {{ ($filterType ?? '') === 'irigasi' ? 'selected' : '' }}>Daerah Irigasi (DIR)</option>
-                            <option value="saluran" {{ ($filterType ?? '') === 'saluran' ? 'selected' : '' }}>Jaringan Saluran</option>
-                            <option value="bangunan" {{ ($filterType ?? '') === 'bangunan' ? 'selected' : '' }}>Bangunan Air</option>
-                            <option value="ws_kapuas" {{ ($filterType ?? '') === 'ws_kapuas' ? 'selected' : '' }}>WS &amp; DAS Kapuas</option>
-                        </select>
+        <!-- Informasi Tambahan Ringkas -->
+        <div class="card border-0 bg-white shadow-sm mt-auto p-3" style="border-radius: 10px; border: 1px solid #e2e8f0;">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="small font-weight-bold text-muted">Total DIR</span>
+                <span class="font-weight-bold text-primary">{{ $statistik['total_dir'] ?? count($lokasi) }} DIR</span>
+            </div>
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="small font-weight-bold text-muted">Luas Fungsional</span>
+                <span class="font-weight-bold text-success">{{ $statistik['total_luas_fung'] ?? '-' }}</span>
+            </div>
+            <div class="d-flex align-items-center justify-content-between">
+                <span class="small font-weight-bold text-muted">Luas Baku</span>
+                <span class="font-weight-bold text-warning">{{ $statistik['total_luas_baku'] ?? '-' }}</span>
+            </div>
+        </div>
 
-                        <!-- Tombol Hapus Masal -->
-                        <button type="button" class="btn btn-sm btn-outline-danger font-weight-bold" id="btnBulkDelete" disabled onclick="submitBulkDelete()" style="border-radius:6px;display:none;">
-                            <i class="fas fa-trash-alt mr-1"></i>Hapus Terpilih (<span id="bulkCount">0</span>)
-                        </button>
-                    </div>
+    </aside>
 
-                    <!-- Right: Search Input (Cari:) Sesuai Gambar Referensi -->
-                    <div class="d-flex align-items-center" style="gap:8px;">
-                        <span class="text-muted small">Cari:</span>
-                        <div class="input-group input-group-sm" style="width:230px;">
-                            <input type="text" name="search" class="form-control" placeholder="Ketik nama file..." value="{{ $search ?? '' }}" style="border-radius:6px 0 0 6px;">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary px-3" type="submit" style="border-radius:0 6px 6px 0;background:#2563eb;">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                        @if($search || ($filterType && $filterType !== 'semua'))
-                            <a href="{{ route('admin.dashboard') }}" class="btn btn-sm btn-light border text-muted" title="Reset filter" style="border-radius:6px;">
-                                <i class="fas fa-times"></i>
-                            </a>
-                        @endif
-                    </div>
+    <!-- ── KONTEN AREA KANAN (MAP & BREADCRUMB) ── -->
+    <main class="gis-content-area">
+        
+        <!-- Breadcrumb Header: Dashboard Data > Peta Daerah Irigasi (DIR) -->
+        <div class="gis-breadcrumb-title">
+            <span class="crumb-parent">Dashboard Data</span>
+            <span class="crumb-sep">&gt;</span>
+            <span class="crumb-active">Peta Daerah Irigasi (DIR)</span>
+        </div>
 
+        <!-- Map Card Container -->
+        <div class="gis-map-card">
+            
+            <!-- Elemen Peta Leaflet -->
+            <div id="map"></div>
+
+            <!-- Floating Layer Control (Kanan Atas) Sesuai Gambar -->
+            <div class="gis-layer-control-card">
+                <!-- Radio Pilihan Basemap -->
+                <label class="layer-radio-item">
+                    <input type="radio" name="basemap_choice" value="osm" onchange="switchBaseMap('osm')">
+                    <span>Peta (OpenStreetMap)</span>
+                </label>
+                <label class="layer-radio-item">
+                    <input type="radio" name="basemap_choice" value="satellite" checked onchange="switchBaseMap('satellite')">
+                    <span>Satelit (Google Hybrid)</span>
+                </label>
+
+                <div class="layer-divider"></div>
+
+                <!-- Checkbox Layer Spasial -->
+                <label class="layer-checkbox-item">
+                    <input type="checkbox" id="chk-baku" checked onchange="toggleLayer('baku', this.checked)">
+                    <span>Daerah Irigasi Baku (Hijau)</span>
+                </label>
+                <label class="layer-checkbox-item">
+                    <input type="checkbox" id="chk-fungsional" checked onchange="toggleLayer('fungsional', this.checked)">
+                    <span>Daerah Irigasi Fungsional (Biru)</span>
+                </label>
+                <label class="layer-checkbox-item">
+                    <input type="checkbox" id="chk-potensial" checked onchange="toggleLayer('potensial', this.checked)">
+                    <span>Daerah Irigasi Potensial (Oranye)</span>
+                </label>
+                <label class="layer-checkbox-item">
+                    <input type="checkbox" id="chk-saluran" checked onchange="toggleLayer('saluran', this.checked)">
+                    <span>Jaringan Saluran Irigasi</span>
+                </label>
+                <label class="layer-checkbox-item">
+                    <input type="checkbox" id="chk-bangunan" checked onchange="toggleLayer('bangunan', this.checked)">
+                    <span>Bangunan Air / Pelengkap</span>
+                </label>
+            </div>
+
+            <!-- Floating Legenda Peta (Kiri Bawah) Sesuai Gambar -->
+            <div class="gis-legend-card">
+                <div class="gis-legend-header">
+                    <span>🎨 Legenda Peta</span>
                 </div>
-            </form>
+                <div class="legend-row">
+                    <span class="legend-swatch-box" style="background-color: #22c55e;"></span>
+                    <span>DIR Baku (Hijau)</span>
+                </div>
+                <div class="legend-row">
+                    <span class="legend-swatch-box" style="background-color: #0284c7;"></span>
+                    <span>DIR Fungsional (Biru)</span>
+                </div>
+                <div class="legend-row">
+                    <span class="legend-swatch-box" style="background-color: #f97316;"></span>
+                    <span>DIR Potensial (Oranye)</span>
+                </div>
+                <div class="legend-row">
+                    <span class="legend-swatch-line" style="background-color: #0284c7;"></span>
+                    <span>Jaringan Saluran</span>
+                </div>
+                <div class="legend-row">
+                    <span class="legend-swatch-dot"></span>
+                    <span>Bangunan Air</span>
+                </div>
+            </div>
 
-            @php
-                $catLabels = [
-                    'baku'       => ['DIR Baku', '#10b981', 'fa-leaf'],
-                    'fungsional' => ['DIR Fungsional', '#2563eb', 'fa-water'],
-                    'potensial'  => ['DIR Potensial', '#f59e0b', 'fa-seedling'],
-                    'saluran'    => ['Jaringan Saluran', '#ec4899', 'fa-stream'],
-                    'bangunan'   => ['Bangunan Air', '#8b5cf6', 'fa-landmark'],
-                    'ws_kapuas'  => ['WS & DAS Kapuas', '#06b6d4', 'fa-globe-asia'],
-                    'custom'     => ['Layer Kustom', '#64748b', 'fa-file-alt'],
-                ];
-            @endphp
+        </div>
 
-            <!-- Tabel Data Spasial -->
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0" style="font-size:0.87rem;" id="tableGisData">
-                    <thead style="background:#f8fafc;border-top:1px solid #e2e8f0;border-bottom:2px solid #e2e8f0;">
-                        <tr class="text-muted font-weight-bold" style="font-size:0.8rem;letter-spacing:0.3px;">
-                            <th width="40" class="text-center">
-                                <input type="checkbox" id="checkAll" onchange="toggleAllChecks(this)">
-                            </th>
-                            <th width="50" class="text-center">No.</th>
-                            <th>Nama File</th>
-                            <th width="190">Kategori Spasial</th>
-                            <th width="120">Ukuran</th>
-                            <th width="180">Login / Upload Terakhir</th>
-                            <th width="120" class="text-center">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($fileList as $index => $file)
-                            @php
-                                $catInfo = $catLabels[$file['category']] ?? ['Lainnya', '#64748b', 'fa-file'];
-                            @endphp
-                            <tr style="border-bottom:1px solid #f1f5f9;">
-                                <td class="text-center align-middle">
-                                    <input type="checkbox" class="file-check" value="{{ $file['name'] }}" onchange="updateBulkCount()">
-                                </td>
-                                <td class="text-center text-muted align-middle font-weight-bold">
-                                    {{ ($offset ?? 0) + $index + 1 }}
-                                </td>
-                                <td class="align-middle">
-                                    <div class="d-flex align-items-center">
-                                        <div class="mr-3 rounded d-flex align-items-center justify-content-center" style="width:34px;height:34px;background:#eff6ff;color:#2563eb;">
-                                            <i class="fas fa-file-code"></i>
-                                        </div>
-                                        <div>
-                                            <div class="font-weight-bold text-dark" style="max-width:320px;word-break:break-all;">
-                                                {{ $file['name'] }}
-                                            </div>
-                                            <small class="text-muted">Format: .{{ $file['extension'] }}</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="align-middle">
-                                    <span class="badge px-2 py-1 font-weight-bold" style="background:{{ $catInfo[1] }}18;color:{{ $catInfo[1] }};border-radius:6px;font-size:0.75rem;">
-                                        <i class="fas {{ $catInfo[2] }} mr-1"></i>{{ $catInfo[0] }}
-                                    </span>
-                                </td>
-                                <td class="align-middle font-weight-bold text-secondary">
-                                    {{ $file['size'] }}
-                                </td>
-                                <td class="align-middle text-muted" style="font-size:0.8rem;">
-                                    {{ $file['date'] }}
-                                </td>
-                                <td class="text-center align-middle">
-                                    <div class="d-flex align-items-center justify-content-center" style="gap:6px;">
-                                        <!-- Tombol Edit (Warna Hijau Sesuai Referensi Gambar BWS) -->
-                                        <button type="button" class="btn btn-sm btn-success px-2 py-1 shadow-sm" style="background:#10b981;border-color:#10b981;border-radius:6px;" title="Edit / Ubah Nama File" onclick="openRenameModal('{{ $file['name'] }}')">
-                                            <i class="fas fa-pencil-alt fa-xs"></i>
-                                        </button>
-                                        <!-- Tombol Hapus (Warna Merah Sesuai Referensi Gambar BWS) -->
-                                        <button type="button" class="btn btn-sm btn-danger px-2 py-1 shadow-sm" style="background:#ef4444;border-color:#ef4444;border-radius:6px;" title="Hapus File" onclick="confirmDelete('{{ $file['name'] }}')">
-                                            <i class="fas fa-trash-alt fa-xs"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        @empty
+        <!-- Tabel Data DIR (Muncul jika view Table + Maps aktif) -->
+        <div id="sectionTableDIR" class="card border-0 shadow-sm mt-3" style="border-radius: 12px; display: none;">
+            <div class="card-header bg-white py-3 d-flex align-items-center justify-content-between border-0">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="fas fa-table mr-2"></i>Daftar Lokasi Daerah Irigasi (DIR) Terdaftar
+                </h6>
+                <div class="d-flex align-items-center" style="gap:10px;">
+                    <a href="{{ route('admin.kelola-gis') }}" class="btn btn-sm btn-outline-primary font-weight-bold px-3" style="border-radius:20px;">
+                        <i class="fas fa-database mr-1"></i> Buka Manajemen File GeoJSON
+                    </a>
+                    <span class="badge badge-primary px-3 py-1 font-weight-bold">{{ count($lokasi) }} Lokasi</span>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive" style="max-height: 240px; overflow-y: auto;">
+                    <table class="table table-hover table-striped mb-0 text-dark small">
+                        <thead class="thead-light">
                             <tr>
-                                <td colspan="7" class="text-center py-5">
-                                    <div class="py-4">
-                                        <i class="fas fa-folder-open fa-3x text-muted mb-3 d-block" style="opacity:0.4;"></i>
-                                        <h6 class="font-weight-bold text-muted mb-1">Belum ada file GeoJSON yang cocok</h6>
-                                        <p class="text-muted small mb-3">Klik tombol "Upload File GeoJSON Baru" di atas untuk menambahkan data spasial.</p>
-                                    </div>
+                                <th>Kode</th>
+                                <th>Nama Daerah Irigasi</th>
+                                <th>Kabupaten</th>
+                                <th>Luas Baku (Ha)</th>
+                                <th>Luas Fungsional (Ha)</th>
+                                <th>Koordinat</th>
+                                <th class="text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($lokasi as $loc)
+                            <tr>
+                                <td><span class="badge badge-light border font-weight-bold">{{ $loc['kode'] }}</span></td>
+                                <td class="font-weight-bold text-primary">{{ $loc['nama'] }}</td>
+                                <td>{{ $loc['kabupaten'] }}</td>
+                                <td>{{ number_format($loc['luas_baku'], 0, ',', '.') }} Ha</td>
+                                <td>{{ number_format($loc['luas_fung'], 0, ',', '.') }} Ha</td>
+                                <td><code>{{ $loc['lat'] }}, {{ $loc['lng'] }}</code></td>
+                                <td class="text-center">
+                                    <button class="btn btn-xs btn-outline-primary py-1 px-2" onclick="focusToLocation({{ $loc['lat'] }}, {{ $loc['lng'] }}, '{{ $loc['nama'] }}')">
+                                        <i class="fas fa-search-location mr-1"></i> Lihat Peta
+                                    </button>
                                 </td>
                             </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- ═══ PAGINATION & INFORMASI ENTRI (PERSIS REFERENSI BWS) ═══ -->
-            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mt-4 pt-3 border-top" style="gap:12px;">
-                <div class="text-muted small">
-                    Menampilkan <strong>{{ count($fileList) }}</strong> sampai <strong>{{ min(($offset ?? 0) + ($perPage ?? 10), $totalItems ?? 0) }}</strong> dari <strong>{{ $totalItems ?? 0 }}</strong> entri
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
-
-                @if(($totalPages ?? 1) > 1)
-                <div>
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination pagination-sm mb-0">
-                            {{-- Previous --}}
-                            <li class="page-item {{ ($currentPage ?? 1) <= 1 ? 'disabled' : '' }}">
-                                <a class="page-link" href="{{ request()->fullUrlWithQuery(['page' => max(1, ($currentPage ?? 1) - 1)]) }}" aria-label="Previous">
-                                    <span aria-hidden="true">&lsaquo;</span>
-                                </a>
-                            </li>
-
-                            {{-- Numbers --}}
-                            @for($p = 1; $p <= $totalPages; $p++)
-                                <li class="page-item {{ ($currentPage ?? 1) == $p ? 'active' : '' }}">
-                                    <a class="page-link" href="{{ request()->fullUrlWithQuery(['page' => $p]) }}" style="{{ ($currentPage ?? 1) == $p ? 'background:#2563eb;border-color:#2563eb;' : '' }}">{{ $p }}</a>
-                                </li>
-                            @endfor
-
-                            {{-- Next --}}
-                            <li class="page-item {{ ($currentPage ?? 1) >= $totalPages ? 'disabled' : '' }}">
-                                <a class="page-link" href="{{ request()->fullUrlWithQuery(['page' => min($totalPages, ($currentPage ?? 1) + 1)]) }}" aria-label="Next">
-                                    <span aria-hidden="true">&rsaquo;</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-                @endif
             </div>
-
         </div>
-    </div>
+
+    </main>
 
 </div>
 
-<!-- ═══ MODAL UPLOAD FILE GEOJSON ═══ -->
-<div class="modal fade" id="modalUploadGeojson" tabindex="-1" role="dialog" aria-labelledby="modalUploadGeojsonLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:580px;">
-        <div class="modal-content border-0 shadow-lg" style="border-radius:14px;overflow:hidden;">
-            <div class="modal-header text-white px-4 py-3 border-0" style="background:linear-gradient(135deg, #0d3875 0%, #174ea6 100%);">
+<!-- Modal Upload GeoJSON Khusus Admin -->
+<div class="modal fade" id="uploadGeojsonModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 14px; overflow: hidden;">
+            <div class="modal-header text-white" style="background: #1d64d8;">
                 <div class="d-flex align-items-center">
-                    <div class="mr-3 rounded-circle d-flex align-items-center justify-content-center" style="width:38px;height:38px;background:rgba(255,255,255,0.18);">
-                        <i class="fas fa-cloud-upload-alt text-white"></i>
-                    </div>
-                    <div>
-                        <h5 class="modal-title font-weight-bold text-white mb-0" id="modalUploadGeojsonLabel" style="font-size:1.05rem;">
-                            Upload File GeoJSON Baru
-                        </h5>
-                        <small class="text-white-50">Tambahkan data spasial Daerah Irigasi &amp; WS Kapuas ke peta</small>
-                    </div>
+                    <i class="fas fa-cloud-upload-alt mr-2 fa-lg"></i>
+                    <h6 class="modal-title font-weight-bold mb-0" id="uploadModalLabel">Upload Data GeoJSON Baru</h6>
                 </div>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="outline:none;">
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             
             <form action="{{ route('admin.upload') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="modal-body p-4 bg-light">
-                    <div class="bg-white p-3 rounded border mb-3" style="border-radius:10px !important;">
-                        <label class="font-weight-bold mb-2 d-block text-dark small">
-                            <i class="fas fa-file-code text-primary mr-1"></i>Pilih File GeoJSON (.geojson / .json)
-                        </label>
-                        <div class="custom-file">
-                            <input type="file" name="file_geojson[]" class="custom-file-input" id="inputUploadGeojson" multiple accept=".geojson,.json" required onchange="handleFileChange(this)">
-                            <label class="custom-file-label" for="inputUploadGeojson" id="labelUploadGeojson">Pilih satu atau beberapa file...</label>
-                        </div>
-                        <small class="form-text text-muted mt-2">
-                            <i class="fas fa-info-circle text-primary mr-1"></i>Mendukung upload banyak file sekaligus. Maksimum 256 MB per file.
-                        </small>
-                    </div>
-
-                    <div class="alert alert-info py-2 px-3 small mb-0 rounded" style="background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;">
-                        <i class="fas fa-lightbulb mr-1 text-warning"></i>
-                        <strong>Tips Penamaan:</strong> Beri awalan seperti <code>baku_</code>, <code>fungsional_</code>, <code>potensial_</code>, <code>saluran_</code>, atau <code>bangunan_</code> agar terkelompok otomatis di layer peta.
+                <div class="modal-body p-4">
+                    <p class="small text-muted mb-3">
+                        Unggah file spasial <code>.geojson</code> atau <code>.json</code> untuk dipetakan secara real-time pada peta WebGIS.
+                    </p>
+                    <div class="form-group mb-3">
+                        <label class="font-weight-bold small text-dark">Pilih File GeoJSON</label>
+                        <input type="file" name="file_geojson[]" class="form-control-file border p-2 rounded w-100" accept=".json,.geojson" multiple required>
+                        <small class="text-muted">Dapat mengunggah beberapa file sekaligus (maksimal 256 MB per file).</small>
                     </div>
                 </div>
-
-                <div class="modal-footer bg-white border-top py-3 px-4">
-                    <button type="button" class="btn btn-light border font-weight-bold px-3 btn-sm" data-dismiss="modal" style="border-radius:6px;">Batal</button>
-                    <button type="submit" class="btn btn-primary font-weight-bold px-4 btn-sm shadow-sm" style="background:#2563eb;border-color:#2563eb;border-radius:6px;">
-                        <i class="fas fa-cloud-upload-alt mr-1"></i>Upload Sekarang
+                <div class="modal-footer bg-light py-2">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary btn-sm px-4 font-weight-bold" style="background: #2563eb;">
+                        <i class="fas fa-upload mr-1"></i> Mulai Unggah
                     </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-<!-- ═══ MODAL EDIT / RENAME FILE ═══ -->
-<div class="modal fade" id="modalRename" tabindex="-1" role="dialog" aria-labelledby="modalRenameLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:480px;">
-        <div class="modal-content border-0 shadow-lg" style="border-radius:14px;overflow:hidden;">
-            <div class="modal-header border-0 py-3 px-4" style="background:#f0fdf4;">
-                <h5 class="modal-title font-weight-bold" id="modalRenameLabel" style="font-size:1rem;color:#166534;">
-                    <i class="fas fa-pencil-alt mr-2 text-success"></i>Edit Nama File Spasial
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="{{ route('admin.rename') }}" method="POST">
-                @csrf
-                <input type="hidden" name="old_name" id="renameOldName">
-                <div class="modal-body p-4 bg-white">
-                    <div class="mb-3">
-                        <label class="font-weight-bold small text-muted mb-1">Nama File Saat Ini:</label>
-                        <div class="p-2 bg-light border rounded small font-weight-bold text-dark" id="renameOldNameDisplay" style="word-break:break-all;"></div>
-                    </div>
-                    <div class="mb-2">
-                        <label class="font-weight-bold small text-dark mb-1">Nama File Baru:</label>
-                        <input type="text" name="new_name" id="renameNewName" class="form-control form-control-sm" required placeholder="Masukkan nama file baru...">
-                        <small class="text-muted mt-1 d-block" style="font-size:0.75rem;">
-                            Ekstensi <code>.geojson</code> akan otomatis ditambahkan jika tidak ditulis.
-                        </small>
-                    </div>
-                </div>
-                <div class="modal-footer bg-light border-top py-2 px-4">
-                    <button type="button" class="btn btn-light border font-weight-bold btn-sm px-3" data-dismiss="modal" style="border-radius:6px;">Batal</button>
-                    <button type="submit" class="btn btn-success font-weight-bold btn-sm px-4 shadow-sm" style="background:#10b981;border-color:#10b981;border-radius:6px;">
-                        <i class="fas fa-check mr-1"></i>Simpan Perubahan
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- ═══ MODAL KONFIRMASI HAPUS ═══ -->
-<div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="modalDeleteLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-        <div class="modal-content border-0 shadow-lg" style="border-radius:14px;overflow:hidden;">
-            <div class="modal-body p-4 text-center">
-                <div class="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:54px;height:54px;background:#fee2e2;color:#ef4444;">
-                    <i class="fas fa-trash-alt fa-lg"></i>
-                </div>
-                <h6 class="font-weight-bold text-dark mb-1">Hapus File Spasial?</h6>
-                <p class="text-muted small mb-0" id="deleteFileName" style="word-break:break-all;"></p>
-                <small class="text-danger d-block mt-2 font-weight-bold">Tindakan ini tidak dapat dibatalkan!</small>
-            </div>
-            <div class="modal-footer border-0 bg-light justify-content-center py-3" style="gap:8px;">
-                <button type="button" class="btn btn-light border font-weight-bold btn-sm px-3" data-dismiss="modal" style="border-radius:6px;">Batal</button>
-                <form id="formDelete" action="{{ route('admin.delete') }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <input type="hidden" name="file_name" id="deleteFileInput">
-                    <button type="submit" class="btn btn-danger font-weight-bold btn-sm px-4" style="background:#ef4444;border-color:#ef4444;border-radius:6px;">
-                        <i class="fas fa-trash-alt mr-1"></i>Ya, Hapus
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Form Tersembunyi untuk Bulk Delete -->
-<form id="formBulkDelete" action="{{ route('admin.delete-bulk') }}" method="POST" style="display:none;">
-    @csrf
-    @method('DELETE')
-    <div id="bulkDeleteInputs"></div>
-</form>
-
 @endsection
 
 @push('scripts')
 <script>
-    function handleFileChange(input) {
-        var label = document.getElementById('labelUploadGeojson');
-        if (input.files.length === 1) {
-            label.textContent = input.files[0].name;
-        } else if (input.files.length > 1) {
-            label.textContent = input.files.length + ' file dipilih';
-        } else {
-            label.textContent = 'Pilih satu atau beberapa file...';
-        }
-    }
+var map;
+var osmLayer, satelliteLayer;
+var layerBaku, layerFungsional, layerPotensial, layerSaluran, layerBangunan;
+var dirMarkers = [];
+var locations = {!! json_encode($lokasi) !!};
 
-    function openRenameModal(fileName) {
-        document.getElementById('renameOldName').value = fileName;
-        document.getElementById('renameOldNameDisplay').textContent = fileName;
-        document.getElementById('renameNewName').value = fileName;
-        $('#modalRename').modal('show');
-    }
+document.addEventListener('DOMContentLoaded', function () {
 
-    function confirmDelete(fileName) {
-        document.getElementById('deleteFileName').textContent = fileName;
-        document.getElementById('deleteFileInput').value = fileName;
-        $('#modalDelete').modal('show');
-    }
+    // 1. Inisialisasi Basemaps
+    osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap'
+    });
 
-    function toggleAllChecks(master) {
-        document.querySelectorAll('.file-check').forEach(function(cb) {
-            cb.checked = master.checked;
+    // Google Satellite Hybrid (sesuai referensi gambar)
+    satelliteLayer = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        attribution: '&copy; Google Satellite'
+    });
+
+    // 2. Inisialisasi Map Leaflet dengan default Satelit Hybrid
+    map = L.map('map', {
+        center: [-0.3, 110.5],
+        zoom: 7,
+        layers: [satelliteLayer],
+        zoomControl: true
+    });
+
+    // Atur posisi tombol Zoom Leaflet di pojok kiri atas
+    map.zoomControl.setPosition('topleft');
+
+    // 3. Layer Groups untuk Geometri Spasial
+    layerBaku       = L.layerGroup().addTo(map);
+    layerFungsional = L.layerGroup().addTo(map);
+    layerPotensial  = L.layerGroup().addTo(map);
+    layerSaluran    = L.layerGroup().addTo(map);
+    layerBangunan   = L.layerGroup().addTo(map);
+
+    // 4. Render Marker Pin Titik Merah (Sesuai Titik Merah Pada Gambar Referensi)
+    locations.forEach(function (loc) {
+        var markerIcon = L.divIcon({
+            className: 'custom-red-pin-container',
+            html: '<div class="gis-red-marker" title="' + loc.nama + '"></div>',
+            iconSize: [18, 18],
+            iconAnchor: [9, 9]
         });
-        updateBulkCount();
-    }
 
-    function updateBulkCount() {
-        var checked = document.querySelectorAll('.file-check:checked');
-        var count = checked.length;
-        var btn = document.getElementById('btnBulkDelete');
-        var countSpan = document.getElementById('bulkCount');
-        
-        countSpan.textContent = count;
-        if (count > 0) {
-            btn.style.display = 'inline-flex';
-            btn.disabled = false;
-        } else {
-            btn.style.display = 'none';
-            btn.disabled = true;
+        var m = L.marker([loc.lat, loc.lng], { icon: markerIcon }).addTo(map);
+        m.bindPopup(
+            '<div style="min-width: 220px; font-family: sans-serif;">' +
+            '<div class="d-flex align-items-center mb-2">' +
+            '<span class="badge badge-primary mr-2" style="background:#2563eb;">' + loc.kode + '</span>' +
+            '<strong class="text-primary" style="font-size: 13px;">' + loc.nama + '</strong>' +
+            '</div>' +
+            '<div class="text-muted small mb-2"><i class="fas fa-map-marker-alt mr-1 text-danger"></i>' + loc.status + '</div>' +
+            '<table class="table table-sm table-striped mb-1" style="font-size: 11px;">' +
+            '<tr><td>Luas Baku</td><td><b>' + (loc.luas_baku ? loc.luas_baku + ' Ha' : '-') + '</b></td></tr>' +
+            '<tr><td>Luas Fungsional</td><td><b>' + (loc.luas_fung ? loc.luas_fung + ' Ha' : '-') + '</b></td></tr>' +
+            '<tr><td>Koordinat</td><td><code>' + loc.lat + ', ' + loc.lng + '</code></td></tr>' +
+            '</table>' +
+            '<small class="text-secondary">' + (loc.keterangan || '-') + '</small>' +
+            '</div>'
+        );
+        dirMarkers.push({ name: loc.nama.toLowerCase(), marker: m });
+    });
+
+    // 5. Muat GeoJSON Secara Asinkron
+    var geojsonFiles = {!! json_encode($geojsonFiles) !!};
+    geojsonFiles.forEach(function (fileName) {
+        var fileLower = fileName.toLowerCase();
+        var targetLayer = null;
+        var strokeColor = '#0284c7', fillColor = '#38bdf8', fillOpacity = 0.5, weight = 2;
+
+        if (fileLower.startsWith('baku')) {
+            targetLayer = layerBaku;
+            strokeColor = '#16a34a'; fillColor = '#22c55e'; fillOpacity = 0.6;
+        } else if (fileLower.startsWith('fungsional')) {
+            targetLayer = layerFungsional;
+            strokeColor = '#0284c7'; fillColor = '#38bdf8'; fillOpacity = 0.6;
+        } else if (fileLower.startsWith('potensial')) {
+            targetLayer = layerPotensial;
+            strokeColor = '#ea580c'; fillColor = '#f97316'; fillOpacity = 0.6;
+        } else if (fileLower.startsWith('saluran')) {
+            targetLayer = layerSaluran;
+            strokeColor = '#0284c7'; fillColor = '#0284c7'; fillOpacity = 0; weight = 2.5;
+        } else if (fileLower.startsWith('bangunan')) {
+            targetLayer = layerBangunan;
+            strokeColor = '#dc2626'; fillColor = '#ef4444'; fillOpacity = 0.9;
         }
-    }
 
-    function submitBulkDelete() {
-        var checked = document.querySelectorAll('.file-check:checked');
-        if (checked.length === 0) return;
-        if (!confirm('Yakin ingin menghapus ' + checked.length + ' file geospasial terpilih?')) return;
+        if (!targetLayer) return;
 
-        var container = document.getElementById('bulkDeleteInputs');
-        container.innerHTML = '';
-        checked.forEach(function(cb) {
-            var inp = document.createElement('input');
-            inp.type = 'hidden';
-            inp.name = 'file_names[]';
-            inp.value = cb.value;
-            container.appendChild(inp);
-        });
-        document.getElementById('formBulkDelete').submit();
+        fetch('{{ asset("geojson") }}/' + encodeURIComponent(fileName))
+            .then(function(r) { return r.json(); })
+            .then(function (gj) {
+                if (!gj || !gj.features) return;
+                var layer = L.geoJSON(gj, {
+                    style: function() {
+                        return { color: strokeColor, fillColor: fillColor, fillOpacity: fillOpacity, weight: weight };
+                    },
+                    pointToLayer: function(f, latlng) {
+                        return L.circleMarker(latlng, { radius: 5, fillColor: strokeColor, color: '#fff', weight: 1.5, fillOpacity: 0.9 });
+                    },
+                    onEachFeature: function(f, l) {
+                        if (f.properties) {
+                            var p = f.properties;
+                            var title = p.NAMOBJ || p.Name || p.D_I_R || fileName;
+                            var html = '<div style="max-width:280px; max-height:260px; overflow-y:auto; font-size:11px;">' +
+                                '<h6 class="font-weight-bold text-primary mb-1 border-bottom pb-1">' + title + '</h6>' +
+                                '<table class="table table-sm table-striped mb-0">';
+                            for (var k in p) {
+                                if (p[k] !== null && p[k] !== undefined && String(p[k]).trim() !== '') {
+                                    html += '<tr><th class="text-muted">' + k + '</th><td><b>' + p[k] + '</b></td></tr>';
+                                }
+                            }
+                            html += '</table></div>';
+                            l.bindPopup(html);
+                        }
+                    }
+                });
+                targetLayer.addLayer(layer);
+            })
+            .catch(function(err) {
+                console.warn('Gagal memuat GeoJSON ' + fileName + ':', err);
+            });
+    });
+
+    // Panggil toggleViewMode sesuai default
+    toggleViewMode(document.getElementById('selectViewMode').value);
+});
+
+// Ganti Basemap (Peta OSM vs Satelit Hybrid)
+function switchBaseMap(type) {
+    if (type === 'osm') {
+        if (map.hasLayer(satelliteLayer)) map.removeLayer(satelliteLayer);
+        if (!map.hasLayer(osmLayer)) map.addLayer(osmLayer);
+    } else {
+        if (map.hasLayer(osmLayer)) map.removeLayer(osmLayer);
+        if (!map.hasLayer(satelliteLayer)) map.addLayer(satelliteLayer);
     }
+}
+
+// Toggle Layer Spasial (Checkbox Kanan Atas)
+function toggleLayer(layerKey, isChecked) {
+    var layerMap = {
+        'baku': layerBaku,
+        'fungsional': layerFungsional,
+        'potensial': layerPotensial,
+        'saluran': layerSaluran,
+        'bangunan': layerBangunan
+    };
+
+    var target = layerMap[layerKey];
+    if (!target) return;
+
+    if (isChecked) {
+        if (!map.hasLayer(target)) map.addLayer(target);
+    } else {
+        if (map.hasLayer(target)) map.removeLayer(target);
+    }
+}
+
+// Toggle Tampilan Table + Maps vs Maps Only
+function toggleViewMode(val) {
+    var tableEl = document.getElementById('sectionTableDIR');
+    if (val === 'table_maps') {
+        tableEl.style.display = 'block';
+    } else {
+        tableEl.style.display = 'none';
+    }
+    setTimeout(function() {
+        if (map) map.invalidateSize();
+    }, 200);
+}
+
+// Fokuskan Peta ke Koordinat Tertentu
+function focusToLocation(lat, lng, nama) {
+    map.setView([lat, lng], 13);
+    var item = dirMarkers.find(function(d) { return d.name === nama.toLowerCase(); });
+    if (item && item.marker) {
+        item.marker.openPopup();
+    }
+}
 </script>
 @endpush

@@ -1,87 +1,83 @@
-<!-- Topbar Resmi Kementerian PU & BWS Kalimantan I - Fokus WebGIS -->
-<nav class="navbar navbar-expand navbar-dark static-top shadow-sm px-3" style="background: linear-gradient(90deg, #0d2c54 0%, #174d8c 50%, #1b5fb5 100%); height: 62px; z-index: 1020;">
+<!-- Topbar Resmi Kementerian PU & BWS Kalimantan I - Sesuai Desain Referensi -->
+<nav class="navbar navbar-expand navbar-dark static-top px-3 px-md-4" style="background: #1d64d8; height: 66px; z-index: 1030; box-shadow: 0 2px 10px rgba(29, 100, 216, 0.25);">
 
-    <!-- Logo PU & Branding Instansi -->
-    <a href="{{ route('peta') }}" class="d-flex align-items-center text-decoration-none">
-        <!-- Lambang Resmi PU (Kuning Emas) -->
-        <div class="mr-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: #ffc107; border-radius: 7px; box-shadow: 0 2px 5px rgba(0,0,0,0.25);">
-            <svg viewBox="0 0 100 100" width="32" height="32">
-                <circle cx="50" cy="50" r="46" fill="#ffc107" />
-                <path d="M 50,8 A 42,42 0 1,0 92,50 A 42,42 0 0,0 50,8 Z" fill="none" stroke="#1b5fb5" stroke-width="5" />
-                <path d="M50 15 L55 35 L75 35 L60 48 L68 68 L50 55 L32 68 L40 48 L25 35 L45 35 Z" fill="#1b5fb5" />
-                <circle cx="50" cy="50" r="10" fill="#ffc107" />
-                <circle cx="50" cy="50" r="5" fill="#1b5fb5" />
-            </svg>
-        </div>
-        <div>
-            <div class="text-white font-weight-bold" style="font-size: 0.98rem; line-height: 1.2; letter-spacing: 0.4px;">
-                WebGIS DAERAH IRIGASI &amp; WS KAPUAS
-            </div>
-            <div style="font-size: 0.73rem; color: #dbeafe; line-height: 1.1;">
-                Balai Wilayah Sungai Kalimantan I Pontianak &bull; Ditjen SDA Kementerian PU
-            </div>
-        </div>
-    </a>
+    <!-- Bagian Kiri: Tombol Back, Logo PU, dan Judul Instansi -->
+    <div class="d-flex align-items-center">
+        <!-- Tombol Back Lingkaran Putih -->
+        <a href="{{ route('home') }}" class="btn rounded-circle bg-white shadow-sm d-flex align-items-center justify-content-center mr-3" style="width: 36px; height: 36px; min-width: 36px; border: none; text-decoration: none;" title="Kembali ke Beranda">
+            <i class="fas fa-chevron-left" style="font-size: 13px; color: #1e293b; font-weight: 700;"></i>
+        </a>
 
-    <!-- Menu Kanan -->
+        <!-- Logo PU Kuning Kotak Rounded -->
+        <a href="{{ route('peta') }}" class="d-flex align-items-center text-decoration-none">
+            <div class="mr-3 d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; min-width: 44px; background: #ffc107; border-radius: 9px; box-shadow: 0 2px 6px rgba(0,0,0,0.18);">
+                <svg viewBox="0 0 100 100" width="34" height="34">
+                    <circle cx="50" cy="50" r="46" fill="#ffc107" />
+                    <path d="M 50,8 A 42,42 0 1,0 92,50 A 42,42 0 0,0 50,8 Z" fill="none" stroke="#1b5fb5" stroke-width="5" />
+                    <path d="M50 15 L55 35 L75 35 L60 48 L68 68 L50 55 L32 68 L40 48 L25 35 L45 35 Z" fill="#1b5fb5" />
+                    <circle cx="50" cy="50" r="10" fill="#ffc107" />
+                    <circle cx="50" cy="50" r="5" fill="#1b5fb5" />
+                </svg>
+            </div>
+            <div class="d-flex flex-column text-white">
+                <span class="font-weight-bold" style="font-size: 0.96rem; letter-spacing: 0.4px; line-height: 1.2;">
+                    WEBGIS BWS KALIMANTAN I
+                </span>
+                <span style="font-size: 0.72rem; color: rgba(255, 255, 255, 0.9); line-height: 1.15; font-weight: 500;">
+                    Direktorat Jenderal Sumber Daya Air
+                </span>
+                <span style="font-size: 0.72rem; color: rgba(255, 255, 255, 0.9); line-height: 1.15; font-weight: 500;">
+                    Kementerian Pekerjaan Umum
+                </span>
+            </div>
+        </a>
+    </div>
+
+    <!-- Bagian Kanan: Fullscreen, Notifikasi Badge 54, & Profil Admin Dinar -->
     <ul class="navbar-nav ml-auto align-items-center">
 
-        <!-- Badge Status Sistem GIS -->
-        <li class="nav-item d-none d-lg-block mr-3">
-            <span class="badge badge-success px-2 py-1 text-white shadow-sm" style="font-size: 0.75rem; letter-spacing: 0.3px;">
-                <i class="fas fa-satellite text-warning mr-1"></i> GIS Online
-            </span>
-        </li>
-
-        <!-- Tombol Modal Info Laporan Magang -->
-        <li class="nav-item mr-2">
-            <button type="button" class="btn btn-sm btn-link text-white text-decoration-none px-2" data-toggle="modal" data-target="#modalInfoMagang" title="Informasi Laporan & Dokumentasi">
-                <i class="fas fa-info-circle fa-lg"></i>
-            </button>
-        </li>
-
         <!-- Tombol Layar Penuh -->
-        <li class="nav-item mr-2 d-none d-sm-block">
-            <a class="nav-link text-white px-2" href="#" onclick="toggleFullScreen(event)" title="Layar Penuh">
-                <i class="fas fa-expand fa-sm"></i>
+        <li class="nav-item mr-3">
+            <a class="nav-link text-white p-2 d-flex align-items-center justify-content-center" href="#" onclick="toggleFullScreen(event)" title="Layar Penuh" style="opacity: 0.95;">
+                <i class="fas fa-expand fa-lg"></i>
             </a>
         </li>
 
-        <div class="topbar-divider d-none d-sm-block" style="border-right: 1px solid rgba(255,255,255,0.25);"></div>
+        <!-- Notifikasi Lonceng dengan Badge 54 -->
+        <li class="nav-item mr-3 position-relative">
+            <a href="{{ route('admin.dashboard') }}" class="nav-link text-white p-2 position-relative d-flex align-items-center justify-content-center" title="Kelola File Data Spasial">
+                <i class="fas fa-bell fa-lg"></i>
+                <span class="badge badge-danger position-absolute" style="top: 0px; right: 0px; font-size: 0.65rem; border-radius: 12px; padding: 2px 6px; background: #ef4444; font-weight: 800; border: 2px solid #1d64d8;">54</span>
+            </a>
+        </li>
 
-        @auth
-            <!-- TAMPILAN JIKA ADMIN SUDAH LOGIN -->
-            <li class="nav-item mr-2">
-                <a href="{{ route('admin.kelola-gis') }}" class="btn btn-sm btn-outline-light font-weight-bold shadow-sm px-2 px-sm-3" style="border-radius:20px;">
-                    <i class="fas fa-database text-warning mr-1"></i> <span class="d-none d-md-inline">Manajemen Data GIS</span>
-                </a>
-            </li>
-
-            <!-- Profil User Login -->
-            <li class="nav-item dropdown no-arrow">
-                <a class="nav-link dropdown-toggle text-white pl-2" href="#" id="userMenu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <div class="rounded-circle text-white d-flex align-items-center justify-content-center mr-1 mr-md-2 shadow-sm" style="width: 32px; height: 32px; background: rgba(255,255,255,0.25); font-weight: bold; font-size: 13px;">
-                        {{ strtoupper(substr(Auth::user()->name ?? 'Admin', 0, 1)) }}
-                    </div>
-                    <span class="d-none d-md-inline small font-weight-bold">{{ Auth::user()->name ?? 'Admin' }} <i class="fas fa-caret-down ml-1"></i></span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right shadow-lg border-0 animated--grow-in mt-2" aria-labelledby="userMenu" style="border-radius: 8px; width: 200px;">
-                    <div class="dropdown-header small text-muted font-weight-bold">Akun Terautentikasi</div>
+        <!-- Profil User Pill: Admin Dinar -->
+        <li class="nav-item dropdown no-arrow">
+            <a class="nav-link dropdown-toggle text-white d-flex align-items-center py-1 px-3" href="#" id="userMenuBtn" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background: rgba(255, 255, 255, 0.16); border-radius: 25px; transition: background 0.2s ease;">
+                <div class="rounded-circle bg-white d-flex align-items-center justify-content-center mr-2 shadow-sm" style="width: 32px; height: 32px;">
+                    <i class="fas fa-user" style="color: #1d64d8; font-size: 14px;"></i>
+                </div>
+                <span class="font-weight-bold" style="font-size: 0.88rem; color: #ffffff;">
+                    {{ Auth::check() ? Auth::user()->name : 'Admin Dinar' }}
+                </span>
+                <i class="fas fa-chevron-down ml-2" style="font-size: 10px; opacity: 0.8;"></i>
+            </a>
+            
+            <div class="dropdown-menu dropdown-menu-right shadow-lg border-0 animated--grow-in mt-2" aria-labelledby="userMenuBtn" style="border-radius: 10px; min-width: 220px;">
+                <div class="dropdown-header small text-muted font-weight-bold">
+                    {{ Auth::check() ? 'Petugas Terautentikasi' : 'Profil Petugas WebGIS' }}
+                </div>
+                
+                @auth
                     <a class="dropdown-item py-2 text-dark font-weight-bold" href="{{ route('admin.dashboard') }}">
                         <i class="fas fa-tachometer-alt fa-sm fa-fw mr-2 text-primary"></i> Dashboard Admin
                     </a>
                     <a class="dropdown-item py-2 text-dark font-weight-bold" href="{{ route('admin.kelola-gis') }}">
-                        <i class="fas fa-database fa-sm fa-fw mr-2 text-primary"></i> Manajemen Data GIS
+                        <i class="fas fa-database fa-sm fa-fw mr-2 text-primary"></i> Kelola File GIS (54)
                     </a>
-                    <div class="dropdown-divider my-1"></div>
                     <a class="dropdown-item py-2 text-dark" href="{{ route('profile') }}">
                         <i class="fas fa-user-cog fa-sm fa-fw mr-2 text-info"></i> Pengaturan Akun
                     </a>
-                    @if(in_array(Auth::user()->role, ['admin', 'superadmin']))
-                        <a class="dropdown-item py-2 text-dark" href="{{ route('users.index') }}">
-                            <i class="fas fa-users-cog fa-sm fa-fw mr-2 text-info"></i> Kelola Petugas
-                        </a>
-                    @endif
                     <div class="dropdown-divider my-1"></div>
                     <form action="{{ route('logout') }}" method="POST" class="d-inline">
                         @csrf
@@ -89,18 +85,16 @@
                             <i class="fas fa-power-off fa-sm fa-fw mr-2"></i> Keluar
                         </button>
                     </form>
-                </div>
-            </li>
-        @endauth
-
-        @guest
-            <!-- TAMPILAN USER / PUBLIK: HANYA TOMBOL LOGIN PETUGAS -->
-            <li class="nav-item">
-                <a href="{{ route('login') }}" class="btn btn-sm btn-warning text-dark font-weight-bold px-3 shadow-sm" style="border-radius:20px;letter-spacing:0.3px;">
-                    <i class="fas fa-sign-in-alt mr-1"></i> Login Petugas
-                </a>
-            </li>
-        @endguest
+                @else
+                    <a class="dropdown-item py-2 text-dark font-weight-bold" href="{{ route('admin.dashboard') }}">
+                        <i class="fas fa-folder-open fa-sm fa-fw mr-2 text-primary"></i> Kelola File GIS (54)
+                    </a>
+                    <a class="dropdown-item py-2 text-dark font-weight-bold" href="{{ route('login') }}">
+                        <i class="fas fa-sign-in-alt fa-sm fa-fw mr-2 text-success"></i> Masuk Akun Petugas
+                    </a>
+                @endauth
+            </div>
+        </li>
 
     </ul>
 

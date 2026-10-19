@@ -102,8 +102,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [AdminController::class, 'dashboard'])->name('index');
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-        Route::get('/kelola-gis', [AdminController::class, 'dashboard'])->name('kelola-gis');
-        Route::get('/data-gis', [AdminController::class, 'dashboard'])->name('data-gis');
+        Route::get('/kelola-gis', [AdminController::class, 'kelolaGis'])->name('kelola-gis');
+        Route::get('/data-gis', [AdminController::class, 'kelolaGis'])->name('data-gis');
 
         // Aksi CRUD Data Spasial
         Route::post('/upload', [AdminController::class, 'upload'])->name('upload');
