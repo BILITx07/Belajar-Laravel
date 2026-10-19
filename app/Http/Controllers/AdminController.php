@@ -37,12 +37,20 @@ class AdminController extends Controller
             'total_file'      => count($geojsonFiles),
         ];
 
-        $stats = $this->getGisStats();
+        $availableTypes = [
+            'baku'       => true,
+            'fungsional' => true,
+            'potensial'  => true,
+            'saluran'    => true,
+            'bangunan'   => true,
+            'custom'     => false,
+        ];
 
         return view('admin.dashboard', compact(
             'lokasi',
             'kabupatenList',
             'geojsonFiles',
+            'availableTypes',
             'statistik',
             'stats'
         ));
