@@ -56,12 +56,10 @@
                 'potensial'  => ['DIR Potensial', '#f97316', 'fa-seedling'],
                 'saluran'    => ['Jaringan Saluran', '#ec4899', 'fa-stream'],
                 'bangunan'   => ['Bangunan Air', '#8b5cf6', 'fa-landmark'],
-                'ws_kapuas'  => ['WS & DAS Kapuas', '#14b8a6', 'fa-globe-asia'],
-                'custom'     => ['Layer Kustom', '#64748b', 'fa-file-alt'],
             ];
         @endphp
-        @foreach($stats['categories'] as $cat => $count)
-            @php $info = $catLabels[$cat] ?? ['Lainnya', '#64748b', 'fa-file']; @endphp
+        @foreach($catLabels as $cat => $info)
+            @php $count = $stats['categories'][$cat] ?? 0; @endphp
             <div class="col-auto mb-2">
                 <div class="d-flex align-items-center px-3 py-2 bg-white border" style="border-radius:10px;gap:8px;">
                     <i class="fas {{ $info[2] }}" style="color:{{ $info[1] }};font-size:0.85rem;"></i>
@@ -92,8 +90,6 @@
                         <option value="potensial" {{ ($filterType ?? '') === 'potensial' ? 'selected' : '' }}>DIR Potensial</option>
                         <option value="saluran" {{ ($filterType ?? '') === 'saluran' ? 'selected' : '' }}>Jaringan Saluran</option>
                         <option value="bangunan" {{ ($filterType ?? '') === 'bangunan' ? 'selected' : '' }}>Bangunan Air</option>
-                        <option value="ws_kapuas" {{ ($filterType ?? '') === 'ws_kapuas' ? 'selected' : '' }}>WS & DAS Kapuas</option>
-                        <option value="custom" {{ ($filterType ?? '') === 'custom' ? 'selected' : '' }}>Layer Kustom</option>
                     </select>
                     <button type="submit" class="btn btn-sm btn-outline-primary" style="border-radius:8px;">
                         <i class="fas fa-filter"></i>
@@ -150,7 +146,16 @@
                         </td>
                         <td>
                             @php
-                                $catInfo = $catLabels[$file['category']] ?? ['Lainnya', '#64748b', 'fa-file'];
+                                $allCatLabels = [
+                                    'baku'       => ['DIR Baku', '#22c55e', 'fa-leaf'],
+                                    'fungsional' => ['DIR Fungsional', '#3b82f6', 'fa-water'],
+                                    'potensial'  => ['DIR Potensial', '#f97316', 'fa-seedling'],
+                                    'saluran'    => ['Jaringan Saluran', '#ec4899', 'fa-stream'],
+                                    'bangunan'   => ['Bangunan Air', '#8b5cf6', 'fa-landmark'],
+                                    'ws_kapuas'  => ['WS & DAS Kapuas', '#14b8a6', 'fa-globe-asia'],
+                                    'custom'     => ['Layer Kustom', '#64748b', 'fa-file-alt'],
+                                ];
+                                $catInfo = $allCatLabels[$file['category']] ?? ['Lainnya', '#64748b', 'fa-file'];
                             @endphp
                             <span class="cat-badge cat-{{ $file['category'] }}">
                                 <i class="fas {{ $catInfo[2] }}"></i>{{ $catInfo[0] }}
