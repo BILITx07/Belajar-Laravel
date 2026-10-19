@@ -34,7 +34,7 @@
         /* ── TOPBAR BIRU UTAMA (SESUAI GAMBAR REFERENSI BWS) ── */
         .bws-topbar-primary {
             background: var(--bws-blue-gradient);
-            height: 64px;
+            height: 66px;
             padding: 0 24px;
             display: flex;
             align-items: center;
@@ -44,6 +44,7 @@
             position: sticky;
             top: 0;
             z-index: 1040;
+            border-bottom: 3.5px solid #ff9f1a;
         }
 
         .bws-brand-section {

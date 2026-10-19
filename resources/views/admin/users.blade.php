@@ -14,6 +14,14 @@
 @section('content')
 <div class="anim-fade-in">
 
+    <!-- Header Title & Breadcrumb Persis Referensi FEWS BWS Kalimantan I -->
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h4 class="font-weight-bold mb-0" style="letter-spacing: 0.5px; font-size: 1.05rem; color: #495057;">
+            MANAJEMEN USER
+        </h4>
+        <span class="text-muted small" style="font-weight: 500;">Menu Utama</span>
+    </div>
+
     <!-- Flash Alerts -->
     @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert" style="border-radius:10px;border-left:4px solid #10b981;">
