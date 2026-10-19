@@ -119,6 +119,9 @@
     <!-- Leaflet JS (untuk peta interaktif) - harus sebelum @stack('scripts') -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 
+    <!-- shpjs: Otomatis membaca & mengonversi file .zip Shapefile (ArcGIS/QGIS) ke GeoJSON -->
+    <script src="https://cdn.jsdelivr.net/npm/shpjs@6.2.0/dist/shp.js"></script>
+
     @stack('scripts')
 
 </body>

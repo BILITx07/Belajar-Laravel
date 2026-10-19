@@ -167,7 +167,7 @@
 
     /* ── FLOATING OVERLAYS PADA PETA ── */
 
-    /* 1. Floating Layer Control (Kanan Atas) */
+    /* 1. Floating Layer Control (Kanan Atas) dengan Fitur Minimize */
     .gis-layer-control-card {
         position: absolute;
         top: 14px;
@@ -175,12 +175,58 @@
         background: rgba(255, 255, 255, 0.96);
         backdrop-filter: blur(8px);
         border: 1px solid rgba(226, 232, 240, 0.9);
-        border-radius: 10px;
+        border-radius: 12px;
         padding: 12px 14px;
         z-index: 1000;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
         width: 250px;
         font-size: 0.82rem;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .gis-layer-control-card.is-minimized {
+        width: auto !important;
+        min-width: 135px;
+        padding: 8px 12px !important;
+        border-radius: 20px;
+        cursor: pointer;
+    }
+
+    .gis-layer-control-card.is-minimized #layerControlBody {
+        display: none !important;
+    }
+
+    .gis-layer-control-card.is-minimized .layer-control-header {
+        margin-bottom: 0 !important;
+    }
+
+    .layer-control-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .btn-minimize-icon {
+        background: #f1f5f9;
+        border: none;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #475569;
+        font-size: 10px;
+        transition: all 0.2s ease;
+        padding: 0;
+    }
+
+    .btn-minimize-icon:hover {
+        background: #e2e8f0;
+        color: #1e293b;
     }
 
     .layer-radio-item, .layer-checkbox-item {
@@ -208,7 +254,7 @@
         margin: 8px 0;
     }
 
-    /* 2. Floating Legenda Peta (Kiri Bawah) */
+    /* 2. Floating Legenda Peta (Kiri Bawah) dengan Fitur Minimize */
     .gis-legend-card {
         position: absolute;
         bottom: 24px;
@@ -222,6 +268,23 @@
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
         min-width: 190px;
         font-size: 0.8rem;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .gis-legend-card.is-minimized {
+        min-width: unset !important;
+        width: auto !important;
+        padding: 8px 14px !important;
+        border-radius: 20px;
+        cursor: pointer;
+    }
+
+    .gis-legend-card.is-minimized #legendCardBody {
+        display: none !important;
+    }
+
+    .gis-legend-card.is-minimized .gis-legend-header {
+        margin-bottom: 0 !important;
     }
 
     .gis-legend-header {
@@ -231,7 +294,9 @@
         margin-bottom: 8px;
         display: flex;
         align-items: center;
-        gap: 6px;
+        justify-content: space-between;
+        cursor: pointer;
+        user-select: none;
     }
 
     .legend-row {
@@ -356,10 +421,10 @@
             <span class="badge-count">{{ count($geojsonFiles ?? []) > 0 ? count($geojsonFiles ?? []) : 54 }}</span>
         </a>
 
-        <!-- 4. Upload GeoJSON Button -->
-        <button type="button" class="btn-upload-geojson" data-toggle="modal" data-target="#uploadGeojsonModal">
-            <i class="fas fa-cloud-upload-alt fa-lg"></i>
-            <span>Upload GeoJSON</span>
+        <!-- 4. Upload Spasial ZIP / GeoJSON Button -->
+        <button type="button" class="btn-upload-geojson" data-toggle="modal" data-target="#uploadGeojsonModal" title="Upload File ZIP (Shapefile ArcGIS) atau GeoJSON">
+            <i class="fas fa-file-archive fa-lg"></i>
+            <span>Upload ZIP / GeoJSON</span>
         </button>
 
         <!-- 5. Ringkasan Luas & DIR (Sesuai Desain Rapi) -->
@@ -396,67 +461,84 @@
             <!-- Elemen Peta Leaflet -->
             <div id="map"></div>
 
-            <!-- Floating Layer Control (Kanan Atas) Sesuai Gambar -->
-            <div class="gis-layer-control-card">
-                <!-- Radio Pilihan Basemap -->
-                <label class="layer-radio-item">
-                    <input type="radio" name="basemap_choice" value="osm" onchange="switchBaseMap('osm')">
-                    <span>Peta (OpenStreetMap)</span>
-                </label>
-                <label class="layer-radio-item">
-                    <input type="radio" name="basemap_choice" value="satellite" checked onchange="switchBaseMap('satellite')">
-                    <span>Satelit (Google Hybrid)</span>
-                </label>
+            <!-- Floating Layer Control (Kanan Atas) Sesuai Gambar dengan Fitur Minimize -->
+            <div class="gis-layer-control-card" id="cardLayerControl">
+                <div class="layer-control-header" onclick="toggleLayerCard()">
+                    <span class="font-weight-bold" style="color: #0f172a; font-size: 0.84rem;">
+                        <i class="fas fa-layer-group text-primary mr-1"></i> Layer Peta
+                    </span>
+                    <button type="button" class="btn-minimize-icon" title="Minimize / Buka Layer Peta">
+                        <i class="fas fa-minus" id="iconToggleLayer"></i>
+                    </button>
+                </div>
 
-                <div class="layer-divider"></div>
+                <div id="layerControlBody">
+                    <!-- Radio Pilihan Basemap -->
+                    <label class="layer-radio-item">
+                        <input type="radio" name="basemap_choice" value="osm" onchange="switchBaseMap('osm')">
+                        <span>Peta (OpenStreetMap)</span>
+                    </label>
+                    <label class="layer-radio-item">
+                        <input type="radio" name="basemap_choice" value="satellite" checked onchange="switchBaseMap('satellite')">
+                        <span>Satelit (Google Hybrid)</span>
+                    </label>
 
-                <!-- Checkbox Layer Spasial -->
-                <label class="layer-checkbox-item">
-                    <input type="checkbox" id="chk-baku" checked onchange="toggleLayer('baku', this.checked)">
-                    <span>Daerah Irigasi Baku (Hijau)</span>
-                </label>
-                <label class="layer-checkbox-item">
-                    <input type="checkbox" id="chk-fungsional" checked onchange="toggleLayer('fungsional', this.checked)">
-                    <span>Daerah Irigasi Fungsional (Biru)</span>
-                </label>
-                <label class="layer-checkbox-item">
-                    <input type="checkbox" id="chk-potensial" checked onchange="toggleLayer('potensial', this.checked)">
-                    <span>Daerah Irigasi Potensial (Oranye)</span>
-                </label>
-                <label class="layer-checkbox-item">
-                    <input type="checkbox" id="chk-saluran" checked onchange="toggleLayer('saluran', this.checked)">
-                    <span>Jaringan Saluran Irigasi</span>
-                </label>
-                <label class="layer-checkbox-item">
-                    <input type="checkbox" id="chk-bangunan" checked onchange="toggleLayer('bangunan', this.checked)">
-                    <span>Bangunan Air / Pelengkap</span>
-                </label>
+                    <div class="layer-divider"></div>
+
+                    <!-- Checkbox Layer Spasial -->
+                    <label class="layer-checkbox-item">
+                        <input type="checkbox" id="chk-baku" checked onchange="toggleLayer('baku', this.checked)">
+                        <span>Daerah Irigasi Baku (Hijau)</span>
+                    </label>
+                    <label class="layer-checkbox-item">
+                        <input type="checkbox" id="chk-fungsional" checked onchange="toggleLayer('fungsional', this.checked)">
+                        <span>Daerah Irigasi Fungsional (Biru)</span>
+                    </label>
+                    <label class="layer-checkbox-item">
+                        <input type="checkbox" id="chk-potensial" checked onchange="toggleLayer('potensial', this.checked)">
+                        <span>Daerah Irigasi Potensial (Oranye)</span>
+                    </label>
+                    <label class="layer-checkbox-item">
+                        <input type="checkbox" id="chk-saluran" checked onchange="toggleLayer('saluran', this.checked)">
+                        <span>Jaringan Saluran Irigasi</span>
+                    </label>
+                    <label class="layer-checkbox-item">
+                        <input type="checkbox" id="chk-bangunan" checked onchange="toggleLayer('bangunan', this.checked)">
+                        <span>Bangunan Air / Pelengkap</span>
+                    </label>
+                </div>
             </div>
 
-            <!-- Floating Legenda Peta (Kiri Bawah) Sesuai Gambar -->
-            <div class="gis-legend-card">
-                <div class="gis-legend-header">
+            <!-- Floating Legenda Peta (Kiri Bawah) Sesuai Gambar dengan Fitur Minimize -->
+            <div class="gis-legend-card" id="cardLegend">
+                <div class="gis-legend-header" onclick="toggleLegendCard()">
                     <span>🎨 Legenda Peta</span>
+                    <button type="button" class="btn-minimize-icon ml-2" title="Minimize / Buka Legenda">
+                        <i class="fas fa-minus" id="iconToggleLegend"></i>
+                    </button>
                 </div>
-                <div class="legend-row">
-                    <span class="legend-swatch-box" style="background-color: #22c55e;"></span>
-                    <span>DIR Baku (Hijau)</span>
-                </div>
-                <div class="legend-row">
-                    <span class="legend-swatch-box" style="background-color: #0284c7;"></span>
-                    <span>DIR Fungsional (Biru)</span>
-                </div>
-                <div class="legend-row">
-                    <span class="legend-swatch-box" style="background-color: #f97316;"></span>
-                    <span>DIR Potensial (Oranye)</span>
-                </div>
-                <div class="legend-row">
-                    <span class="legend-swatch-line" style="background-color: #0284c7;"></span>
-                    <span>Jaringan Saluran</span>
-                </div>
-                <div class="legend-row">
-                    <span class="legend-swatch-dot"></span>
-                    <span>Bangunan Air</span>
+
+                <div id="legendCardBody">
+                    <div class="legend-row">
+                        <span class="legend-swatch-box" style="background-color: #22c55e;"></span>
+                        <span>DIR Baku (Hijau)</span>
+                    </div>
+                    <div class="legend-row">
+                        <span class="legend-swatch-box" style="background-color: #0284c7;"></span>
+                        <span>DIR Fungsional (Biru)</span>
+                    </div>
+                    <div class="legend-row">
+                        <span class="legend-swatch-box" style="background-color: #f97316;"></span>
+                        <span>DIR Potensial (Oranye)</span>
+                    </div>
+                    <div class="legend-row">
+                        <span class="legend-swatch-line" style="background-color: #0284c7;"></span>
+                        <span>Jaringan Saluran</span>
+                    </div>
+                    <div class="legend-row">
+                        <span class="legend-swatch-dot"></span>
+                        <span>Bangunan Air</span>
+                    </div>
                 </div>
             </div>
 
@@ -510,14 +592,14 @@
 
 </div>
 
-<!-- Modal Upload GeoJSON -->
+<!-- Modal Upload File Spasial (ZIP / GeoJSON) -->
 <div class="modal fade" id="uploadGeojsonModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content border-0 shadow-lg" style="border-radius: 14px; overflow: hidden;">
             <div class="modal-header text-white" style="background: #1d64d8;">
                 <div class="d-flex align-items-center">
-                    <i class="fas fa-cloud-upload-alt mr-2 fa-lg"></i>
-                    <h6 class="modal-title font-weight-bold mb-0" id="uploadModalLabel">Upload Data GeoJSON Baru</h6>
+                    <i class="fas fa-file-archive mr-2 fa-lg"></i>
+                    <h6 class="modal-title font-weight-bold mb-0" id="uploadModalLabel">Upload File Spasial (ZIP / GeoJSON)</h6>
                 </div>
                 <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -525,22 +607,24 @@
             </div>
             
             @auth
-            <form action="{{ route('admin.upload') }}" method="POST" enctype="multipart/form-data">
+            <form id="gisUploadForm" action="{{ route('admin.upload') }}" method="POST" enctype="multipart/form-data" onsubmit="handleGisUpload(this, event)">
                 @csrf
                 <div class="modal-body p-4">
-                    <p class="small text-muted mb-3">
-                        Unggah file spasial <code>.geojson</code> atau <code>.json</code> untuk ditampilkan langsung pada peta interaktif.
-                    </p>
-                    <div class="form-group mb-3">
-                        <label class="font-weight-bold small text-dark">Pilih File GeoJSON</label>
-                        <input type="file" name="geojson_files[]" class="form-control-file border p-2 rounded w-100" accept=".json,.geojson" multiple required>
-                        <small class="text-muted">Bisa memilih lebih dari 1 file sekaligus.</small>
+                    <div class="alert alert-info py-2 px-3 small mb-3 border-0" style="background: #e0f2fe; color: #0369a1; border-radius: 8px;">
+                        <i class="fas fa-check-circle mr-1"></i> <strong>Mendukung File ZIP Shapefile ArcGIS / QGIS!</strong><br>
+                        Anda dapat langsung mengunggah file <code>.zip</code> (berisi <code>.shp</code>, <code>.dbf</code>, <code>.shx</code>, <code>.prj</code>) tanpa perlu konversi manual. Sistem akan otomatis memprosesnya.
                     </div>
+                    <div class="form-group mb-2">
+                        <label class="font-weight-bold small text-dark">Pilih File ZIP atau GeoJSON</label>
+                        <input type="file" id="inputGisFiles" name="file_geojson[]" class="form-control-file border p-2 rounded w-100" accept=".zip,.json,.geojson" multiple required>
+                        <small class="text-muted d-block mt-1">Dapat memilih lebih dari 1 file sekaligus (maksimal 256 MB per file).</small>
+                    </div>
+                    <div id="uploadStatusText" class="small font-weight-bold text-primary mt-2" style="display: none;"></div>
                 </div>
                 <div class="modal-footer bg-light py-2">
                     <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary btn-sm px-4 font-weight-bold" style="background: #2563eb;">
-                        <i class="fas fa-upload mr-1"></i> Mulai Unggah
+                    <button type="submit" id="btnSubmitUpload" class="btn btn-primary btn-sm px-4 font-weight-bold" style="background: #2563eb;">
+                        <i class="fas fa-cloud-upload-alt mr-1"></i> Mulai Unggah
                     </button>
                 </div>
             </form>
@@ -551,7 +635,7 @@
                 </div>
                 <h6 class="font-weight-bold text-dark mb-2">Autentikasi Diperlukan</h6>
                 <p class="small text-muted mb-3">
-                    Fitur upload file GeoJSON hanya dapat diakses oleh petugas atau administrator yang telah login.
+                    Fitur upload file spasial (ZIP / GeoJSON) hanya dapat diakses oleh petugas atau administrator yang telah login.
                 </p>
                 <a href="{{ route('login') }}" class="btn btn-primary btn-sm px-4 font-weight-bold" style="background: #2563eb;">
                     <i class="fas fa-sign-in-alt mr-1"></i> Login Sekarang
@@ -743,12 +827,117 @@ function toggleViewMode(val) {
     }, 200);
 }
 
-// Fokuskan Peta ke Koordinat Tertentu
-function focusToLocation(lat, lng, nama) {
-    map.setView([lat, lng], 13);
-    var item = dirMarkers.find(function(d) { return d.name === nama.toLowerCase(); });
-    if (item && item.marker) {
-        item.marker.openPopup();
+// Toggle Minimize Layer Control Card (Kanan Atas)
+function toggleLayerCard(e) {
+    if (e) e.stopPropagation();
+    var card = document.getElementById('cardLayerControl');
+    var icon = document.getElementById('iconToggleLayer');
+    card.classList.toggle('is-minimized');
+    if (card.classList.contains('is-minimized')) {
+        icon.className = 'fas fa-chevron-down';
+    } else {
+        icon.className = 'fas fa-minus';
+    }
+}
+
+// Toggle Minimize Legenda Card (Kiri Bawah)
+function toggleLegendCard(e) {
+    if (e) e.stopPropagation();
+    var card = document.getElementById('cardLegend');
+    var icon = document.getElementById('iconToggleLegend');
+    card.classList.toggle('is-minimized');
+    if (card.classList.contains('is-minimized')) {
+        icon.className = 'fas fa-chevron-up';
+    } else {
+        icon.className = 'fas fa-minus';
+    }
+}
+
+// Handle Upload Form dengan Konversi Otomatis Shapefile ZIP via shpjs
+async function handleGisUpload(form, event) {
+    event.preventDefault();
+    var fileInput = document.getElementById('inputGisFiles');
+    var files = fileInput.files;
+    if (!files || files.length === 0) {
+        alert('Silakan pilih file terlebih dahulu.');
+        return false;
+    }
+
+    var submitBtn = document.getElementById('btnSubmitUpload');
+    var statusText = document.getElementById('uploadStatusText');
+    submitBtn.disabled = true;
+    statusText.style.display = 'block';
+
+    var formData = new FormData();
+    formData.append('_token', form.querySelector('input[name="_token"]').value);
+
+    for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        var ext = file.name.split('.').pop().toLowerCase();
+
+        if (ext === 'zip') {
+            statusText.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Mengekstrak paket Shapefile ZIP: ' + file.name + '...';
+            try {
+                if (typeof shp !== 'undefined') {
+                    var buffer = await file.arrayBuffer();
+                    var geojson = await shp(buffer);
+
+                    if (Array.isArray(geojson)) {
+                        geojson.forEach(function(gj, idx) {
+                            var rawName = gj.fileName || (file.name.replace(/\.zip$/i, '') + (idx > 0 ? '_' + idx : ''));
+                            var cleanName = rawName.replace(/[^a-zA-Z0-9_\-]/g, '_') + '.geojson';
+                            var blob = new Blob([JSON.stringify(gj)], { type: 'application/geo+json' });
+                            formData.append('file_geojson[]', blob, cleanName);
+                        });
+                    } else if (geojson && geojson.type) {
+                        var rawName = geojson.fileName || file.name.replace(/\.zip$/i, '');
+                        var cleanName = rawName.replace(/[^a-zA-Z0-9_\-]/g, '_') + '.geojson';
+                        var blob = new Blob([JSON.stringify(geojson)], { type: 'application/geo+json' });
+                        formData.append('file_geojson[]', blob, cleanName);
+                    } else {
+                        formData.append('file_geojson[]', file, file.name);
+                    }
+                } else {
+                    formData.append('file_geojson[]', file, file.name);
+                }
+            } catch (err) {
+                console.warn('shpjs conversion fallback:', err);
+                formData.append('file_geojson[]', file, file.name);
+            }
+        } else {
+            formData.append('file_geojson[]', file, file.name);
+        }
+    }
+
+    statusText.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Mengirim data ke server WebGIS...';
+
+    try {
+        var response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+
+        if (response.redirected) {
+            window.location.href = response.url;
+            return;
+        }
+
+        var resData = await response.json().catch(function() { return null; });
+        if (resData && resData.success) {
+            window.location.reload();
+        } else if (resData && !resData.success) {
+            alert(resData.message || 'Gagal mengunggah file.');
+            submitBtn.disabled = false;
+            statusText.style.display = 'none';
+        } else {
+            window.location.reload();
+        }
+    } catch (e) {
+        // Fallback standard submit
+        form.submit();
     }
 }
 </script>

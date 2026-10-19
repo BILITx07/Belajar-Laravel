@@ -111,62 +111,109 @@ class AdminController extends Controller
     }
 
     /**
-     * Upload File GeoJSON Baru
+     * Upload File Spasial Baru (Mendukung .geojson, .json, dan arsip .zip)
      */
     public function upload(Request $request)
     {
         @ini_set('memory_limit', '1024M');
         @set_time_limit(300);
 
-        $request->validate([
-            'file_geojson'   => 'required|array|min:1',
-            'file_geojson.*' => 'required|file|max:262144|extensions:json,geojson',
-        ], [
-            'file_geojson.required'     => 'Silakan pilih minimal satu file GeoJSON/JSON terlebih dahulu.',
-            'file_geojson.*.file'       => 'File yang diunggah tidak valid.',
-            'file_geojson.*.extensions' => 'Format file harus berekstensi .json atau .geojson!',
-            'file_geojson.*.max'        => 'Ukuran file tidak boleh lebih dari 256 MB per file.',
-        ]);
+        $rawFiles = $request->file('file_geojson') ?? $request->file('geojson_files');
+
+        if (!$rawFiles || count((array) $rawFiles) === 0) {
+            $msg = 'Silakan pilih minimal satu file ZIP atau GeoJSON terlebih dahulu.';
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json(['success' => false, 'message' => $msg], 422);
+            }
+            return redirect()->back()->with('error', $msg);
+        }
 
         $destinationPath = public_path('geojson');
         if (!file_exists($destinationPath)) {
             File::makeDirectory($destinationPath, 0755, true);
         }
 
-        $files = (array) $request->file('file_geojson');
+        $files = is_array($rawFiles) ? $rawFiles : [$rawFiles];
         $uploaded = [];
         $failed = [];
 
         foreach ($files as $file) {
-            $namaFile = $file->getClientOriginalName();
-            $ext = strtolower($file->getClientOriginalExtension());
-
-            if (!in_array($ext, ['json', 'geojson'])) {
-                $failed[] = $namaFile . ' (format tidak didukung)';
+            if (!$file->isValid()) {
+                $failed[] = $file->getClientOriginalName() . ' (file tidak valid)';
                 continue;
             }
 
-            // Validasi format isi JSON
-            $content = file_get_contents($file->getRealPath());
-            if ($file->getSize() <= 2 * 1024 * 1024) {
-                $decoded = json_decode($content, true);
-                if (json_last_error() !== JSON_ERROR_NONE || empty($decoded['type'])) {
-                    $failed[] = $namaFile . ' (bukan GeoJSON yang valid)';
-                    continue;
-                }
+            $namaFile = $file->getClientOriginalName();
+            $ext = strtolower($file->getClientOriginalExtension());
+
+            if (!in_array($ext, ['json', 'geojson', 'zip'])) {
+                $failed[] = $namaFile . ' (format harus .zip, .geojson, atau .json)';
+                continue;
             }
 
-            $file->move($destinationPath, $namaFile);
-            $uploaded[] = $namaFile;
+            // Jika berupa file ZIP
+            if ($ext === 'zip') {
+                $zip = new \ZipArchive();
+                if ($zip->open($file->getRealPath()) === true) {
+                    $extractedInZip = 0;
+                    for ($i = 0; $i < $zip->numFiles; $i++) {
+                        $stat = $zip->statIndex($i);
+                        $entryName = basename($stat['name']);
+                        $entryExt = strtolower(pathinfo($entryName, PATHINFO_EXTENSION));
+
+                        // Lewati direktori, file tersembunyi macOS, atau file sistem
+                        if (str_starts_with($entryName, '.') || str_contains($stat['name'], '__MACOSX')) {
+                            continue;
+                        }
+
+                        if (in_array($entryExt, ['json', 'geojson'])) {
+                            $fileContent = $zip->getFromIndex($i);
+                            if ($fileContent !== false) {
+                                file_put_contents($destinationPath . '/' . $entryName, $fileContent);
+                                $uploaded[] = $entryName;
+                                $extractedInZip++;
+                            }
+                        }
+                    }
+                    $zip->close();
+
+                    if ($extractedInZip === 0) {
+                        $failed[] = $namaFile . ' (tidak ditemukan file .geojson/.json di dalam arsip ZIP)';
+                    }
+                } else {
+                    $failed[] = $namaFile . ' (file arsip ZIP tidak dapat dibuka)';
+                }
+            } else {
+                // File .geojson atau .json
+                $content = file_get_contents($file->getRealPath());
+                if ($file->getSize() <= 2 * 1024 * 1024) {
+                    $decoded = json_decode($content, true);
+                    if (json_last_error() !== JSON_ERROR_NONE || empty($decoded['type'])) {
+                        $failed[] = $namaFile . ' (struktur JSON tidak valid)';
+                        continue;
+                    }
+                }
+
+                $file->move($destinationPath, $namaFile);
+                $uploaded[] = $namaFile;
+            }
         }
 
         if (count($uploaded) === 0 && count($failed) > 0) {
-            return redirect()->back()->with('error', 'Gagal mengunggah file: ' . implode(', ', $failed));
+            $errMsg = 'Gagal mengunggah file: ' . implode(', ', $failed);
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json(['success' => false, 'message' => $errMsg], 422);
+            }
+            return redirect()->back()->with('error', $errMsg);
         }
 
-        $msg = count($uploaded) . ' file GeoJSON baru berhasil diunggah (' . implode(', ', $uploaded) . ').';
+        $msg = count($uploaded) . ' file spasial berhasil ditambahkan (' . implode(', ', array_slice($uploaded, 0, 4)) . (count($uploaded) > 4 ? '...' : '') . ').';
         if (count($failed) > 0) {
-            $msg .= ' Gagal: ' . implode(', ', $failed);
+            $msg .= ' Catatan: ' . implode(', ', $failed);
+        }
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json(['success' => true, 'message' => $msg, 'uploaded' => $uploaded]);
         }
 
         return redirect()->route('admin.dashboard')->with('success', $msg);
