@@ -216,10 +216,11 @@
             color: #1d4ed8;
         }
 
-        /* Auto open on hover for subnavbar dropdown */
+        /* Auto open on hover & click for subnavbar dropdown */
         .bws-subnavbar .dropdown:hover > .bws-dropdown-menu,
-        .bws-subnavbar .dropdown:focus-within > .bws-dropdown-menu {
-            display: block;
+        .bws-subnavbar .dropdown.show > .bws-dropdown-menu,
+        .bws-dropdown-menu.show {
+            display: block !important;
         }
 
         /* ── MULTI-LEVEL NESTED DROPDOWN (MASTER DATA > INFRASTRUKTUR) ── */
@@ -241,8 +242,9 @@
         }
 
         .dropdown-submenu:hover > .dropdown-menu,
+        .dropdown-submenu.show > .dropdown-menu,
         .dropdown-submenu:focus-within > .dropdown-menu {
-            display: block;
+            display: block !important;
         }
 
         .dropdown-submenu > a.dropdown-item::after {
