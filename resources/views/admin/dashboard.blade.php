@@ -1,6 +1,6 @@
 @extends('layout.master')
 
-@section('title', 'BWS KALIMANTAN I - Dashboard Admin Peta Daerah Irigasi (DIR)')
+@section('title', 'BWS KALIMANTAN I -')
 @section('hide_footer', true)
 
 @push('styles')
@@ -52,7 +52,7 @@
             <div class="d-flex align-items-center">
                 <span class="bws-breadcrumb-parent">Dashboard Data</span>
                 <i class="fas fa-chevron-right bws-breadcrumb-arrow"></i>
-                <span class="bws-breadcrumb-current">Peta Daerah Irigasi (DIR)</span>
+                <span class="bws-breadcrumb-current"></span>
             </div>
             <div class="d-flex align-items-center flex-wrap" style="gap: 6px;">
                 <span class="small font-weight-bold text-muted mr-1" style="font-size:11.5px;"><i class="fas fa-crosshairs text-primary mr-1"></i>Fokus Wilayah:</span>
