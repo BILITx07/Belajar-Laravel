@@ -3,29 +3,25 @@ FROM php:8.2-fpm-alpine
 RUN apk add --no-cache \
     nginx \
     curl \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    freetype-dev \
-    libzip-dev \
     zip \
     unzip \
     git \
-    oniguruma-dev \
-    icu-dev \
-    sqlite-dev
+    sqlite
 
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) \
-        pdo_mysql \
-        pdo_sqlite \
-        mbstring \
-        exif \
-        pcntl \
-        bcmath \
-        gd \
-        zip \
-        intl \
-        opcache
+# Install ekstensi PHP dengan aman tanpa OOM / error kompilasi C++ di Railway
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+
+RUN install-php-extensions \
+    pdo_mysql \
+    pdo_sqlite \
+    mbstring \
+    exif \
+    pcntl \
+    bcmath \
+    gd \
+    zip \
+    intl \
+    opcache
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
