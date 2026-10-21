@@ -212,6 +212,38 @@ window.resetMapView = function() {
 
 // Fungsi Pintas Fokus Wilayah (Sambas / Pemangkat, Kubu Raya, Ketapang, Semua)
 window.focusRegion = function(region) {
+    // Sinkronisasi status tombol fokus aktif
+    document.querySelectorAll('.btn-region-focus').forEach(function(btn) {
+        if (btn.getAttribute('data-region') === region) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+
+    // Update Breadcrumb Dinamis
+    var arrow = document.getElementById('bwsBreadcrumbArrow');
+    var current = document.getElementById('bwsBreadcrumbCurrent');
+    var regionLabels = {
+        'sambas': 'Sambas / Pemangkat',
+        'kubu_raya': 'Kubu Raya',
+        'ketapang': 'Ketapang'
+    };
+
+    if (regionLabels[region]) {
+        if (arrow) arrow.style.display = 'inline-block';
+        if (current) {
+            current.textContent = regionLabels[region];
+            current.style.display = 'inline-flex';
+        }
+    } else {
+        if (arrow) arrow.style.display = 'none';
+        if (current) {
+            current.textContent = '';
+            current.style.display = 'none';
+        }
+    }
+
     if (!window.map) return;
     if (region === 'sambas') {
         map.flyTo([1.16, 108.98], 11, { animate: true, duration: 1.2 });

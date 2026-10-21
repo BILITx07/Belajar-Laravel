@@ -372,13 +372,7 @@
                 <i class="fas fa-expand fa-lg text-white"></i>
             </a>
 
-            <!-- Notifikasi Bell 54
-            <div class="position-relative">
-                <a href="{{ route('admin.kelola-gis') }}" class="bws-action-icon" title="Kelola File Data Spasial">
-                    <i class="fas fa-bell fa-lg text-white"></i>
-                    <span class="bws-notif-badge" style="background:#ef4444; border:2px solid #1d64d8; font-weight:800;">54</span>
-                </a>
-            </div> -->
+         
 
             <!-- Profile Dropdown (Sesuai Referensi Gambar BWS) -->
             <div class="dropdown">

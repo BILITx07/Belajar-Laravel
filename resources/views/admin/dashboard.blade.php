@@ -48,24 +48,24 @@
     <main class="bws-content">
 
         <!-- Breadcrumb & Quick Focus Toolbar -->
-        <div class="bws-breadcrumb d-flex align-items-center justify-content-between flex-wrap" style="gap: 10px;">
-            <div class="d-flex align-items-center">
+        <div class="bws-breadcrumb d-flex align-items-center justify-content-between flex-wrap" style="gap: 12px;">
+            <div class="d-flex align-items-center" style="gap: 8px;">
                 <span class="bws-breadcrumb-parent">Dashboard Data</span>
-                <i class="fas fa-chevron-right bws-breadcrumb-arrow"></i>
-                <span class="bws-breadcrumb-current"></span>
+                <i class="fas fa-chevron-right bws-breadcrumb-arrow" id="bwsBreadcrumbArrow" style="display: none;"></i>
+                <span class="bws-breadcrumb-current" id="bwsBreadcrumbCurrent" style="display: none;"></span>
             </div>
             <div class="d-flex align-items-center flex-wrap" style="gap: 6px;">
                 <span class="small font-weight-bold text-muted mr-1" style="font-size:11.5px;"><i class="fas fa-crosshairs text-primary mr-1"></i>Fokus Wilayah:</span>
-                <button type="button" class="btn btn-sm btn-outline-primary font-weight-bold py-1 px-2 shadow-sm" style="font-size: 11px; border-radius: 6px;" onclick="focusRegion('sambas')" title="Fokus ke Daerah Irigasi Sambas / Pemangkat">
+                <button type="button" class="btn btn-sm btn-region-focus font-weight-bold py-1 px-2 shadow-sm" data-region="sambas" onclick="focusRegion('sambas')" title="Fokus ke Daerah Irigasi Sambas / Pemangkat">
                     📍 Sambas / Pemangkat
                 </button>
-                <button type="button" class="btn btn-sm btn-outline-secondary font-weight-bold py-1 px-2 shadow-sm" style="font-size: 11px; border-radius: 6px;" onclick="focusRegion('kubu_raya')" title="Fokus ke Daerah Irigasi Kubu Raya">
+                <button type="button" class="btn btn-sm btn-region-focus font-weight-bold py-1 px-2 shadow-sm" data-region="kubu_raya" onclick="focusRegion('kubu_raya')" title="Fokus ke Daerah Irigasi Kubu Raya">
                     📍 Kubu Raya
                 </button>
-                <button type="button" class="btn btn-sm btn-outline-secondary font-weight-bold py-1 px-2 shadow-sm" style="font-size: 11px; border-radius: 6px;" onclick="focusRegion('ketapang')" title="Fokus ke Daerah Irigasi Ketapang">
+                <button type="button" class="btn btn-sm btn-region-focus font-weight-bold py-1 px-2 shadow-sm" data-region="ketapang" onclick="focusRegion('ketapang')" title="Fokus ke Daerah Irigasi Ketapang">
                     📍 Ketapang
                 </button>
-                <button type="button" class="btn btn-sm btn-outline-dark font-weight-bold py-1 px-2 shadow-sm" style="font-size: 11px; border-radius: 6px;" onclick="focusRegion('all')" title="Tampilkan Semua Wilayah Kalimantan Barat">
+                <button type="button" class="btn btn-sm btn-region-focus font-weight-bold py-1 px-2 shadow-sm active" data-region="all" onclick="focusRegion('all')" title="Tampilkan Semua Wilayah Kalimantan Barat">
                     🗺️ Semua
                 </button>
             </div>
