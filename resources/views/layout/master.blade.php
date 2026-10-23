@@ -32,6 +32,7 @@
         #content-wrapper {
             background-color: #f1f5f9;
         }
+        
         :root {
             --pu-navy: #0f3b75;
             --pu-blue: #1e56a0;
