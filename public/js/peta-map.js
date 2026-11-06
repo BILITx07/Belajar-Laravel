@@ -1,280 +1,167 @@
-/**
- * peta-map.js
- * JavaScript khusus untuk halaman Peta Daerah Irigasi (DIR)
- * BWS Kalimantan I - WebGIS
- *
- * Fungsi utama:
- * 1. Registrasi sistem koordinat ESRI/ArcMap (Proj4)
- * 2. Toggle Fullscreen
- * 3. Switcher View Mode (Peta / Tabel / Keduanya)
- * 4. Inisialisasi Leaflet Map + Layer Groups + Legenda
- * 5. Konversi & Reproyeksi Koordinat GeoJSON (WKID 54034, 3857, UTM 49, WGS84)
- * 6. Fetch & Load file GeoJSON dari server ke peta
- * 7. Render Data Table koordinat GIS
- * 8. Pencarian Realtime di tabel
- * 9. Export data tabel ke CSV
- * 10. Helper Modal Kelola File GIS (filter, checkbox, bulk delete)
- * 11. Chunked Batch Upload GeoJSON (anti PostTooLargeException)
+/*
+ * peta-map.js — WebGIS BWS Kalimantan I
+ * Fitur: Peta Leaflet Interaktif, Layer Spasial, Popup Card Modern (ala Gambar 4),
+ * Live Search Autocomplete, Filter Kabupaten, Filter Tab Kategori Tabel & Pagination 10 baris.
  */
 
 /* ============================================================
-   0. REGISTRASI PROJ4 - SISTEM KOORDINAT ARCMAP / ESRI
-   Fungsi: Mendaftarkan definisi proyeksi peta yang dipakai
-   ArcMap/ESRI agar koordinat bisa dikonversi ke WGS84 (Leaflet).
+   1. INISIALISASI PETA LEAFLET & BASEMAP
    ============================================================ */
-if (typeof proj4 !== 'undefined') {
-    proj4.defs("EPSG:54034", "+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs");
-    proj4.defs("ESRI:54034", "+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs");
-    proj4.defs("EPSG:3857",  "+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1 +units=m +nadgrids=@null +wktext +no_defs");
-    proj4.defs("EPSG:32649", "+proj=utm +zone=49 +datum=WGS84 +units=m +no_defs");
-    proj4.defs("EPSG:32749", "+proj=utm +zone=49 +south +datum=WGS84 +units=m +no_defs");
-}
+var defaultCenter = [-0.15, 109.85]; // Koordinat Pusat Kalimantan Barat
 
-/* ============================================================
-   1. FULLSCREEN TOGGLE
-   Fungsi: Membuat halaman masuk/keluar mode layar penuh.
-   Bisa dipanggil dari tombol manapun dengan id="btnFullscreenToggle".
-   ============================================================ */
-var btnFs = document.getElementById('btnFullscreenToggle');
-if (btnFs) {
-    btnFs.addEventListener('click', function() {
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(function(err){});
-            btnFs.innerHTML = '<i class="fas fa-compress"></i>';
-        } else {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-                btnFs.innerHTML = '<i class="fas fa-expand"></i>';
-            }
-        }
-    });
-}
-
-// Fullscreen keyboard shortcut (F11 override)
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'F11' && document.getElementById('map')) {
-        e.preventDefault();
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(function(err){});
-        } else {
-            if (document.exitFullscreen) document.exitFullscreen();
-        }
-    }
-});
-
-/* ============================================================
-   2. VIEW SWITCHER
-   Fungsi: Dropdown "View" di sidebar untuk memilih tampilan:
-   - "both"  → Tampilkan peta DAN tabel sekaligus
-   - "maps"  → Tampilkan peta saja (peta diperbesar penuh)
-   - "table" → Tampilkan tabel saja (peta disembunyikan)
-   ============================================================ */
-window.switchViewMode = function(mode) {
-    var mapSec = document.getElementById('section-map');
-    var tblSec = document.getElementById('section-table');
-    var mapEl  = document.getElementById('map');
-
-    if (mode === 'maps') {
-        mapSec.style.display = 'block';
-        tblSec.style.display = 'none';
-        mapEl.style.height = 'calc(100vh - 190px)';
-    } else if (mode === 'table') {
-        mapSec.style.display = 'none';
-        tblSec.style.display = 'block';
-    } else {
-        mapSec.style.display = 'block';
-        tblSec.style.display = 'block';
-        mapEl.style.height = '480px';
-    }
-
-    // Paksa Leaflet untuk menghitung ulang ukuran peta
-    setTimeout(function() {
-        if (window.map) window.map.invalidateSize();
-    }, 200);
-};
-
-/* ============================================================
-   3. INISIALISASI LEAFLET MAP
-   Fungsi: Membuat peta interaktif Leaflet dengan 2 pilihan
-   basemap (OpenStreetMap & Google Satellite), layer groups
-   per kategori GIS, dan kontrol layer toggle di kanan atas.
-   ============================================================ */
+// Peta Dasar OpenStreetMap
 var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors', maxZoom: 19
-});
-var googleSat = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
-    attribution: '&copy; Google Satellite', maxZoom: 20
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap | BWS Kalimantan I'
 });
 
-var defaultCenter = [-0.0263, 109.3425]; // Kalimantan Barat / Pontianak
-var map = L.map('map', { center: defaultCenter, zoom: 8, layers: [osm], zoomControl: true });
+// Peta Satelit Google Hybrid
+var googleSat = L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+    maxZoom: 20,
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+    attribution: '&copy; Google Maps Satellite | BWS Kalimantan I'
+});
+
+var map = L.map('map', {
+    center: defaultCenter,
+    zoom: 8,
+    layers: [osm],
+    zoomControl: true
+});
 window.map = map;
 var mapBounds = L.latLngBounds();
 
-// Layer Groups per Kategori GIS
-var layerBaku       = L.layerGroup(); if (window.availableTypes && window.availableTypes.baku)       layerBaku.addTo(map);
-var layerFungsional = L.layerGroup(); if (window.availableTypes && window.availableTypes.fungsional) layerFungsional.addTo(map);
-var layerPotensial  = L.layerGroup(); if (window.availableTypes && window.availableTypes.potensial)  layerPotensial.addTo(map);
-var layerSaluran    = L.layerGroup(); if (window.availableTypes && window.availableTypes.saluran)    layerSaluran.addTo(map);
-var layerBangunan   = L.layerGroup(); if (window.availableTypes && window.availableTypes.bangunan)   layerBangunan.addTo(map);
+/* Skala Peta Metrik (Cartographic Scale Bar) */
+L.control.scale({
+    imperial: false,
+    metric: true,
+    position: 'bottomleft',
+    maxWidth: 130
+}).addTo(map);
+
+/* Aturan Ketebalan & Ukuran Geometri Adaptif Mengikuti Tingkat Zoom Peta (Pencegah Gumpalan Merah) */
+function getSaluranWeight(z) {
+    if (z <= 8) return 0.75;
+    if (z <= 10) return 1.1;
+    if (z <= 12) return 1.6;
+    if (z <= 14) return 2.2;
+    return 2.8;
+}
+
+function getSaluranOpacity(z) {
+    if (z <= 8) return 0.45;
+    if (z <= 10) return 0.65;
+    if (z <= 12) return 0.85;
+    return 0.95;
+}
+
+function getBangunanRadius(z) {
+    if (z <= 8) return 1.8;
+    if (z <= 10) return 2.8;
+    if (z <= 12) return 4.2;
+    if (z <= 14) return 5.5;
+    return 7.0;
+}
+
+function getBangunanWeight(z) {
+    if (z <= 9) return 0.8;
+    if (z <= 11) return 1.2;
+    return 1.8;
+}
+
+/* Sinkronisasi Ukuran Card Popup secara Proporsional Mengikuti Zoom (Murni Skala Vektor) */
+function syncMapZoomState() {
+    var z = map.getZoom();
+    var container = map.getContainer();
+    if (!container) return;
+
+    var scale = 1.0;
+    if (z >= 15)      scale = 1.15;
+    else if (z === 14) scale = 1.05;
+    else if (z === 13) scale = 0.96;
+    else if (z === 12) scale = 0.88;
+    else if (z === 11) scale = 0.78;
+    else if (z === 10) scale = 0.68;
+    else if (z === 9)  scale = 0.58;
+    else if (z === 8)  scale = 0.48;
+    else if (z === 7)  scale = 0.40;
+    else              scale = 0.32;
+
+    container.style.setProperty('--popup-zoom-scale', scale);
+
+    // Aktifkan mode detail (munculkan simbol ikon pintu air mini pada zoom >= 12)
+    if (z >= 12) {
+        container.classList.add('zoom-detail');
+    } else {
+        container.classList.remove('zoom-detail');
+    }
+}
+
+/* Update Dinamis Gaya Spasial Saluran & Bangunan saat Zoom Berubah */
+function updateDynamicLayerStyles() {
+    var z = map.getZoom();
+    var sw = getSaluranWeight(z);
+    var so = getSaluranOpacity(z);
+    var br = getBangunanRadius(z);
+    var bw = getBangunanWeight(z);
+
+    layerSaluran.eachLayer(function(gj) {
+        if (gj.setStyle) {
+            gj.setStyle({ weight: sw, opacity: so });
+        }
+    });
+
+    layerBangunan.eachLayer(function(gj) {
+        if (gj.eachLayer) {
+            gj.eachLayer(function(pt) {
+                if (pt.setRadius) pt.setRadius(br);
+                if (pt.setStyle) pt.setStyle({ weight: bw });
+            });
+        }
+    });
+}
+
+map.on('zoom', syncMapZoomState);
+map.on('zoomend', function() {
+    syncMapZoomState();
+    updateDynamicLayerStyles();
+});
+syncMapZoomState();
+
+/* ============================================================
+   2. LAYER GROUPS PER KATEGORI SPASIAL & SWITCHER BASEMAP
+   ============================================================ */
+var layerBaku       = L.layerGroup().addTo(map);
+var layerFungsional = L.layerGroup().addTo(map);
+var layerPotensial  = L.layerGroup().addTo(map);
+var layerSaluran    = L.layerGroup().addTo(map);
+var layerBangunan   = L.layerGroup().addTo(map);
 var layerWsKapuas   = L.layerGroup();
 
-var baseMaps = { "Peta (OpenStreetMap)": osm, "Satelit (Google Hybrid)": googleSat };
-var overlayMaps = {};
-if (window.availableTypes) {
-    if (window.availableTypes.baku)       overlayMaps["Daerah Irigasi Baku (Hijau)"]       = layerBaku;
-    if (window.availableTypes.fungsional) overlayMaps["Daerah Irigasi Fungsional (Biru)"]  = layerFungsional;
-    if (window.availableTypes.potensial)  overlayMaps["Daerah Irigasi Potensial (Oranye)"] = layerPotensial;
-    if (window.availableTypes.saluran)    overlayMaps["Jaringan Saluran Irigasi"]           = layerSaluran;
-    if (window.availableTypes.bangunan)   overlayMaps["Bangunan Air / Pelengkap"]           = layerBangunan;
-    if (window.availableTypes.ws_kapuas)  overlayMaps["Batas WS & DAS Kapuas"]             = layerWsKapuas;
-}
-var layerControl = L.control.layers(baseMaps, overlayMaps, { collapsed: false, position: 'topright' }).addTo(map);
-
-// Inisialisasi Header & Fitur Minimize pada Layer Control (Kanan Atas)
-var layerContainer = layerControl.getContainer();
-if (layerContainer) {
-    L.DomEvent.disableClickPropagation(layerContainer);
-    L.DomEvent.disableScrollPropagation(layerContainer);
-
-    var layerHeader = document.createElement('div');
-    layerHeader.className = 'map-ctrl-header';
-    layerHeader.id = 'layer-header';
-    layerHeader.title = 'Klik untuk minimize / expand';
-    layerHeader.innerHTML = 
-        '<span><i class="fas fa-layer-group text-primary mr-1"></i> Layer Peta</span>' +
-        '<button type="button" class="map-ctrl-min-btn" aria-label="Minimize Layer" title="Minimize / Expand"><i class="fas fa-minus" id="layer-min-icon"></i></button>';
-
-    var formList = layerContainer.querySelector('.leaflet-control-layers-list');
-    if (formList) {
-        formList.classList.add('map-ctrl-body');
-        layerContainer.insertBefore(layerHeader, formList);
-    }
-
-    layerHeader.addEventListener('click', function(e) {
-        e.stopPropagation();
-        layerContainer.classList.toggle('is-minimized');
-        var icon = layerContainer.querySelector('#layer-min-icon');
-        if (icon) {
-            icon.className = layerContainer.classList.contains('is-minimized') ? 'fas fa-plus' : 'fas fa-minus';
-        }
-    });
-}
-
-// Legenda Dinamis dengan Fitur Minimize (Pojok Kiri Bawah)
-var legend = L.control({ position: 'bottomleft' });
-legend.onAdd = function() {
-    var div = L.DomUtil.create('div', 'map-legend');
-    var legendItems = '';
-    if (window.availableTypes) {
-        if (window.availableTypes.baku)       legendItems += '<div class="legend-item"><span class="legend-color-box" style="background:#27ae60;border-color:#1b7a43;"></span> <b>DIR Baku</b> (Hijau)</div>';
-        if (window.availableTypes.fungsional) legendItems += '<div class="legend-item"><span class="legend-color-box" style="background:#2980b9;border-color:#1a5276;"></span> <b>DIR Fungsional</b> (Biru)</div>';
-        if (window.availableTypes.potensial)  legendItems += '<div class="legend-item"><span class="legend-color-box" style="background:#e67e22;border-color:#b95c00;"></span> <b>DIR Potensial</b> (Oranye)</div>';
-        if (window.availableTypes.saluran)    legendItems += '<div class="legend-item"><span class="legend-line" style="background:#0984e3;"></span> <b>Jaringan Saluran</b></div>';
-        if (window.availableTypes.bangunan)   legendItems += '<div class="legend-item"><span class="legend-circle" style="background:#d63031;"></span> <b>Bangunan Air</b></div>';
-    }
-    if (!legendItems) { div.style.display = 'none'; return div; }
-
-    div.innerHTML = 
-        '<div class="map-ctrl-header" id="legend-header" title="Klik untuk minimize / expand">' +
-            '<span><i class="fas fa-palette text-primary mr-1"></i> Legenda Peta</span>' +
-            '<button type="button" class="map-ctrl-min-btn" aria-label="Minimize Legenda" title="Minimize / Expand"><i class="fas fa-minus" id="legend-min-icon"></i></button>' +
-        '</div>' +
-        '<div class="map-ctrl-body" id="legend-body">' + legendItems + '</div>';
-
-    L.DomEvent.disableClickPropagation(div);
-    L.DomEvent.disableScrollPropagation(div);
-
-    var header = div.querySelector('#legend-header');
-    if (header) {
-        header.addEventListener('click', function(e) {
-            e.stopPropagation();
-            div.classList.toggle('is-minimized');
-            var icon = div.querySelector('#legend-min-icon');
-            if (icon) {
-                icon.className = div.classList.contains('is-minimized') ? 'fas fa-plus' : 'fas fa-minus';
-            }
-        });
-    }
-
-    return div;
-};
-legend.addTo(map);
-
-// Tombol Reset Peta (kembali ke bounds awal semua layer)
-window.resetMapView = function() {
-    if (mapBounds.isValid && mapBounds.isValid()) {
-        map.fitBounds(mapBounds, { padding: [40, 40] });
+/* Fungsi Ganti Peta Dasar (Peta Jalan vs Satelit) via Tombol Rapi di Atas Peta */
+window.switchBasemap = function(type) {
+    var btnOsm = document.getElementById('btnBasemapOsm');
+    var btnSat = document.getElementById('btnBasemapSat');
+    if (type === 'sat') {
+        if (map.hasLayer(osm)) map.removeLayer(osm);
+        if (!map.hasLayer(googleSat)) map.addLayer(googleSat);
+        if (btnOsm) btnOsm.classList.remove('active');
+        if (btnSat) btnSat.classList.add('active');
     } else {
-        map.setView(defaultCenter, 8);
-    }
-};
-
-// Fungsi Pintas Fokus Wilayah (Sambas / Pemangkat, Kubu Raya, Ketapang, Semua)
-window.focusRegion = function(region) {
-    // Sinkronisasi status tombol fokus aktif
-    document.querySelectorAll('.btn-region-focus').forEach(function(btn) {
-        if (btn.getAttribute('data-region') === region) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
-    });
-
-    // Update Breadcrumb Dinamis
-    var arrow = document.getElementById('bwsBreadcrumbArrow');
-    var current = document.getElementById('bwsBreadcrumbCurrent');
-    var regionLabels = {
-        'sambas': 'Sambas / Pemangkat',
-        'kubu_raya': 'Kubu Raya',
-        'ketapang': 'Ketapang'
-    };
-
-    if (regionLabels[region]) {
-        if (arrow) arrow.style.display = 'inline-block';
-        if (current) {
-            current.textContent = regionLabels[region];
-            current.style.display = 'inline-flex';
-        }
-    } else {
-        if (arrow) arrow.style.display = 'none';
-        if (current) {
-            current.textContent = '';
-            current.style.display = 'none';
-        }
-    }
-
-    if (!window.map) return;
-    if (region === 'sambas') {
-        map.flyTo([1.16, 108.98], 11, { animate: true, duration: 1.2 });
-    } else if (region === 'kubu_raya') {
-        map.flyTo([-0.55, 109.50], 10, { animate: true, duration: 1.2 });
-    } else if (region === 'ketapang') {
-        map.flyTo([-1.90, 110.05], 10, { animate: true, duration: 1.2 });
-    } else {
-        if (mapBounds && mapBounds.isValid()) {
-            map.fitBounds(mapBounds, { padding: [40, 40] });
-        } else {
-            map.setView(defaultCenter, 8);
-        }
-    }
-    var mapSec = document.getElementById('section-map');
-    if (mapSec && window.scrollY > mapSec.offsetTop) {
-        window.scrollTo({ top: mapSec.offsetTop - 85, behavior: 'smooth' });
+        if (map.hasLayer(googleSat)) map.removeLayer(googleSat);
+        if (!map.hasLayer(osm)) map.addLayer(osm);
+        if (btnSat) btnSat.classList.remove('active');
+        if (btnOsm) btnOsm.classList.add('active');
     }
 };
 
 /* ============================================================
-   4. REPROYEKSI KOORDINAT (WKID 54034, 3857, UTM 49, WGS84)
-   Fungsi: Mengkonversi koordinat dari sistem proyeksi ArcMap
-   ke WGS84 (derajat lat/lng) agar bisa ditampilkan di Leaflet.
-   Mendukung: Equidistant Cylindrical, Web Mercator, UTM Zone 49.
+   3. REPROYEKSI KOORDINAT (ArcMap / WGS84)
    ============================================================ */
 function projectCoordinate(x, y, wkid) {
     if (typeof x !== 'number' || typeof y !== 'number' || isNaN(x) || isNaN(y)) return [x, y];
-    // Sudah dalam derajat WGS84
     if (Math.abs(x) <= 180 && Math.abs(y) <= 90) return [x, y];
-    // Koordinat dalam meter (Mercator)
+
     if (Math.abs(x) >= 5000000 && Math.abs(x) <= 20000000 && Math.abs(y) <= 2000000) {
         var lon = (x / 6378137.0) * (180.0 / Math.PI);
         var lat = (2.0 * Math.atan(Math.exp(y / 6378137.0)) - (Math.PI / 2.0)) * (180.0 / Math.PI);
@@ -292,8 +179,10 @@ function projectCoordinate(x, y, wkid) {
         if (wkid === 32749 || wkidStr.indexOf('32749') !== -1) return proj4('EPSG:32749', 'EPSG:4326', [x, y]);
         if (wkid && proj4.defs['EPSG:' + wkid]) return proj4('EPSG:' + wkid, 'EPSG:4326', [x, y]);
     } catch(e) {}
-    // Fallback UTM zona 49
-    if (x > 100000 && x < 1000000) { try { return proj4('EPSG:32649', 'EPSG:4326', [x, y]); } catch(e){} }
+
+    if (x > 100000 && x < 1000000) {
+        try { return proj4('EPSG:32649', 'EPSG:4326', [x, y]); } catch(e){}
+    }
     return [x, y];
 }
 
@@ -309,7 +198,6 @@ function transformGeoJsonCoords(coords, geomType, wkid) {
     return coords;
 }
 
-// Konversi format ESRI FeatureService ke GeoJSON standar
 function convertEsriToGeoJson(data) {
     if (!data) return null;
     var wkid = null;
@@ -354,26 +242,129 @@ function convertEsriToGeoJson(data) {
 }
 
 /* ============================================================
-   5. FETCH & LOAD GEOJSON FILES KE PETA
-   Fungsi: Mengambil setiap file GeoJSON dari folder public/geojson/,
-   mengkonversi koordinatnya, lalu menampilkan layer di peta Leaflet
-   dengan warna sesuai kategori (Baku/Fungsional/Potensial/dll).
-   Data koordinat pusat juga disimpan untuk ditampilkan di tabel.
+   4. DETEKSI KABUPATEN DARI NAMA FILE / NAMA DAERAH IRIGASI
+   ============================================================ */
+function detectKabupaten(fileName, title) {
+    var str = ((fileName || '') + ' ' + (title || '')).toLowerCase();
+    if (str.indexOf('sambas') !== -1 || str.indexOf('pemangkat') !== -1 || str.indexOf('sebangkau') !== -1 || str.indexOf('selakau') !== -1 || str.indexOf('sebubus') !== -1 || str.indexOf('pimpinan') !== -1) {
+        return 'Kab. Sambas';
+    }
+    if (str.indexOf('kubu') !== -1 || str.indexOf('kerawang') !== -1 || str.indexOf('teluk_bayur') !== -1 || str.indexOf('kakap') !== -1) {
+        return 'Kab. Kubu Raya';
+    }
+    if (str.indexOf('ketapang') !== -1 || str.indexOf('kinjil') !== -1 || str.indexOf('pematang') !== -1 || str.indexOf('gadung') !== -1 || str.indexOf('pesaguan') !== -1) {
+        return 'Kab. Ketapang';
+    }
+    return 'Kalimantan Barat';
+}
+
+function getKabupatenKey(kabString) {
+    var k = (kabString || '').toLowerCase();
+    if (k.indexOf('sambas') !== -1) return 'sambas';
+    if (k.indexOf('kubu') !== -1) return 'kubu_raya';
+    if (k.indexOf('ketapang') !== -1) return 'ketapang';
+    return 'all';
+}
+
+/* Normalisasi Teks Pencarian Pintar (Mengabaikan titik D.I.R vs DIR, garis bawah, strip, & spasi) */
+function normalizeSearchText(str) {
+    return (str || '').toLowerCase()
+        .replace(/d\.i\.r\./gi, 'dir')
+        .replace(/d\.i\./gi, 'di')
+        .replace(/[._\-\(\),]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
+/* ============================================================
+   5. PEMBUATAN POPUP CARD MODERN (SESUAI GAMBAR 4 REFERENSI)
+   ============================================================ */
+function createModernPopupHtml(title, categoryName, categoryType, fileName, lat, lng, properties) {
+    var p = properties || {};
+    var kab = p.KABUPATEN || p.Kabupaten || p.WADMKC || detectKabupaten(fileName, title);
+    var latStr = (lat !== undefined && lat !== null && !isNaN(lat)) ? Number(lat).toFixed(5) : '-';
+    var lngStr = (lng !== undefined && lng !== null && !isNaN(lng)) ? Number(lng).toFixed(5) : '-';
+
+    var badgeBg = '#2563eb';
+    var iconClass = 'fas fa-map-marker-alt';
+    if (categoryType === 'baku')            { badgeBg = '#10b981'; iconClass = 'fas fa-seedling'; }
+    else if (categoryType === 'potensial')  { badgeBg = '#f59e0b'; iconClass = 'fas fa-drafting-compass'; }
+    else if (categoryType === 'saluran')    { badgeBg = '#0284c7'; iconClass = 'fas fa-route'; }
+    else if (categoryType === 'bangunan')   { badgeBg = '#d97706'; iconClass = 'fas fa-archway'; }
+    else if (categoryType === 'fungsional') { badgeBg = '#2563eb'; iconClass = 'fas fa-water'; }
+    else if (categoryType === 'ws_kapuas')  { badgeBg = '#0891b2'; iconClass = 'fas fa-tint'; }
+
+    // Rangkai baris detail spesifik sesuai jenis aset SDA agar informatif & akurat
+    var tableRows = '';
+
+    if (categoryType === 'bangunan') {
+        var statusKet = p.Ket || 'Pemeliharaan Rutin';
+        tableRows += '<tr><th>Fungsi</th><td>Pintu Air / Pengatur</td></tr>';
+        tableRows += '<tr><th>Status O&P</th><td><span class="badge badge-light border text-dark font-weight-bold px-2 py-1" style="font-size:11px;">' + statusKet + '</span></td></tr>';
+        tableRows += '<tr><th>Titik Lokasi</th><td><code style="color:#0f172a; font-size:11px;">' + latStr + ', ' + lngStr + '</code></td></tr>';
+    } else if (categoryType === 'saluran') {
+        var jenisSal = p.Jenis ? ('Saluran ' + p.Jenis) : 'Saluran Irigasi';
+        var pjg = p.PJG || (p.Panjang ? (Math.round(p.Panjang).toLocaleString('id-ID') + ' m') : 'Tercatat di Skema');
+        var statusKet = p.Ket || 'Pemeliharaan Rutin';
+        tableRows += '<tr><th>Hierarki</th><td>' + jenisSal + '</td></tr>';
+        tableRows += '<tr><th>Panjang Saluran</th><td><b>' + pjg + '</b></td></tr>';
+        tableRows += '<tr><th>Status O&P</th><td>' + statusKet + '</td></tr>';
+    } else {
+        // Daerah Irigasi (Baku / Fungsional / Potensial)
+        var luas = '';
+        if (p.Luas_Ha) luas = Number(p.Luas_Ha).toLocaleString('id-ID', { maximumFractionDigits: 2 }) + ' Ha';
+        else if (p.LUAS_BAKU || p.Luas_Baku) luas = (p.LUAS_BAKU || p.Luas_Baku) + ' Ha';
+        else if (p.LUAS) luas = p.LUAS + ' Ha';
+        else luas = 'Tersedia di Buku DIR';
+
+        var kewenangan = p.KEWENANGAN || p.Kewenagan || 'Pusat (Kemen PU)';
+        var wsDas = (p.Nama_WS || p.Nama_DAS)
+            ? ((p.Nama_WS ? 'WS ' + p.Nama_WS : '') + (p.Nama_DAS ? ' / DAS ' + p.Nama_DAS : ''))
+            : (p.PROVINSI ? 'Kalimantan Barat' : 'BWS Kalimantan I');
+
+        tableRows += '<tr><th>Luas Area</th><td><b>' + luas + '</b></td></tr>';
+        tableRows += '<tr><th>Kewenangan</th><td>' + kewenangan + '</td></tr>';
+        tableRows += '<tr><th>Wilayah Sungai</th><td>' + wsDas + '</td></tr>';
+    }
+
+    return '<div class="bws-popup-card">' +
+        '<div class="bws-popup-header">' +
+            '<div class="d-flex align-items-center justify-content-between mb-1">' +
+                '<span class="bws-popup-badge" style="background:' + badgeBg + '; color:#fff;"><i class="' + iconClass + ' mr-1"></i>' + categoryName + '</span>' +
+                '<button type="button" class="bws-popup-close-btn" onclick="map.closePopup()" title="Tutup">&times;</button>' +
+            '</div>' +
+            '<h6 class="bws-popup-title">' + title + '</h6>' +
+            '<div class="bws-popup-sub"><i class="fas fa-map-marker-alt mr-1"></i>' + kab + '</div>' +
+        '</div>' +
+        '<div class="bws-popup-body">' +
+            '<table class="bws-popup-table">' +
+                tableRows +
+            '</table>' +
+        '</div>' +
+    '</div>';
+}
+
+/* ============================================================
+   6. LOAD SELURUH GEOJSON & PARSING KE LAYER PETA
    ============================================================ */
 var mapLoadingEl = document.getElementById('map-loading');
 var allTableRows = [];
 var currentSearchText = '';
+var currentCategoryFilter = 'all';
+var currentWilayahFilter = 'all';
+var currentPage = 1;
+var pageSize = 10;
+
 if (window.geojsonFiles && window.geojsonFiles.length > 0) {
     var loadedCount = 0;
 
-    // Safety timeout: jika ada kendala jaringan/file corrupt, pastikan loading indikator ditutup maksimal 8 detik
     setTimeout(function() {
         if (mapLoadingEl && mapLoadingEl.style.display !== 'none') {
             mapLoadingEl.style.display = 'none';
             if (mapBounds.isValid()) map.fitBounds(mapBounds, { padding: [40, 40] });
             renderTable();
         }
-    }, 8000);
+    }, 7000);
 
     window.geojsonFiles.forEach(function(fileName) {
         fetch('/geojson/' + encodeURIComponent(fileName))
@@ -386,57 +377,109 @@ if (window.geojsonFiles && window.geojsonFiles.length > 0) {
                 var cleanName = fileName.replace(/\.(json|geojson)$/i, '').replace(/_/g, ' ');
                 var targetLayer = layerBaku;
                 var categoryType = 'baku';
+                var categoryName = 'DIR Baku';
                 var categoryBadge = '<span class="badge badge-baku px-2 py-1">DIR Baku</span>';
-                var strokeColor = '#27ae60', fillColor = '#2ecc71';
+                var strokeColor = '#10b981', fillColor = '#34d399';
 
                 if (nameUpper.indexOf('BAKU') === 0) {
-                    targetLayer = layerBaku; categoryType = 'baku';
+                    targetLayer = layerBaku; categoryType = 'baku'; categoryName = 'DIR Baku';
                     categoryBadge = '<span class="badge badge-baku px-2 py-1">DIR Baku</span>';
-                    strokeColor = '#1e824c'; fillColor = '#27ae60';
+                    strokeColor = '#059669'; fillColor = '#10b981';
                 } else if (nameUpper.indexOf('FUNGSIONAL') === 0) {
-                    targetLayer = layerFungsional; categoryType = 'fungsional';
+                    targetLayer = layerFungsional; categoryType = 'fungsional'; categoryName = 'DIR Fungsional';
                     categoryBadge = '<span class="badge badge-fungsional px-2 py-1">DIR Fungsional</span>';
-                    strokeColor = '#1f618d'; fillColor = '#2980b9';
+                    strokeColor = '#1d4ed8'; fillColor = '#3b82f6';
                 } else if (nameUpper.indexOf('POTENSIAL') === 0) {
-                    targetLayer = layerPotensial; categoryType = 'potensial';
+                    targetLayer = layerPotensial; categoryType = 'potensial'; categoryName = 'DIR Potensial';
                     categoryBadge = '<span class="badge badge-potensial px-2 py-1">DIR Potensial</span>';
-                    strokeColor = '#b95c00'; fillColor = '#e67e22';
+                    strokeColor = '#d97706'; fillColor = '#f59e0b';
                 } else if (nameUpper.indexOf('SALURAN') === 0) {
-                    targetLayer = layerSaluran; categoryType = 'saluran';
+                    targetLayer = layerSaluran; categoryType = 'saluran'; categoryName = 'Jaringan Saluran';
                     categoryBadge = '<span class="badge badge-saluran px-2 py-1">Saluran Irigasi</span>';
-                    strokeColor = '#0984e3'; fillColor = '#0984e3';
+                    strokeColor = '#0284c7'; fillColor = '#38bdf8';
                 } else if (nameUpper.indexOf('BANGUNAN') === 0) {
-                    targetLayer = layerBangunan; categoryType = 'bangunan';
+                    targetLayer = layerBangunan; categoryType = 'bangunan'; categoryName = 'Bangunan Air';
                     categoryBadge = '<span class="badge badge-bangunan px-2 py-1">Bangunan Air</span>';
-                    strokeColor = '#d63031'; fillColor = '#d63031';
+                    strokeColor = '#b45309'; fillColor = '#f59e0b';
                 } else if (nameUpper.indexOf('KAPUAS') !== -1 || nameUpper.indexOf('WS') === 0 || nameUpper.indexOf('DAS') !== -1) {
-                    targetLayer = layerWsKapuas; categoryType = 'ws_kapuas';
-                    categoryBadge = '<span class="badge px-2 py-1" style="background:#06b6d4;color:#fff;">WS Kapuas</span>';
+                    targetLayer = layerWsKapuas; categoryType = 'ws_kapuas'; categoryName = 'WS Kapuas';
+                    categoryBadge = '<span class="badge px-2 py-1" style="background:#0891b2;color:#fff;">WS Kapuas</span>';
                     strokeColor = '#0891b2'; fillColor = '#06b6d4';
                 }
 
+                var kabName = detectKabupaten(fileName, cleanName);
+                var kabKey = getKabupatenKey(kabName);
+
+                var firstPopupHtml = null;
+                var firstLayer = null;
+                var firstTitle = null;
+                var featureNames = [];
+
+                var isSaluran  = (categoryType === 'saluran');
+                var isBangunan = (categoryType === 'bangunan');
+                var isWs       = (categoryType === 'ws_kapuas');
+
                 var gjLayer = L.geoJSON(gj, {
                     style: function() {
-                        return { color: strokeColor, weight: (categoryType === 'saluran') ? 2.5 : 1.8, fillOpacity: (categoryType === 'ws_kapuas' ? 0.2 : 0.45), fillColor: fillColor };
+                        var currentZoom = map.getZoom();
+                        return {
+                            color: strokeColor,
+                            weight: isSaluran ? getSaluranWeight(currentZoom) : 1.5,
+                            opacity: isSaluran ? getSaluranOpacity(currentZoom) : 0.85,
+                            fillOpacity: isSaluran ? 0 : (isWs ? 0.05 : 0.22),
+                            fillColor: fillColor
+                        };
                     },
                     pointToLayer: function(feat, latlng) {
-                        return L.circleMarker(latlng, { radius: 6, fillColor: fillColor, color: '#ffffff', weight: 1.5, fillOpacity: 0.9 });
+                        if (categoryType === 'bangunan') {
+                            var pName = (feat.properties && (feat.properties.NAMOBJ || feat.properties.Name || feat.properties.D_I_R)) ? (feat.properties.NAMOBJ || feat.properties.Name || feat.properties.D_I_R) : 'Bangunan Air';
+                            return L.marker(latlng, {
+                                icon: L.divIcon({
+                                    className: 'bws-bangunan-marker-wrap',
+                                    html: '<div class="bws-gate-pin" title="' + pName.replace(/"/g, '&quot;') + '"><i class="fas fa-archway"></i></div>',
+                                    iconSize: [22, 22],
+                                    iconAnchor: [11, 11],
+                                    popupAnchor: [0, -11]
+                                })
+                            });
+                        }
+                        var currentZoom = map.getZoom();
+                        return L.circleMarker(latlng, {
+                            radius: getBangunanRadius(currentZoom),
+                            fillColor: fillColor,
+                            color: '#ffffff',
+                            weight: getBangunanWeight(currentZoom),
+                            fillOpacity: 0.90
+                        });
                     },
                     onEachFeature: function(feat, layer) {
                         var p = feat.properties || {};
-                        var popup = '<div style="min-width:200px;font-size:12px;">' +
-                            '<div class="font-weight-bold text-primary mb-1">' + cleanName + '</div>' +
-                            '<div class="mb-1">' + categoryBadge + '</div>' +
-                            '<table class="table table-sm table-bordered mt-2 mb-0" style="font-size:11px;">';
-                        var countProp = 0;
-                        for (var k in p) {
-                            if (countProp < 5 && p[k] !== null && p[k] !== '') {
-                                popup += '<tr><th class="bg-light">' + k + '</th><td>' + p[k] + '</td></tr>';
-                                countProp++;
-                            }
+                        var title = p.NAMOBJ || p.Name || p.D_I_R || cleanName;
+                        if (title) featureNames.push(title);
+
+                        var b = layer.getBounds ? layer.getBounds() : null;
+                        var center = b && b.isValid && b.isValid() ? b.getCenter() : (layer.getLatLng ? layer.getLatLng() : null);
+                        var lat = center ? center.lat : 0;
+                        var lng = center ? center.lng : 0;
+
+                        var popupHtml = createModernPopupHtml(title, categoryName, categoryType, fileName, lat, lng, p);
+                        layer.bindPopup(popupHtml, { maxWidth: 320 });
+
+                        if (!firstPopupHtml) {
+                            firstPopupHtml = popupHtml;
+                            firstLayer = layer;
+                            firstTitle = title;
                         }
-                        popup += '</table></div>';
-                        layer.bindPopup(popup);
+
+                        layer.on('click', function(e) {
+                            if (categoryType === 'bangunan' && center) {
+                                map.flyTo([center.lat, center.lng], Math.max(map.getZoom(), 15), { animate: true, duration: 0.8 });
+                            } else if (b && b.isValid && b.isValid()) {
+                                map.flyToBounds(b, { padding: [50, 50], maxZoom: 15, duration: 0.8 });
+                            } else if (center) {
+                                map.flyTo([center.lat, center.lng], Math.max(map.getZoom(), 14), { animate: true, duration: 0.8 });
+                            }
+                        });
                     }
                 });
 
@@ -448,7 +491,23 @@ if (window.geojsonFiles && window.geojsonFiles.length > 0) {
                         mapBounds.extend(b);
                     }
                     var center = b.getCenter();
-                    allTableRows.push({ name: cleanName, categoryType: categoryType, categoryBadge: categoryBadge, lat: center.lat, lng: center.lng, fileName: fileName, bounds: b, layerObj: gjLayer });
+                    var finalPopup = firstPopupHtml || createModernPopupHtml(cleanName, categoryName, categoryType, fileName, center.lat, center.lng, {});
+                    allTableRows.push({
+                        name: cleanName,
+                        title: firstTitle || cleanName,
+                        featureNames: featureNames.slice(0, 100).join(' '),
+                        categoryType: categoryType,
+                        categoryBadge: categoryBadge,
+                        kabupaten: kabName,
+                        kabupatenKey: kabKey,
+                        lat: center.lat,
+                        lng: center.lng,
+                        fileName: fileName,
+                        bounds: b,
+                        layerObj: gjLayer,
+                        firstLayer: firstLayer,
+                        popupHtml: finalPopup
+                    });
                 }
             })
             .catch(function(err) {})
@@ -467,306 +526,486 @@ if (window.geojsonFiles && window.geojsonFiles.length > 0) {
 }
 
 /* ============================================================
-   6. RENDER DATA TABLE
-   Fungsi: Mengisi baris tabel koordinat GIS secara dinamis dari
-   data yang sudah diload. Mendukung filter pencarian realtime dan
-   menampilkan state kosong yang informatif jika belum ada data.
+   7. LIVE AUTOCOMPLETE PENCARIAN SIDEBAR (ALA GAMBAR 3 QROP)
    ============================================================ */
+window.handleSidebarSearch = function(val) {
+    var rawQ = (val || '').trim();
+    var dropdown = document.getElementById('sidebarSearchResults');
+    var btnClear = document.getElementById('btnSidebarSearchClear');
+
+    if (btnClear) {
+        btnClear.style.display = rawQ ? 'flex' : 'none';
+    }
+
+    if (!dropdown) return;
+    if (!rawQ) {
+        dropdown.style.display = 'none';
+        dropdown.innerHTML = '';
+        return;
+    }
+
+    var normQ = normalizeSearchText(rawQ);
+    var tokens = normQ.split(' ').filter(Boolean);
+
+    var matches = allTableRows.filter(function(r) {
+        var rText = normalizeSearchText((r.title || '') + ' ' + (r.name || '') + ' ' + (r.fileName || '') + ' ' + (r.kabupaten || ''));
+        return (rText.indexOf(normQ) !== -1) || (tokens.length > 0 && tokens.every(function(t) { return rText.indexOf(t) !== -1; }));
+    });
+
+    if (matches.length === 0) {
+        dropdown.innerHTML = '<div class="p-3 text-center text-muted small"><i class="fas fa-info-circle mr-1"></i> Tidak ditemukan objek irigasi dengan kata kunci tersebut.</div>';
+        dropdown.style.display = 'block';
+        return;
+    }
+
+    var html = '';
+    matches.slice(0, 8).forEach(function(row) {
+        var displayName = row.title || row.name;
+        html += '<div class="bws-search-item" onclick="focusFromSidebarSearch(\'' + row.name.replace(/'/g, "\\'") + '\')">' +
+            '<div class="bws-search-item-title"><i class="fas fa-map-pin mr-1 text-danger"></i> ' + displayName + '</div>' +
+            '<div class="bws-search-item-sub">' + row.kabupaten + ' &bull; ' + row.fileName + '</div>' +
+        '</div>';
+    });
+    dropdown.innerHTML = html;
+    dropdown.style.display = 'block';
+};
+
+window.clearSidebarSearch = function() {
+    var input = document.getElementById('sidebarSearchInput');
+    var dropdown = document.getElementById('sidebarSearchResults');
+    var btnClear = document.getElementById('btnSidebarSearchClear');
+    if (input) input.value = '';
+    if (dropdown) { dropdown.style.display = 'none'; dropdown.innerHTML = ''; }
+    if (btnClear) btnClear.style.display = 'none';
+};
+
+window.focusFromSidebarSearch = function(name) {
+    var target = allTableRows.find(function(r) { return r.name === name; });
+    if (!target) return;
+
+    clearSidebarSearch();
+    var input = document.getElementById('sidebarSearchInput');
+    if (input) input.value = target.name;
+
+    // Pastikan layer kategori aktif
+    var layerMap = {
+        'baku': layerBaku,
+        'fungsional': layerFungsional,
+        'potensial': layerPotensial,
+        'saluran': layerSaluran,
+        'bangunan': layerBangunan,
+        'ws_kapuas': layerWsKapuas
+    };
+    if (layerMap[target.categoryType] && !map.hasLayer(layerMap[target.categoryType])) {
+        map.addLayer(layerMap[target.categoryType]);
+        var chk = document.getElementById('chkLayer' + target.categoryType.charAt(0).toUpperCase() + target.categoryType.slice(1));
+        if (chk) chk.checked = true;
+    }
+
+    // Scroll ke peta jika berada di luar viewport
+    var mapEl = document.getElementById('map') || document.querySelector('.bws-leaflet-card');
+    if (mapEl) {
+        var rect = mapEl.getBoundingClientRect();
+        if (rect.top < 0 || rect.bottom > window.innerHeight) {
+            window.scrollTo({ top: mapEl.offsetTop - 85, behavior: 'smooth' });
+        }
+    }
+
+    var targetLatLng = [target.lat, target.lng];
+    if (target.bounds && target.bounds.isValid && target.bounds.isValid()) {
+        map.flyToBounds(target.bounds, { padding: [60, 60], maxZoom: 14, duration: 0.9 });
+    } else if (target.lat && target.lng) {
+        map.flyTo(targetLatLng, 14, { animate: true, duration: 0.9 });
+    }
+
+    // Buka card popup modern secara otomatis
+    setTimeout(function() {
+        if (target.firstLayer && typeof target.firstLayer.openPopup === 'function') {
+            target.firstLayer.openPopup();
+        } else if (target.popupHtml && target.lat && target.lng) {
+            L.popup({ maxWidth: 320, autoPan: false, className: 'bws-leaflet-popup' })
+                .setLatLng(targetLatLng)
+                .setContent(target.popupHtml)
+                .openOn(map);
+        }
+    }, 500);
+};
+
+/* ============================================================
+   8. FILTER WILAYAH KABUPATEN
+   ============================================================ */
+window.handleFilterWilayah = function(val) {
+    currentWilayahFilter = val;
+    currentPage = 1;
+
+    var breadcrumb = document.getElementById('currentBreadcrumbLabel');
+    var labelMap = {
+        'all': 'Seluruh Kalimantan Barat',
+        'sambas': 'Kabupaten Sambas / Pemangkat',
+        'kubu_raya': 'Kabupaten Kubu Raya',
+        'ketapang': 'Kabupaten Ketapang'
+    };
+    if (breadcrumb) {
+        breadcrumb.textContent = labelMap[val] || 'Seluruh Kalimantan Barat';
+    }
+
+    if (val === 'sambas') {
+        map.flyTo([1.16, 108.98], 11, { animate: true, duration: 1.2 });
+    } else if (val === 'kubu_raya') {
+        map.flyTo([-0.55, 109.50], 10, { animate: true, duration: 1.2 });
+    } else if (val === 'ketapang') {
+        map.flyTo([-1.90, 110.05], 10, { animate: true, duration: 1.2 });
+    } else {
+        if (mapBounds && mapBounds.isValid()) map.fitBounds(mapBounds, { padding: [40, 40] });
+        else map.setView(defaultCenter, 8);
+    }
+
+    renderTable();
+};
+
+/* ============================================================
+   9. CHECKBOX TOGGLE KATEGORI LAYER DARI SIDEBAR
+   ============================================================ */
+window.toggleCategoryLayer = function(cat, isChecked) {
+    var layerMap = {
+        'baku': layerBaku,
+        'fungsional': layerFungsional,
+        'potensial': layerPotensial,
+        'saluran': layerSaluran,
+        'bangunan': layerBangunan
+    };
+    var layer = layerMap[cat];
+    if (!layer) return;
+
+    if (isChecked) {
+        if (!map.hasLayer(layer)) map.addLayer(layer);
+    } else {
+        if (map.hasLayer(layer)) map.removeLayer(layer);
+    }
+
+    // Beri umpan balik visual (.inactive) pada kartu kategori di sidebar
+    var chk = document.getElementById('chkLayer' + cat.charAt(0).toUpperCase() + cat.slice(1));
+    if (chk) {
+        var row = chk.closest('.bws-category-row');
+        if (row) {
+            if (isChecked) {
+                row.classList.remove('inactive');
+            } else {
+                row.classList.add('inactive');
+            }
+        }
+    }
+};
+
+/* ============================================================
+   10. TOGGLE TAMPILAN TABEL DATA
+   ============================================================ */
+window.toggleTableVisibility = function() {
+    var tableSec = document.getElementById('section-table');
+    var labelTop = document.getElementById('labelToggleTable');
+    var labelBottom = document.getElementById('labelBottomToggleTable');
+    if (!tableSec) return;
+    if (tableSec.style.display === 'none' || !tableSec.style.display) {
+        tableSec.style.display = 'block';
+        if (labelTop) labelTop.textContent = 'Tutup Tabel Data';
+        if (labelBottom) labelBottom.textContent = 'Sembunyikan Daftar Pos & Data Spasial ▴';
+        renderTable();
+        window.scrollTo({ top: tableSec.offsetTop - 75, behavior: 'smooth' });
+    } else {
+        tableSec.style.display = 'none';
+        var total = allTableRows.length || 57;
+        if (labelTop) labelTop.textContent = 'Buka Tabel Data (' + total + ')';
+        if (labelBottom) labelBottom.textContent = 'Tampilkan Daftar Pos & Data Spasial Tabular ▾';
+    }
+};
+
+window.switchViewSegment = function(mode) {
+    var secTable = document.getElementById('section-table');
+    var labelTop = document.getElementById('labelToggleTable');
+    var labelBottom = document.getElementById('labelBottomToggleTable');
+    var total = allTableRows.length || 57;
+    if (mode === 'maps') {
+        if (secTable) secTable.style.display = 'none';
+        if (labelTop) labelTop.textContent = 'Buka Tabel Data (' + total + ')';
+        if (labelBottom) labelBottom.textContent = 'Tampilkan Daftar Pos & Data Spasial Tabular ▾';
+    } else {
+        if (secTable) secTable.style.display = 'block';
+        if (labelTop) labelTop.textContent = 'Tutup Tabel Data';
+        if (labelBottom) labelBottom.textContent = 'Sembunyikan Daftar Pos & Data Spasial ▴';
+        renderTable();
+    }
+};
+
+/* ============================================================
+   11. RESET VIEW KE KALBAR
+   ============================================================ */
+window.resetToKalbar = function() {
+    var selectWil = document.getElementById('selectFilterWilayah');
+    if (selectWil) selectWil.value = 'all';
+    currentWilayahFilter = 'all';
+    currentPage = 1;
+
+    var breadcrumb = document.getElementById('currentBreadcrumbLabel');
+    if (breadcrumb) breadcrumb.textContent = 'Seluruh Kalimantan Barat';
+
+    if (mapBounds && mapBounds.isValid()) {
+        map.fitBounds(mapBounds, { padding: [40, 40] });
+    } else {
+        map.setView(defaultCenter, 8);
+    }
+    renderTable();
+};
+
+/* ============================================================
+   12. TABEL DATA: FILTER KATEGORI & PAGINATION 10 BARIS
+   ============================================================ */
+window.filterTableCategory = function(cat) {
+    currentCategoryFilter = cat;
+    currentPage = 1;
+
+    document.querySelectorAll('.bws-tab-pill, .bws-tab-btn').forEach(function(btn) {
+        if (btn.getAttribute('data-cat') === cat) btn.classList.add('active');
+        else btn.classList.remove('active');
+    });
+
+    renderTable();
+};
+
+window.filterTabelKoordinat = function(val) {
+    currentSearchText = (val || '').trim().toLowerCase();
+    currentPage = 1;
+    renderTable();
+};
+
+window.goToPage = function(page) {
+    currentPage = page;
+    renderTable();
+    var tableSec = document.getElementById('section-table');
+    if (tableSec && window.scrollY > tableSec.offsetTop) {
+        window.scrollTo({ top: tableSec.offsetTop - 80, behavior: 'smooth' });
+    }
+};
+
 function renderTable() {
     var tbody = document.getElementById('tbody-lokasi');
     var footerInfo = document.getElementById('tabel-footer-info');
+    var paginationUl = document.getElementById('tablePagination');
     if (!tbody) return;
 
+    // 1. Filter Data dengan Pencarian Pintar (Normalisasi Punctuation, D.I.R vs DIR, kata parsial)
     var filtered = allTableRows.filter(function(row) {
-        if (currentSearchText === '') return true;
-        var term = currentSearchText.toLowerCase();
-        return (row.name && row.name.toLowerCase().indexOf(term) !== -1) ||
-               (row.fileName && row.fileName.toLowerCase().indexOf(term) !== -1);
+        // Filter Pencarian Teks
+        var matchSearch = true;
+        if (currentSearchText !== '') {
+            var normQuery = normalizeSearchText(currentSearchText);
+            if (normQuery !== '') {
+                var tokens = normQuery.split(' ').filter(Boolean);
+                var rowHaystack = normalizeSearchText(
+                    (row.title || '') + ' ' +
+                    (row.name || '') + ' ' +
+                    (row.fileName || '') + ' ' +
+                    (row.kabupaten || '') + ' ' +
+                    (row.featureNames || '')
+                );
+                matchSearch = (rowHaystack.indexOf(normQuery) !== -1) || (tokens.length > 0 && tokens.every(function(t) {
+                    return rowHaystack.indexOf(t) !== -1;
+                }));
+            }
+        }
+
+        // Filter Kategori Tab
+        var matchCat = true;
+        if (currentCategoryFilter !== 'all') {
+            matchCat = (row.categoryType === currentCategoryFilter);
+        }
+
+        // Filter Wilayah
+        var matchWilayah = true;
+        if (currentWilayahFilter !== 'all') {
+            matchWilayah = (row.kabupatenKey === currentWilayahFilter);
+        }
+
+        return matchSearch && matchCat && matchWilayah;
     });
 
+    var totalData = filtered.length;
+    var totalPages = Math.ceil(totalData / pageSize) || 1;
+    if (currentPage > totalPages) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
+
+    var startIdx = (currentPage - 1) * pageSize;
+    var endIdx = Math.min(startIdx + pageSize, totalData);
+    var pagedData = filtered.slice(startIdx, endIdx);
+
+    // 2. Render Teks Footer
     if (footerInfo) {
-        footerInfo.innerHTML = 'Menampilkan <b>' + filtered.length + '</b> dari <b>' + allTableRows.length + '</b> file GIS';
+        if (totalData === 0) {
+            footerInfo.innerHTML = 'Tidak ada data spasial yang cocok.';
+        } else {
+            footerInfo.innerHTML = 'Menampilkan <b>' + (startIdx + 1) + ' - ' + endIdx + '</b> dari <b>' + totalData + '</b> data pos & file GIS';
+        }
     }
 
-    if (filtered.length === 0) {
-        if (allTableRows.length === 0) {
-            var actionBtnHtml = (window.canManageGis)
-                ? '<p class="small text-muted mb-3">Silakan klik tombol "Upload GeoJSON" untuk menambahkan file koordinat dan layer ke peta.</p>' +
-                  '<button type="button" class="btn btn-sm btn-primary font-weight-bold shadow-sm" data-toggle="modal" data-target="#modalUploadGeojson">' +
-                  '<i class="fas fa-cloud-upload-alt mr-1"></i> Upload GeoJSON Sekarang</button>'
-                : '<p class="small text-muted mb-0">Data layer dan koordinat spasial belum diunggah oleh Administrator.</p>';
-
-            tbody.innerHTML =
-                '<tr><td colspan="7" class="text-center py-5 text-muted">' +
-                '<div class="mb-2"><i class="fas fa-folder-open fa-3x text-gray-300"></i></div>' +
-                '<div class="font-weight-bold text-gray-700 mb-1" style="font-size:15px;">Belum Ada Data GIS Tersimpan</div>' +
-                actionBtnHtml +
-                '</td></tr>';
-        } else {
-            tbody.innerHTML =
-                '<tr><td colspan="7" class="text-center py-4 text-muted">' +
-                '<i class="fas fa-info-circle mr-2 text-info"></i>Tidak ditemukan data GIS yang cocok dengan pencarian "<b>' + currentSearchText + '</b>".' +
-                '</td></tr>';
-        }
+    // 3. Render Baris Tabel
+    if (pagedData.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="text-center py-5 text-muted">' +
+            '<i class="fas fa-info-circle fa-2x text-gray-300 mb-2 d-block"></i>' +
+            '<div class="font-weight-bold">Tidak ada data yang cocok dengan kriteria filter saat ini.</div>' +
+            '<small>Coba pilih kategori lain atau reset kata kunci pencarian.</small>' +
+            '</td></tr>';
+        if (paginationUl) paginationUl.innerHTML = '';
         return;
     }
 
     var frag = document.createDocumentFragment();
-    filtered.forEach(function(row, idx) {
+    pagedData.forEach(function(row, idx) {
         var tr = document.createElement('tr');
-        var latStr = (row.lat !== null && !isNaN(row.lat)) ? Number(row.lat).toFixed(5) : '-';
-        var lngStr = (row.lng !== null && !isNaN(row.lng)) ? Number(row.lng).toFixed(5) : '-';
+        var rowNumber = startIdx + idx + 1;
+        var latStr = (row.lat !== null && !isNaN(row.lat)) ? Number(row.lat).toFixed(5) : null;
+        var lngStr = (row.lng !== null && !isNaN(row.lng)) ? Number(row.lng).toFixed(5) : null;
+        var coordBadge = (latStr && lngStr)
+            ? '<span class="badge border font-weight-bold px-2 py-1" style="font-size:11.5px; font-family:Consolas, Monaco, monospace; background:#f8fafc; border-color:#cbd5e1; color:#0f172a;"><i class="fas fa-map-pin text-danger mr-1"></i>' + latStr + ', ' + lngStr + '</span>'
+            : '<span class="text-muted small">-</span>';
+
+        var displayTitle = row.title || row.name;
 
         tr.innerHTML =
-            '<td class="text-center font-weight-bold text-muted">' + (idx + 1) + '</td>' +
-            '<td class="font-weight-bold text-dark">' + row.name + '</td>' +
-            '<td>' + row.categoryBadge + '</td>' +
-            '<td class="text-center font-weight-bold text-dark"><code>' + latStr + '</code></td>' +
-            '<td class="text-center font-weight-bold text-dark"><code>' + lngStr + '</code></td>' +
-            '<td><span class="badge badge-light border text-monospace text-truncate d-inline-block" style="max-width:200px;" title="' + row.fileName + '">' + row.fileName + '</span></td>' +
-            '<td class="text-center">' +
-                '<button type="button" class="btn-focus-row" title="Fokuskan peta ke objek ini">' +
-                '<i class="fas fa-crosshairs"></i> Fokus</button>' +
+            '<td class="text-center font-weight-bold text-muted align-middle">' + rowNumber + '</td>' +
+            '<td class="align-middle">' +
+                '<div class="font-weight-bold text-dark" style="font-size:13px;">' + displayTitle + '</div>' +
+                '<small class="text-muted"><i class="fas fa-map-marker-alt text-primary mr-1"></i>' + row.kabupaten + ' &bull; <span style="font-family:monospace; font-size:10.5px;">' + row.fileName + '</span></small>' +
+            '</td>' +
+            '<td class="align-middle">' + row.categoryBadge + '</td>' +
+            '<td class="text-center align-middle">' + coordBadge + '</td>' +
+            '<td class="text-center align-middle">' +
+                '<button type="button" class="btn btn-sm btn-outline-primary font-weight-bold px-3 py-1 shadow-sm btn-focus-row" style="font-size:11.5px; border-radius:6px;" title="Fokuskan peta ke objek ini">' +
+                    '<i class="fas fa-crosshairs mr-1"></i> Fokus' +
+                '</button>' +
             '</td>';
 
-        // Tombol Fokus: klik → peta zoom ke bounds objek tersebut
         var btn = tr.querySelector('.btn-focus-row');
         btn.addEventListener('click', function() {
-            if (row.bounds && row.bounds.isValid && row.bounds.isValid()) {
-                map.fitBounds(row.bounds, { padding: [50, 50], maxZoom: 16 });
+            // 1. Pastikan layer kategori aktif & tampil di peta
+            var layerMap = {
+                'baku': layerBaku,
+                'fungsional': layerFungsional,
+                'potensial': layerPotensial,
+                'saluran': layerSaluran,
+                'bangunan': layerBangunan,
+                'ws_kapuas': layerWsKapuas
+            };
+            if (layerMap[row.categoryType] && !map.hasLayer(layerMap[row.categoryType])) {
+                map.addLayer(layerMap[row.categoryType]);
+                var chk = document.getElementById('chkLayer' + row.categoryType.charAt(0).toUpperCase() + row.categoryType.slice(1));
+                if (chk) chk.checked = true;
+            }
+
+            // 2. Smooth scroll otomatis ke atas menuju peta
+            var mapEl = document.getElementById('map') || document.querySelector('.bws-leaflet-card');
+            if (mapEl) {
+                var targetTop = mapEl.getBoundingClientRect().top + window.pageYOffset - 85;
+                window.scrollTo({ top: targetTop, behavior: 'smooth' });
+            }
+
+            // 3. Zoom / Terbang ke poligon atau titik koordinat secara akurat
+            var targetLatLng = [row.lat, row.lng];
+            if (row.categoryType === 'bangunan' && row.lat && row.lng && !isNaN(row.lat) && !isNaN(row.lng)) {
+                map.flyTo(targetLatLng, 15, { animate: true, duration: 0.8 });
+            } else if (row.bounds && row.bounds.isValid && row.bounds.isValid()) {
+                map.flyToBounds(row.bounds, { padding: [60, 60], maxZoom: 15, duration: 0.8 });
             } else if (row.lat && row.lng && !isNaN(row.lat) && !isNaN(row.lng)) {
-                map.flyTo([row.lat, row.lng], 15, { animate: true, duration: 1.0 });
+                map.flyTo(targetLatLng, 15, { animate: true, duration: 0.8 });
             }
-            if (row.layerObj) {
-                if (row.layerObj.openPopup) row.layerObj.openPopup();
-                else if (row.layerObj.eachLayer) row.layerObj.eachLayer(function(l) { if (l.openPopup) { l.openPopup(); return; } });
-            }
-            var mapSec = document.getElementById('section-map');
-            if (mapSec) window.scrollTo({ top: mapSec.offsetTop - 85, behavior: 'smooth' });
+
+            // 4. Buka Card Popup Modern secara otomatis di peta (Persis Gambar 3)
+            setTimeout(function() {
+                if (row.firstLayer && typeof row.firstLayer.openPopup === 'function') {
+                    row.firstLayer.openPopup();
+                } else if (row.popupHtml && row.lat && row.lng) {
+                    L.popup({ maxWidth: 320, autoPan: false, className: 'bws-leaflet-popup' })
+                        .setLatLng(targetLatLng)
+                        .setContent(row.popupHtml)
+                        .openOn(map);
+                } else if (row.layerObj && row.layerObj.openPopup) {
+                    row.layerObj.openPopup();
+                }
+            }, 550);
         });
 
         frag.appendChild(tr);
     });
     tbody.innerHTML = '';
     tbody.appendChild(frag);
-}
 
-/* ============================================================
-   7. PENCARIAN DATA REALTIME
-   Fungsi: Input cari di toolbar tabel, filter baris berdasarkan
-   nama objek atau nama file GeoJSON secara langsung (tanpa reload).
-   ============================================================ */
-window.filterTabelKoordinat = function(val) {
-    currentSearchText = (val || '').trim();
-    renderTable();
-};
+    // 4. Render Tombol Navigasi Pagination
+    if (paginationUl) {
+        if (totalPages <= 1) {
+            paginationUl.innerHTML = '';
+            return;
+        }
 
-/* ============================================================
-   8. EXPORT DATA KE CSV
-   Fungsi: Mengunduh data koordinat GIS dari tabel sebagai file
-   CSV yang bisa dibuka di Excel / Google Sheets.
-   ============================================================ */
-window.exportDataToCsv = function() {
-    if (!allTableRows || allTableRows.length === 0) {
-        alert('Belum ada data GIS yang dapat diexport.');
-        return;
-    }
-    var csv = 'No,Nama Pos / Objek DIR,Kategori Layer,Latitude (Y),Longitude (X),Sumber File GIS\n';
-    allTableRows.forEach(function(r, i) {
-        var clean = (r.name || '').replace(/,/g, ' ');
-        var lat = (r.lat !== null && !isNaN(r.lat)) ? Number(r.lat).toFixed(5) : '';
-        var lng = (r.lng !== null && !isNaN(r.lng)) ? Number(r.lng).toFixed(5) : '';
-        csv += (i + 1) + ',"' + clean + '","' + (r.categoryType || '') + '",' + lat + ',' + lng + ',"' + (r.fileName || '') + '"\n';
-    });
-    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    var link = document.createElement('a');
-    link.setAttribute('href', URL.createObjectURL(blob));
-    link.setAttribute('download', 'Data_GIS_DIR_BWS_Kalimantan_I_' + new Date().toISOString().slice(0,10) + '.csv');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-};
+        var pagHtml = '';
 
-/* ============================================================
-   9. HELPER MODAL KELOLA FILE GIS
-   Fungsi:
-   - updateFileInputLabel: Update label saat user pilih file upload
-   - filterTabelFileGeojson: Filter nama file di modal Kelola File GIS
-   - updateBulkDeleteUI: Update counter & state tombol hapus terpilih
-   - konfirmasiHapusTerpilih: Konfirmasi & submit form bulk delete
-   ============================================================ */
-function updateFileInputLabel(input) {
-    var label = document.getElementById('labelGeojsonFile');
-    if (input.files && input.files.length > 1)     label.textContent = input.files.length + ' file dipilih';
-    else if (input.files && input.files.length === 1) label.textContent = input.files[0].name;
-    else label.textContent = 'Pilih satu atau beberapa file...';
-}
-window.updateFileInputLabel = updateFileInputLabel;
+        // Tombol Prev
+        pagHtml += '<li class="page-item ' + (currentPage === 1 ? 'disabled' : '') + '">' +
+            '<a class="page-link" href="javascript:void(0)" onclick="goToPage(' + (currentPage - 1) + ')" aria-label="Sebelumnya">&laquo;</a>' +
+        '</li>';
 
-function filterTabelFileGeojson(query) {
-    var term = (query || '').toLowerCase().trim();
-    document.querySelectorAll('#tabel-kelola-geojson tbody tr.item-file-row').forEach(function(row) {
-        var text = row.querySelector('.nama-file-text');
-        if (!text) return;
-        row.style.display = (text.textContent.toLowerCase().indexOf(term) !== -1) ? '' : 'none';
-    });
-}
-window.filterTabelFileGeojson = filterTabelFileGeojson;
-
-function updateBulkDeleteUI() {
-    var checked = document.querySelectorAll('.chk-file-geojson:checked');
-    var total = checked.length;
-    var btn        = document.getElementById('btn-hapus-terpilih');
-    var countEl    = document.getElementById('bulk-selected-count');
-    var btnCountEl = document.getElementById('btn-bulk-count');
-    var infoEl     = document.getElementById('bulk-selected-info');
-
-    if (countEl) countEl.textContent = total;
-    if (btnCountEl) btnCountEl.textContent = total;
-    if (infoEl) infoEl.style.display = total > 0 ? '' : 'none';
-    if (btn) btn.disabled = total === 0;
-
-    var all = document.querySelectorAll('.chk-file-geojson');
-    var chkAll = document.getElementById('chk-select-all-geojson');
-    if (chkAll) {
-        if (total === 0)           { chkAll.checked = false; chkAll.indeterminate = false; }
-        else if (total === all.length) { chkAll.checked = true;  chkAll.indeterminate = false; }
-        else                        { chkAll.checked = false; chkAll.indeterminate = true; }
-    }
-}
-
-function konfirmasiHapusTerpilih() {
-    var checked = document.querySelectorAll('.chk-file-geojson:checked');
-    if (checked.length === 0) return;
-    var names = [];
-    checked.forEach(function(c) { names.push(c.value); });
-    var msg = 'Anda akan menghapus ' + checked.length + ' file GIS secara permanen:\n\n';
-    names.forEach(function(n, i) { msg += (i + 1) + '. ' + n + '\n'; });
-    msg += '\nLanjutkan penghapusan?';
-    if (!confirm(msg)) return;
-    var container = document.getElementById('bulk-delete-inputs');
-    container.innerHTML = '';
-    names.forEach(function(name) {
-        var inp = document.createElement('input');
-        inp.type = 'hidden'; inp.name = 'file_names[]'; inp.value = name;
-        container.appendChild(inp);
-    });
-    document.getElementById('form-bulk-delete').submit();
-}
-window.konfirmasiHapusTerpilih = konfirmasiHapusTerpilih;
-
-/* ============================================================
-   10. CHUNKED BATCH UPLOAD GEOJSON
-   Fungsi: Upload banyak file GeoJSON sekaligus secara bertahap
-   (5 file per batch) untuk menghindari error PostTooLargeException
-   dari PHP. Menampilkan progress bar realtime per batch.
-   ============================================================ */
-document.addEventListener('DOMContentLoaded', function() {
-    // Checkbox select-all di modal Kelola File
-    var chkAll = document.getElementById('chk-select-all-geojson');
-    if (chkAll) {
-        chkAll.addEventListener('change', function() {
-            document.querySelectorAll('.chk-file-geojson').forEach(function(c) { c.checked = chkAll.checked; });
-            updateBulkDeleteUI();
-        });
-    }
-    document.querySelectorAll('.chk-file-geojson').forEach(function(c) {
-        c.addEventListener('change', updateBulkDeleteUI);
-    });
-
-    // Form upload dengan chunked batch
-    var formUpload = document.getElementById('formUploadGeojson');
-    if (formUpload) {
-        formUpload.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            var input = document.getElementById('inputGeojsonFile');
-            if (!input || !input.files || input.files.length === 0) {
-                alert('Silakan pilih setidaknya satu file GeoJSON/JSON terlebih dahulu.');
-                return;
+        // Nomor Halaman
+        for (var p = 1; p <= totalPages; p++) {
+            if (p === 1 || p === totalPages || (p >= currentPage - 2 && p <= currentPage + 2)) {
+                pagHtml += '<li class="page-item ' + (p === currentPage ? 'active' : '') + '">' +
+                    '<a class="page-link" href="javascript:void(0)" onclick="goToPage(' + p + ')">' + p + '</a>' +
+                '</li>';
+            } else if (p === currentPage - 3 || p === currentPage + 3) {
+                pagHtml += '<li class="page-item disabled"><span class="page-link">&hellip;</span></li>';
             }
-            var files = Array.from(input.files);
-            var totalFiles   = files.length;
-            var BATCH_SIZE   = 5;
-            var totalBatches = Math.ceil(totalFiles / BATCH_SIZE);
+        }
 
-            var progressSection = document.getElementById('uploadProgressSection');
-            var progressBar     = document.getElementById('uploadProgressBar');
-            var percentText     = document.getElementById('uploadPercentText');
-            var statusText      = document.getElementById('uploadStatusText');
-            var detailText      = document.getElementById('uploadDetailText');
-            var batchCountText  = document.getElementById('uploadBatchCountText');
-            var successSection  = document.getElementById('uploadSuccessSection');
-            var errorSection    = document.getElementById('uploadErrorSection');
-            var btnSubmit       = document.getElementById('btnSubmitUpload');
-            var btnBatal        = document.getElementById('btnBatalUpload');
-            var btnClose        = document.getElementById('btnCloseUploadModal');
+        // Tombol Next
+        pagHtml += '<li class="page-item ' + (currentPage === totalPages ? 'disabled' : '') + '">' +
+            '<a class="page-link" href="javascript:void(0)" onclick="goToPage(' + (currentPage + 1) + ')" aria-label="Selanjutnya">&raquo;</a>' +
+        '</li>';
 
-            if (errorSection)   { errorSection.style.display = 'none'; errorSection.innerText = ''; }
-            if (successSection)   successSection.style.display = 'none';
-            if (progressSection)  progressSection.style.display = 'block';
-            if (btnSubmit) { btnSubmit.disabled = true; btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>Mengunggah...'; }
-            if (btnBatal)  btnBatal.disabled = true;
-            if (btnClose)  btnClose.style.display = 'none';
-
-            var totalUploaded = 0, allUploadedNames = [], allFailed = [];
-            var csrfToken = formUpload.querySelector('input[name="_token"]')
-                ? formUpload.querySelector('input[name="_token"]').value : '';
-
-            try {
-                for (var b = 0; b < totalBatches; b++) {
-                    var start = b * BATCH_SIZE;
-                    var end   = Math.min(start + BATCH_SIZE, totalFiles);
-                    var batchFiles = files.slice(start, end);
-                    var currentBatchNum = b + 1;
-
-                    if (statusText) statusText.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>Mengunggah batch ' + currentBatchNum + ' dari ' + totalBatches + '...';
-                    if (batchCountText) batchCountText.textContent = 'Batch ' + currentBatchNum + '/' + totalBatches + ' (' + batchFiles.length + ' file)';
-
-                    var formData = new FormData();
-                    formData.append('_token', csrfToken);
-                    for (var f = 0; f < batchFiles.length; f++) formData.append('file_geojson[]', batchFiles[f]);
-
-                    var uploadUrl = formUpload.getAttribute('action');
-                    var response = await fetch(uploadUrl, {
-                        method: 'POST',
-                        headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' },
-                        body: formData
-                    });
-
-                    if (!response.ok) {
-                        var errJson = await response.json().catch(function() { return {}; });
-                        throw new Error(errJson.message || ('Gagal pada pengunggahan batch ke-' + currentBatchNum + ' (HTTP ' + response.status + ')'));
-                    }
-
-                    var result = await response.json();
-                    if (result.uploaded && result.uploaded.length > 0) { allUploadedNames = allUploadedNames.concat(result.uploaded); totalUploaded += result.uploaded.length; }
-                    if (result.failed && result.failed.length > 0)     allFailed = allFailed.concat(result.failed);
-
-                    var pct = Math.round((end / totalFiles) * 100);
-                    if (progressBar)  { progressBar.style.width = pct + '%'; progressBar.textContent = pct + '%'; }
-                    if (percentText)    percentText.textContent = pct + '%';
-                    if (detailText) detailText.innerHTML = '<span>Tersimpan <b>' + totalUploaded + '</b> dari <b>' + totalFiles + '</b> file</span><span>Batch ' + currentBatchNum + '/' + totalBatches + '</span>';
-                }
-
-                if (statusText) statusText.innerHTML = '<i class="fas fa-check-circle text-success mr-1"></i>Semua file selesai diunggah!';
-                if (successSection) {
-                    var successMsg = totalUploaded + ' file GeoJSON berhasil diunggah! Memuat ulang halaman peta...';
-                    if (allFailed.length > 0) successMsg += '<br><small class="text-warning">File dilewati: ' + allFailed.join(', ') + '</small>';
-                    successSection.innerHTML = '<i class="fas fa-check-circle mr-1"></i>' + successMsg;
-                    successSection.style.display = 'block';
-                }
-                setTimeout(function() { window.location.reload(); }, 1200);
-
-            } catch (err) {
-                if (errorSection) {
-                    errorSection.innerHTML = '<i class="fas fa-exclamation-triangle mr-1"></i><b>Terjadi Kesalahan:</b> ' + err.message +
-                        (totalUploaded > 0 ? '<br><small>(' + totalUploaded + ' file sempat tersimpan sebelum error)</small>' : '');
-                    errorSection.style.display = 'block';
-                }
-                if (btnSubmit) { btnSubmit.disabled = false; btnSubmit.innerHTML = '<i class="fas fa-redo mr-1"></i>Coba Lagi'; }
-                if (btnBatal)  btnBatal.disabled = false;
-                if (btnClose)  btnClose.style.display = '';
-            }
-        });
+        paginationUl.innerHTML = pagHtml;
     }
-});
+}
+
+// Fungsi cari baris di tabel dari tombol popup card
+window.highlightInTable = function(title, fileName, categoryType) {
+    // 1. Pastikan view menampilkan tabel (jika sedang mode peta penuh)
+    if (typeof switchViewSegment === 'function') {
+        switchViewSegment('both');
+    }
+
+    // 2. Jika filter kategori tabel sedang aktif dan berbeda dari objek yang diklik, reset ke 'all'
+    if (categoryType && currentCategoryFilter !== 'all' && currentCategoryFilter !== categoryType) {
+        if (typeof filterTableCategory === 'function') {
+            filterTableCategory('all');
+        } else {
+            currentCategoryFilter = 'all';
+        }
+    }
+
+    // 3. Reset dropdown wilayah jika sedang memfilter wilayah lain
+    if (currentWilayahFilter !== 'all') {
+        var selWil = document.getElementById('selectFilterWilayah');
+        if (selWil) selWil.value = 'all';
+        currentWilayahFilter = 'all';
+    }
+
+    // 4. Masukkan nama/judul ke input pencarian tabel dan jalankan filter
+    var searchText = title || fileName || '';
+    var input = document.getElementById('cari-tabel-koordinat');
+    if (input) {
+        input.value = searchText;
+    }
+    filterTabelKoordinat(searchText);
+
+    // 5. Scroll halus ke tabel
+    var tableSec = document.getElementById('section-table');
+    if (tableSec) {
+        var targetY = tableSec.getBoundingClientRect().top + window.pageYOffset - 80;
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
+    }
+};

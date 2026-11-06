@@ -73,7 +73,23 @@ class User extends Authenticatable
     {
         return match (strtolower($this->role ?? 'admin')) {
             'superadmin' => 'Super Admin',
-            default      => 'Admin',
+            'admin'      => 'Admin Operasional',
+            default      => 'Viewer Publik',
         };
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return strtolower($this->role ?? '') === 'superadmin';
+    }
+
+    public function isAdmin(): bool
+    {
+        return in_array(strtolower($this->role ?? ''), ['admin', 'superadmin']);
+    }
+
+    public function isViewer(): bool
+    {
+        return !in_array(strtolower($this->role ?? ''), ['admin', 'superadmin']);
     }
 }

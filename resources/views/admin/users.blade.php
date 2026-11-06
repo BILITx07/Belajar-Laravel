@@ -109,25 +109,22 @@
                     <thead>
                         <tr class="text-dark font-weight-bold" style="border-top: 1px solid #f1f5f9; border-bottom: 2px solid #e2e8f0; color: #1e293b;">
                             <th width="5%" class="text-center font-weight-bold">No.</th>
-                            <th width="18%" class="font-weight-bold">
+                            <th width="24%" class="font-weight-bold">
                                 Nama <i class="fas fa-sort text-muted ml-1 fa-xs" style="opacity: 0.5;"></i>
                             </th>
-                            <th width="15%" class="font-weight-bold">
+                            <th width="16%" class="font-weight-bold">
                                 Username <i class="fas fa-sort text-muted ml-1 fa-xs" style="opacity: 0.5;"></i>
                             </th>
-                            <th width="13%" class="font-weight-bold">
+                            <th width="15%" class="font-weight-bold">
                                 No. HP <i class="fas fa-sort text-muted ml-1 fa-xs" style="opacity: 0.5;"></i>
                             </th>
                             <th width="20%" class="font-weight-bold">
                                 Email <i class="fas fa-sort text-muted ml-1 fa-xs" style="opacity: 0.5;"></i>
                             </th>
-                            <th width="11%" class="font-weight-bold">
+                            <th width="12%" class="font-weight-bold">
                                 Role <i class="fas fa-sort text-muted ml-1 fa-xs" style="opacity: 0.5;"></i>
                             </th>
-                            <th width="12%" class="font-weight-bold">
-                                Login Terakhir <i class="fas fa-sort text-muted ml-1 fa-xs" style="opacity: 0.5;"></i>
-                            </th>
-                            <th width="6%" class="text-center font-weight-bold">Aksi</th>
+                            <th width="8%" class="text-center font-weight-bold">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -159,16 +156,15 @@
                                         </span>
                                     @endif
                                 </td>
-                                <td class="align-middle text-muted" style="font-size: 0.82rem;">
-                                    {{ $user->last_login_at ? $user->last_login_at->format('d-M-Y H:i') : '-' }}
-                                </td>
                                 <td class="text-center align-middle">
-                                    <div class="d-flex align-items-center justify-content-center" style="gap: 6px;">
-                                        <!-- Tombol Edit Hijau -->
+                                    <div class="d-flex align-items-center justify-content-center" style="gap: 8px;">
+                                        <!-- Tombol Edit Ramping & Halus -->
                                         <button type="button" 
-                                                class="btn btn-sm btn-success px-2 py-1 shadow-sm"
-                                                style="background: #10b981; border-color: #10b981; border-radius: 6px;"
+                                                class="btn btn-sm shadow-sm d-inline-flex align-items-center justify-content-center"
+                                                style="width: 32px; height: 32px; border-radius: 8px; background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; transition: all 0.2s ease;"
                                                 title="Edit User"
+                                                onmouseover="this.style.background='#10b981'; this.style.color='#fff';"
+                                                onmouseout="this.style.background='#ecfdf5'; this.style.color='#059669';"
                                                 onclick="openEditUserModal({{ json_encode([
                                                     'id'       => $user->id,
                                                     'name'     => $user->name,
@@ -177,17 +173,19 @@
                                                     'phone'    => $user->phone,
                                                     'role'     => $user->role,
                                                 ]) }})">
-                                            <i class="fas fa-pencil-alt fa-xs"></i>
+                                            <i class="fas fa-pen fa-xs"></i>
                                         </button>
 
-                                        <!-- Tombol Hapus Merah -->
+                                        <!-- Tombol Hapus Ramping & Halus -->
                                         @if(Auth::id() !== $user->id)
                                         <button type="button" 
-                                                class="btn btn-sm btn-danger px-2 py-1 shadow-sm"
-                                                style="background: #ef4444; border-color: #ef4444; border-radius: 6px;"
+                                                class="btn btn-sm shadow-sm d-inline-flex align-items-center justify-content-center"
+                                                style="width: 32px; height: 32px; border-radius: 8px; background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; transition: all 0.2s ease;"
                                                 title="Hapus User"
+                                                onmouseover="this.style.background='#ef4444'; this.style.color='#fff';"
+                                                onmouseout="this.style.background='#fef2f2'; this.style.color='#dc2626';"
                                                 onclick="confirmDeleteUser({{ $user->id }}, '{{ addslashes($user->name) }}')">
-                                            <i class="fas fa-trash-alt fa-xs"></i>
+                                            <i class="fas fa-trash fa-xs"></i>
                                         </button>
                                         @endif
                                     </div>
@@ -195,7 +193,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="text-center py-5 text-muted">
+                                <td colspan="7" class="text-center py-5 text-muted">
                                     <i class="fas fa-user-slash fa-3x text-muted mb-3 d-block" style="opacity: 0.4;"></i>
                                     <div class="font-weight-bold mb-1">Belum ada data user</div>
                                     <p class="small mb-0">Klik tombol "+ Tambah User" untuk menambahkan pengguna baru.</p>

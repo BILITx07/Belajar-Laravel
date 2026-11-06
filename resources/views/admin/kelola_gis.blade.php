@@ -79,22 +79,52 @@
         <div class="card-body p-4">
 
             <!-- Card Header: Judul & Tombol Aksi -->
-            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-4 pb-2 border-bottom" style="gap: 12px;">
-                <h5 class="font-weight-bold text-dark mb-0" style="font-size: 1.15rem;">
-                    Daftar File Geospasial
-                </h5>
-                <div class="d-flex align-items-center" style="gap:10px;">
-                    <a href="{{ route('peta') }}" target="_blank" class="btn btn-outline-primary font-weight-bold px-3 py-2 shadow-sm d-inline-flex align-items-center" style="border-radius:25px;font-size:0.85rem;height:38px;">
-                        <i class="fas fa-map-marked-alt mr-2"></i>Buka Peta Publik
-                    </a>
-                    <button type="button" class="btn text-white font-weight-bold px-4 py-2 shadow-sm d-inline-flex align-items-center justify-content-center" style="background:#2563eb;border-radius:25px;font-size:0.88rem;height:38px;transition:all 0.2s ease;" data-toggle="modal" data-target="#modalUpload">
-                        <i class="fas fa-cloud-upload-alt mr-2"></i>Upload File Baru
-                    </button>
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-3 pb-2 border-bottom" style="gap: 12px;">
+                <div>
+                    <h5 class="font-weight-bold text-dark mb-1" style="font-size: 1.15rem;">
+                        Daftar File Geospasial
+                    </h5>
+                    <p class="text-muted small mb-0">
+                        {{ ($currentTab ?? 'active') === 'trash' ? 'File geospasial yang sedang berada di kotak sampah sementara (dapat dipulihkan kapan saja).' : 'Kelola file spasial aktif yang saat ini tampil di peta interaktif WebGIS BWS Kalimantan I.' }}
+                    </p>
                 </div>
+
+                <div class="d-flex align-items-center" style="gap:10px;">
+                    @if(($currentTab ?? 'active') === 'trash')
+                        @if(($totalTrash ?? 0) > 0 && Auth::check() && Auth::user()->isSuperAdmin())
+                        <form action="{{ route('admin.gis.empty-trash') }}" method="POST" onsubmit="return confirm('Peringatan: Kosongkan seluruh kotak sampah? Semua file di dalam kotak sampah akan dihapus permanen selamanya.');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger font-weight-bold px-3 py-2 shadow-sm d-inline-flex align-items-center" style="border-radius:25px;font-size:0.84rem;height:38px;">
+                                <i class="fas fa-trash mr-2"></i>Kosongkan Kotak Sampah
+                            </button>
+                        </form>
+                        @endif
+                    @else
+                        <button type="button" class="btn text-white font-weight-bold px-4 py-2 shadow-sm d-inline-flex align-items-center justify-content-center" style="background:#2563eb;border-radius:25px;font-size:0.88rem;height:38px;transition:all 0.2s ease;" data-toggle="modal" data-target="#modalUpload">
+                            <i class="fas fa-cloud-upload-alt mr-2"></i>Upload File Baru
+                        </button>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Tab Navigasi: File Aktif vs Kotak Sampah -->
+            <div class="d-flex align-items-center mb-3 pb-2 border-bottom" style="gap: 8px;">
+                <a href="{{ route('admin.kelola-gis', ['tab' => 'active']) }}" 
+                   class="btn btn-sm {{ ($currentTab ?? 'active') === 'active' ? 'btn-primary text-white font-weight-bold shadow-sm' : 'btn-light text-muted' }}" 
+                   style="border-radius: 20px; font-size: 0.84rem; padding: 5px 16px;">
+                    <i class="fas fa-folder-open mr-1"></i> File Aktif ({{ $totalActive ?? 0 }})
+                </a>
+                <a href="{{ route('admin.kelola-gis', ['tab' => 'trash']) }}" 
+                   class="btn btn-sm {{ ($currentTab ?? '') === 'trash' ? 'btn-danger text-white font-weight-bold shadow-sm' : 'btn-light text-muted' }}" 
+                   style="border-radius: 20px; font-size: 0.84rem; padding: 5px 16px;">
+                    <i class="fas fa-trash-alt mr-1"></i> Kotak Sampah ({{ $totalTrash ?? 0 }})
+                </a>
             </div>
 
             <!-- Filter Bar: Entri & Pencarian -->
             <form method="GET" action="{{ route('admin.kelola-gis') }}" id="filterForm">
+                <input type="hidden" name="tab" value="{{ $currentTab ?? 'active' }}">
                 <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between mb-3" style="gap:14px;">
                     
                     <!-- Left: Tampilkan X entri & Bulk Delete -->
@@ -110,6 +140,7 @@
                             <span class="ml-2">entri</span>
                         </div>
 
+                        @if(($currentTab ?? 'active') === 'active')
                         <!-- Dropdown Filter Kategori -->
                         <select name="type" class="form-control form-control-sm" style="width:175px;border-radius:6px;" onchange="document.getElementById('filterForm').submit()">
                             <option value="semua" {{ ($filterType ?? 'semua') === 'semua' ? 'selected' : '' }}>Semua Kategori</option>
@@ -126,10 +157,13 @@
                             </optgroup>
                         </select>
 
-                        <!-- Tombol Hapus Masal -->
+                        <!-- Tombol Hapus Masal (Khusus Super Admin) -->
+                        @if(Auth::check() && Auth::user()->isSuperAdmin())
                         <button type="button" class="btn btn-sm btn-outline-danger font-weight-bold" id="btnBulkDelete" disabled onclick="submitBulkDelete()" style="border-radius:6px;display:none;">
                             <i class="fas fa-trash-alt mr-1"></i>Hapus Terpilih (<span id="bulkCount">0</span>)
                         </button>
+                        @endif
+                        @endif
                     </div>
 
                     <!-- Right: Search Input -->
@@ -144,7 +178,7 @@
                             </div>
                         </div>
                         @if($search || ($filterType && $filterType !== 'semua'))
-                            <a href="{{ route('admin.kelola-gis') }}" class="btn btn-sm btn-light border text-muted" title="Reset filter" style="border-radius:6px;">
+                            <a href="{{ route('admin.kelola-gis', ['tab' => $currentTab ?? 'active']) }}" class="btn btn-sm btn-light border text-muted" title="Reset filter" style="border-radius:6px;">
                                 <i class="fas fa-times"></i>
                             </a>
                         @endif
@@ -153,7 +187,92 @@
                 </div>
             </form>
 
-            <!-- Tabel Data -->
+            @if(($currentTab ?? 'active') === 'trash')
+            <!-- ═══ TABEL KOTAK SAMPAH (TRASH) ═══ -->
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" style="font-size:0.87rem;">
+                    <thead style="background:#fef2f2;border-top:1px solid #fecaca;border-bottom:2px solid #fca5a5;">
+                        <tr class="text-danger font-weight-bold" style="font-size:0.8rem;letter-spacing:0.3px;">
+                            <th width="50" class="text-center">No.</th>
+                            <th>Nama File Terhapus</th>
+                            <th width="120">Ukuran</th>
+                            <th width="170">Waktu Dihapus</th>
+                            <th width="150">Dihapus Oleh</th>
+                            <th width="150" class="text-center">Tindakan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($fileList as $index => $file)
+                            <tr style="border-bottom:1px solid #f1f5f9;">
+                                <td class="text-center text-muted align-middle font-weight-bold">
+                                    {{ ($offset ?? 0) + $index + 1 }}
+                                </td>
+                                <td class="align-middle">
+                                    <div class="d-flex align-items-center">
+                                        <div class="mr-3 rounded d-flex align-items-center justify-content-center" style="width:34px;height:34px;background:#fee2e2;color:#dc2626;">
+                                            <i class="fas fa-file-archive"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-weight-bold text-dark" style="max-width:340px;word-break:break-all;">
+                                                {{ $file['name'] }}
+                                            </div>
+                                            <small class="text-danger"><i class="fas fa-exclamation-circle mr-1"></i>Status: Di Kotak Sampah</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="align-middle font-weight-bold text-secondary">
+                                    {{ $file['size'] }}
+                                </td>
+                                <td class="align-middle text-muted" style="font-size:0.82rem;">
+                                    <i class="far fa-clock mr-1 text-danger"></i> {{ $file['deleted_at'] }}
+                                </td>
+                                <td class="align-middle">
+                                    <span class="badge badge-light border text-muted font-weight-bold px-2 py-1" style="font-size:0.75rem;">
+                                        {{ $file['deleted_by'] }}
+                                    </span>
+                                </td>
+                                <td class="text-center align-middle">
+                                    <div class="d-flex align-items-center justify-content-center" style="gap:6px;">
+                                        <!-- Tombol Pulihkan (Restore) -->
+                                        <form action="{{ route('admin.gis.restore') }}" method="POST" class="d-inline" onsubmit="return confirm('Pulihkan file \'{{ $file['name'] }}\' kembali aktif ke peta WebGIS?');">
+                                            @csrf
+                                            <input type="hidden" name="file_name" value="{{ $file['name'] }}">
+                                            <button type="submit" class="btn btn-sm shadow-sm d-inline-flex align-items-center" style="border-radius:6px; background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; font-size:0.78rem; font-weight:700; padding:4px 10px;" title="Pulihkan File Kembali Aktif">
+                                                <i class="fas fa-undo mr-1"></i> Pulihkan
+                                            </button>
+                                        </form>
+
+                                        <!-- Tombol Hapus Permanen (Khusus Super Admin) -->
+                                        @if(Auth::check() && Auth::user()->isSuperAdmin())
+                                        <form action="{{ route('admin.gis.force-delete') }}" method="POST" class="d-inline" onsubmit="return confirm('Peringatan Keras: Hapus file \'{{ $file['name'] }}\' secara permanen selamanya dari server? Tindakan ini tidak dapat dibatalkan.');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <input type="hidden" name="file_name" value="{{ $file['name'] }}">
+                                            <button type="submit" class="btn btn-sm shadow-sm d-inline-flex align-items-center" style="border-radius:6px; background:#fef2f2; color:#dc2626; border:1px solid #fecaca; font-size:0.78rem; font-weight:700; padding:4px 8px;" title="Hapus Permanen Selamanya">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </form>
+                                        @endif
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center py-5">
+                                    <div class="py-4">
+                                        <i class="fas fa-trash-restore fa-3x text-muted mb-3 d-block" style="opacity:0.35;"></i>
+                                        <h6 class="font-weight-bold text-muted mb-1">Kotak Sampah Kosong</h6>
+                                        <p class="text-muted small mb-0">Tidak ada file geospasial yang sedang berada di kotak sampah.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            @else
+            <!-- ═══ TABEL FILE SPASIAL AKTIF ═══ -->
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0" style="font-size:0.87rem;" id="tableGisData">
                     <thead style="background:#f8fafc;border-top:1px solid #e2e8f0;border-bottom:2px solid #e2e8f0;">
@@ -165,7 +284,7 @@
                             <th>Nama File</th>
                             <th width="190">Kategori</th>
                             <th width="120">Ukuran</th>
-                            <th width="170">Login/Upload Terakhir</th>
+                            <th width="170">Waktu Terdaftar</th>
                             <th width="120" class="text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -206,14 +325,14 @@
                                     {{ $file['date'] }}
                                 </td>
                                 <td class="text-center align-middle">
-                                    <div class="d-flex align-items-center justify-content-center" style="gap:6px;">
-                                        <!-- Tombol Edit (Warna Hijau Sesuai Referensi) -->
-                                        <button type="button" class="btn btn-sm btn-success px-2 py-1 shadow-sm" style="background:#10b981;border-color:#10b981;border-radius:6px;" title="Edit / Rename File" onclick="openRenameModal('{{ $file['name'] }}')">
-                                            <i class="fas fa-pencil-alt fa-xs"></i>
+                                    <div class="d-flex align-items-center justify-content-center" style="gap:8px;">
+                                        <!-- Tombol Edit Ramping -->
+                                        <button type="button" class="btn btn-sm shadow-sm d-inline-flex align-items-center justify-content-center" style="width:32px; height:32px; border-radius:8px; background:#ecfdf5; color:#059669; border:1px solid #a7f3d0; transition:all 0.2s ease;" title="Edit / Rename File" onmouseover="this.style.background='#10b981'; this.style.color='#fff';" onmouseout="this.style.background='#ecfdf5'; this.style.color='#059669';" onclick="openRenameModal('{{ $file['name'] }}')">
+                                            <i class="fas fa-pen fa-xs"></i>
                                         </button>
-                                        <!-- Tombol Hapus (Warna Merah Sesuai Referensi) -->
-                                        <button type="button" class="btn btn-sm btn-danger px-2 py-1 shadow-sm" style="background:#ef4444;border-color:#ef4444;border-radius:6px;" title="Hapus File" onclick="confirmDelete('{{ $file['name'] }}')">
-                                            <i class="fas fa-trash-alt fa-xs"></i>
+                                        <!-- Tombol Hapus Sementara ke Sampah -->
+                                        <button type="button" class="btn btn-sm shadow-sm d-inline-flex align-items-center justify-content-center" style="width:32px; height:32px; border-radius:8px; background:#fef2f2; color:#dc2626; border:1px solid #fecaca; transition:all 0.2s ease;" title="Pindahkan ke Kotak Sampah" onmouseover="this.style.background='#ef4444'; this.style.color='#fff';" onmouseout="this.style.background='#fef2f2'; this.style.color='#dc2626';" onclick="confirmDelete('{{ $file['name'] }}')">
+                                            <i class="fas fa-trash fa-xs"></i>
                                         </button>
                                     </div>
                                 </td>
@@ -224,11 +343,15 @@
                                     <div class="py-4">
                                         <i class="fas fa-folder-open fa-3x text-muted mb-3 d-block" style="opacity:0.4;"></i>
                                         <h6 class="font-weight-bold text-muted mb-1">Belum ada file GeoJSON yang cocok</h6>
-                                        <p class="text-muted small mb-3">Klik tombol "Upload File GeoJSON" di atas untuk menambahkan data spasial baru.</p>
+                                        <p class="text-muted small mb-3">Klik tombol "Upload File Baru" di atas untuk menambahkan data spasial baru.</p>
                                     </div>
                                 </td>
                             </tr>
                         @endforelse
+                    </tbody>
+                </table>
+            </div>
+            @endif
                     </tbody>
                 </table>
             </div>
@@ -378,18 +501,20 @@
 </div>
 
 <!-- ==========================================
-     MODAL KONFIRMASI HAPUS
+     MODAL KONFIRMASI SOFT DELETE (KE KOTAK SAMPAH)
      ========================================== -->
 <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="modalDeleteLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
         <div class="modal-content border-0 shadow-lg" style="border-radius:14px;overflow:hidden;">
             <div class="modal-body p-4 text-center">
-                <div class="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:54px;height:54px;background:#fee2e2;color:#ef4444;">
+                <div class="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:54px;height:54px;background:#fff7ed;color:#ea580c;">
                     <i class="fas fa-trash-alt fa-lg"></i>
                 </div>
-                <h6 class="font-weight-bold text-dark mb-1">Hapus File Geospasial?</h6>
-                <p class="text-muted small mb-0" id="deleteFileName" style="word-break:break-all;"></p>
-                <small class="text-danger d-block mt-2 font-weight-bold">Tindakan ini tidak dapat dibatalkan!</small>
+                <h6 class="font-weight-bold text-dark mb-1">Pindahkan ke Sampah?</h6>
+                <p class="text-muted small mb-0 font-weight-bold" id="deleteFileName" style="word-break:break-all;"></p>
+                <small class="text-muted d-block mt-2" style="font-size:0.75rem;">
+                    File akan disembunyikan dari peta publik, namun masih tersimpan aman di <strong>Kotak Sampah</strong> dan bisa dipulihkan kembali kapan saja.
+                </small>
             </div>
             <div class="modal-footer border-0 bg-light justify-content-center py-3" style="gap:8px;">
                 <button type="button" class="btn btn-light border font-weight-bold btn-sm px-3" data-dismiss="modal" style="border-radius:6px;">Batal</button>
@@ -397,8 +522,8 @@
                     @csrf
                     @method('DELETE')
                     <input type="hidden" name="file_name" id="deleteFileInput">
-                    <button type="submit" class="btn btn-danger font-weight-bold btn-sm px-4" style="background:#ef4444;border-color:#ef4444;border-radius:6px;">
-                        <i class="fas fa-trash-alt mr-1"></i>Ya, Hapus
+                    <button type="submit" class="btn btn-warning text-white font-weight-bold btn-sm px-3" style="background:#ea580c;border-color:#ea580c;border-radius:6px;">
+                        <i class="fas fa-trash-alt mr-1"></i>Pindahkan ke Sampah
                     </button>
                 </form>
             </div>

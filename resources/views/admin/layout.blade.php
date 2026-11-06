@@ -372,37 +372,117 @@
                 <i class="fas fa-expand fa-lg text-white"></i>
             </a>
 
-         
+            <!-- NOTIFIKASI AKTIVITAS KHUSUS ADMIN & SUPER ADMIN -->
+            @php
+                $recentLogs = \App\Helpers\ActivityLogger::getRecent(5);
+                $countLogs = count($recentLogs);
+            @endphp
+            <div class="dropdown no-arrow position-relative">
+                <a class="bws-action-icon position-relative text-white" 
+                   href="#" 
+                   id="adminNotifDropdown" 
+                   role="button" 
+                   data-toggle="dropdown" 
+                   aria-haspopup="true" 
+                   aria-expanded="false" 
+                   title="Pusat Notifikasi Admin">
+                    <i class="fas fa-bell"></i>
+                    @if($countLogs > 0)
+                    <span class="bws-notif-badge">
+                        {{ $countLogs }}
+                    </span>
+                    @endif
+                </a>
+                
+                <div class="dropdown-menu dropdown-menu-right shadow-lg border-0 animated--grow-in mt-2 p-0" 
+                     aria-labelledby="adminNotifDropdown" 
+                     style="border-radius: 12px; min-width: 320px; max-width: 360px; overflow: hidden; z-index: 1060;">
+                    
+                    <div class="d-flex align-items-center justify-content-between px-3 py-2 text-white" style="background: #174ea6;">
+                        <div class="font-weight-bold d-flex align-items-center" style="font-size: 13px;">
+                            <i class="fas fa-bell mr-2"></i> Log Aktivitas Sistem
+                        </div>
+                        <span class="badge badge-light text-primary font-weight-bold px-2 py-0" style="font-size: 10.5px; border-radius: 10px;">
+                            {{ $countLogs }} Riwayat
+                        </span>
+                    </div>
 
-            <!-- Profile Dropdown (Sesuai Referensi Gambar BWS) -->
+                    <div class="list-group list-group-flush" style="font-size: 12px; max-height: 300px; overflow-y: auto;">
+                        @forelse($recentLogs as $log)
+                            @php
+                                $iconColor = match($log['action'] ?? 'update') {
+                                    'upload' => 'bg-success',
+                                    'delete' => 'bg-danger',
+                                    'rename' => 'bg-warning text-dark',
+                                    default  => 'bg-primary'
+                                };
+                                $iconClass = match($log['action'] ?? 'update') {
+                                    'upload' => 'fa-cloud-upload-alt',
+                                    'delete' => 'fa-trash-alt',
+                                    'rename' => 'fa-pen',
+                                    default  => 'fa-database'
+                                };
+                            @endphp
+                            <div class="list-group-item d-flex align-items-start py-2 px-3 border-bottom">
+                                <div class="rounded-circle {{ $iconColor }} text-white d-flex align-items-center justify-content-center mr-2 mt-1 flex-shrink-0" style="width: 28px; height: 28px; font-size: 11px;">
+                                    <i class="fas {{ $iconClass }}"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="font-weight-bold text-dark" style="font-size: 12px;">{{ $log['user'] ?? 'Petugas' }}</div>
+                                    <div class="text-secondary small mb-1" style="font-size: 11.5px; line-height: 1.35;">
+                                        {{ $log['description'] ?? '-' }}
+                                    </div>
+                                    <div class="text-muted" style="font-size: 10px;">
+                                        <i class="far fa-clock mr-1"></i>{{ \Carbon\Carbon::parse($log['time'])->diffForHumans() }}
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="p-3 text-center text-muted small">
+                                <i class="fas fa-check-circle text-success mr-1"></i> Belum ada aktivitas baru.
+                            </div>
+                        @endforelse
+                    </div>
+
+                    <div class="p-2 text-center border-top bg-light">
+                        <a href="{{ route('admin.kelola-gis') }}" class="small font-weight-bold text-primary d-inline-block py-1">
+                            <i class="fas fa-database mr-1"></i> Kelola Seluruh Data GIS &raquo;
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Dropdown (Hanya Pengaturan Akun & Logout Sesuai Permintaan) -->
             <div class="dropdown">
                 <div class="bws-user-trigger" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownUserMenu" style="background:rgba(255,255,255,0.16); border-radius:25px; padding:3px 12px 3px 4px;">
                     <div class="rounded-circle bg-white d-flex align-items-center justify-content-center mr-2 shadow-sm" style="width:32px; height:32px;">
-                        <i class="fas fa-user" style="color:#1d64d8; font-size:14px;"></i>
+                        <i class="fas fa-user-shield" style="color:#1d64d8; font-size:13px;"></i>
                     </div>
-                    <span class="font-weight-bold mr-1 text-white" style="font-size:0.86rem;">
-                        {{ Auth::user()->name ?? 'Admin Dinar' }}
-                    </span>
-                    <i class="fas fa-chevron-down" style="font-size:0.65rem; opacity:0.8; color:#fff;"></i>
+                    <div class="d-flex flex-column text-left mr-1">
+                        <span class="font-weight-bold text-white line-height-1" style="font-size:0.84rem; line-height:1.2;">
+                            {{ Auth::user()->name ?? 'Petugas BWSK' }}
+                        </span>
+                        <span class="small text-warning font-weight-bold" style="font-size:0.68rem; line-height:1;">
+                            {{ Auth::user()->role_label ?? 'Admin' }}
+                        </span>
+                    </div>
+                    <i class="fas fa-chevron-down ml-1" style="font-size:0.65rem; opacity:0.8; color:#fff;"></i>
                 </div>
 
-                <!-- Dropdown Menu Profil -->
+                <!-- Dropdown Menu Profil: Pengaturan Akun & Keluar Saja -->
                 <div class="dropdown-menu dropdown-menu-right profile-popup-menu" aria-labelledby="dropdownUserMenu">
-                    <a class="profile-popup-item" href="{{ route('admin.dashboard') }}">
-                        <i class="fas fa-cog"></i> Admin Panel
-                    </a>
+                    <div class="px-3 py-2 border-bottom text-muted small">
+                        Petugas: <strong class="text-dark">{{ Auth::user()->name ?? 'Petugas' }}</strong><br>
+                        Role: <span class="badge badge-primary px-2">{{ Auth::user()->role_label ?? 'Admin' }}</span>
+                    </div>
                     <a class="profile-popup-item" href="{{ route('profile') }}">
-                        <i class="fas fa-user"></i> Profile
-                    </a>
-                    <a class="profile-popup-item d-flex justify-content-between align-items-center" href="{{ route('profile') }}">
-                        <div><i class="fas fa-sliders-h"></i> Settings</div>
-                        <span class="badge badge-success font-weight-bold" style="background:#10b981;font-size:0.7rem;">11</span>
+                        <i class="fas fa-user-cog text-primary"></i> Pengaturan Akun
                     </a>
                     <div class="dropdown-divider my-1"></div>
                     <form action="{{ route('logout') }}" method="POST" class="m-0">
                         @csrf
                         <button type="submit" class="profile-popup-item logout border-0 bg-transparent w-100 text-left">
-                            <i class="fas fa-power-off"></i> Logout
+                            <i class="fas fa-power-off text-danger"></i> Keluar
                         </button>
                     </form>
                 </div>
@@ -410,7 +490,6 @@
         </div>
     </header>
 
-    <!-- ═══ 2. MENU NAVIGASI ADMIN SEKUNDER ═══ -->
     <!-- ═══ 2. MENU NAVIGASI ADMIN SEKUNDER (SESUAI GAMBAR REFERENSI FEWS BWS) ═══ -->
     <nav class="bws-subnavbar">
         <!-- 1. Dashboard -->
@@ -493,6 +572,12 @@
             <span>Manajemen User</span>
         </a>
         @endif
+
+        <!-- 4. Log Aktivitas (Audit Trail Operasional Data) -->
+        <a href="{{ route('admin.activity-logs') }}" class="bws-nav-link {{ request()->routeIs('admin.activity-logs*') ? 'active' : '' }}">
+            <i class="fas fa-history text-secondary"></i>
+            <span>Log Aktivitas</span>
+        </a>
     </nav>
 
     <!-- ═══ 3. KONTEN UTAMA HALAMAN ═══ -->

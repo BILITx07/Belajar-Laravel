@@ -110,6 +110,15 @@ Route::middleware('auth')->group(function () {
         Route::post('/rename', [AdminController::class, 'rename'])->name('rename');
         Route::delete('/delete', [AdminController::class, 'delete'])->name('delete');
         Route::delete('/delete-bulk', [AdminController::class, 'deleteBulk'])->name('delete-bulk');
+
+        // Soft Delete & Kotak Sampah Data Spasial
+        Route::post('/gis/restore', [AdminController::class, 'restoreGis'])->name('gis.restore');
+        Route::delete('/gis/force-delete', [AdminController::class, 'forceDeleteGis'])->name('gis.force-delete');
+        Route::delete('/gis/empty-trash', [AdminController::class, 'emptyTrashGis'])->name('gis.empty-trash');
+
+        // Halaman Log Aktivitas (Audit Trail Operasional Data)
+        Route::get('/activity-logs', [AdminController::class, 'activityLogs'])->name('activity-logs');
+        Route::delete('/activity-logs/clear', [AdminController::class, 'clearActivityLogs'])->name('activity-logs.clear');
     });
 
     // Profile & Akun

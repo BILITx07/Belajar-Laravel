@@ -26,8 +26,11 @@ class CekRole
             $roles = ['superadmin'];
         }
 
-        if (!in_array(Auth::user()->role, $roles)) {
-            return redirect('/dashboard')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
+        $userRole = strtolower(Auth::user()->role ?? 'viewer');
+        $allowedRoles = array_map('strtolower', $roles);
+
+        if (!in_array($userRole, $allowedRoles, true)) {
+            return redirect('/dashboard')->with('error', 'Akses ditolak: Menu ini hanya dapat diakses oleh ' . implode('/', array_map('ucwords', $roles)) . '.');
         }
 
         return $next($request);

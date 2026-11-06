@@ -10,6 +10,10 @@
 
     <title>@yield('title', 'SISDA & FEWS - BWS Kalimantan I')</title>
 
+    <!-- Favicon Logo PU -->
+    <link rel="icon" href="{{ asset('img/logo-pu.png') }}" type="image/png">
+    <link rel="shortcut icon" href="{{ asset('img/logo-pu.png') }}" type="image/png">
+
     <!-- Custom fonts for this template-->
     <link href="{{asset('sbadmin')}}/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -30,7 +34,7 @@
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
         }
         #content-wrapper {
-            background-color: #f1f5f9;
+            background-color: #f8fafc;
         }
         
         :root {
@@ -58,7 +62,7 @@
                 @include('layout.navbar')
 
                 <!-- Begin Page Content -->
-                <div class="container-fluid px-3 py-3" style="flex: 1; display: flex; flex-direction: column;">
+                <div class="container-fluid p-0" style="flex: 1; display: flex; flex-direction: column;">
                     @yield('konten')
                 </div>
                 <!-- /.container-fluid -->
@@ -124,7 +128,6 @@
     <script src="https://cdn.jsdelivr.net/npm/shpjs@6.2.0/dist/shp.js"></script>
 
     @stack('scripts')
-
 </body>
 
 </html>

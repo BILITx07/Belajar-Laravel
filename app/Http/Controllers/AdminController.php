@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use App\Helpers\ActivityLogger;
+use App\Models\User;
 
 class AdminController extends Controller
 {
     /**
-     * Halaman Depan Admin (WebGIS Interactive Dashboard Sesuai Gambar Referensi)
+     * Halaman Depan Admin (WebGIS Interactive Dashboard Sesuai Gambar Referensi SIPERISDA & FEWS)
      */
     public function dashboard(Request $request)
     {
@@ -49,83 +51,110 @@ class AdminController extends Controller
 
         $stats = $this->getGisStats();
 
+        // Data Agregat per Kabupaten untuk Grafik SIPERISDA
+        $chartKabupaten = [];
+        foreach ($lokasi as $item) {
+            $kab = $item['kabupaten'];
+            if (!isset($chartKabupaten[$kab])) {
+                $chartKabupaten[$kab] = ['baku' => 0, 'fungsional' => 0];
+            }
+            $chartKabupaten[$kab]['baku'] += (float) ($item['luas_baku'] ?? 0);
+            $chartKabupaten[$kab]['fungsional'] += (float) ($item['luas_fung'] ?? 0);
+        }
+
+        $allGisFiles = $this->scanGeojsonFiles();
+        $recentFiles = array_slice($allGisFiles, 0, 5);
+        $totalUsers = User::count();
+        $recentActivities = ActivityLogger::getRecent(6);
+
         return view('admin.dashboard', compact(
             'lokasi',
             'kabupatenList',
             'geojsonFiles',
             'availableTypes',
             'statistik',
-            'stats'
+            'stats',
+            'chartKabupaten',
+            'recentFiles',
+            'totalUsers',
+            'recentActivities'
         ));
     }
 
     /**
-     * Halaman Manajemen Master Data GIS (CRUD File Spasial)
+     * Halaman Manajemen Master Data GIS (CRUD File Spasial & Kotak Sampah)
      */
     public function kelolaGis(Request $request)
     {
         $search = $request->input('search');
         $filterType = $request->input('type', 'semua');
+        $currentTab = $request->input('tab', 'active'); // 'active' atau 'trash'
         $perPage = (int) $request->input('per_page', 10);
         if (!in_array($perPage, [10, 25, 50, 100])) {
             $perPage = 10;
         }
 
-        $allFiles = $this->scanGeojsonFiles();
+        $activeFiles = $this->scanGeojsonFiles();
+        $trashFiles  = $this->scanTrashFiles();
+
+        $targetFiles = ($currentTab === 'trash') ? $trashFiles : $activeFiles;
 
         // Filter pencarian teks
         if ($search) {
-            $allFiles = array_filter($allFiles, function ($f) use ($search) {
+            $targetFiles = array_filter($targetFiles, function ($f) use ($search) {
                 return stripos($f['name'], $search) !== false;
             });
         }
 
-        // Filter kategori spasial (Master Data GIS Sesuai Referensi FEWS)
-        if ($filterType !== 'semua' && !empty($filterType)) {
+        // Filter kategori spasial (hanya berlaku di tab file aktif)
+        if ($currentTab === 'active' && $filterType !== 'semua' && !empty($filterType)) {
             if ($filterType === 'irigasi') {
-                $allFiles = array_filter($allFiles, function ($f) {
+                $targetFiles = array_filter($targetFiles, function ($f) {
                     return in_array($f['category'], ['baku', 'fungsional', 'potensial']);
                 });
             } elseif ($filterType === 'infrastruktur') {
-                $allFiles = array_filter($allFiles, function ($f) {
+                $targetFiles = array_filter($targetFiles, function ($f) {
                     return in_array($f['category'], ['saluran', 'bangunan']);
                 });
             } elseif ($filterType === 'ws_kapuas' || $filterType === 'skema_sungai') {
-                $allFiles = array_filter($allFiles, function ($f) {
+                $targetFiles = array_filter($targetFiles, function ($f) {
                     return $f['category'] === 'ws_kapuas' || stripos($f['name'], 'kapuas') !== false || stripos($f['name'], 'ws') !== false;
                 });
             } else {
-                $allFiles = array_filter($allFiles, function ($f) use ($filterType) {
+                $targetFiles = array_filter($targetFiles, function ($f) use ($filterType) {
                     return $f['category'] === $filterType || stripos($f['name'], $filterType) !== false;
                 });
             }
         }
 
-        $allFiles = array_values($allFiles);
-        $totalItems = count($allFiles);
+        $targetFiles = array_values($targetFiles);
+        $totalItems = count($targetFiles);
 
-        // Pagination sederhana
+        // Pagination
         $currentPage = max(1, (int) $request->input('page', 1));
         $totalPages = max(1, (int) ceil($totalItems / $perPage));
         if ($currentPage > $totalPages) {
             $currentPage = $totalPages;
         }
         $offset = ($currentPage - 1) * $perPage;
-        $fileList = array_slice($allFiles, $offset, $perPage);
+        $fileList = array_slice($targetFiles, $offset, $perPage);
 
         $stats = $this->getGisStats();
 
         return view('admin.kelola_gis', [
-            'title'       => 'Manajemen Master Data GIS — BWS Kalimantan I',
-            'fileList'    => $fileList,
-            'stats'       => $stats,
-            'search'      => $search,
-            'filterType'  => $filterType,
-            'perPage'     => $perPage,
-            'currentPage' => $currentPage,
-            'totalPages'  => $totalPages,
-            'totalItems'  => $totalItems,
-            'offset'      => $offset,
+            'title'        => 'Manajemen Master Data GIS — BWS Kalimantan I',
+            'fileList'     => $fileList,
+            'stats'        => $stats,
+            'search'       => $search,
+            'filterType'   => $filterType,
+            'currentTab'   => $currentTab,
+            'totalActive'  => count($activeFiles),
+            'totalTrash'   => count($trashFiles),
+            'perPage'      => $perPage,
+            'currentPage'  => $currentPage,
+            'totalPages'   => $totalPages,
+            'totalItems'   => $totalItems,
+            'offset'       => $offset,
         ]);
     }
 
@@ -231,6 +260,8 @@ class AdminController extends Controller
             $msg .= ' Catatan: ' . implode(', ', $failed);
         }
 
+        ActivityLogger::log('upload', 'Mengunggah ' . count($uploaded) . ' file spasial: ' . implode(', ', array_slice($uploaded, 0, 3)));
+
         if ($request->wantsJson() || $request->ajax()) {
             return response()->json(['success' => true, 'message' => $msg, 'uploaded' => $uploaded]);
         }
@@ -272,12 +303,13 @@ class AdminController extends Controller
         }
 
         rename($oldPath, $newPath);
+        ActivityLogger::log('rename', "Mengubah nama file dari '{$oldName}' menjadi '{$newName}'");
 
         return redirect()->back()->with('success', 'File berhasil diubah nama menjadi "' . $newName . '".');
     }
 
     /**
-     * Hapus Satu File GeoJSON
+     * Soft Delete: Pindahkan File GeoJSON ke Kotak Sampah
      */
     public function delete(Request $request)
     {
@@ -290,16 +322,37 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'File "' . $fileName . '" tidak ditemukan.');
         }
 
-        File::delete($filePath);
+        $trashPath = $this->getTrashPath();
+        $targetTrashFile = $trashPath . '/' . $fileName;
 
-        return redirect()->back()->with('success', 'File "' . $fileName . '" berhasil dihapus dari server.');
+        // Pindahkan file ke folder kotak sampah (Soft Delete)
+        File::move($filePath, $targetTrashFile);
+
+        // Catat metadata file di kotak sampah
+        $meta = $this->getTrashMeta();
+        $meta[$fileName] = [
+            'original_name' => $fileName,
+            'deleted_at'    => now()->format('d-M-Y H:i'),
+            'deleted_by'    => auth()->check() ? auth()->user()->name : 'Petugas BWSK',
+            'role'          => auth()->check() ? auth()->user()->role : 'Admin',
+            'size'          => number_format(filesize($targetTrashFile) / 1024, 1) . ' KB',
+        ];
+        $this->saveTrashMeta($meta);
+
+        ActivityLogger::log('delete', "Memindahkan file spasial '{$fileName}' ke Kotak Sampah");
+
+        return redirect()->route('admin.kelola-gis', ['tab' => 'trash'])->with('success', 'File "' . $fileName . '" berhasil dipindahkan ke Kotak Sampah.');
     }
 
     /**
-     * Hapus Banyak File Sekaligus (Bulk Delete)
+     * Hapus Banyak File Sekaligus ke Kotak Sampah (Bulk Soft Delete - Khusus Super Admin)
      */
     public function deleteBulk(Request $request)
     {
+        if (auth()->check() && strtolower(auth()->user()->role ?? '') !== 'superadmin') {
+            return redirect()->back()->with('error', 'Akses Ditolak: Fitur penghapusan massal hanya dapat dilakukan oleh Super Admin.');
+        }
+
         $request->validate([
             'file_names'   => 'required|array|min:1',
             'file_names.*' => 'required|string',
@@ -307,26 +360,252 @@ class AdminController extends Controller
             'file_names.required' => 'Pilih minimal satu file untuk dihapus.',
         ]);
 
+        $trashPath = $this->getTrashPath();
+        $meta = $this->getTrashMeta();
         $deleted = [];
+
         foreach ($request->input('file_names') as $rawName) {
             $fileName = basename($rawName);
             $filePath = public_path('geojson/' . $fileName);
             if (File::exists($filePath)) {
-                File::delete($filePath);
+                $targetTrashFile = $trashPath . '/' . $fileName;
+                File::move($filePath, $targetTrashFile);
+                $meta[$fileName] = [
+                    'original_name' => $fileName,
+                    'deleted_at'    => now()->format('d-M-Y H:i'),
+                    'deleted_by'    => auth()->check() ? auth()->user()->name : 'Super Admin',
+                    'role'          => 'superadmin',
+                    'size'          => number_format(filesize($targetTrashFile) / 1024, 1) . ' KB',
+                ];
                 $deleted[] = $fileName;
             }
         }
 
+        $this->saveTrashMeta($meta);
+
         if (count($deleted) > 0) {
-            return redirect()->back()->with('success', count($deleted) . ' file GeoJSON berhasil dihapus.');
+            ActivityLogger::log('delete', "Memindahkan massal " . count($deleted) . " file ke Kotak Sampah");
+            return redirect()->route('admin.kelola-gis', ['tab' => 'trash'])->with('success', count($deleted) . ' file GeoJSON dipindahkan ke Kotak Sampah.');
         }
 
-        return redirect()->back()->with('error', 'Tidak ada file yang berhasil dihapus.');
+        return redirect()->back()->with('error', 'Tidak ada file yang berhasil dipindahkan.');
+    }
+
+    /**
+     * Pulihkan File dari Kotak Sampah (Restore)
+     */
+    public function restoreGis(Request $request)
+    {
+        $request->validate(['file_name' => 'required|string']);
+        $fileName = basename($request->input('file_name'));
+        $trashPath = $this->getTrashPath();
+        $trashFile = $trashPath . '/' . $fileName;
+
+        if (!File::exists($trashFile)) {
+            return redirect()->back()->with('error', 'File "' . $fileName . '" tidak ditemukan di Kotak Sampah.');
+        }
+
+        $destination = public_path('geojson/' . $fileName);
+        File::move($trashFile, $destination);
+
+        $meta = $this->getTrashMeta();
+        unset($meta[$fileName]);
+        $this->saveTrashMeta($meta);
+
+        ActivityLogger::log('restore', "Memulihkan file spasial '{$fileName}' dari Kotak Sampah kembali aktif ke peta");
+
+        return redirect()->route('admin.kelola-gis', ['tab' => 'active'])->with('success', 'File "' . $fileName . '" berhasil dipulihkan dan aktif kembali di peta WebGIS.');
+    }
+
+    /**
+     * Hapus Permanen File dari Kotak Sampah (Force Delete - Khusus Super Admin)
+     */
+    public function forceDeleteGis(Request $request)
+    {
+        if (auth()->check() && strtolower(auth()->user()->role ?? '') !== 'superadmin') {
+            return redirect()->back()->with('error', 'Akses Ditolak: Penghapusan permanen hanya diizinkan untuk Super Admin.');
+        }
+
+        $request->validate(['file_name' => 'required|string']);
+        $fileName = basename($request->input('file_name'));
+        $trashPath = $this->getTrashPath();
+        $trashFile = $trashPath . '/' . $fileName;
+
+        if (File::exists($trashFile)) {
+            File::delete($trashFile);
+        }
+
+        $meta = $this->getTrashMeta();
+        unset($meta[$fileName]);
+        $this->saveTrashMeta($meta);
+
+        ActivityLogger::log('force_delete', "Menghapus permanen file spasial '{$fileName}' dari server");
+
+        return redirect()->route('admin.kelola-gis', ['tab' => 'trash'])->with('success', 'File "' . $fileName . '" telah dihapus permanen selamanya.');
+    }
+
+    /**
+     * Kosongkan Seluruh Kotak Sampah (Empty Trash - Khusus Super Admin)
+     */
+    public function emptyTrashGis(Request $request)
+    {
+        if (auth()->check() && strtolower(auth()->user()->role ?? '') !== 'superadmin') {
+            return redirect()->back()->with('error', 'Akses Ditolak: Pengosongan tempat sampah hanya diizinkan untuk Super Admin.');
+        }
+
+        $trashPath = $this->getTrashPath();
+        $files = File::files($trashPath);
+        $count = count($files);
+
+        foreach ($files as $file) {
+            File::delete($file->getRealPath());
+        }
+
+        $this->saveTrashMeta([]);
+
+        ActivityLogger::log('force_delete', "Mengosongkan kotak sampah ({$count} file dihapus permanen)");
+
+        return redirect()->route('admin.kelola-gis', ['tab' => 'trash'])->with('success', 'Seluruh kotak sampah berhasil dibersihkan (' . $count . ' file terhapus permanen).');
+    }
+
+    /**
+     * Halaman Log Aktivitas Audit Petugas & Operasional
+     */
+    public function activityLogs(Request $request)
+    {
+        $search       = trim((string) $request->input('search', ''));
+        $actionFilter = $request->input('action', 'all');
+        $allLogs      = ActivityLogger::getAll();
+
+        if ($search !== '') {
+            $allLogs = array_filter($allLogs, function($l) use ($search) {
+                return stripos($l['description'] ?? '', $search) !== false ||
+                       stripos($l['user'] ?? '', $search) !== false ||
+                       stripos($l['action'] ?? '', $search) !== false ||
+                       stripos($l['role'] ?? '', $search) !== false;
+            });
+        }
+
+        if ($actionFilter !== 'all' && !empty($actionFilter)) {
+            $allLogs = array_filter($allLogs, function($l) use ($actionFilter) {
+                return ($l['action'] ?? '') === $actionFilter;
+            });
+        }
+
+        $allLogs = array_values($allLogs);
+        $totalLogs = count($allLogs);
+
+        $perPage = (int) $request->input('per_page', 15);
+        if (!in_array($perPage, [10, 15, 25, 50, 100])) {
+            $perPage = 15;
+        }
+
+        $currentPage = max(1, (int) $request->input('page', 1));
+        $totalPages  = max(1, (int) ceil($totalLogs / $perPage));
+        if ($currentPage > $totalPages) {
+            $currentPage = $totalPages;
+        }
+        $offset = ($currentPage - 1) * $perPage;
+        $logs   = array_slice($allLogs, $offset, $perPage);
+
+        // Rekap hitungan kategori aksi
+        $rawLogs = ActivityLogger::getAll();
+        $statsAksi = [
+            'total'        => count($rawLogs),
+            'upload'       => count(array_filter($rawLogs, fn($l) => ($l['action'] ?? '') === 'upload')),
+            'delete'       => count(array_filter($rawLogs, fn($l) => ($l['action'] ?? '') === 'delete')),
+            'restore'      => count(array_filter($rawLogs, fn($l) => ($l['action'] ?? '') === 'restore')),
+            'force_delete' => count(array_filter($rawLogs, fn($l) => ($l['action'] ?? '') === 'force_delete')),
+        ];
+
+        return view('admin.activity_logs', compact(
+            'logs',
+            'search',
+            'actionFilter',
+            'perPage',
+            'currentPage',
+            'totalPages',
+            'totalLogs',
+            'statsAksi',
+            'offset'
+        ));
+    }
+
+    /**
+     * Bersihkan Seluruh Riwayat Log Aktivitas (Khusus Super Admin)
+     */
+    public function clearActivityLogs(Request $request)
+    {
+        if (!auth()->check() || strtolower(auth()->user()->role ?? '') !== 'superadmin') {
+            return redirect()->back()->with('error', 'Akses Ditolak: Hanya Super Admin yang diizinkan mengosongkan log audit.');
+        }
+
+        ActivityLogger::clear();
+        ActivityLogger::log('clear_logs', 'Mengosongkan riwayat log aktivitas audit');
+
+        return redirect()->back()->with('success', 'Riwayat log aktivitas berhasil dibersihkan.');
     }
 
     // ─────────────────────────────────────────────────────────────
     // PRIVATE HELPERS
     // ─────────────────────────────────────────────────────────────
+
+    private function getTrashPath(): string
+    {
+        $path = storage_path('app/trash_geojson');
+        if (!File::exists($path)) {
+            File::makeDirectory($path, 0755, true);
+        }
+        return $path;
+    }
+
+    private function getTrashMeta(): array
+    {
+        $metaFile = storage_path('app/trash_geojson_meta.json');
+        if (!File::exists($metaFile)) {
+            return [];
+        }
+        $data = json_decode(File::get($metaFile), true);
+        return is_array($data) ? $data : [];
+    }
+
+    private function saveTrashMeta(array $meta): void
+    {
+        $metaFile = storage_path('app/trash_geojson_meta.json');
+        File::put($metaFile, json_encode($meta, JSON_PRETTY_PRINT));
+    }
+
+    private function scanTrashFiles(): array
+    {
+        $trashPath = $this->getTrashPath();
+        $meta = $this->getTrashMeta();
+        $files = File::files($trashPath);
+        $list = [];
+
+        foreach ($files as $file) {
+            $name = $file->getFilename();
+            $bytes = $file->getSize();
+            $sizeStr = $bytes >= 1048576 ? number_format($bytes / 1048576, 2) . ' MB' : number_format($bytes / 1024, 2) . ' KB';
+            $fileMeta = $meta[$name] ?? [];
+
+            $list[] = [
+                'name'        => $name,
+                'size'        => $sizeStr,
+                'size_bytes'  => $bytes,
+                'deleted_at'  => $fileMeta['deleted_at'] ?? date('d-M-Y H:i', $file->getMTime()),
+                'deleted_by'  => $fileMeta['deleted_by'] ?? 'Petugas BWSK',
+                'role'        => $fileMeta['role'] ?? 'Admin',
+                'extension'   => strtolower($file->getExtension()),
+            ];
+        }
+
+        // Urutkan waktu terhapus paling baru
+        usort($list, function ($a, $b) {
+            return strcasecmp($b['deleted_at'], $a['deleted_at']);
+        });
+
+        return $list;
+    }
 
     private function scanGeojsonFiles(): array
     {
