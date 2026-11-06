@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{{ $title ?? 'Masuk' }} - WebGIS BWS Kalimantan I</title>
+    <title>{{ $title ?? 'Masuk' }} - WEB GIS BWS KALIMANTAN 1</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="{{ asset('img/logo-pu-badge.svg') }}">
@@ -21,13 +21,13 @@
 
     <style>
         :root {
-            --primary-accent: #5046e5;
-            --primary-accent-hover: #4338ca;
+            --pu-blue: #1d4ed8;
+            --pu-blue-hover: #1e40af;
             --pu-gold: #fad605;
-            --pu-navy: #162b55;
-            --text-dark: #1e293b;
+            --pu-navy: #0f2b48;
+            --sda-teal: #0d5c70;
+            --text-dark: #0f172a;
             --text-muted: #64748b;
-            --bg-light: #f1f5f9;
         }
 
         * {
@@ -36,41 +36,73 @@
 
         body {
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-light);
-            background-image: radial-gradient(at 0% 0%, rgba(80, 70, 229, 0.08) 0px, transparent 50%),
-                              radial-gradient(at 100% 100%, rgba(13, 110, 133, 0.1) 0px, transparent 50%);
+            background: linear-gradient(135deg, #092c48 0%, #0d4b68 40%, #12637a 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0;
             padding: 24px 16px;
+            position: relative;
+            overflow-x: hidden;
         }
 
-        /* Card Container (QROP Spasial Style) */
+        /* Ambient Lighting Background Spheres (Glassmorphism Depth) */
+        .ambient-glow-1 {
+            position: fixed;
+            top: -10%;
+            left: -10%;
+            width: 550px;
+            height: 550px;
+            background: radial-gradient(circle, rgba(13, 92, 112, 0.6) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(60px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .ambient-glow-2 {
+            position: fixed;
+            bottom: -15%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(29, 78, 216, 0.45) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(70px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Glassmorphism Main Card Container */
         .auth-container {
             width: 100%;
             max-width: 980px;
-            background: #ffffff;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.12),
-                        0 0 1px 1px rgba(15, 23, 42, 0.05);
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 26px;
+            border: 1px solid rgba(255, 255, 255, 0.65);
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.35),
+                        0 0 1px 1px rgba(255, 255, 255, 0.5);
             overflow: hidden;
             display: flex;
             min-height: 600px;
+            position: relative;
+            z-index: 1;
         }
 
         /* Left Side: Spatial Visual Panel */
         .auth-visual-panel {
             flex: 1.1;
             position: relative;
-            background: linear-gradient(145deg, #0a4358 0%, #0d5f75 48%, #147b8a 100%);
+            background: linear-gradient(150deg, #093c52 0%, #0d5c70 50%, #117887 100%);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 44px 36px 32px;
+            padding: 48px 36px;
             color: #ffffff;
             overflow: hidden;
         }
@@ -82,10 +114,10 @@
             width: 100%;
             height: 100%;
             background-image: 
-                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.18) 1px, transparent 1px),
-                radial-gradient(circle at 20% 40%, rgba(255, 255, 255, 0.15) 1.5px, transparent 1.5px),
-                radial-gradient(circle at 60% 70%, rgba(255, 255, 255, 0.2) 2px, transparent 2px),
-                radial-gradient(circle at 35% 85%, rgba(255, 255, 255, 0.14) 1px, transparent 1px);
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.2) 1.2px, transparent 1.2px),
+                radial-gradient(circle at 20% 40%, rgba(255, 255, 255, 0.16) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 60% 70%, rgba(255, 255, 255, 0.22) 2px, transparent 2px),
+                radial-gradient(circle at 35% 85%, rgba(255, 255, 255, 0.15) 1.2px, transparent 1.2px);
             background-size: 110px 110px, 90px 90px, 140px 140px, 80px 80px;
             opacity: 0.85;
             pointer-events: none;
@@ -103,14 +135,14 @@
             pointer-events: none;
         }
 
-        /* Atmospheric Bottom Cloud Fade */
+        /* Subtle Glow Accents */
         .panel-bottom-glow {
             position: absolute;
-            bottom: -30px;
+            bottom: -40px;
             left: -20%;
             width: 140%;
-            height: 180px;
-            background: radial-gradient(ellipse at 50% 100%, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0) 70%);
+            height: 200px;
+            background: radial-gradient(ellipse at 50% 100%, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 70%);
             pointer-events: none;
         }
 
@@ -122,21 +154,21 @@
         }
 
         .emblem-badge {
-            width: 118px;
-            height: 118px;
+            width: 124px;
+            height: 124px;
             background: #ffffff;
-            border-radius: 28px;
+            border-radius: 30px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 14px;
-            box-shadow: 0 16px 36px rgba(10, 30, 45, 0.3),
-                        0 0 0 4px rgba(250, 214, 5, 0.85);
+            padding: 16px;
+            box-shadow: 0 16px 36px rgba(10, 30, 45, 0.35),
+                        0 0 0 4px rgba(250, 214, 5, 0.95);
             transition: transform 0.3s ease;
         }
 
         .emblem-badge:hover {
-            transform: scale(1.03);
+            transform: scale(1.04);
         }
 
         .emblem-badge img {
@@ -148,87 +180,73 @@
         .agency-title {
             position: relative;
             z-index: 2;
-            font-size: 1.25rem;
+            font-size: 1.3rem;
             font-weight: 800;
             letter-spacing: 0.8px;
             line-height: 1.35;
             color: #ffffff;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             text-transform: uppercase;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
         .agency-subtitle {
             position: relative;
             z-index: 2;
-            font-size: 0.82rem;
+            font-size: 0.84rem;
             font-weight: 600;
-            letter-spacing: 0.5px;
-            color: rgba(255, 255, 255, 0.9);
-            line-height: 1.45;
+            letter-spacing: 0.6px;
+            color: rgba(255, 255, 255, 0.92);
+            line-height: 1.5;
             text-transform: uppercase;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
         }
 
-        .panel-footer-pill {
-            position: relative;
-            z-index: 2;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.76rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            color: #ffffff;
-            margin-top: 24px;
-        }
-
-        /* Right Side: Form Panel */
+        /* Right Side: Form Panel (Frosted Glass Finish) */
         .auth-form-panel {
             flex: 1;
-            padding: 44px 40px;
+            padding: 48px 42px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.94);
         }
 
-        /* Brand Logo Block (QROP Spasial Style) */
-        .qrop-brand-header {
+        /* Brand Logo Block */
+        .brand-header-box {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
-        .qrop-icon-box {
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-            border-radius: 12px;
+        .brand-icon-glass {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #ffffff;
-            font-size: 1.25rem;
+            font-size: 1.3rem;
             margin-right: 14px;
-            box-shadow: 0 6px 14px rgba(79, 70, 229, 0.25);
+            box-shadow: 0 8px 18px rgba(29, 78, 216, 0.28);
         }
 
-        .qrop-brand-text h1 {
-            font-size: 1.25rem;
+        .brand-text-block h1 {
+            font-size: 1.35rem;
             font-weight: 800;
             color: var(--text-dark);
             margin: 0;
-            letter-spacing: 1px;
+            letter-spacing: 1.2px;
             line-height: 1.1;
         }
 
-        .qrop-brand-text span {
-            font-size: 0.85rem;
+        .brand-text-block span {
+            font-size: 0.86rem;
             font-weight: 700;
-            color: var(--primary-accent);
-            letter-spacing: 1.5px;
+            color: var(--pu-blue);
+            letter-spacing: 1.6px;
             text-transform: uppercase;
         }
 
@@ -239,31 +257,32 @@
             margin-bottom: 22px;
         }
 
-        /* Modern Input Styling */
+        /* Modern Glassmorphic Form Inputs */
         .input-wrapper {
             position: relative;
             margin-bottom: 14px;
         }
 
-        .input-clean {
+        .input-glass {
             height: 46px;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            border: 1.5px solid #e2e8f0;
             padding: 10px 14px;
             font-size: 0.92rem;
             color: var(--text-dark);
-            background-color: #ffffff;
-            transition: all 0.2s ease;
+            background: rgba(255, 255, 255, 0.85);
+            transition: all 0.25s ease;
             width: 100%;
         }
 
-        .input-clean:focus {
-            border-color: var(--primary-accent);
-            box-shadow: 0 0 0 3px rgba(80, 70, 229, 0.12);
+        .input-glass:focus {
+            border-color: var(--pu-blue);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.12);
             outline: none;
         }
 
-        .input-clean::placeholder {
+        .input-glass::placeholder {
             color: #94a3b8;
             font-size: 0.88rem;
         }
@@ -287,13 +306,13 @@
             color: var(--text-dark);
         }
 
-        /* Remember Me Checkbox */
+        /* Remember Me Box */
         .remember-box {
-            background: #f8fafc;
-            border: 1px solid #f1f5f9;
-            border-radius: 8px;
-            padding: 10px 12px;
-            margin-bottom: 18px;
+            background: rgba(248, 250, 252, 0.85);
+            border: 1px solid #eef2f6;
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-bottom: 16px;
         }
 
         .custom-control-label {
@@ -310,12 +329,12 @@
             margin-top: 2px;
         }
 
-        /* CAPTCHA Box */
+        /* CAPTCHA Card */
         .captcha-card {
             border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 10px;
-            background-color: #f8fafc;
+            border-radius: 10px;
+            padding: 10px 12px;
+            background: rgba(248, 250, 252, 0.85);
             margin-bottom: 18px;
         }
 
@@ -329,8 +348,8 @@
         .captcha-img-container {
             flex-grow: 1;
             background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
             height: 42px;
             display: flex;
             align-items: center;
@@ -342,9 +361,9 @@
         .btn-refresh-captcha {
             height: 42px;
             width: 42px;
-            border-radius: 6px;
+            border-radius: 8px;
             background: #ffffff;
-            border: 1px solid #e2e8f0;
+            border: 1px solid #cbd5e1;
             color: #64748b;
             display: flex;
             align-items: center;
@@ -354,32 +373,33 @@
         }
 
         .btn-refresh-captcha:hover {
-            color: var(--primary-accent);
-            border-color: var(--primary-accent);
+            color: var(--pu-blue);
+            border-color: var(--pu-blue);
             background: #f8fafc;
         }
 
-        /* Submit Button (QROP Blue/Purple) */
+        /* Submit Button */
         .btn-submit-masuk {
             height: 46px;
-            background: #5046e5;
+            background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
             color: #ffffff;
             font-weight: 700;
-            font-size: 0.95rem;
-            border-radius: 8px;
+            font-size: 0.96rem;
+            border-radius: 10px;
             border: none;
             width: 100%;
             cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(80, 70, 229, 0.25);
+            transition: all 0.25s ease;
+            box-shadow: 0 6px 18px rgba(29, 78, 216, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
+            letter-spacing: 0.5px;
         }
 
         .btn-submit-masuk:hover {
-            background: #4338ca;
-            box-shadow: 0 6px 16px rgba(80, 70, 229, 0.35);
+            background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
+            box-shadow: 0 8px 22px rgba(29, 78, 216, 0.4);
             transform: translateY(-1px);
             color: #ffffff;
         }
@@ -392,7 +412,7 @@
         .home-link {
             display: inline-block;
             margin-top: 16px;
-            color: var(--primary-accent);
+            color: var(--pu-blue);
             font-size: 0.88rem;
             font-weight: 600;
             text-decoration: none;
@@ -400,7 +420,7 @@
         }
 
         .home-link:hover {
-            color: var(--primary-accent-hover);
+            color: var(--pu-blue-hover);
             text-decoration: underline;
         }
 
@@ -419,21 +439,21 @@
             }
 
             .auth-visual-panel {
-                padding: 32px 24px;
+                padding: 36px 24px;
             }
 
             .agency-title {
-                font-size: 1.1rem;
+                font-size: 1.15rem;
             }
 
             .emblem-badge {
-                width: 90px;
-                height: 90px;
-                padding: 10px;
+                width: 95px;
+                height: 95px;
+                padding: 12px;
             }
 
             .auth-form-panel {
-                padding: 32px 24px;
+                padding: 34px 24px;
             }
         }
     </style>
@@ -441,8 +461,12 @@
 
 <body>
 
+    <!-- Ambient Glow Spheres (Glassmorphism Effect) -->
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+
     <main class="auth-container">
-        <!-- 1. LEFT PANEL: BWS Kalimantan I / Ditjen SDA Branding (Style QROP SPASIAL) -->
+        <!-- 1. LEFT PANEL: BWS Kalimantan I / Ditjen SDA Branding (Bersih, Gagah, Minimalis) -->
         <section class="auth-visual-panel">
             <div class="spatial-mesh-bg"></div>
             <div class="spatial-lines"></div>
@@ -465,23 +489,19 @@
                 </div>
             </div>
 
-            <!-- Bagian Bawah Visual Panel -->
             <div class="panel-bottom-glow"></div>
-            <div class="panel-footer-pill">
-                <i class="fas fa-water mr-1"></i> Sistem Informasi Spasial Irigasi & SDA
-            </div>
         </section>
 
         <!-- 2. RIGHT PANEL: Formulir Login Modern (Style QROP SPASIAL) -->
         <section class="auth-form-panel">
             <!-- Header Logo Aplikasi -->
-            <div class="qrop-brand-header">
-                <div class="qrop-icon-box">
+            <div class="brand-header-box">
+                <div class="brand-icon-glass">
                     <i class="fas fa-layer-group"></i>
                 </div>
-                <div class="qrop-brand-text">
-                    <h1>WEBGIS</h1>
-                    <span>SPASIAL SDA</span>
+                <div class="brand-text-block">
+                    <h1>WEB GIS</h1>
+                    <span>BWS KALIMANTAN 1</span>
                 </div>
             </div>
 
@@ -528,7 +548,7 @@
                     <input type="email" 
                            name="email" 
                            id="email"
-                           class="input-clean @error('email') is-invalid @enderror" 
+                           class="input-glass @error('email') is-invalid @enderror" 
                            placeholder="Username atau Email"
                            value="{{ old('email') }}"
                            required 
@@ -546,7 +566,7 @@
                     <input type="password" 
                            name="password" 
                            id="password"
-                           class="input-clean @error('password') is-invalid @enderror" 
+                           class="input-glass @error('password') is-invalid @enderror" 
                            placeholder="Password"
                            required 
                            autocomplete="off">
@@ -605,7 +625,7 @@
                     <input type="text" 
                            name="captcha" 
                            id="captcha" 
-                           class="input-clean @error('captcha') is-invalid @enderror" 
+                           class="input-glass @error('captcha') is-invalid @enderror" 
                            style="height: 40px; font-size: 0.88rem;"
                            placeholder="Ketik 5 huruf kode di atas..." 
                            maxlength="5" 
