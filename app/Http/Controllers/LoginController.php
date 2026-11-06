@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class LoginController extends Controller
 {
     public function index()
     {
-        
         return view('login.index', [
             'title' => 'Login',
         ]);
@@ -22,29 +22,44 @@ class LoginController extends Controller
             return back()->with('loginError', 'Akses diblokir: Terdeteksi aktivitas bot.');
         }
 
-        // Validasi input
+        // Validasi input email dan password
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
-            'captcha' => 'required',
         ], [
             'email.required' => 'Email wajib diisi.',
             'email.email' => 'Format email tidak valid.',
             'password.required' => 'Password wajib diisi.',
-            'captcha.required' => 'Kode CAPTCHA wajib diisi.',
         ]);
 
-        // Cek dan cocokkan CAPTCHA
-        $inputCaptcha = strtoupper(trim((string) $request->captcha));
-        $sessionCaptcha = session('captcha_code');
+        // Verifikasi Google reCAPTCHA v3 (Invisible) jika secret key dikonfigurasi
+        $recaptchaSecret = config('services.recaptcha.secret_key');
+        if (!empty($recaptchaSecret)) {
+            $token = $request->input('g-recaptcha-response');
+            if (empty($token)) {
+                return back()
+                    ->withInput($request->only('email'))
+                    ->with('loginError', 'Verifikasi keamanan reCAPTCHA gagal (token kosong). Silakan refresh halaman.');
+            }
 
-        // Hapus kode CAPTCHA dari session setelah dicek agar tidak bisa digunakan ulang (anti-replay)
-        session()->forget('captcha_code');
+            try {
+                $response = Http::asForm()->timeout(5)->post('https://www.google.com/recaptcha/api/siteverify', [
+                    'secret' => $recaptchaSecret,
+                    'response' => $token,
+                    'remoteip' => $request->ip(),
+                ]);
 
-        if (empty($sessionCaptcha) || $inputCaptcha !== $sessionCaptcha) {
-            return back()
-                ->withInput($request->only('email'))
-                ->with('loginError', 'Kode CAPTCHA salah atau sudah kedaluwarsa.');
+                $result = $response->json();
+                $minScore = (float) config('services.recaptcha.minimum_score', 0.5);
+
+                if (empty($result['success']) || (isset($result['score']) && $result['score'] < $minScore)) {
+                    return back()
+                        ->withInput($request->only('email'))
+                        ->with('loginError', 'Akses diblokir: Terdeteksi aktivitas mencurigakan oleh reCAPTCHA.');
+                }
+            } catch (\Throwable $e) {
+                logger()->error('reCAPTCHA validation error: ' . $e->getMessage());
+            }
         }
 
         // Ambil kredensial email dan password

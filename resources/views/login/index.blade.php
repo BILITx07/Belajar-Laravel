@@ -73,10 +73,10 @@
             z-index: 0;
         }
 
-        /* Glassmorphism Main Card Container (Ukuran Rapi & Tidak Mepet) */
+        /* Glassmorphism Main Card Container (Compact, Elegan & Modern) */
         .auth-container {
             width: 100%;
-            max-width: 890px;
+            max-width: 860px;
             background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
@@ -203,14 +203,14 @@
         /* Right Side: Form Panel */
         .auth-form-panel {
             flex: 1.05;
-            padding: 32px 36px;
+            padding: 34px 38px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             background: rgba(255, 255, 255, 0.95);
         }
 
-        /* Brand Logo Block (Pakai Logo PU Sesuai Permintaan) */
+        /* Brand Logo Block (Logo PU Resmi) */
         .brand-header-box {
             display: flex;
             align-items: center;
@@ -259,21 +259,21 @@
             font-size: 0.88rem;
             font-weight: 500;
             color: var(--text-muted);
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
 
         /* Modern Inputs */
         .input-wrapper {
             position: relative;
-            margin-bottom: 11px;
+            margin-bottom: 14px;
         }
 
         .input-glass {
-            height: 42px;
+            height: 44px;
             border-radius: 8px;
             border: 1.5px solid #e2e8f0;
             padding: 8px 14px;
-            font-size: 0.88rem;
+            font-size: 0.9rem;
             color: var(--text-dark);
             background: rgba(255, 255, 255, 0.88);
             transition: all 0.2s ease;
@@ -289,7 +289,7 @@
 
         .input-glass::placeholder {
             color: #94a3b8;
-            font-size: 0.85rem;
+            font-size: 0.86rem;
         }
 
         /* Show/Hide Password Eye Toggle */
@@ -317,7 +317,7 @@
             border: 1px solid #eef2f6;
             border-radius: 8px;
             padding: 8px 12px;
-            margin-bottom: 12px;
+            margin-bottom: 18px;
         }
 
         .custom-control-label {
@@ -335,63 +335,13 @@
             margin-top: 1px;
         }
 
-        /* CAPTCHA Card */
-        .captcha-card {
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 8px 10px;
-            background: rgba(248, 250, 252, 0.85);
-            margin-bottom: 14px;
-        }
-
-        .captcha-preview-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 7px;
-        }
-
-        .captcha-img-container {
-            flex-grow: 1;
-            background: #ffffff;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            height: 38px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .btn-refresh-captcha {
-            height: 38px;
-            width: 38px;
-            border-radius: 6px;
-            background: #ffffff;
-            border: 1px solid #cbd5e1;
-            color: #64748b;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            flex-shrink: 0;
-        }
-
-        .btn-refresh-captcha:hover {
-            color: var(--pu-blue);
-            border-color: var(--pu-blue);
-            background: #f8fafc;
-        }
-
         /* Submit Button */
         .btn-submit-masuk {
-            height: 42px;
+            height: 44px;
             background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
             color: #ffffff;
             font-weight: 700;
-            font-size: 0.92rem;
+            font-size: 0.94rem;
             border-radius: 8px;
             border: none;
             width: 100%;
@@ -418,7 +368,7 @@
         /* Footer Links */
         .home-link {
             display: inline-block;
-            margin-top: 10px;
+            margin-top: 14px;
             color: var(--pu-blue);
             font-size: 0.84rem;
             font-weight: 600;
@@ -432,10 +382,15 @@
         }
 
         .copyright-text {
-            margin-top: 14px;
+            margin-top: 16px;
             font-size: 0.72rem;
             color: #94a3b8;
             text-align: center;
+        }
+
+        /* Google reCAPTCHA Badge Hide (Clean look with disclaimer) */
+        .grecaptcha-badge {
+            visibility: hidden !important;
         }
 
         /* Responsive Breakpoint */
@@ -464,6 +419,11 @@
             }
         }
     </style>
+
+    {{-- Google reCAPTCHA v3 Script jika Site Key sudah diatur --}}
+    @if(!empty(config('services.recaptcha.site_key')))
+        <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site_key') }}"></script>
+    @endif
 </head>
 
 <body>
@@ -499,7 +459,7 @@
             <div class="panel-bottom-glow"></div>
         </section>
 
-        <!-- 2. RIGHT PANEL: Formulir Login Rapi & Presisi -->
+        <!-- 2. RIGHT PANEL: Formulir Login Bersih & Modern (Google reCAPTCHA v3) -->
         <section class="auth-form-panel">
             <!-- Header Logo PU Resmi & Judul Web GIS -->
             <div class="brand-header-box">
@@ -547,10 +507,18 @@
             @endif
 
             <!-- Form Autentikasi -->
-            <form action="{{ route('login') }}" method="POST" autocomplete="off">
+            <form action="{{ route('login') }}" method="POST" id="loginForm" autocomplete="off">
                 @csrf
 
-                <!-- Input Email (Placeholder: Masukkan email) -->
+                {{-- Honeypot anti-bot tersembunyi --}}
+                <div style="display:none;" aria-hidden="true">
+                    <input type="text" name="_hp_check" value="" tabindex="-1" autocomplete="off">
+                </div>
+
+                {{-- Hidden input token reCAPTCHA v3 --}}
+                <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
+
+                <!-- Input Email -->
                 <div class="input-wrapper">
                     <input type="email" 
                            name="email" 
@@ -568,22 +536,32 @@
                     @enderror
                 </div>
 
-                <!-- Input Password & Eye Toggle -->
+                <!-- Input Password & Eye Toggle & Lupa Password -->
                 <div class="input-wrapper">
-                    <input type="password" 
-                           name="password" 
-                           id="password"
-                           class="input-glass @error('password') is-invalid @enderror" 
-                           placeholder="Masukkan password"
-                           required 
-                           autocomplete="off">
-                    <button type="button" 
-                            class="password-toggle-btn" 
-                            id="togglePassword" 
-                            title="Tampilkan / Sembunyikan Password"
-                            onclick="togglePasswordVisibility()">
-                        <i class="far fa-eye" id="eyeIcon"></i>
-                    </button>
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <label class="small font-weight-bold text-gray-700 mb-0" for="password" style="font-size: 0.8rem;">
+                            Password
+                        </label>
+                        <a href="{{ route('password.request') }}" class="text-danger font-weight-bold text-decoration-none" style="font-size: 0.75rem;">
+                            Lupa Password?
+                        </a>
+                    </div>
+                    <div style="position: relative;">
+                        <input type="password" 
+                               name="password" 
+                               id="password"
+                               class="input-glass @error('password') is-invalid @enderror" 
+                               placeholder="Masukkan password"
+                               required 
+                               autocomplete="off">
+                        <button type="button" 
+                                class="password-toggle-btn" 
+                                id="togglePassword" 
+                                title="Tampilkan / Sembunyikan Password"
+                                onclick="togglePasswordVisibility()">
+                            <i class="far fa-eye" id="eyeIcon"></i>
+                        </button>
+                    </div>
                     @error('password')
                         <div class="invalid-feedback ml-1" style="font-size: 0.75rem;">
                             {{ $message }}
@@ -591,7 +569,7 @@
                     @enderror
                 </div>
 
-                <!-- Checkbox: Tetap Masuk -->
+                <!-- Checkbox: Tetap Masuk (Persis QROP Spasial) -->
                 <div class="remember-box">
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" name="remember" id="remember" class="custom-control-input" {{ old('remember') ? 'checked' : '' }}>
@@ -604,49 +582,13 @@
                     </div>
                 </div>
 
-                <!-- Kode Keamanan (CAPTCHA) -->
-                <div class="captcha-card">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="font-weight-bold text-gray-700" style="font-size: 0.76rem;">
-                            <i class="fas fa-shield-alt text-primary mr-1"></i> Kode Keamanan (CAPTCHA)
-                        </span>
-                        <a href="{{ route('password.request') }}" class="text-danger font-weight-bold text-decoration-none" style="font-size: 0.74rem;">
-                            Lupa Password?
-                        </a>
-                    </div>
-
-                    <div class="captcha-preview-row">
-                        <div class="captcha-img-container shadow-sm" onclick="refreshCaptcha()" title="Klik untuk refresh kode">
-                            <img src="{{ route('captcha') }}" id="captcha-img" alt="CAPTCHA" height="34" style="cursor: pointer; max-width: 100%;">
-                        </div>
-                        <button type="button" class="btn-refresh-captcha shadow-sm" id="btn-refresh-captcha" onclick="refreshCaptcha()" title="Refresh CAPTCHA">
-                            <i class="fas fa-sync-alt" id="refresh-icon"></i>
-                        </button>
-                    </div>
-
-                    {{-- Honeypot anti-bot otomatis --}}
-                    <div style="display:none;" aria-hidden="true">
-                        <input type="text" name="_hp_check" value="" tabindex="-1" autocomplete="off">
-                    </div>
-
-                    <input type="text" 
-                           name="captcha" 
-                           id="captcha" 
-                           class="input-glass @error('captcha') is-invalid @enderror" 
-                           style="height: 36px; font-size: 0.84rem;"
-                           placeholder="Ketik 5 huruf kode di atas..." 
-                           maxlength="5" 
-                           required 
-                           autocomplete="off">
-                    @error('captcha')
-                        <div class="invalid-feedback ml-1" style="font-size: 0.75rem;">
-                            {{ $message }}
-                        </div>
-                    @enderror
+                <!-- Teks Notifikasi Perlindungan reCAPTCHA (Persis QROP Spasial) -->
+                <div class="text-center text-muted mb-2" style="font-size: 0.74rem;">
+                    Formulir ini dilindungi oleh reCAPTCHA.
                 </div>
 
                 <!-- Tombol Submit: Masuk -->
-                <button type="submit" class="btn-submit-masuk">
+                <button type="submit" class="btn-submit-masuk" id="btnSubmit">
                     Masuk
                 </button>
             </form>
@@ -686,23 +628,29 @@
             }
         }
 
-        // Refresh CAPTCHA Code
-        function refreshCaptcha() {
-            const captchaImg = document.getElementById('captcha-img');
-            const refreshIcon = document.getElementById('refresh-icon');
+        // Integrasi Google reCAPTCHA v3 saat form disubmit
+        const loginForm = document.getElementById('loginForm');
+        const siteKey = "{{ config('services.recaptcha.site_key') }}";
 
-            if (refreshIcon) {
-                refreshIcon.classList.add('fa-spin');
+        loginForm.addEventListener('submit', function(e) {
+            if (siteKey && typeof grecaptcha !== 'undefined') {
+                e.preventDefault();
+                const btnSubmit = document.getElementById('btnSubmit');
+                btnSubmit.disabled = true;
+                btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Memeriksa...';
+
+                grecaptcha.ready(function() {
+                    grecaptcha.execute(siteKey, { action: 'login' }).then(function(token) {
+                        document.getElementById('g-recaptcha-response').value = token;
+                        loginForm.submit();
+                    }).catch(function(error) {
+                        console.error('reCAPTCHA error:', error);
+                        // Fallback submit jika ada error koneksi ke Google
+                        loginForm.submit();
+                    });
+                });
             }
-
-            captchaImg.src = "{{ route('captcha') }}?t=" + new Date().getTime();
-
-            captchaImg.onload = function() {
-                if (refreshIcon) {
-                    refreshIcon.classList.remove('fa-spin');
-                }
-            };
-        }
+        });
     </script>
 </body>
 </html>
