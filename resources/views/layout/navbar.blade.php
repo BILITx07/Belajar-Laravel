@@ -3,9 +3,11 @@
 
     <!-- Bagian Kiri: Logo PU & Identitas Instansi Bersih -->
     <div class="d-flex align-items-center">
-        <!-- Logo PU Kotak Rounded -->
+        <!-- Logo PU Kotak Squircle Tajam & Presisi -->
         <a href="{{ route('peta') }}" class="d-flex align-items-center text-decoration-none">
-            <img src="{{ asset('img/logo-pu.png') }}" alt="Logo Kementerian PU" class="mr-3 shadow-sm" style="width: 44px; height: 44px; min-width: 44px; border-radius: 9px; object-fit: contain;">
+            <div class="mr-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 42px; height: 42px; min-width: 42px; background: #ffffff; border-radius: 10px; border: 1.5px solid rgba(250, 214, 5, 0.95); padding: 5px;">
+                <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo Kementerian PU" style="width: 100%; height: 100%; object-fit: contain;">
+            </div>
             <div class="d-flex flex-column">
                 <span class="font-weight-bold" style="font-size: 1.05rem; letter-spacing: -0.2px; line-height: 1.2; color: #0f172a;">
                     WEBGIS BWS KALIMANTAN I
