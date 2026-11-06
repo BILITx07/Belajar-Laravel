@@ -25,7 +25,6 @@
             --pu-blue-hover: #1e40af;
             --pu-gold: #fad605;
             --pu-navy: #0f2b48;
-            --sda-teal: #0d5c70;
             --text-dark: #0f172a;
             --text-muted: #64748b;
         }
@@ -42,7 +41,7 @@
             align-items: center;
             justify-content: center;
             margin: 0;
-            padding: 24px 16px;
+            padding: 18px 16px;
             position: relative;
             overflow-x: hidden;
         }
@@ -50,11 +49,11 @@
         /* Ambient Lighting Background Spheres (Glassmorphism Depth) */
         .ambient-glow-1 {
             position: fixed;
-            top: -10%;
+            top: -12%;
             left: -10%;
-            width: 550px;
-            height: 550px;
-            background: radial-gradient(circle, rgba(13, 92, 112, 0.6) 0%, transparent 70%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(13, 92, 112, 0.55) 0%, transparent 70%);
             border-radius: 50%;
             filter: blur(60px);
             pointer-events: none;
@@ -65,36 +64,35 @@
             position: fixed;
             bottom: -15%;
             right: -10%;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(29, 78, 216, 0.45) 0%, transparent 70%);
+            width: 520px;
+            height: 520px;
+            background: radial-gradient(circle, rgba(29, 78, 216, 0.4) 0%, transparent 70%);
             border-radius: 50%;
-            filter: blur(70px);
+            filter: blur(65px);
             pointer-events: none;
             z-index: 0;
         }
 
-        /* Glassmorphism Main Card Container */
+        /* Glassmorphism Main Card Container (Ukuran Rapi & Tidak Mepet) */
         .auth-container {
             width: 100%;
-            max-width: 980px;
-            background: rgba(255, 255, 255, 0.88);
+            max-width: 890px;
+            background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
-            border-radius: 26px;
+            border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.65);
-            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.35),
+            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.32),
                         0 0 1px 1px rgba(255, 255, 255, 0.5);
             overflow: hidden;
             display: flex;
-            min-height: 600px;
             position: relative;
             z-index: 1;
         }
 
         /* Left Side: Spatial Visual Panel */
         .auth-visual-panel {
-            flex: 1.1;
+            flex: 1;
             position: relative;
             background: linear-gradient(150deg, #093c52 0%, #0d5c70 50%, #117887 100%);
             display: flex;
@@ -102,12 +100,12 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 48px 36px;
+            padding: 36px 30px;
             color: #ffffff;
             overflow: hidden;
         }
 
-        /* Geospatial Mesh / Network Constellation Background */
+        /* Geospatial Mesh Background */
         .spatial-mesh-bg {
             position: absolute;
             inset: 0;
@@ -118,7 +116,7 @@
                 radial-gradient(circle at 20% 40%, rgba(255, 255, 255, 0.16) 1.5px, transparent 1.5px),
                 radial-gradient(circle at 60% 70%, rgba(255, 255, 255, 0.22) 2px, transparent 2px),
                 radial-gradient(circle at 35% 85%, rgba(255, 255, 255, 0.15) 1.2px, transparent 1.2px);
-            background-size: 110px 110px, 90px 90px, 140px 140px, 80px 80px;
+            background-size: 100px 100px, 80px 80px, 120px 120px, 70px 70px;
             opacity: 0.85;
             pointer-events: none;
         }
@@ -131,17 +129,17 @@
             background-image: 
                 linear-gradient(45deg, rgba(255, 255, 255, 0.04) 25%, transparent 25%),
                 linear-gradient(-45deg, rgba(255, 255, 255, 0.04) 25%, transparent 25%);
-            background-size: 60px 60px;
+            background-size: 50px 50px;
             pointer-events: none;
         }
 
-        /* Subtle Glow Accents */
+        /* Subtle Glow */
         .panel-bottom-glow {
             position: absolute;
-            bottom: -40px;
+            bottom: -30px;
             left: -20%;
             width: 140%;
-            height: 200px;
+            height: 160px;
             background: radial-gradient(ellipse at 50% 100%, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 70%);
             pointer-events: none;
         }
@@ -150,25 +148,25 @@
         .emblem-wrapper {
             position: relative;
             z-index: 2;
-            margin-bottom: 24px;
+            margin-bottom: 18px;
         }
 
         .emblem-badge {
-            width: 124px;
-            height: 124px;
+            width: 98px;
+            height: 98px;
             background: #ffffff;
-            border-radius: 30px;
+            border-radius: 22px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 16px;
-            box-shadow: 0 16px 36px rgba(10, 30, 45, 0.35),
-                        0 0 0 4px rgba(250, 214, 5, 0.95);
-            transition: transform 0.3s ease;
+            padding: 12px;
+            box-shadow: 0 12px 28px rgba(10, 30, 45, 0.35),
+                        0 0 0 3.5px rgba(250, 214, 5, 0.95);
+            transition: transform 0.25s ease;
         }
 
         .emblem-badge:hover {
-            transform: scale(1.04);
+            transform: scale(1.03);
         }
 
         .emblem-badge img {
@@ -180,111 +178,118 @@
         .agency-title {
             position: relative;
             z-index: 2;
-            font-size: 1.3rem;
+            font-size: 1.15rem;
             font-weight: 800;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.6px;
             line-height: 1.35;
             color: #ffffff;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             text-transform: uppercase;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
 
         .agency-subtitle {
             position: relative;
             z-index: 2;
-            font-size: 0.84rem;
+            font-size: 0.78rem;
             font-weight: 600;
-            letter-spacing: 0.6px;
+            letter-spacing: 0.5px;
             color: rgba(255, 255, 255, 0.92);
-            line-height: 1.5;
+            line-height: 1.45;
             text-transform: uppercase;
-            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
         }
 
-        /* Right Side: Form Panel (Frosted Glass Finish) */
+        /* Right Side: Form Panel */
         .auth-form-panel {
-            flex: 1;
-            padding: 48px 42px;
+            flex: 1.05;
+            padding: 32px 36px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.94);
+            background: rgba(255, 255, 255, 0.95);
         }
 
-        /* Brand Logo Block */
+        /* Brand Logo Block (Pakai Logo PU Sesuai Permintaan) */
         .brand-header-box {
             display: flex;
             align-items: center;
-            margin-bottom: 18px;
+            margin-bottom: 12px;
         }
 
         .brand-icon-glass {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
-            border-radius: 14px;
+            width: 42px;
+            height: 42px;
+            background: #ffffff;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #ffffff;
-            font-size: 1.3rem;
-            margin-right: 14px;
-            box-shadow: 0 8px 18px rgba(29, 78, 216, 0.28);
+            padding: 5px;
+            margin-right: 12px;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12),
+                        0 0 0 2px rgba(250, 214, 5, 0.9);
+            flex-shrink: 0;
+        }
+
+        .brand-icon-glass img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .brand-text-block h1 {
-            font-size: 1.35rem;
+            font-size: 1.18rem;
             font-weight: 800;
             color: var(--text-dark);
             margin: 0;
-            letter-spacing: 1.2px;
+            letter-spacing: 0.8px;
             line-height: 1.1;
         }
 
         .brand-text-block span {
-            font-size: 0.86rem;
+            font-size: 0.8rem;
             font-weight: 700;
             color: var(--pu-blue);
-            letter-spacing: 1.6px;
+            letter-spacing: 1.2px;
             text-transform: uppercase;
         }
 
         .auth-form-title {
-            font-size: 0.95rem;
+            font-size: 0.88rem;
             font-weight: 500;
             color: var(--text-muted);
-            margin-bottom: 22px;
+            margin-bottom: 16px;
         }
 
-        /* Modern Glassmorphic Form Inputs */
+        /* Modern Inputs */
         .input-wrapper {
             position: relative;
-            margin-bottom: 14px;
+            margin-bottom: 11px;
         }
 
         .input-glass {
-            height: 46px;
-            border-radius: 10px;
+            height: 42px;
+            border-radius: 8px;
             border: 1.5px solid #e2e8f0;
-            padding: 10px 14px;
-            font-size: 0.92rem;
+            padding: 8px 14px;
+            font-size: 0.88rem;
             color: var(--text-dark);
-            background: rgba(255, 255, 255, 0.85);
-            transition: all 0.25s ease;
+            background: rgba(255, 255, 255, 0.88);
+            transition: all 0.2s ease;
             width: 100%;
         }
 
         .input-glass:focus {
             border-color: var(--pu-blue);
             background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.12);
+            box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.12);
             outline: none;
         }
 
         .input-glass::placeholder {
             color: #94a3b8;
-            font-size: 0.88rem;
+            font-size: 0.85rem;
         }
 
         /* Show/Hide Password Eye Toggle */
@@ -298,7 +303,7 @@
             color: #94a3b8;
             cursor: pointer;
             padding: 4px;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             transition: color 0.2s ease;
         }
 
@@ -310,47 +315,48 @@
         .remember-box {
             background: rgba(248, 250, 252, 0.85);
             border: 1px solid #eef2f6;
-            border-radius: 10px;
-            padding: 10px 14px;
-            margin-bottom: 16px;
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin-bottom: 12px;
         }
 
         .custom-control-label {
-            font-size: 0.88rem;
+            font-size: 0.84rem;
             font-weight: 600;
             color: var(--text-dark);
             cursor: pointer;
+            line-height: 1.3;
         }
 
         .remember-subtext {
-            font-size: 0.76rem;
+            font-size: 0.72rem;
             color: var(--text-muted);
             margin-left: 24px;
-            margin-top: 2px;
+            margin-top: 1px;
         }
 
         /* CAPTCHA Card */
         .captcha-card {
             border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 10px 12px;
+            border-radius: 8px;
+            padding: 8px 10px;
             background: rgba(248, 250, 252, 0.85);
-            margin-bottom: 18px;
+            margin-bottom: 14px;
         }
 
         .captcha-preview-row {
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 8px;
+            margin-bottom: 7px;
         }
 
         .captcha-img-container {
             flex-grow: 1;
             background: #ffffff;
             border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            height: 42px;
+            border-radius: 6px;
+            height: 38px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -359,9 +365,9 @@
         }
 
         .btn-refresh-captcha {
-            height: 42px;
-            width: 42px;
-            border-radius: 8px;
+            height: 38px;
+            width: 38px;
+            border-radius: 6px;
             background: #ffffff;
             border: 1px solid #cbd5e1;
             color: #64748b;
@@ -370,6 +376,7 @@
             justify-content: center;
             cursor: pointer;
             transition: all 0.2s ease;
+            flex-shrink: 0;
         }
 
         .btn-refresh-captcha:hover {
@@ -380,26 +387,26 @@
 
         /* Submit Button */
         .btn-submit-masuk {
-            height: 46px;
+            height: 42px;
             background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
             color: #ffffff;
             font-weight: 700;
-            font-size: 0.96rem;
-            border-radius: 10px;
+            font-size: 0.92rem;
+            border-radius: 8px;
             border: none;
             width: 100%;
             cursor: pointer;
-            transition: all 0.25s ease;
-            box-shadow: 0 6px 18px rgba(29, 78, 216, 0.3);
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 14px rgba(29, 78, 216, 0.25);
             display: flex;
             align-items: center;
             justify-content: center;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
         }
 
         .btn-submit-masuk:hover {
             background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
-            box-shadow: 0 8px 22px rgba(29, 78, 216, 0.4);
+            box-shadow: 0 6px 18px rgba(29, 78, 216, 0.35);
             transform: translateY(-1px);
             color: #ffffff;
         }
@@ -411,9 +418,9 @@
         /* Footer Links */
         .home-link {
             display: inline-block;
-            margin-top: 16px;
+            margin-top: 10px;
             color: var(--pu-blue);
-            font-size: 0.88rem;
+            font-size: 0.84rem;
             font-weight: 600;
             text-decoration: none;
             transition: color 0.2s ease;
@@ -425,8 +432,8 @@
         }
 
         .copyright-text {
-            margin-top: 22px;
-            font-size: 0.76rem;
+            margin-top: 14px;
+            font-size: 0.72rem;
             color: #94a3b8;
             text-align: center;
         }
@@ -435,25 +442,25 @@
         @media (max-width: 820px) {
             .auth-container {
                 flex-direction: column;
-                max-width: 480px;
+                max-width: 440px;
             }
 
             .auth-visual-panel {
-                padding: 36px 24px;
+                padding: 28px 20px;
             }
 
             .agency-title {
-                font-size: 1.15rem;
+                font-size: 1.05rem;
             }
 
             .emblem-badge {
-                width: 95px;
-                height: 95px;
-                padding: 12px;
+                width: 80px;
+                height: 80px;
+                padding: 10px;
             }
 
             .auth-form-panel {
-                padding: 34px 24px;
+                padding: 26px 20px;
             }
         }
     </style>
@@ -466,13 +473,13 @@
     <div class="ambient-glow-2"></div>
 
     <main class="auth-container">
-        <!-- 1. LEFT PANEL: BWS Kalimantan I / Ditjen SDA Branding (Bersih, Gagah, Minimalis) -->
+        <!-- 1. LEFT PANEL: BWS Kalimantan I / Ditjen SDA Branding -->
         <section class="auth-visual-panel">
             <div class="spatial-mesh-bg"></div>
             <div class="spatial-lines"></div>
 
             <div class="w-100" style="position: relative; z-index: 2;">
-                <!-- Logo Emblem Kementerian PU (Jernih & Presisi) -->
+                <!-- Logo Emblem Kementerian PU (Presisi & Jernih) -->
                 <div class="emblem-wrapper">
                     <div class="emblem-badge">
                         <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo Kementerian Pekerjaan Umum">
@@ -492,12 +499,12 @@
             <div class="panel-bottom-glow"></div>
         </section>
 
-        <!-- 2. RIGHT PANEL: Formulir Login Modern (Style QROP SPASIAL) -->
+        <!-- 2. RIGHT PANEL: Formulir Login Rapi & Presisi -->
         <section class="auth-form-panel">
-            <!-- Header Logo Aplikasi -->
+            <!-- Header Logo PU Resmi & Judul Web GIS -->
             <div class="brand-header-box">
                 <div class="brand-icon-glass">
-                    <i class="fas fa-layer-group"></i>
+                    <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo PU">
                 </div>
                 <div class="brand-text-block">
                     <h1>WEB GIS</h1>
@@ -512,7 +519,7 @@
 
             {{-- Pesan Notifikasi Sukses Logout / Status --}}
             @if(session()->has('success'))
-                <div class="alert alert-success alert-dismissible fade show p-2 mb-3" style="font-size: 0.82rem;" role="alert">
+                <div class="alert alert-success alert-dismissible fade show p-2 mb-2" style="font-size: 0.8rem;" role="alert">
                     <i class="fas fa-check-circle mr-1"></i> {{ session('success') }}
                     <button type="button" class="close p-2" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -522,7 +529,7 @@
 
             {{-- Pesan Notifikasi Gagal Login --}}
             @if(session()->has('loginError'))
-                <div class="alert alert-danger alert-dismissible fade show p-2 mb-3" style="font-size: 0.82rem;" role="alert">
+                <div class="alert alert-danger alert-dismissible fade show p-2 mb-2" style="font-size: 0.8rem;" role="alert">
                     <i class="fas fa-exclamation-triangle mr-1"></i> {{ session('loginError') }}
                     <button type="button" class="close p-2" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -531,7 +538,7 @@
             @endif
 
             @if(session('status'))
-                <div class="alert alert-info alert-dismissible fade show p-2 mb-3" style="font-size: 0.82rem;" role="alert">
+                <div class="alert alert-info alert-dismissible fade show p-2 mb-2" style="font-size: 0.8rem;" role="alert">
                     <i class="fas fa-info-circle mr-1"></i> {{ session('status') }}
                     <button type="button" class="close p-2" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -543,31 +550,31 @@
             <form action="{{ route('login') }}" method="POST" autocomplete="off">
                 @csrf
 
-                <!-- Input Email / Username -->
+                <!-- Input Email (Placeholder: Masukkan email) -->
                 <div class="input-wrapper">
                     <input type="email" 
                            name="email" 
                            id="email"
                            class="input-glass @error('email') is-invalid @enderror" 
-                           placeholder="Username atau Email"
+                           placeholder="Masukkan email"
                            value="{{ old('email') }}"
                            required 
                            autofocus 
                            autocomplete="off">
                     @error('email')
-                        <div class="invalid-feedback ml-1" style="font-size: 0.78rem;">
+                        <div class="invalid-feedback ml-1" style="font-size: 0.75rem;">
                             {{ $message }}
                         </div>
                     @enderror
                 </div>
 
-                <!-- Input Password & Show/Hide Eye Toggle -->
+                <!-- Input Password & Eye Toggle -->
                 <div class="input-wrapper">
                     <input type="password" 
                            name="password" 
                            id="password"
                            class="input-glass @error('password') is-invalid @enderror" 
-                           placeholder="Password"
+                           placeholder="Masukkan password"
                            required 
                            autocomplete="off">
                     <button type="button" 
@@ -578,13 +585,13 @@
                         <i class="far fa-eye" id="eyeIcon"></i>
                     </button>
                     @error('password')
-                        <div class="invalid-feedback ml-1" style="font-size: 0.78rem;">
+                        <div class="invalid-feedback ml-1" style="font-size: 0.75rem;">
                             {{ $message }}
                         </div>
                     @enderror
                 </div>
 
-                <!-- Checkbox: Tetap Masuk (Persis QROP Spasial) -->
+                <!-- Checkbox: Tetap Masuk -->
                 <div class="remember-box">
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" name="remember" id="remember" class="custom-control-input" {{ old('remember') ? 'checked' : '' }}>
@@ -600,17 +607,17 @@
                 <!-- Kode Keamanan (CAPTCHA) -->
                 <div class="captcha-card">
                     <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="small font-weight-bold text-gray-700" style="font-size: 0.78rem;">
+                        <span class="font-weight-bold text-gray-700" style="font-size: 0.76rem;">
                             <i class="fas fa-shield-alt text-primary mr-1"></i> Kode Keamanan (CAPTCHA)
                         </span>
-                        <a href="{{ route('password.request') }}" class="small text-danger font-weight-bold text-decoration-none" style="font-size: 0.75rem;">
+                        <a href="{{ route('password.request') }}" class="text-danger font-weight-bold text-decoration-none" style="font-size: 0.74rem;">
                             Lupa Password?
                         </a>
                     </div>
 
                     <div class="captcha-preview-row">
                         <div class="captcha-img-container shadow-sm" onclick="refreshCaptcha()" title="Klik untuk refresh kode">
-                            <img src="{{ route('captcha') }}" id="captcha-img" alt="CAPTCHA" height="36" style="cursor: pointer; max-width: 100%;">
+                            <img src="{{ route('captcha') }}" id="captcha-img" alt="CAPTCHA" height="34" style="cursor: pointer; max-width: 100%;">
                         </div>
                         <button type="button" class="btn-refresh-captcha shadow-sm" id="btn-refresh-captcha" onclick="refreshCaptcha()" title="Refresh CAPTCHA">
                             <i class="fas fa-sync-alt" id="refresh-icon"></i>
@@ -626,13 +633,13 @@
                            name="captcha" 
                            id="captcha" 
                            class="input-glass @error('captcha') is-invalid @enderror" 
-                           style="height: 40px; font-size: 0.88rem;"
+                           style="height: 36px; font-size: 0.84rem;"
                            placeholder="Ketik 5 huruf kode di atas..." 
                            maxlength="5" 
                            required 
                            autocomplete="off">
                     @error('captcha')
-                        <div class="invalid-feedback ml-1" style="font-size: 0.78rem;">
+                        <div class="invalid-feedback ml-1" style="font-size: 0.75rem;">
                             {{ $message }}
                         </div>
                     @enderror
