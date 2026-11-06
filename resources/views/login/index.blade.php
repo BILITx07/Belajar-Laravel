@@ -5,274 +5,661 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{{ $title ?? 'Login' }} - FEWS BWS Kalimantan I</title>
+    <title>{{ $title ?? 'Masuk' }} - WebGIS BWS Kalimantan I</title>
 
-    <!-- Custom fonts for this template-->
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ asset('img/logo-pu-badge.svg') }}">
+
+    <!-- Font & Icons -->
     <link href="{{ asset('sbadmin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Custom styles for this template-->
+    <!-- SB Admin 2 & Bootstrap -->
     <link href="{{ asset('sbadmin/css/sb-admin-2.min.css') }}" rel="stylesheet">
 
     <style>
+        :root {
+            --primary-accent: #5046e5;
+            --primary-accent-hover: #4338ca;
+            --pu-gold: #fad605;
+            --pu-navy: #162b55;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --bg-light: #f1f5f9;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-light);
+            background-image: radial-gradient(at 0% 0%, rgba(80, 70, 229, 0.08) 0px, transparent 50%),
+                              radial-gradient(at 100% 100%, rgba(13, 110, 133, 0.1) 0px, transparent 50%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #0d2c54 0%, #1e56a0 100%);
+            margin: 0;
+            padding: 24px 16px;
         }
-        .login-card {
-            border-radius: 1rem;
+
+        /* Card Container (QROP Spasial Style) */
+        .auth-container {
+            width: 100%;
+            max-width: 980px;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.12),
+                        0 0 1px 1px rgba(15, 23, 42, 0.05);
+            overflow: hidden;
+            display: flex;
+            min-height: 600px;
+        }
+
+        /* Left Side: Spatial Visual Panel */
+        .auth-visual-panel {
+            flex: 1.1;
+            position: relative;
+            background: linear-gradient(145deg, #0a4358 0%, #0d5f75 48%, #147b8a 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            padding: 44px 36px 32px;
+            color: #ffffff;
             overflow: hidden;
         }
-        .login-icon-circle {
-            width: 72px;
-            height: 72px;
-            background: rgba(15, 59, 117, 0.1);
-            color: #0f3b75;
-            border-radius: 50%;
+
+        /* Geospatial Mesh / Network Constellation Background */
+        .spatial-mesh-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.18) 1px, transparent 1px),
+                radial-gradient(circle at 20% 40%, rgba(255, 255, 255, 0.15) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 60% 70%, rgba(255, 255, 255, 0.2) 2px, transparent 2px),
+                radial-gradient(circle at 35% 85%, rgba(255, 255, 255, 0.14) 1px, transparent 1px);
+            background-size: 110px 110px, 90px 90px, 140px 140px, 80px 80px;
+            opacity: 0.85;
+            pointer-events: none;
+        }
+
+        .spatial-lines {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(45deg, rgba(255, 255, 255, 0.04) 25%, transparent 25%),
+                linear-gradient(-45deg, rgba(255, 255, 255, 0.04) 25%, transparent 25%);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+
+        /* Atmospheric Bottom Cloud Fade */
+        .panel-bottom-glow {
+            position: absolute;
+            bottom: -30px;
+            left: -20%;
+            width: 140%;
+            height: 180px;
+            background: radial-gradient(ellipse at 50% 100%, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0) 70%);
+            pointer-events: none;
+        }
+
+        /* Government / Ministry PU Emblem Badge */
+        .emblem-wrapper {
+            position: relative;
+            z-index: 2;
+            margin-bottom: 24px;
+        }
+
+        .emblem-badge {
+            width: 118px;
+            height: 118px;
+            background: #ffffff;
+            border-radius: 28px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            padding: 14px;
+            box-shadow: 0 16px 36px rgba(10, 30, 45, 0.3),
+                        0 0 0 4px rgba(250, 214, 5, 0.85);
+            transition: transform 0.3s ease;
         }
-        .form-control-custom {
-            height: 48px;
-            border-radius: 8px;
-            border: 1px solid #d1d3e2;
-            padding: 10px 16px;
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
+
+        .emblem-badge:hover {
+            transform: scale(1.03);
         }
-        .form-control-custom:focus {
-            border-color: #0f3b75;
-            box-shadow: 0 0 0 0.2rem rgba(15, 59, 117, 0.18);
+
+        .emblem-badge img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
-        .btn-login-submit {
-            height: 48px;
-            border-radius: 8px;
-            font-size: 1rem;
+
+        .agency-title {
+            position: relative;
+            z-index: 2;
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            line-height: 1.35;
+            color: #ffffff;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+        }
+
+        .agency-subtitle {
+            position: relative;
+            z-index: 2;
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.45;
+            text-transform: uppercase;
+        }
+
+        .panel-footer-pill {
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.76rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+            margin-top: 24px;
+        }
+
+        /* Right Side: Form Panel */
+        .auth-form-panel {
+            flex: 1;
+            padding: 44px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: #ffffff;
+        }
+
+        /* Brand Logo Block (QROP Spasial Style) */
+        .qrop-brand-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .qrop-icon-box {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 1.25rem;
+            margin-right: 14px;
+            box-shadow: 0 6px 14px rgba(79, 70, 229, 0.25);
+        }
+
+        .qrop-brand-text h1 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin: 0;
+            letter-spacing: 1px;
+            line-height: 1.1;
+        }
+
+        .qrop-brand-text span {
+            font-size: 0.85rem;
             font-weight: 700;
+            color: var(--primary-accent);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .auth-form-title {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 22px;
+        }
+
+        /* Modern Input Styling */
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 14px;
+        }
+
+        .input-clean {
+            height: 46px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            padding: 10px 14px;
+            font-size: 0.92rem;
+            color: var(--text-dark);
+            background-color: #ffffff;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .input-clean:focus {
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 0 3px rgba(80, 70, 229, 0.12);
+            outline: none;
+        }
+
+        .input-clean::placeholder {
+            color: #94a3b8;
+            font-size: 0.88rem;
+        }
+
+        /* Show/Hide Password Eye Toggle */
+        .password-toggle-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 4px;
+            font-size: 0.95rem;
+            transition: color 0.2s ease;
+        }
+
+        .password-toggle-btn:hover {
+            color: var(--text-dark);
+        }
+
+        /* Remember Me Checkbox */
+        .remember-box {
+            background: #f8fafc;
+            border: 1px solid #f1f5f9;
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 18px;
+        }
+
+        .custom-control-label {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        .remember-subtext {
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            margin-left: 24px;
+            margin-top: 2px;
+        }
+
+        /* CAPTCHA Box */
+        .captcha-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px;
+            background-color: #f8fafc;
+            margin-bottom: 18px;
+        }
+
+        .captcha-preview-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .captcha-img-container {
+            flex-grow: 1;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            height: 42px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #0f3b75;
-            border-color: #0f3b75;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .btn-refresh-captcha {
+            height: 42px;
+            width: 42px;
+            border-radius: 6px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
             transition: all 0.2s ease;
         }
-        .btn-login-submit:hover {
-            background-color: #092244;
-            border-color: #092244;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(15, 59, 117, 0.35);
+
+        .btn-refresh-captcha:hover {
+            color: var(--primary-accent);
+            border-color: var(--primary-accent);
+            background: #f8fafc;
         }
-        .captcha-box {
-            border: 1px solid #d1d3e2;
+
+        /* Submit Button (QROP Blue/Purple) */
+        .btn-submit-masuk {
+            height: 46px;
+            background: #5046e5;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.95rem;
             border-radius: 8px;
-            background-color: #f8f9fc;
-            height: 48px;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(80, 70, 229, 0.25);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 3px;
         }
-        .btn-refresh-captcha {
-            height: 48px;
-            width: 48px;
-            border-radius: 8px; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+
+        .btn-submit-masuk:hover {
+            background: #4338ca;
+            box-shadow: 0 6px 16px rgba(80, 70, 229, 0.35);
+            transform: translateY(-1px);
+            color: #ffffff;
+        }
+
+        .btn-submit-masuk:active {
+            transform: translateY(0);
+        }
+
+        /* Footer Links */
+        .home-link {
+            display: inline-block;
+            margin-top: 16px;
+            color: var(--primary-accent);
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .home-link:hover {
+            color: var(--primary-accent-hover);
+            text-decoration: underline;
+        }
+
+        .copyright-text {
+            margin-top: 22px;
+            font-size: 0.76rem;
+            color: #94a3b8;
+            text-align: center;
+        }
+
+        /* Responsive Breakpoint */
+        @media (max-width: 820px) {
+            .auth-container {
+                flex-direction: column;
+                max-width: 480px;
+            }
+
+            .auth-visual-panel {
+                padding: 32px 24px;
+            }
+
+            .agency-title {
+                font-size: 1.1rem;
+            }
+
+            .emblem-badge {
+                width: 90px;
+                height: 90px;
+                padding: 10px;
+            }
+
+            .auth-form-panel {
+                padding: 32px 24px;
+            }
         }
     </style>
 </head>
 
-<body class="py-4">
+<body>
 
-    <div class="container">
-        <!-- Outer Row -->
-        <div class="row justify-content-center">
-            <div class="col-xl-5 col-lg-6 col-md-8 col-sm-11">
+    <main class="auth-container">
+        <!-- 1. LEFT PANEL: BWS Kalimantan I / Ditjen SDA Branding (Style QROP SPASIAL) -->
+        <section class="auth-visual-panel">
+            <div class="spatial-mesh-bg"></div>
+            <div class="spatial-lines"></div>
 
-                <div class="card login-card border-0 shadow-lg my-3">
-                    <div class="card-body p-4 p-sm-5">
-
-                        <!-- Header Logo KemenPU & Judul (Sesuai Gambar Referensi) -->
-                        <div class="d-flex align-items-center mb-4">
-                            <!-- Logo Resmi Kementerian PU -->
-                            <img src="{{ asset('img/logo-pu.png') }}" alt="Logo Kementerian PU" class="mr-3 shadow-sm" style="width: 48px; height: 48px; border-radius: 10px; object-fit: contain;">
-                            <div>
-                                <h1 class="h5 text-gray-900 font-weight-bold mb-0" style="line-height: 1.2;">LOGIN WEBGIS</h1>
-                                <div class="text-primary font-weight-bold" style="font-size: 0.85rem;">BWS Kalimantan I Pontianak</div>
-                            </div>
-                        </div>
-
-                        {{-- Pesan Notifikasi Sukses Logout --}}
-                        @if(session()->has('success'))
-                            <div class="alert alert-success alert-dismissible fade show shadow-sm mb-3" role="alert">
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-check-circle mr-2"></i>
-                                    <div>{{ session('success') }}</div>
-                                </div>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        @endif
-
-                        {{-- Pesan Notifikasi Gagal Login --}}
-                        @if(session()->has('loginError'))
-                            <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-3" role="alert">
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-exclamation-triangle mr-2"></i>
-                                    <div>{{ session('loginError') }}</div>
-                                </div>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        @endif
-
-                        {{-- Pesan Status (misal setelah reset password) --}}
-                        @if (session('status'))
-                            <div class="alert alert-info alert-dismissible fade show shadow-sm mb-3" role="alert">
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-info-circle mr-2"></i>
-                                    <div>{{ session('status') }}</div>
-                                </div>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        @endif
-
-                        <!-- Form Login -->
-                        <form action="{{ route('login') }}" method="POST" autocomplete="off">
-                            @csrf
-
-                            <!-- Input Email -->
-                            <div class="form-group mb-3">
-                                <label class="small font-weight-bold text-gray-700 mb-1" for="email">
-                                    <i class="fas fa-envelope text-primary mr-1"></i> Email
-                                </label>
-                                <input type="email" 
-                                       name="email" 
-                                       class="form-control form-control-custom @error('email') is-invalid @enderror"
-                                       id="email" 
-                                       placeholder="nama@email.com" 
-                                       value="{{ old('email') }}" 
-                                       required autofocus autocomplete="off">
-                                @error('email')
-                                    <div class="invalid-feedback ml-1">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            <!-- Input Password & Lupa Password -->
-                            <div class="form-group mb-3">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <label class="small font-weight-bold text-gray-700 mb-0" for="password">
-                                        <i class="fas fa-lock text-primary mr-1"></i> Password
-                                    </label>
-                                    <a href="{{ route('password.request') }}"
-                                       class="small font-weight-bold text-danger text-decoration-none">
-                                        Lupa Password?
-                                    </a>
-                                </div>
-                                <input type="password" 
-                                       name="password" 
-                                       class="form-control form-control-custom @error('password') is-invalid @enderror"
-                                       id="password" 
-                                       placeholder="Masukkan kata sandi..." 
-                                       required autocomplete="off">
-                                @error('password')
-                                    <div class="invalid-feedback ml-1">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            <!-- Kode CAPTCHA -->
-                            <div class="form-group mb-4">
-                                <label class="small font-weight-bold text-gray-700 mb-1" for="captcha">
-                                    <i class="fas fa-shield-alt text-primary mr-1"></i> Kode Keamanan (CAPTCHA)
-                                </label>
-
-                                <div class="d-flex align-items-center mb-2" style="gap: 8px;">
-                                    <div class="captcha-box flex-grow-1 overflow-hidden shadow-sm">
-                                        <img src="{{ route('captcha') }}" 
-                                             id="captcha-img" 
-                                             alt="Kode CAPTCHA" 
-                                             height="40"
-                                             style="cursor: pointer; display: block; max-width: 100%;" 
-                                             title="Klik gambar untuk ganti CAPTCHA"
-                                             onclick="refreshCaptcha()">
-                                    </div>
-
-                                    <button type="button" 
-                                            id="btn-refresh-captcha"
-                                            class="btn btn-outline-secondary btn-refresh-captcha shadow-sm"
-                                            onclick="refreshCaptcha()"
-                                            title="Ganti kode CAPTCHA">
-                                        <i class="fas fa-sync-alt" id="refresh-icon"></i>
-                                    </button>
-                                </div>
-
-                                {{-- Honeypot anti-bot otomatis --}}
-                                <div style="display:none;" aria-hidden="true">
-                                    <input type="text" name="_hp_check" value="" tabindex="-1" autocomplete="off">
-                                </div>
-
-                                <input type="text"
-                                       name="captcha"
-                                       id="captcha"
-                                       class="form-control form-control-custom @error('captcha') is-invalid @enderror"
-                                       placeholder="Ketik 5 huruf kode di atas..."
-                                       autocomplete="off"
-                                       maxlength="5"
-                                       required>
-
-                                @error('captcha')
-                                    <div class="invalid-feedback ml-1">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            <!-- Tombol Submit Login (Persis Screenshot 1) -->
-                            <button type="submit" class="btn btn-primary btn-block btn-login-submit shadow" style="background-color: #1b5fb5; border-color: #1b5fb5;">
-                                <i class="fas fa-sign-in-alt mr-2"></i> Sign In to FEWS
-                            </button>
-                        </form>
-
-                        <!-- Versi FEWS -->
-                        <div class="text-center mt-4">
-                            <span class="badge badge-light border text-muted px-3 py-1 font-weight-normal" style="border-radius: 20px; font-size: 0.75rem;">
-                                Version BILI-BOY
-                            </span>
-                        </div>
-
+            <div class="w-100" style="position: relative; z-index: 2;">
+                <!-- Logo Emblem Kementerian PU (Jernih & Presisi) -->
+                <div class="emblem-wrapper">
+                    <div class="emblem-badge">
+                        <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo Kementerian Pekerjaan Umum">
                     </div>
                 </div>
 
-                <!-- Footer Login BWSK -->
-                <div class="text-center text-white-50 small my-3" style="font-size: 0.78rem;">
-                    &copy; 2026 FEWS BWS Kalimantan I Pontianak
+                <!-- Instansi Header -->
+                <h2 class="agency-title">
+                    BALAI WILAYAH SUNGAI<br>KALIMANTAN I
+                </h2>
+                <div class="agency-subtitle">
+                    DIREKTORAT JENDERAL SUMBER DAYA AIR<br>
+                    KEMENTERIAN PEKERJAAN UMUM
+                </div>
+            </div>
+
+            <!-- Bagian Bawah Visual Panel -->
+            <div class="panel-bottom-glow"></div>
+            <div class="panel-footer-pill">
+                <i class="fas fa-water mr-1"></i> Sistem Informasi Spasial Irigasi & SDA
+            </div>
+        </section>
+
+        <!-- 2. RIGHT PANEL: Formulir Login Modern (Style QROP SPASIAL) -->
+        <section class="auth-form-panel">
+            <!-- Header Logo Aplikasi -->
+            <div class="qrop-brand-header">
+                <div class="qrop-icon-box">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                <div class="qrop-brand-text">
+                    <h1>WEBGIS</h1>
+                    <span>SPASIAL SDA</span>
+                </div>
+            </div>
+
+            <!-- Subtitle -->
+            <div class="auth-form-title">
+                Silakan Login
+            </div>
+
+            {{-- Pesan Notifikasi Sukses Logout / Status --}}
+            @if(session()->has('success'))
+                <div class="alert alert-success alert-dismissible fade show p-2 mb-3" style="font-size: 0.82rem;" role="alert">
+                    <i class="fas fa-check-circle mr-1"></i> {{ session('success') }}
+                    <button type="button" class="close p-2" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
+            {{-- Pesan Notifikasi Gagal Login --}}
+            @if(session()->has('loginError'))
+                <div class="alert alert-danger alert-dismissible fade show p-2 mb-3" style="font-size: 0.82rem;" role="alert">
+                    <i class="fas fa-exclamation-triangle mr-1"></i> {{ session('loginError') }}
+                    <button type="button" class="close p-2" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
+            @if(session('status'))
+                <div class="alert alert-info alert-dismissible fade show p-2 mb-3" style="font-size: 0.82rem;" role="alert">
+                    <i class="fas fa-info-circle mr-1"></i> {{ session('status') }}
+                    <button type="button" class="close p-2" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
+            <!-- Form Autentikasi -->
+            <form action="{{ route('login') }}" method="POST" autocomplete="off">
+                @csrf
+
+                <!-- Input Email / Username -->
+                <div class="input-wrapper">
+                    <input type="email" 
+                           name="email" 
+                           id="email"
+                           class="input-clean @error('email') is-invalid @enderror" 
+                           placeholder="Username atau Email"
+                           value="{{ old('email') }}"
+                           required 
+                           autofocus 
+                           autocomplete="off">
+                    @error('email')
+                        <div class="invalid-feedback ml-1" style="font-size: 0.78rem;">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
 
-            </div>
-        </div>
-    </div>
+                <!-- Input Password & Show/Hide Eye Toggle -->
+                <div class="input-wrapper">
+                    <input type="password" 
+                           name="password" 
+                           id="password"
+                           class="input-clean @error('password') is-invalid @enderror" 
+                           placeholder="Password"
+                           required 
+                           autocomplete="off">
+                    <button type="button" 
+                            class="password-toggle-btn" 
+                            id="togglePassword" 
+                            title="Tampilkan / Sembunyikan Password"
+                            onclick="togglePasswordVisibility()">
+                        <i class="far fa-eye" id="eyeIcon"></i>
+                    </button>
+                    @error('password')
+                        <div class="invalid-feedback ml-1" style="font-size: 0.78rem;">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
 
-    <!-- Bootstrap core JavaScript-->
+                <!-- Checkbox: Tetap Masuk (Persis QROP Spasial) -->
+                <div class="remember-box">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" name="remember" id="remember" class="custom-control-input" {{ old('remember') ? 'checked' : '' }}>
+                        <label class="custom-control-label" for="remember">
+                            Tetap masuk
+                        </label>
+                    </div>
+                    <div class="remember-subtext">
+                        Gunakan hanya di perangkat pribadi Anda
+                    </div>
+                </div>
+
+                <!-- Kode Keamanan (CAPTCHA) -->
+                <div class="captcha-card">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="small font-weight-bold text-gray-700" style="font-size: 0.78rem;">
+                            <i class="fas fa-shield-alt text-primary mr-1"></i> Kode Keamanan (CAPTCHA)
+                        </span>
+                        <a href="{{ route('password.request') }}" class="small text-danger font-weight-bold text-decoration-none" style="font-size: 0.75rem;">
+                            Lupa Password?
+                        </a>
+                    </div>
+
+                    <div class="captcha-preview-row">
+                        <div class="captcha-img-container shadow-sm" onclick="refreshCaptcha()" title="Klik untuk refresh kode">
+                            <img src="{{ route('captcha') }}" id="captcha-img" alt="CAPTCHA" height="36" style="cursor: pointer; max-width: 100%;">
+                        </div>
+                        <button type="button" class="btn-refresh-captcha shadow-sm" id="btn-refresh-captcha" onclick="refreshCaptcha()" title="Refresh CAPTCHA">
+                            <i class="fas fa-sync-alt" id="refresh-icon"></i>
+                        </button>
+                    </div>
+
+                    {{-- Honeypot anti-bot otomatis --}}
+                    <div style="display:none;" aria-hidden="true">
+                        <input type="text" name="_hp_check" value="" tabindex="-1" autocomplete="off">
+                    </div>
+
+                    <input type="text" 
+                           name="captcha" 
+                           id="captcha" 
+                           class="input-clean @error('captcha') is-invalid @enderror" 
+                           style="height: 40px; font-size: 0.88rem;"
+                           placeholder="Ketik 5 huruf kode di atas..." 
+                           maxlength="5" 
+                           required 
+                           autocomplete="off">
+                    @error('captcha')
+                        <div class="invalid-feedback ml-1" style="font-size: 0.78rem;">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
+                <!-- Tombol Submit: Masuk -->
+                <button type="submit" class="btn-submit-masuk">
+                    Masuk
+                </button>
+            </form>
+
+            <!-- Tautan Navigasi Beranda -->
+            <div class="text-center">
+                <a href="{{ route('peta') }}" class="home-link">
+                    Beranda
+                </a>
+            </div>
+
+            <!-- Footer Hak Cipta -->
+            <div class="copyright-text">
+                Copyright &copy; {{ date('Y') }} | BWS Kalimantan I Pontianak
+            </div>
+        </section>
+    </main>
+
+    <!-- Scripts -->
     <script src="{{ asset('sbadmin/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('sbadmin/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('sbadmin/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
-    <script src="{{ asset('sbadmin/js/sb-admin-2.min.js') }}"></script>
 
     <script>
+        // Toggle Show/Hide Password
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Refresh CAPTCHA Code
         function refreshCaptcha() {
             const captchaImg = document.getElementById('captcha-img');
             const refreshIcon = document.getElementById('refresh-icon');
@@ -281,7 +668,6 @@
                 refreshIcon.classList.add('fa-spin');
             }
 
-            // Tambahkan parameter timestamp unik agar browser tidak mengambil dari cache
             captchaImg.src = "{{ route('captcha') }}?t=" + new Date().getTime();
 
             captchaImg.onload = function() {

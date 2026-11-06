@@ -49,9 +49,10 @@ class LoginController extends Controller
 
         // Ambil kredensial email dan password
         $credentials = $request->only('email', 'password');
+        $remember = $request->boolean('remember');
 
         // Proses autentikasi login
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
             Auth::user()->update(['last_login_at' => now()]);
 

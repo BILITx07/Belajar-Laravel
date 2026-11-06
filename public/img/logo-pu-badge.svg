@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Soft modern drop shadow -->
+    <filter id="softShadow" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#0f172a" flood-opacity="0.12" />
+    </filter>
+    <linearGradient id="cardBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#f8fafc" />
+    </linearGradient>
+  </defs>
+
+  <!-- Squircle Base Card -->
+  <rect x="24" y="24" width="464" height="464" rx="104" ry="104" fill="url(#cardBg)" stroke="#e2e8f0" stroke-width="2" filter="url(#softShadow)" />
+
+  <!-- Inner Ministry PU Vector Logo centered -->
+  <g transform="translate(106, 86)">
+    <svg width="300" height="340" viewBox="0 0 467103.94 529108.99" style="clip-rule:evenodd;fill-rule:evenodd;image-rendering:optimizeQuality;shape-rendering:geometricPrecision;text-rendering:geometricPrecision">
+      <defs>
+        <style type="text/css">
+          .fil0 {fill:#162b55}
+          .fil1 {fill:#FAD605}
+        </style>
+      </defs>
+      <g transform="translate(-33614.553,-34742)">
+        <polygon class="fil1" points="16507,581777 16507,18462 518493,18462 518493,581777" transform="matrix(0.93088254,0,0,0.93927731,18141.921,17401.062)" />
+        <path class="fil0" d="m 33508,563850 h 24656 v -11335 c 0,-64729 51286,-117890 114550,-117890 63264,0 114550,53161 114550,117890 0,3824 -183,7605 -533,11335 H 500798 V 388844 h -26799 v 2838 c 355,3336 543,6724 543,10157 0,51208 -40573,92720 -90621,92720 -50049,0 -90621,-41512 -90621,-92720 V 34742 H 104250 v 35632 c 82344,0 149096,68298 149096,152549 0,84251 -66753,152549 -149096,152549 H 33509 v 188379 z" />
+      </g>
+    </svg>
+  </g>
+</svg>
