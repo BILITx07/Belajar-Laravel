@@ -1,66 +1,73 @@
-<!-- Topbar Resmi BWS Kalimantan I (Deep Navy PU Glassmorphism) -->
+<!-- Topbar Resmi BWS Kalimantan I (Aesthetic Frosted Glass / Navbar Bening) -->
 <nav class="navbar navbar-expand sticky-top px-3 px-md-4 py-2 bws-glass-navbar" style="height: 68px; z-index: 1030;">
 
     <style>
+        /* Navbar Bening (Aesthetic Frosted Glassmorphism) */
         .bws-glass-navbar {
-            background: linear-gradient(135deg, rgba(11, 35, 65, 0.95) 0%, rgba(13, 52, 90, 0.93) 50%, rgba(15, 68, 107, 0.95) 100%) !important;
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-            box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.25);
+            background: rgba(255, 255, 255, 0.72) !important;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.85);
+            box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04);
             transition: all 0.3s ease;
         }
 
         .bws-nav-link-custom {
-            color: rgba(255, 255, 255, 0.88) !important;
+            color: #475569 !important;
+            font-weight: 600;
             transition: color 0.2s ease, transform 0.2s ease;
         }
         .bws-nav-link-custom:hover {
-            color: #ffffff !important;
+            color: #1d4ed8 !important;
             transform: translateY(-1px);
         }
 
         .btn-nav-masuk-glass {
-            background: #ffffff !important;
-            color: #0b2341 !important;
+            background: rgba(255, 255, 255, 0.95) !important;
+            color: #1e293b !important;
             border-radius: 10px;
             font-size: 0.86rem;
             font-weight: 700;
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+            border: 1.5px solid #cbd5e1;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
             transition: all 0.25s ease;
         }
         .btn-nav-masuk-glass:hover {
-            background: #f8fafc !important;
-            color: #1d4ed8 !important;
+            background: #1d4ed8 !important;
+            color: #ffffff !important;
+            border-color: #1d4ed8 !important;
             transform: translateY(-1px);
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 14px rgba(29, 78, 216, 0.25);
+        }
+        .btn-nav-masuk-glass:hover i {
+            color: #ffffff !important;
         }
 
         .user-pill-glass {
             border-radius: 25px;
-            background: rgba(255, 255, 255, 0.15) !important;
-            border: 1px solid rgba(255, 255, 255, 0.25) !important;
-            color: #ffffff !important;
-            transition: background 0.2s ease;
+            background: rgba(255, 255, 255, 0.85) !important;
+            border: 1.5px solid #e2e8f0 !important;
+            color: #1e293b !important;
+            transition: all 0.2s ease;
         }
         .user-pill-glass:hover {
-            background: rgba(255, 255, 255, 0.22) !important;
+            background: #ffffff !important;
+            border-color: #cbd5e1 !important;
         }
     </style>
 
-    <!-- Bagian Kiri: Logo PU & Identitas Instansi Resmi -->
+    <!-- Bagian Kiri: Logo PU & Identitas Instansi (Jernih & Elegan) -->
     <div class="d-flex align-items-center">
         <!-- Logo PU Kotak Squircle Tajam & Berbingkai Emas -->
         <a href="{{ route('peta') }}" class="d-flex align-items-center text-decoration-none">
-            <div class="mr-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 44px; height: 44px; min-width: 44px; background: #ffffff; border-radius: 11px; border: 2px solid rgba(250, 214, 5, 0.95); padding: 5px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);">
+            <div class="mr-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 42px; height: 42px; min-width: 42px; background: #ffffff; border-radius: 10px; border: 1.5px solid rgba(250, 214, 5, 0.95); padding: 5px; box-shadow: 0 3px 10px rgba(15, 23, 42, 0.08);">
                 <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo Kementerian PU" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
             <div class="d-flex flex-column">
-                <span class="font-weight-bold text-white" style="font-size: 1.05rem; letter-spacing: 0.3px; line-height: 1.2; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);">
+                <span class="font-weight-bold" style="font-size: 1.05rem; letter-spacing: -0.2px; line-height: 1.2; color: #0f172a;">
                     WEBGIS BWS KALIMANTAN I
                 </span>
-                <span class="d-none d-md-block font-weight-medium" style="font-size: 0.72rem; line-height: 1.25; color: rgba(255, 255, 255, 0.82);">
+                <span class="d-none d-md-block text-muted font-weight-medium" style="font-size: 0.72rem; line-height: 1.25;">
                     Direktorat Jenderal Sumber Daya Air &bull; Kementerian Pekerjaan Umum
                 </span>
             </div>
@@ -73,7 +80,7 @@
         <!-- Menu Link Panduan Aplikasi -->
         <li class="nav-item d-none d-sm-block">
             <a href="javascript:void(0)" class="nav-link font-weight-bold px-2 bws-nav-link-custom" data-toggle="modal" data-target="#modalPanduanAplikasi" style="font-size: 13px;" title="Buku Panduan Penggunaan">
-                <i class="fas fa-clipboard-list mr-1" style="color: #60a5fa;"></i> Panduan Aplikasi
+                <i class="fas fa-clipboard-list mr-1" style="color: #2563eb;"></i> Panduan Aplikasi
             </a>
         </li>
 
@@ -168,13 +175,13 @@
         <!-- Profil Admin -->
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle d-flex align-items-center py-1 px-3 user-pill-glass" href="#" id="userMenuBtn" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <div class="rounded-circle bg-white text-primary d-flex align-items-center justify-content-center mr-2 shadow-sm" style="width: 28px; height: 28px;">
+                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mr-2 shadow-sm" style="width: 28px; height: 28px;">
                     <i class="fas fa-user" style="font-size: 12px;"></i>
                 </div>
-                <span class="font-weight-bold text-white d-none d-sm-inline" style="font-size: 0.85rem;">
+                <span class="font-weight-bold text-dark d-none d-sm-inline" style="font-size: 0.85rem;">
                     {{ Auth::user()->name }}
                 </span>
-                <i class="fas fa-chevron-down ml-2 text-white-50" style="font-size: 10px;"></i>
+                <i class="fas fa-chevron-down ml-2 text-muted" style="font-size: 10px;"></i>
             </a>
             
             <div class="dropdown-menu dropdown-menu-right shadow-lg border-0 animated--grow-in mt-2" aria-labelledby="userMenuBtn" style="border-radius: 12px; min-width: 210px;">
@@ -197,7 +204,7 @@
             </div>
         </li>
         @else
-        <!-- MODE PUBLIK: TOMBOL MASUK RAMPING & BERKILAU -->
+        <!-- MODE PUBLIK: TOMBOL MASUK GLASS RAMPING & AESTHETIC -->
         <li class="nav-item">
             <a href="{{ route('login') }}" class="btn btn-sm btn-nav-masuk-glass font-weight-bold d-flex align-items-center px-3 py-2">
                 <i class="fas fa-sign-in-alt mr-2 text-primary"></i> Masuk
