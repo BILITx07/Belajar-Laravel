@@ -1,37 +1,85 @@
-<!-- Topbar Resmi ala QROP Spasial (Latar Belakang Putih Bersih & Modern) -->
-<nav class="navbar navbar-expand navbar-light bg-white sticky-top px-3 px-md-4 py-2" style="height: 68px; z-index: 1030; border-bottom: 1px solid #e2e8f0; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);">
+<!-- Topbar Resmi BWS Kalimantan I (Deep Navy PU Glassmorphism) -->
+<nav class="navbar navbar-expand sticky-top px-3 px-md-4 py-2 bws-glass-navbar" style="height: 68px; z-index: 1030;">
 
-    <!-- Bagian Kiri: Logo PU & Identitas Instansi Bersih -->
+    <style>
+        .bws-glass-navbar {
+            background: linear-gradient(135deg, rgba(11, 35, 65, 0.95) 0%, rgba(13, 52, 90, 0.93) 50%, rgba(15, 68, 107, 0.95) 100%) !important;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+            box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.25);
+            transition: all 0.3s ease;
+        }
+
+        .bws-nav-link-custom {
+            color: rgba(255, 255, 255, 0.88) !important;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+        .bws-nav-link-custom:hover {
+            color: #ffffff !important;
+            transform: translateY(-1px);
+        }
+
+        .btn-nav-masuk-glass {
+            background: #ffffff !important;
+            color: #0b2341 !important;
+            border-radius: 10px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+            transition: all 0.25s ease;
+        }
+        .btn-nav-masuk-glass:hover {
+            background: #f8fafc !important;
+            color: #1d4ed8 !important;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+        }
+
+        .user-pill-glass {
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.15) !important;
+            border: 1px solid rgba(255, 255, 255, 0.25) !important;
+            color: #ffffff !important;
+            transition: background 0.2s ease;
+        }
+        .user-pill-glass:hover {
+            background: rgba(255, 255, 255, 0.22) !important;
+        }
+    </style>
+
+    <!-- Bagian Kiri: Logo PU & Identitas Instansi Resmi -->
     <div class="d-flex align-items-center">
-        <!-- Logo PU Kotak Squircle Tajam & Presisi -->
+        <!-- Logo PU Kotak Squircle Tajam & Berbingkai Emas -->
         <a href="{{ route('peta') }}" class="d-flex align-items-center text-decoration-none">
-            <div class="mr-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 42px; height: 42px; min-width: 42px; background: #ffffff; border-radius: 10px; border: 1.5px solid rgba(250, 214, 5, 0.95); padding: 5px;">
+            <div class="mr-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 44px; height: 44px; min-width: 44px; background: #ffffff; border-radius: 11px; border: 2px solid rgba(250, 214, 5, 0.95); padding: 5px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);">
                 <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo Kementerian PU" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
             <div class="d-flex flex-column">
-                <span class="font-weight-bold" style="font-size: 1.05rem; letter-spacing: -0.2px; line-height: 1.2; color: #0f172a;">
+                <span class="font-weight-bold text-white" style="font-size: 1.05rem; letter-spacing: 0.3px; line-height: 1.2; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);">
                     WEBGIS BWS KALIMANTAN I
                 </span>
-                <span class="d-none d-md-block text-muted font-weight-medium" style="font-size: 0.72rem; line-height: 1.25;">
+                <span class="d-none d-md-block font-weight-medium" style="font-size: 0.72rem; line-height: 1.25; color: rgba(255, 255, 255, 0.82);">
                     Direktorat Jenderal Sumber Daya Air &bull; Kementerian Pekerjaan Umum
                 </span>
             </div>
         </a>
     </div>
 
-    <!-- Bagian Kanan: Menu Link Ramping & Tombol Aksi (Persis QROP Spasial) -->
+    <!-- Bagian Kanan: Menu Link Ramping & Tombol Aksi -->
     <ul class="navbar-nav ml-auto align-items-center" style="gap: 12px;">
 
-        <!-- Menu Link Panduan Aplikasi (Gaya Teks QROP: Tentang QROP / Hubungi Kami) -->
+        <!-- Menu Link Panduan Aplikasi -->
         <li class="nav-item d-none d-sm-block">
-            <a href="javascript:void(0)" class="nav-link font-weight-bold text-secondary px-2" data-toggle="modal" data-target="#modalPanduanAplikasi" style="font-size: 13px;" title="Buku Panduan Penggunaan">
-                <i class="fas fa-clipboard-list text-primary mr-1"></i> Panduan Aplikasi
+            <a href="javascript:void(0)" class="nav-link font-weight-bold px-2 bws-nav-link-custom" data-toggle="modal" data-target="#modalPanduanAplikasi" style="font-size: 13px;" title="Buku Panduan Penggunaan">
+                <i class="fas fa-clipboard-list mr-1" style="color: #60a5fa;"></i> Panduan Aplikasi
             </a>
         </li>
 
         <!-- Tombol Layar Penuh -->
         <li class="nav-item">
-            <a class="nav-link text-muted p-2 d-flex align-items-center justify-content-center" href="#" onclick="toggleFullScreen(event)" title="Layar Penuh">
+            <a class="nav-link p-2 d-flex align-items-center justify-content-center bws-nav-link-custom" href="#" onclick="toggleFullScreen(event)" title="Layar Penuh">
                 <i class="fas fa-expand"></i>
             </a>
         </li>
@@ -43,7 +91,7 @@
             $countLogs = count($recentLogs);
         @endphp
         <li class="nav-item dropdown no-arrow position-relative">
-            <a class="nav-link dropdown-toggle text-secondary p-2 d-flex align-items-center justify-content-center position-relative" 
+            <a class="nav-link dropdown-toggle p-2 d-flex align-items-center justify-content-center position-relative bws-nav-link-custom" 
                href="#" 
                id="notifDropdownBtn" 
                role="button" 
@@ -117,16 +165,16 @@
             </div>
         </li>
 
-        <!-- Profil Admin (Hanya Pengaturan & Logout Sesuai Permintaan) -->
+        <!-- Profil Admin -->
         <li class="nav-item dropdown no-arrow">
-            <a class="nav-link dropdown-toggle d-flex align-items-center py-1 px-3 border" href="#" id="userMenuBtn" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border-radius: 25px; background: #f8fafc; border-color: #e2e8f0;">
-                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mr-2 shadow-sm" style="width: 28px; height: 28px;">
+            <a class="nav-link dropdown-toggle d-flex align-items-center py-1 px-3 user-pill-glass" href="#" id="userMenuBtn" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="rounded-circle bg-white text-primary d-flex align-items-center justify-content-center mr-2 shadow-sm" style="width: 28px; height: 28px;">
                     <i class="fas fa-user" style="font-size: 12px;"></i>
                 </div>
-                <span class="font-weight-bold text-dark d-none d-sm-inline" style="font-size: 0.85rem;">
+                <span class="font-weight-bold text-white d-none d-sm-inline" style="font-size: 0.85rem;">
                     {{ Auth::user()->name }}
                 </span>
-                <i class="fas fa-chevron-down ml-2 text-muted" style="font-size: 10px;"></i>
+                <i class="fas fa-chevron-down ml-2 text-white-50" style="font-size: 10px;"></i>
             </a>
             
             <div class="dropdown-menu dropdown-menu-right shadow-lg border-0 animated--grow-in mt-2" aria-labelledby="userMenuBtn" style="border-radius: 12px; min-width: 210px;">
@@ -149,9 +197,9 @@
             </div>
         </li>
         @else
-        <!-- MODE PUBLIK: TOMBOL MASUK RAMPING ALA QROP SPASIAL -->
+        <!-- MODE PUBLIK: TOMBOL MASUK RAMPING & BERKILAU -->
         <li class="nav-item">
-            <a href="{{ route('login') }}" class="btn btn-sm btn-outline-primary font-weight-bold d-flex align-items-center px-3 py-2 shadow-sm" style="border-radius: 10px; font-size: 0.85rem; border-color: #cbd5e1; color: #1e293b; background: #ffffff;">
+            <a href="{{ route('login') }}" class="btn btn-sm btn-nav-masuk-glass font-weight-bold d-flex align-items-center px-3 py-2">
                 <i class="fas fa-sign-in-alt mr-2 text-primary"></i> Masuk
             </a>
         </li>
