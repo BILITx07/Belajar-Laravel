@@ -346,12 +346,11 @@
 
     <!-- ═══ 1. NAVBAR UTAMA ATAS (TEMA BIRU PU BWS KALIMANTAN I SESUAI REFERENSI) ═══ -->
     <header class="bws-topbar-primary" style="background: #1b4f9c; height: 66px; border-bottom: 3.5px solid #f59e0b;">
-        <!-- Logo & Instansi -->
+        <!-- Logo & Instansi Resmi -->
         <div class="bws-brand-section">
-            <a href="{{ route('admin.dashboard') }}" class="btn rounded-circle bg-white shadow-sm d-flex align-items-center justify-content-center mr-3" style="width:36px;height:36px;border:none;text-decoration:none;" title="Kembali ke Dashboard">
-                <i class="fas fa-chevron-left" style="font-size:13px; color:#1e293b; font-weight:700;"></i>
-            </a>
-            <img src="{{ asset('img/logo-pu.png') }}" alt="Logo Kementerian PU" class="mr-3 shadow-sm" style="width: 44px; height: 44px; border-radius: 9px; object-fit: contain;">
+            <div class="mr-3 d-flex align-items-center justify-content-center bg-white shadow-xs" style="width: 44px; height: 44px; min-width: 44px; border-radius: 11px; padding: 4px; border: 1.5px solid rgba(250, 214, 5, 0.95);">
+                <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo Kementerian PU" style="width: 100%; height: 100%; object-fit: contain;">
+            </div>
             <div class="d-flex flex-column text-white">
                 <span class="font-weight-bold" style="font-size:0.95rem; letter-spacing:0.4px; line-height:1.2;">
                     WEBGIS BWS KALIMANTAN I
@@ -396,57 +395,64 @@
                 
                 <div class="dropdown-menu dropdown-menu-right shadow-lg border-0 animated--grow-in mt-2 p-0" 
                      aria-labelledby="adminNotifDropdown" 
-                     style="border-radius: 12px; min-width: 320px; max-width: 360px; overflow: hidden; z-index: 1060;">
+                     style="border-radius: 14px; min-width: 330px; max-width: 380px; overflow: hidden; z-index: 1060; box-shadow: 0 10px 30px rgba(15,23,42,0.15) !important;">
                     
-                    <div class="d-flex align-items-center justify-content-between px-3 py-2 text-white" style="background: #174ea6;">
-                        <div class="font-weight-bold d-flex align-items-center" style="font-size: 13px;">
-                            <i class="fas fa-bell mr-2"></i> Log Aktivitas Sistem
+                    <!-- Header Dropdown Notifikasi -->
+                    <div class="d-flex align-items-center justify-content-between px-3 py-2.5 bg-white border-bottom">
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center mr-2" style="width: 28px; height: 28px; background: #eff6ff; color: #1d4ed8; font-size: 0.8rem;">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <span class="font-weight-bold text-dark" style="font-size: 0.88rem;">Pemberitahuan Sistem</span>
                         </div>
-                        <span class="badge badge-light text-primary font-weight-bold px-2 py-0" style="font-size: 10.5px; border-radius: 10px;">
-                            {{ $countLogs }} Riwayat
+                        <span class="badge badge-light border text-primary font-weight-bold px-2 py-1" style="font-size: 0.72rem; border-radius: 6px; background: #eff6ff; border-color: #bfdbfe;">
+                            {{ $countLogs }} Aktivitas Baru
                         </span>
                     </div>
 
-                    <div class="list-group list-group-flush" style="font-size: 12px; max-height: 300px; overflow-y: auto;">
+                    <!-- Daftar Item Notifikasi -->
+                    <div class="list-group list-group-flush" style="font-size: 12px; max-height: 320px; overflow-y: auto;">
                         @forelse($recentLogs as $log)
                             @php
-                                $iconColor = match($log['action'] ?? 'update') {
-                                    'upload' => 'bg-success',
-                                    'delete' => 'bg-danger',
-                                    'rename' => 'bg-warning text-dark',
-                                    default  => 'bg-primary'
-                                };
-                                $iconClass = match($log['action'] ?? 'update') {
-                                    'upload' => 'fa-cloud-upload-alt',
-                                    'delete' => 'fa-trash-alt',
-                                    'rename' => 'fa-pen',
-                                    default  => 'fa-database'
+                                $act = strtolower($log['action'] ?? 'update');
+                                $palette = match($act) {
+                                    'upload'     => ['bg' => '#ecfdf5', 'color' => '#059669', 'icon' => 'fa-cloud-upload-alt'],
+                                    'delete'     => ['bg' => '#fef2f2', 'color' => '#dc2626', 'icon' => 'fa-trash-alt'],
+                                    'restore'    => ['bg' => '#eff6ff', 'color' => '#1d4ed8', 'icon' => 'fa-undo'],
+                                    'clear_logs' => ['bg' => '#f1f5f9', 'color' => '#475569', 'icon' => 'fa-broom'],
+                                    'rename'     => ['bg' => '#fffbeb', 'color' => '#d97706', 'icon' => 'fa-pen'],
+                                    default      => ['bg' => '#f0fdf4', 'color' => '#15803d', 'icon' => 'fa-database'],
                                 };
                             @endphp
-                            <div class="list-group-item d-flex align-items-start py-2 px-3 border-bottom">
-                                <div class="rounded-circle {{ $iconColor }} text-white d-flex align-items-center justify-content-center mr-2 mt-1 flex-shrink-0" style="width: 28px; height: 28px; font-size: 11px;">
-                                    <i class="fas {{ $iconClass }}"></i>
+                            <div class="list-group-item d-flex align-items-start py-2.5 px-3 border-bottom notif-item" style="transition: background 0.15s ease;">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center mr-2 mt-1 flex-shrink-0" style="width: 32px; height: 32px; background: {{ $palette['bg'] }}; color: {{ $palette['color'] }}; font-size: 0.78rem;">
+                                    <i class="fas {{ $palette['icon'] }}"></i>
                                 </div>
-                                <div class="flex-grow-1">
-                                    <div class="font-weight-bold text-dark" style="font-size: 12px;">{{ $log['user'] ?? 'Petugas' }}</div>
-                                    <div class="text-secondary small mb-1" style="font-size: 11.5px; line-height: 1.35;">
-                                        {{ $log['description'] ?? '-' }}
+                                <div class="flex-grow-1" style="line-height: 1.35;">
+                                    <div class="d-flex align-items-center justify-content-between mb-0.5">
+                                        <span class="font-weight-bold text-dark" style="font-size: 0.82rem;">{{ $log['user'] ?? 'Petugas' }}</span>
+                                        <small class="text-muted" style="font-size: 0.7rem;">
+                                            {{ \Carbon\Carbon::parse($log['time'])->locale('id')->diffForHumans() }}
+                                        </small>
                                     </div>
-                                    <div class="text-muted" style="font-size: 10px;">
-                                        <i class="far fa-clock mr-1"></i>{{ \Carbon\Carbon::parse($log['time'])->locale('id')->diffForHumans() }}
+                                    <div class="text-secondary small" style="font-size: 0.78rem; word-break: break-word;">
+                                        {{ $log['description'] ?? '-' }}
                                     </div>
                                 </div>
                             </div>
                         @empty
-                            <div class="p-3 text-center text-muted small">
-                                <i class="fas fa-check-circle text-success mr-1"></i> Belum ada aktivitas baru.
+                            <div class="p-4 text-center text-muted small">
+                                <i class="fas fa-check-circle text-success mb-2 d-block fa-2x" style="opacity: 0.6;"></i>
+                                <span class="font-weight-bold text-dark d-block">Tidak ada aktivitas baru</span>
+                                <span class="text-muted" style="font-size: 0.75rem;">Semua riwayat sistem up-to-date.</span>
                             </div>
                         @endforelse
                     </div>
 
+                    <!-- Footer Link Menuju Riwayat Aktivitas -->
                     <div class="p-2 text-center border-top bg-light">
-                        <a href="{{ route('admin.kelola-gis') }}" class="small font-weight-bold text-primary d-inline-block py-1">
-                            <i class="fas fa-database mr-1"></i> Kelola Seluruh Data GIS &raquo;
+                        <a href="{{ route('admin.activity-logs') }}" class="small font-weight-bold text-primary d-inline-block py-1 text-decoration-none">
+                            <i class="fas fa-history mr-1"></i> Buka Seluruh Riwayat Aktivitas &raquo;
                         </a>
                     </div>
                 </div>

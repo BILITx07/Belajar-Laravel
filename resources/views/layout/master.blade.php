@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>@yield('title', 'SISDA & FEWS - BWS Kalimantan I')</title>
+    <title>@yield('title', 'WebGIS BWS Kalimantan I — Kementerian Pekerjaan Umum')</title>
 
     <!-- Favicon Logo PU -->
     <link rel="icon" href="{{ asset('img/logo-pu.png') }}" type="image/png">
