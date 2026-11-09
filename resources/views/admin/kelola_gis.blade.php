@@ -425,7 +425,7 @@
             
             <form id="formUploadKelolaGis" action="{{ route('admin.upload') }}" method="POST" enctype="multipart/form-data" onsubmit="handleKelolaGisUpload(this, event)">
                 @csrf
-                <div class="modal-body p-4 bg-light">
+                <div class="modal-body p-3 p-md-4" style="background:#f8fafc; max-height:calc(100vh - 165px); overflow-y:auto;">
                     <div class="row" style="row-gap: 16px;">
                         
                         <!-- ═══ KOLOM KIRI (LEBAR 42%): PEMILIHAN FILE & KATEGORI ═══ -->
@@ -451,7 +451,7 @@
                             </div>
 
                             <!-- 2. Area Unggah Drag & Drop -->
-                            <div class="dropzone-box text-center p-3 rounded bg-white border shadow-sm d-flex flex-column justify-content-center align-items-center" id="dropzoneBox" onclick="document.getElementById('inputUploadGeojson').click()" style="border: 2px dashed #93c5fd !important; border-radius: 12px; cursor: pointer; transition: all 0.2s; min-height: 205px;">
+                            <div class="dropzone-box text-center p-3 rounded bg-white border shadow-sm d-flex flex-column justify-content-center align-items-center" id="dropzoneBox" onclick="document.getElementById('inputUploadGeojson').click()" style="border: 2px dashed #93c5fd !important; border-radius: 12px; cursor: pointer; transition: all 0.2s; min-height: 220px;">
                                 <input type="file" name="file_geojson[]" id="inputUploadGeojson" multiple accept=".geojson,.json,.zip" required onchange="handleFileChange(this)" style="display:none;">
                                 
                                 <div id="dropzoneEmptyState">
@@ -474,7 +474,7 @@
                                 <!-- Pratinjau File Terpilih -->
                                 <div id="dropzoneSelectedState" style="display:none; width: 100%;">
                                     <div class="mb-2">
-                                        <i class="fas fa-check-circle text-success" style="font-size: 2rem;"></i>
+                                        <i class="fas fa-check-circle text-success" style="font-size: 2.2rem;"></i>
                                     </div>
                                     <div class="font-weight-bold text-dark text-truncate px-2" id="selectedFileSummary" style="font-size: 0.88rem;">
                                         File Terpilih
@@ -488,48 +488,22 @@
 
                         </div>
 
-                        <!-- ═══ KOLOM KANAN (LEBAR 58%): PEMILAH ISI ZIP ATAU INFORMASI PANDUAN ═══ -->
-                        <div class="col-lg-7 col-md-7">
-                            
-                            <!-- Keadaan 1: Belum Ada ZIP yang Dipilih (Panduan Bersih) -->
-                            <div id="zipPickerEmptyNotice" class="card border-0 shadow-sm h-100" style="border-radius:12px;background:#ffffff; min-height: 310px;">
-                                <div class="card-body p-4 d-flex flex-column justify-content-center text-center text-muted">
-                                    <div class="mb-3">
-                                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle" style="width:54px;height:54px;background:#eff6ff;color:#2563eb;font-size:24px;">
-                                            <i class="fas fa-file-invoice"></i>
-                                        </div>
-                                    </div>
-                                    <h6 class="font-weight-bold text-dark mb-1" style="font-size:0.95rem;">
-                                        Dukungan Format Spasial Fleksibel
-                                    </h6>
-                                    <p class="small text-muted mb-3" style="font-size:0.78rem;line-height:1.5;">
-                                        Anda dapat mengunggah <strong>1 file satuan (.geojson / .json)</strong> langsung tanpa kompresi, atau memilih <strong>file arsip paket (.zip)</strong>.
-                                    </p>
-                                    <div class="text-left bg-light p-3 rounded border" style="font-size:0.75rem;line-height:1.5;">
-                                        <div class="d-flex align-items-start mb-2">
-                                            <i class="fas fa-check text-success mr-2 mt-1"></i>
-                                            <div><strong>Unggah 1 File:</strong> Cukup pilih file .geojson Anda, sistem langsung menyimpannya ke peta.</div>
-                                        </div>
-                                        <div class="d-flex align-items-start">
-                                            <i class="fas fa-check text-success mr-2 mt-1"></i>
-                                            <div><strong>Unggah Arsip ZIP:</strong> Sistem otomatis mendeteksi isi file di dalamnya sehingga Anda bisa memilih file tertentu saja.</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Keadaan 2: File ZIP Dipilih (Panel Pemilah Checkbox Canggih) -->
-                            <div id="zipPickerSection" class="card border-0 shadow-sm h-100 flex-column" style="display:none; border-radius:12px; overflow:hidden; min-height:310px;">
+                        <!-- ═══ KOLOM KANAN (LEBAR 58%): PEMILAH BERKAS SPASIAL (SINGLE UNIFIED CARD) ═══ -->
+                        <div class="col-lg-7 col-md-7 d-flex flex-column">
+                            <div class="card border-0 shadow-sm flex-fill d-flex flex-column" style="border-radius:12px; overflow:hidden; background:#ffffff; min-height:340px;">
+                                
+                                <!-- Header Card Pemilah -->
                                 <div class="card-header bg-white py-2 px-3 border-bottom d-flex align-items-center justify-content-between flex-wrap" style="gap:6px;">
-                                    <div>
-                                        <strong class="text-primary" style="font-size:0.84rem;">
-                                            <i class="fas fa-file-archive mr-1"></i> Pemilah File dalam ZIP
-                                        </strong>
-                                        <div class="text-muted small" id="zipPickerSummary" style="font-size:0.74rem;">
-                                            Membaca isi berkas...
+                                    <div style="min-width:0;">
+                                        <div class="font-weight-bold text-dark d-flex align-items-center" style="font-size:0.86rem;">
+                                            <i class="fas fa-layer-group text-primary mr-2"></i>
+                                            <span id="rightColTitle">Pemilah Berkas Spasial</span>
+                                        </div>
+                                        <div class="text-muted small text-truncate" id="zipPickerSummary" style="font-size:0.73rem;">
+                                            Pilih berkas .geojson atau .zip di sebelah kiri
                                         </div>
                                     </div>
-                                    <div class="btn-group btn-group-sm">
+                                    <div id="zipActionButtons" class="btn-group btn-group-sm" style="display:none;">
                                         <button type="button" class="btn btn-outline-primary btn-sm py-1 px-2 font-weight-bold" style="font-size:0.72rem;border-radius:6px 0 0 6px;" onclick="toggleAllZipEntries(true)">
                                             Pilih Semua
                                         </button>
@@ -539,31 +513,41 @@
                                     </div>
                                 </div>
 
-                                <!-- Filter Pencarian Cepat -->
-                                <div class="p-2 bg-white border-bottom">
+                                <!-- Filter Pencarian Cepat (Hanya muncul jika file ZIP memiliki banyak berkas) -->
+                                <div id="zipSearchContainer" class="p-2 bg-light border-bottom" style="display:none;">
                                     <div class="input-group input-group-sm">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text bg-light border-right-0" style="font-size:0.75rem;"><i class="fas fa-search text-muted"></i></span>
+                                            <span class="input-group-text bg-white border-right-0" style="font-size:0.75rem;"><i class="fas fa-search text-muted"></i></span>
                                         </div>
-                                        <input type="text" id="searchZipEntry" class="form-control border-left-0" style="font-size:0.78rem;" placeholder="Cari nama file (contoh: Pemangkat, Kubu, Saluran)..." onkeyup="filterZipEntries(this.value)">
+                                        <input type="text" id="searchZipEntry" class="form-control border-left-0 bg-white" style="font-size:0.78rem;" placeholder="Cari nama layer (contoh: Pemangkat, Kubu, Saluran)..." onkeyup="filterZipEntries(this.value)">
                                     </div>
                                 </div>
 
-                                <!-- List Box Checkbox dengan Layout Rapi & Checkbox Utuh (Tidak Terpotong) -->
-                                <div class="p-2 bg-white" id="zipEntriesContainer" style="height: 195px; max-height: 195px; overflow-y: auto; font-size: 0.8rem;">
-                                    <!-- Diisi secara dinamis oleh JavaScript -->
+                                <!-- Kontainer List Berkas / Placeholder Kosong -->
+                                <div class="p-2 p-md-3 bg-white flex-fill" id="zipEntriesContainer" style="max-height:220px; overflow-y:auto;">
+                                    <!-- Keadaan Default Sebelum File Dipilih -->
+                                    <div id="zipDefaultPlaceholder" class="h-100 d-flex flex-column justify-content-center align-items-center text-center p-3 text-muted" style="min-height:200px;">
+                                        <div class="mb-2 d-inline-flex align-items-center justify-content-center rounded-circle" style="width:48px;height:48px;background:#eff6ff;color:#2563eb;font-size:20px;">
+                                            <i class="fas fa-folder-open"></i>
+                                        </div>
+                                        <h6 class="font-weight-bold text-dark mb-1" style="font-size:0.88rem;">Menunggu Berkas Unggahan</h6>
+                                        <p class="small text-muted mb-0" style="font-size:0.75rem;line-height:1.45;max-width:280px;">
+                                            Pilih file <strong>.geojson</strong> satuan atau arsip <strong>.zip</strong> di sebelah kiri. Berkas di dalamnya akan langsung tampil di sini untuk Anda pilah.
+                                        </p>
+                                    </div>
                                 </div>
 
+                                <!-- Footer Card Pemilah -->
                                 <div class="card-footer bg-light py-2 px-3 d-flex align-items-center justify-content-between border-top">
-                                    <span class="small font-weight-bold text-dark" id="zipSelectedCounter" style="font-size:0.78rem;">
-                                        0 file dipilih
+                                    <span class="small font-weight-bold text-dark" id="zipSelectedCounter" style="font-size:0.76rem;">
+                                        Belum ada file dipilih
                                     </span>
-                                    <small class="text-muted" style="font-size:0.72rem;">
-                                        Centang file yang ingin Anda masukkan ke peta
+                                    <small class="text-muted" style="font-size:0.71rem;">
+                                        <i class="fas fa-check-circle text-success mr-1"></i>Ekstraksi Cepat BWS Kalbar
                                     </small>
                                 </div>
-                            </div>
 
+                            </div>
                         </div>
 
                     </div>
@@ -702,18 +686,16 @@
         var selectedState = document.getElementById('dropzoneSelectedState');
         var summary = document.getElementById('selectedFileSummary');
         var list = document.getElementById('selectedFileList');
-        var emptyNotice = document.getElementById('zipPickerEmptyNotice');
-        var zipSection = document.getElementById('zipPickerSection');
+        var summarySub = document.getElementById('zipPickerSummary');
+        var actionBtns = document.getElementById('zipActionButtons');
+        var searchBox = document.getElementById('zipSearchContainer');
+        var container = document.getElementById('zipEntriesContainer');
 
         activeZipInstance = null;
         activeZipEntries = [];
-        if (zipSection) zipSection.style.display = 'none';
-        if (emptyNotice) emptyNotice.style.display = 'block';
 
         if (!files || files.length === 0) {
-            if (emptyState) emptyState.style.display = 'block';
-            if (selectedState) selectedState.style.display = 'none';
-            updateSubmitButtonText(0);
+            clearSelectedFiles();
             return;
         }
 
@@ -733,6 +715,19 @@
             var sizeStr = f.size > 1024 * 1024 ? (f.size / (1024 * 1024)).toFixed(2) + ' MB' : (f.size / 1024).toFixed(1) + ' KB';
             summary.innerHTML = '<span class="text-primary font-weight-bold">' + f.name + '</span> (' + sizeStr + ')';
             list.innerHTML = '<div class="d-flex align-items-center justify-content-between p-1"><span><i class="fas fa-file-code text-primary mr-2"></i>' + f.name + '</span><span class="badge badge-light border text-muted">' + sizeStr + '</span></div>';
+            
+            if (actionBtns) actionBtns.style.display = 'none';
+            if (searchBox) searchBox.style.display = 'none';
+            if (summarySub) summarySub.innerHTML = '1 berkas GeoJSON siap diunggah';
+            if (container) {
+                container.innerHTML = '<div class="p-3 bg-light rounded border text-center my-3">' +
+                    '<div class="mb-2"><i class="fas fa-check-circle text-success fa-2x"></i></div>' +
+                    '<h6 class="font-weight-bold text-dark mb-1" style="font-size:0.88rem;">' + f.name + '</h6>' +
+                    '<small class="text-muted d-block mb-0">Ukuran berkas: ' + sizeStr + ' &bull; Format GeoJSON valid</small>' +
+                '</div>';
+            }
+            var counter = document.getElementById('zipSelectedCounter');
+            if (counter) counter.innerHTML = '<span class="text-success font-weight-bold">1 file siap diunggah</span>';
             updateSubmitButtonText(1);
         } else {
             summary.innerHTML = '<span class="text-primary font-weight-bold">' + files.length + ' file dipilih</span>';
@@ -743,15 +738,19 @@
                 html += '<div class="d-flex align-items-center justify-content-between py-1 border-bottom"><span><i class="fas fa-file text-primary mr-2"></i>' + f.name + '</span><span class="badge badge-light border text-muted">' + sizeStr + '</span></div>';
             }
             list.innerHTML = html;
+            if (actionBtns) actionBtns.style.display = 'none';
+            if (searchBox) searchBox.style.display = 'none';
+            if (summarySub) summarySub.innerHTML = files.length + ' berkas dipilih';
+            if (container) container.innerHTML = list.innerHTML;
             updateSubmitButtonText(files.length);
         }
     }
 
     // Fungsi membaca & membedah isi file ZIP untuk dipilih satuan
     async function inspectZipFile(file) {
-        var emptyNotice = document.getElementById('zipPickerEmptyNotice');
-        var zipSection = document.getElementById('zipPickerSection');
-        var zipSummary = document.getElementById('zipPickerSummary');
+        var summarySub = document.getElementById('zipPickerSummary');
+        var actionBtns = document.getElementById('zipActionButtons');
+        var searchBox = document.getElementById('zipSearchContainer');
         var container = document.getElementById('zipEntriesContainer');
 
         if (typeof JSZip === 'undefined') {
@@ -759,10 +758,8 @@
             return;
         }
 
-        if (emptyNotice) emptyNotice.style.display = 'none';
-        if (zipSection) zipSection.style.display = 'flex';
-        zipSummary.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Membaca daftar file di dalam ' + file.name + '...';
-        container.innerHTML = '<div class="text-center p-3 text-muted"><i class="fas fa-spinner fa-spin mr-1"></i> Membuka arsip ZIP...</div>';
+        if (summarySub) summarySub.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Membaca isi ' + file.name + '...';
+        if (container) container.innerHTML = '<div class="text-center p-4 text-muted"><i class="fas fa-spinner fa-spin fa-2x text-primary mb-2"></i><div class="small font-weight-bold">Mengekstrak daftar berkas dalam ZIP...</div></div>';
 
         try {
             var zip = await JSZip.loadAsync(file);
@@ -784,17 +781,21 @@
             });
 
             if (activeZipEntries.length === 0) {
-                zipSummary.innerHTML = '<span class="text-danger"><i class="fas fa-exclamation-circle mr-1"></i> Tidak ditemukan file .geojson/.json di dalam ZIP</span>';
-                container.innerHTML = '<div class="text-center p-3 text-muted">Tidak ada file spasial yang dapat diimpor di dalam file ZIP ini.</div>';
+                if (summarySub) summarySub.innerHTML = '<span class="text-danger"><i class="fas fa-exclamation-circle mr-1"></i> Tidak ditemukan file spasial di dalam ZIP</span>';
+                if (container) container.innerHTML = '<div class="text-center p-4 text-muted small">Tidak ditemukan file berformat .geojson atau .json di dalam berkas ZIP ini.</div>';
+                if (actionBtns) actionBtns.style.display = 'none';
+                if (searchBox) searchBox.style.display = 'none';
                 updateSubmitButtonText(0);
                 return;
             }
 
-            zipSummary.innerHTML = 'Ditemukan <strong class="text-primary">' + activeZipEntries.length + ' file</strong> di dalam ZIP. Centang file yang ingin Anda unggah:';
+            if (actionBtns) actionBtns.style.display = 'inline-flex';
+            if (searchBox) searchBox.style.display = 'block';
+            if (summarySub) summarySub.innerHTML = 'Ditemukan <strong class="text-primary">' + activeZipEntries.length + ' file spasial</strong> dalam ZIP:';
             renderZipEntriesList(activeZipEntries);
         } catch (err) {
             console.error('JSZip error:', err);
-            zipSummary.innerHTML = '<span class="text-danger">Gagal membaca isi ZIP: ' + err.message + '</span>';
+            if (summarySub) summarySub.innerHTML = '<span class="text-danger">Gagal membaca ZIP: ' + err.message + '</span>';
             updateSubmitButtonText(1);
         }
     }
@@ -804,15 +805,15 @@
         var html = '';
         entries.forEach(function(item, idx) {
             var sizeStr = item.entry._data ? (item.entry._data.uncompressedSize > 1024 ? (item.entry._data.uncompressedSize / 1024).toFixed(0) + ' KB' : item.entry._data.uncompressedSize + ' B') : 'File';
-            html += '<label class="d-flex align-items-center justify-content-between p-2 rounded mb-1 border zip-entry-row" style="background:#ffffff; margin-bottom:5px;" data-name="' + item.name.toLowerCase() + '">' +
+            html += '<label class="zip-entry-row d-flex align-items-center justify-content-between py-2 px-3 rounded border" style="background:#ffffff; cursor:pointer; margin-bottom:6px; border-color:#e2e8f0; transition:all 0.15s ease;" data-name="' + item.name.toLowerCase() + '">' +
                         '<div class="d-flex align-items-center mr-2" style="min-width:0; overflow:hidden;">' +
-                            '<input type="checkbox" class="zip-entry-checkbox" id="chkZip_' + idx + '" value="' + item.path + '" checked onchange="updateZipSelectedCounter()" style="width:16px; height:16px; min-width:16px; accent-color:#1d4ed8; cursor:pointer; margin:0 10px 0 2px; flex-shrink:0;">' +
-                            '<i class="fas fa-file-code text-primary mr-2" style="font-size:0.85rem; flex-shrink:0;"></i>' +
-                            '<span class="text-truncate font-weight-bold text-dark" style="font-size:0.8rem;" title="' + item.name + '">' +
+                            '<input type="checkbox" class="zip-entry-checkbox" id="chkZip_' + idx + '" value="' + item.path + '" checked onchange="updateZipSelectedCounter()" style="width:18px; height:18px; min-width:18px; accent-color:#1d4ed8; cursor:pointer; margin:0 12px 0 0; flex-shrink:0;">' +
+                            '<i class="fas fa-file-code text-primary mr-2" style="font-size:0.95rem; flex-shrink:0;"></i>' +
+                            '<span class="text-truncate font-weight-bold text-dark" style="font-size:0.81rem;" title="' + item.name + '">' +
                                 item.name +
                             '</span>' +
                         '</div>' +
-                        '<span class="badge badge-light border text-muted flex-shrink-0" style="font-size:0.68rem; padding:3px 6px;">' + sizeStr + '</span>' +
+                        '<span class="badge badge-light border text-muted flex-shrink-0" style="font-size:0.68rem; padding:3px 7px;">' + sizeStr + '</span>' +
                     '</label>';
         });
         container.innerHTML = html;
@@ -877,14 +878,32 @@
         if (input) input.value = '';
         activeZipInstance = null;
         activeZipEntries = [];
-        var emptyNotice = document.getElementById('zipPickerEmptyNotice');
-        var zipSection = document.getElementById('zipPickerSection');
-        if (zipSection) zipSection.style.display = 'none';
-        if (emptyNotice) emptyNotice.style.display = 'block';
         var emptyState = document.getElementById('dropzoneEmptyState');
         var selectedState = document.getElementById('dropzoneSelectedState');
         if (emptyState) emptyState.style.display = 'block';
         if (selectedState) selectedState.style.display = 'none';
+        
+        var summarySub = document.getElementById('zipPickerSummary');
+        var actionBtns = document.getElementById('zipActionButtons');
+        var searchBox = document.getElementById('zipSearchContainer');
+        var container = document.getElementById('zipEntriesContainer');
+        var counter = document.getElementById('zipSelectedCounter');
+
+        if (actionBtns) actionBtns.style.display = 'none';
+        if (searchBox) searchBox.style.display = 'none';
+        if (summarySub) summarySub.innerHTML = 'Pilih berkas .geojson atau .zip di sebelah kiri';
+        if (counter) counter.innerHTML = 'Belum ada file dipilih';
+        if (container) {
+            container.innerHTML = '<div id="zipDefaultPlaceholder" class="h-100 d-flex flex-column justify-content-center align-items-center text-center p-3 text-muted" style="min-height:200px;">' +
+                '<div class="mb-2 d-inline-flex align-items-center justify-content-center rounded-circle" style="width:48px;height:48px;background:#eff6ff;color:#2563eb;font-size:20px;">' +
+                    '<i class="fas fa-folder-open"></i>' +
+                '</div>' +
+                '<h6 class="font-weight-bold text-dark mb-1" style="font-size:0.88rem;">Menunggu Berkas Unggahan</h6>' +
+                '<p class="small text-muted mb-0" style="font-size:0.75rem;line-height:1.45;max-width:280px;">' +
+                    'Pilih file <strong>.geojson</strong> satuan atau arsip <strong>.zip</strong> di sebelah kiri. Berkas di dalamnya akan langsung tampil di sini untuk Anda pilah.' +
+                '</p>' +
+            '</div>';
+        }
         updateSubmitButtonText(0);
     }
 
