@@ -11,11 +11,37 @@
 <div class="bws-qrop-page">
 
     <!-- ============================================================ -->
-    <!-- WADAH UTAMA KONTEN: SIDEBAR KIRI + PETA INTERAKTIF 100% VH  -->
+    <!-- 1. KARTU BANNER HERO MEWAH (PERSIS SEPERTI GAMBAR 1 QROP)    -->
+    <!-- ============================================================ -->
+    <div class="bws-hero-card">
+        <div class="bws-hero-content">
+            <div class="bws-hero-pretitle">
+                <span class="bws-dot-hero"></span> DATA SPASIAL BWS KALIMANTAN I
+            </div>
+            <h1 class="bws-hero-title">
+                Peta Daerah Irigasi &amp; Jaringan SDA.
+            </h1>
+            <p class="bws-hero-desc">
+                Temukan sebaran Daerah Irigasi, Jaringan Saluran, dan Bangunan Air di Kalimantan Barat dalam satu peta.
+            </p>
+        </div>
+        <div class="bws-hero-location d-none d-md-flex align-items-center">
+            <div class="bws-location-icon-box">
+                <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div>
+                <div class="font-weight-bold" style="font-size: 13px;">Kalimantan Barat</div>
+                <small style="color: rgba(255, 255, 255, 0.75);">BWS Kalimantan I Pontianak</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 2. WADAH UTAMA KONTEN: SIDEBAR + PETA SEJAJAR                -->
     <!-- ============================================================ -->
     <div class="bws-qrop-workspace">
 
-        <!-- ── SIDEBAR KIRI (PANEL FILTER & LAYER) ── -->
+        <!-- ── SIDEBAR KIRI (PERSIS GAMBAR 1 REFERENSI QROP) ── -->
         <aside class="bws-sidebar-card">
 
             <!-- Header Sidebar dengan Lingkaran Ikon -->
@@ -173,13 +199,10 @@
             <!-- Header Peta Ramping (Breadcrumb Kiri & Badge Kanan) -->
             <div class="bws-map-topbar">
                 <div class="d-flex align-items-center">
-                    <button type="button" class="btn btn-sm btn-white bws-action-pill shadow-sm mr-2.5" id="btnToggleSidebar" onclick="toggleSidebar()" title="Sembunyikan / Tampilkan Panel Kontrol">
-                        <i class="fas fa-sliders-h text-primary mr-1"></i> <span class="d-none d-sm-inline">Panel Kontrol</span>
-                    </button>
-                    <span class="bws-dot-green-qrop ml-1"></span>
-                    <span class="font-weight-bold text-dark ml-2" style="font-size: 13.5px;">Peta Daerah Irigasi &amp; Jaringan SDA</span>
-                    <span class="text-muted mx-2 d-none d-md-inline">/</span>
-                    <span class="text-muted small font-weight-bold d-none d-md-inline" id="currentBreadcrumbLabel">Seluruh Kalimantan Barat</span>
+                    <span class="bws-dot-green-qrop"></span>
+                    <span class="font-weight-bold text-dark ml-2" style="font-size: 13.5px;">Peta Daerah Irigasi</span>
+                    <span class="text-muted mx-2">/</span>
+                    <span class="text-muted small font-weight-bold" id="currentBreadcrumbLabel">Seluruh Kalimantan Barat</span>
                 </div>
 
                 <div class="d-flex align-items-center" style="gap: 8px;">
@@ -382,30 +405,6 @@
             }
         }
     }
-
-    function toggleSidebar() {
-        var sidebar = document.querySelector('.bws-sidebar-card');
-        var btn = document.getElementById('btnToggleSidebar');
-        if (sidebar) {
-            if (sidebar.style.display === 'none') {
-                sidebar.style.display = '';
-                if (btn) btn.classList.remove('active');
-            } else {
-                sidebar.style.display = 'none';
-                if (btn) btn.classList.add('active');
-            }
-            setTimeout(function() {
-                if (window.map) window.map.invalidateSize();
-            }, 200);
-        }
-    }
-    document.addEventListener('DOMContentLoaded', function() {
-        [100, 300, 600, 1200].forEach(function(delay) {
-            setTimeout(function() {
-                if (window.map) window.map.invalidateSize();
-            }, delay);
-        });
-    });
 </script>
 <script src="{{ asset('js/peta-map.js') }}?v={{ file_exists(public_path('js/peta-map.js')) ? filemtime(public_path('js/peta-map.js')) : time() }}"></script>
 @endpush

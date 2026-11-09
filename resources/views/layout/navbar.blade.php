@@ -1,5 +1,5 @@
 <!-- Topbar Resmi BWS Kalimantan I (Real Aesthetic Frosted Glass / Efek Kaca Nyata) -->
-<nav class="navbar navbar-expand sticky-top px-3 px-md-4 py-1.5 bws-glass-navbar" style="height: 58px; z-index: 1030;">
+<nav class="navbar navbar-expand sticky-top px-3 px-md-4 py-1.5 bws-glass-navbar" style="min-height: 64px; z-index: 1030;">
 
     <style>
         /* Efek Kaca Nyata (Real Frosted Ice Glassmorphism) */
