@@ -613,10 +613,6 @@
                             <i class="fas fa-user-cog text-primary"></i>
                             <span>Pengaturan Akun</span>
                         </a>
-                        <a class="profile-popup-item" href="{{ route('peta') }}">
-                            <i class="fas fa-map-marked-alt text-warning"></i>
-                            <span>Buka Peta WebGIS</span>
-                        </a>
                     </div>
                     <div class="dropdown-divider my-0"></div>
                     <form action="{{ route('logout') }}" method="POST" class="m-0 p-1">

@@ -221,15 +221,10 @@
                         </div>
                     </div>
                 </div>
-                <!-- 0. Dashboard Admin -->
                 <div class="py-1">
-                    <a class="dropdown-item py-2 text-primary font-weight-bold d-flex align-items-center" href="{{ route('admin.dashboard') }}" style="font-size: 13px;">
-                        <i class="fas fa-th-large fa-sm fa-fw mr-2 text-primary"></i>
-                        <span>Dashboard Admin</span>
-                    </a>
                     <!-- 1. Pengaturan Akun -->
                     <a class="dropdown-item py-2 text-dark font-weight-bold d-flex align-items-center" href="{{ route('profile') }}" style="font-size: 13px;">
-                        <i class="fas fa-user-cog fa-sm fa-fw mr-2 text-info"></i>
+                        <i class="fas fa-user-cog fa-sm fa-fw mr-2 text-primary"></i>
                         <span>Pengaturan Akun</span>
                     </a>
                 </div>
