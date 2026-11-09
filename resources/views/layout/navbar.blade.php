@@ -191,9 +191,13 @@
 
         <!-- Profil Admin -->
         <li class="nav-item dropdown no-arrow">
-            <a class="nav-link dropdown-toggle d-flex align-items-center py-1 px-3 user-pill-glass" href="#" id="userMenuBtn" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mr-2 shadow-sm" style="width: 28px; height: 28px;">
-                    <i class="fas fa-user" style="font-size: 12px;"></i>
+            <a class="nav-link dropdown-toggle d-flex align-items-center py-1 px-3 user-pill-glass" href="#" id="userMenuBtn" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Menu Akun: {{ Auth::user()->name }}">
+                <div class="rounded-circle text-white d-flex align-items-center justify-content-center mr-2 shadow-xs overflow-hidden flex-shrink-0" style="width: 28px; height: 28px; background: linear-gradient(135deg, #1d4ed8, #1e40af); border: 2px solid #facc15; font-size: 0.72rem; font-weight: 800;">
+                    @if(Auth::check() && Auth::user()->avatar_url)
+                        <img src="{{ Auth::user()->avatar_url }}" alt="Foto" style="width: 100%; height: 100%; object-fit: cover;">
+                    @else
+                        <span>{{ Auth::user()->initials ?? 'AB' }}</span>
+                    @endif
                 </div>
                 <span class="font-weight-bold text-dark d-none d-sm-inline" style="font-size: 0.85rem;">
                     {{ Auth::user()->name }}
@@ -201,26 +205,41 @@
                 <i class="fas fa-chevron-down ml-2 text-muted" style="font-size: 10px;"></i>
             </a>
             
-            <div class="dropdown-menu dropdown-menu-right shadow-lg border-0 animated--grow-in mt-2" aria-labelledby="userMenuBtn" style="border-radius: 12px; min-width: 210px;">
-                <div class="dropdown-header small text-muted font-weight-bold border-bottom pb-2 mb-1">
-                    <div class="text-dark font-weight-bold" style="font-size: 13px;">{{ Auth::user()->name }}</div>
-                    <span class="badge badge-primary px-2 py-0 mt-1" style="font-size: 10px;">{{ strtoupper(Auth::user()->role ?? 'Petugas') }}</span>
+            <div class="dropdown-menu dropdown-menu-right shadow-lg border-0 animated--grow-in mt-2 p-0" aria-labelledby="userMenuBtn" style="border-radius: 14px; min-width: 230px; overflow: hidden; box-shadow: 0 10px 30px rgba(15,23,42,0.18) !important;">
+                <div class="px-3 py-3 border-bottom" style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);">
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle text-white d-flex align-items-center justify-content-center mr-2.5 shadow-xs overflow-hidden flex-shrink-0" style="width: 36px; height: 36px; background: linear-gradient(135deg, #1d4ed8, #1e40af); border: 2px solid #facc15; font-size: 0.85rem; font-weight: 800;">
+                            @if(Auth::check() && Auth::user()->avatar_url)
+                                <img src="{{ Auth::user()->avatar_url }}" alt="Foto" style="width: 100%; height: 100%; object-fit: cover;">
+                            @else
+                                <span>{{ Auth::user()->initials ?? 'AB' }}</span>
+                            @endif
+                        </div>
+                        <div style="min-width: 0;">
+                            <div class="text-dark font-weight-bold text-truncate" style="font-size: 0.88rem;">{{ Auth::user()->name }}</div>
+                            <span class="badge badge-primary px-2 py-0.5 mt-0.5" style="font-size: 9.5px;">{{ strtoupper(Auth::user()->role_label ?? 'Admin') }}</span>
+                        </div>
+                    </div>
                 </div>
                 <!-- 0. Dashboard Admin -->
-                <a class="dropdown-item py-2 text-primary font-weight-bold d-flex align-items-center" href="{{ route('admin.dashboard') }}" style="font-size: 13px;">
-                    <i class="fas fa-th-large fa-sm fa-fw mr-2 text-primary"></i> Dashboard Admin
-                </a>
-                <div class="dropdown-divider my-1"></div>
-                <!-- 1. Pengaturan Akun -->
-                <a class="dropdown-item py-2 text-dark font-weight-bold d-flex align-items-center" href="{{ route('profile') }}" style="font-size: 13px;">
-                    <i class="fas fa-user-cog fa-sm fa-fw mr-2 text-info"></i> Pengaturan Akun
-                </a>
-                <div class="dropdown-divider my-1"></div>
+                <div class="py-1">
+                    <a class="dropdown-item py-2 text-primary font-weight-bold d-flex align-items-center" href="{{ route('admin.dashboard') }}" style="font-size: 13px;">
+                        <i class="fas fa-th-large fa-sm fa-fw mr-2 text-primary"></i>
+                        <span>Dashboard Admin</span>
+                    </a>
+                    <!-- 1. Pengaturan Akun -->
+                    <a class="dropdown-item py-2 text-dark font-weight-bold d-flex align-items-center" href="{{ route('profile') }}" style="font-size: 13px;">
+                        <i class="fas fa-user-cog fa-sm fa-fw mr-2 text-info"></i>
+                        <span>Pengaturan Akun</span>
+                    </a>
+                </div>
+                <div class="dropdown-divider my-0"></div>
                 <!-- 2. Keluar (Logout) -->
-                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                <form action="{{ route('logout') }}" method="POST" class="m-0 p-1">
                     @csrf
-                    <button type="submit" class="dropdown-item py-2 text-danger font-weight-bold border-0 bg-transparent d-flex align-items-center" style="font-size: 13px;">
-                        <i class="fas fa-power-off fa-sm fa-fw mr-2"></i> Keluar
+                    <button type="submit" class="dropdown-item py-2 text-danger font-weight-bold border-0 bg-transparent d-flex align-items-center" style="font-size: 13px; border-radius: 8px;">
+                        <i class="fas fa-power-off fa-sm fa-fw mr-2"></i>
+                        <span>Keluar Sistem</span>
                     </button>
                 </form>
             </div>

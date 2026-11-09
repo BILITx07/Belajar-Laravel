@@ -165,35 +165,94 @@
         }
 
         .bws-user-trigger {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             cursor: pointer;
-            padding: 4px 10px 4px 4px;
-            border-radius: 30px;
-            background: rgba(255, 255, 255, 0.12);
-            transition: background 0.2s ease;
-            text-decoration: none;
-            color: #fff;
+            padding: 3px 12px 3px 4px;
+            border-radius: 28px;
+            background: rgba(255, 255, 255, 0.14);
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none !important;
+            color: #ffffff;
+            gap: 8px;
         }
 
-        .bws-user-trigger:hover {
-            background: rgba(255, 255, 255, 0.22);
-            color: #fff;
+        .bws-user-trigger:hover,
+        .dropdown.show .bws-user-trigger {
+            background: rgba(255, 255, 255, 0.24);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+            transform: translateY(-1px);
+            color: #ffffff;
         }
 
-        .bws-user-avatar {
+        .bws-user-avatar-frame {
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background: #3b82f6;
-            color: #fff;
-            font-weight: 700;
+            overflow: hidden;
+            flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.85rem;
-            margin-right: 8px;
-            border: 2px solid #ffc107;
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+            border: 2px solid rgba(250, 204, 21, 0.95);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease;
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 0.76rem;
+            letter-spacing: 0.5px;
+        }
+
+        .bws-user-avatar-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .bws-user-trigger:hover .bws-user-avatar-frame {
+            transform: scale(1.06);
+            border-color: #fde047;
+        }
+
+        .bws-user-info {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            line-height: 1.15;
+        }
+
+        .bws-user-name {
+            font-weight: 700;
+            font-size: 0.82rem;
+            color: #ffffff;
+            letter-spacing: 0.15px;
+            white-space: nowrap;
+        }
+
+        .bws-user-role {
+            font-size: 0.67rem;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            color: #fcd34d;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .bws-user-chevron {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.8);
+            transition: transform 0.25s ease;
+            margin-left: 1px;
+        }
+
+        .dropdown.show .bws-user-chevron {
+            transform: rotate(180deg);
+            color: #ffffff;
         }
 
         /* ── SUB-NAVBAR MENU NAVIGASI ADMIN (SESUAI GAMBAR REFERENSI BWS) ── */
@@ -505,41 +564,66 @@
                 </div>
             </div>
 
-            <!-- Profile Dropdown (Hanya Pengaturan Akun & Logout Sesuai Permintaan) -->
+            <!-- Profile Dropdown Ultra-Modern & Elegan -->
             <div class="dropdown">
-                <div class="bws-user-trigger" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownUserMenu" style="background:rgba(255,255,255,0.16); border-radius:25px; padding:3px 12px 3px 4px;">
-                    <div class="rounded-circle bg-white d-flex align-items-center justify-content-center mr-2 shadow-sm overflow-hidden" style="width:32px; height:32px;">
+                <div class="bws-user-trigger" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownUserMenu" title="Menu Akun: {{ Auth::user()->name ?? 'Petugas' }}">
+                    <div class="bws-user-avatar-frame">
                         @if(Auth::check() && Auth::user()->avatar_url)
-                            <img src="{{ Auth::user()->avatar_url }}" alt="Avatar" style="width:100%; height:100%; object-fit:cover;">
+                            <img src="{{ Auth::user()->avatar_url }}" alt="Foto {{ Auth::user()->name }}">
                         @else
-                            <i class="fas fa-user-shield" style="color:#1d64d8; font-size:13px;"></i>
+                            <span>{{ Auth::user()->initials ?? 'AB' }}</span>
                         @endif
                     </div>
-                    <div class="d-flex flex-column text-left mr-1">
-                        <span class="font-weight-bold text-white line-height-1" style="font-size:0.84rem; line-height:1.2;">
+                    <div class="bws-user-info">
+                        <span class="bws-user-name">
                             {{ Auth::user()->name ?? 'Petugas BWSK' }}
                         </span>
-                        <span class="small text-warning font-weight-bold" style="font-size:0.68rem; line-height:1;">
-                            {{ Auth::user()->role_label ?? 'Admin' }}
+                        <span class="bws-user-role">
+                            {{ Auth::user()->role_label ?? 'Super Admin' }}
                         </span>
                     </div>
-                    <i class="fas fa-chevron-down ml-1" style="font-size:0.65rem; opacity:0.8; color:#fff;"></i>
+                    <i class="fas fa-chevron-down bws-user-chevron"></i>
                 </div>
 
-                <!-- Dropdown Menu Profil: Pengaturan Akun & Keluar Saja -->
-                <div class="dropdown-menu dropdown-menu-right profile-popup-menu" aria-labelledby="dropdownUserMenu">
-                    <div class="px-3 py-2 border-bottom text-muted small">
-                        Petugas: <strong class="text-dark">{{ Auth::user()->name ?? 'Petugas' }}</strong><br>
-                        Role: <span class="badge badge-primary px-2">{{ Auth::user()->role_label ?? 'Admin' }}</span>
+                <!-- Dropdown Menu Profil Modern -->
+                <div class="dropdown-menu dropdown-menu-right profile-popup-menu shadow-lg border-0 animated--grow-in mt-2 p-0" aria-labelledby="dropdownUserMenu" style="border-radius: 14px; min-width: 235px; overflow: hidden; box-shadow: 0 10px 30px rgba(15,23,42,0.18) !important;">
+                    <!-- Header Profil Card Mini -->
+                    <div class="px-3 py-3 border-bottom" style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);">
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center text-white font-weight-bold mr-2.5 shadow-xs overflow-hidden flex-shrink-0" style="width: 38px; height: 38px; background: linear-gradient(135deg, #1d4ed8, #1e40af); font-size: 0.88rem; border: 2px solid #facc15;">
+                                @if(Auth::check() && Auth::user()->avatar_url)
+                                    <img src="{{ Auth::user()->avatar_url }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+                                @else
+                                    <span>{{ Auth::user()->initials ?? 'AB' }}</span>
+                                @endif
+                            </div>
+                            <div style="min-width: 0;">
+                                <div class="font-weight-bold text-dark text-truncate" style="font-size: 0.88rem;">{{ Auth::user()->name ?? 'Petugas' }}</div>
+                                <div class="text-muted small text-truncate" style="font-size: 0.72rem;">{{ Auth::user()->email ?? '' }}</div>
+                                <span class="badge border font-weight-bold px-2 py-0.5 mt-1" style="font-size: 0.65rem; border-radius: 12px; background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe;">
+                                    {{ Auth::user()->role_label ?? 'Admin' }}
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                    <a class="profile-popup-item" href="{{ route('profile') }}">
-                        <i class="fas fa-user-cog text-primary"></i> Pengaturan Akun
-                    </a>
-                    <div class="dropdown-divider my-1"></div>
-                    <form action="{{ route('logout') }}" method="POST" class="m-0">
+
+                    <!-- Item Menu -->
+                    <div class="py-1">
+                        <a class="profile-popup-item" href="{{ route('profile') }}">
+                            <i class="fas fa-user-cog text-primary"></i>
+                            <span>Pengaturan Akun</span>
+                        </a>
+                        <a class="profile-popup-item" href="{{ route('peta') }}">
+                            <i class="fas fa-map-marked-alt text-warning"></i>
+                            <span>Buka Peta WebGIS</span>
+                        </a>
+                    </div>
+                    <div class="dropdown-divider my-0"></div>
+                    <form action="{{ route('logout') }}" method="POST" class="m-0 p-1">
                         @csrf
-                        <button type="submit" class="profile-popup-item logout border-0 bg-transparent w-100 text-left">
-                            <i class="fas fa-power-off text-danger"></i> Keluar
+                        <button type="submit" class="profile-popup-item logout border-0 bg-transparent w-100 text-left" style="border-radius: 8px;">
+                            <i class="fas fa-power-off text-danger"></i>
+                            <span>Keluar Sistem</span>
                         </button>
                     </form>
                 </div>

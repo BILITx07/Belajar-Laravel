@@ -90,6 +90,19 @@ class User extends Authenticatable
         return null;
     }
 
+    /**
+     * Accessor untuk Inisial Nama Pengguna (Monogram 2 Huruf)
+     */
+    public function getInitialsAttribute(): string
+    {
+        $words = preg_split('/\s+/', trim($this->name ?? 'Admin'));
+        $initials = '';
+        foreach (array_slice($words, 0, 2) as $w) {
+            $initials .= strtoupper(mb_substr($w, 0, 1));
+        }
+        return $initials ?: 'AD';
+    }
+
     public function isSuperAdmin(): bool
     {
         return strtolower($this->role ?? '') === 'superadmin';
