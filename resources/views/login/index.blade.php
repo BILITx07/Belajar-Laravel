@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{{ $title ?? 'Masuk' }} - WEB GIS BWS KALIMANTAN 1</title>
+    <title>{{ $title ?? 'Masuk' }} - WEB GIS BWS KALIMANTAN I</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="{{ asset('img/logo-pu-badge.svg') }}">
@@ -468,13 +468,13 @@
                 </div>
                 <div class="brand-text-block">
                     <h1>WEB GIS</h1>
-                    <span>BWS KALIMANTAN 1</span>
+                    <span>BWS KALIMANTAN I</span>
                 </div>
             </div>
 
             <!-- Subtitle -->
             <div class="auth-form-title">
-                Silakan Login
+                Silakan masuk ke akun Anda
             </div>
 
             {{-- Pesan Notifikasi Sukses Logout / Status --}}
@@ -520,11 +520,14 @@
 
                 <!-- Input Email -->
                 <div class="input-wrapper">
+                    <label class="small font-weight-bold text-gray-700 mb-1 d-block" for="email" style="font-size: 0.8rem;">
+                        Alamat Email
+                    </label>
                     <input type="email" 
                            name="email" 
                            id="email"
                            class="input-glass @error('email') is-invalid @enderror" 
-                           placeholder="Masukkan email"
+                           placeholder="Masukkan alamat email Anda"
                            value="{{ old('email') }}"
                            required 
                            autofocus 
@@ -542,7 +545,7 @@
                         <label class="small font-weight-bold text-gray-700 mb-0" for="password" style="font-size: 0.8rem;">
                             Password
                         </label>
-                        <a href="{{ route('password.request') }}" class="text-danger font-weight-bold text-decoration-none" style="font-size: 0.75rem;">
+                        <a href="{{ route('password.request') }}" class="font-weight-bold text-decoration-none" style="font-size: 0.75rem; color: #1d4ed8;">
                             Lupa Password?
                         </a>
                     </div>
@@ -589,14 +592,14 @@
 
                 <!-- Tombol Submit: Masuk -->
                 <button type="submit" class="btn-submit-masuk" id="btnSubmit">
-                    Masuk
+                    <i class="fas fa-sign-in-alt mr-2"></i> Masuk
                 </button>
             </form>
 
             <!-- Tautan Navigasi Beranda -->
             <div class="text-center">
                 <a href="{{ route('peta') }}" class="home-link">
-                    Beranda
+                    <i class="fas fa-arrow-left mr-1"></i> Kembali ke Beranda Peta
                 </a>
             </div>
 
