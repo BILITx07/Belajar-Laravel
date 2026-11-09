@@ -401,58 +401,110 @@
      MODAL UPLOAD FILE GEOJSON
      ========================================== -->
 <div class="modal fade" id="modalUpload" tabindex="-1" role="dialog" aria-labelledby="modalUploadLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:520px;">
-        <div class="modal-content border-0 shadow-lg" style="border-radius:14px;overflow:hidden;">
-            <div class="modal-header text-white py-3 px-4" style="background: linear-gradient(135deg, #1d64d8 0%, #1e40af 100%);">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:540px;">
+        <div class="modal-content border-0 shadow-lg" style="border-radius:16px;overflow:hidden;">
+            <!-- Header Modal Modern -->
+            <div class="modal-header text-white py-3 px-4" style="background: linear-gradient(135deg, #093c52 0%, #0d5c70 50%, #1d4ed8 100%);">
                 <div class="d-flex align-items-center">
-                    <div class="mr-3 d-flex align-items-center justify-content-center" style="width:36px;height:36px;background:rgba(255,255,255,0.2);border-radius:8px;">
-                        <i class="fas fa-file-archive fa-lg text-white"></i>
+                    <div class="mr-3 d-flex align-items-center justify-content-center shadow-sm" style="width:40px;height:40px;background:rgba(255,255,255,0.18);border-radius:10px;border:1px solid rgba(255,255,255,0.3);">
+                        <i class="fas fa-cloud-upload-alt fa-lg text-white"></i>
                     </div>
                     <div>
-                        <h5 class="modal-title font-weight-bold text-white mb-0" id="modalUploadLabel" style="font-size:1.05rem;">
-                            Upload File Spasial (ZIP / GeoJSON)
+                        <h5 class="modal-title font-weight-bold text-white mb-0" id="modalUploadLabel" style="font-size:1.1rem;letter-spacing:0.3px;">
+                            Unggah Data Geospasial
                         </h5>
-                        <small class="text-white-50">Mendukung file Shapefile ZIP dari ArcGIS & GeoJSON</small>
+                        <small style="color:rgba(255,255,255,0.85);font-size:0.78rem;">
+                            Bisa 1 file langsung (.geojson / .json) atau paket Shapefile (.zip)
+                        </small>
                     </div>
                 </div>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="outline:none;">
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="outline:none;opacity:0.85;">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             
             <form id="formUploadKelolaGis" action="{{ route('admin.upload') }}" method="POST" enctype="multipart/form-data" onsubmit="handleKelolaGisUpload(this, event)">
                 @csrf
-                <div class="modal-body p-4 bg-light">
-                    <div class="alert alert-info py-2 px-3 small mb-3 border-0 shadow-sm" style="background:#eff6ff;border-left:4px solid #3b82f6 !important;color:#1e40af;border-radius:8px;">
-                        <i class="fas fa-check-circle mr-1 text-primary"></i> <strong>Langsung Unggah File ZIP Shapefile!</strong><br>
-                        Anda dapat langsung mengunggah file <code>.zip</code> paket Shapefile ArcGIS (berisi <code>.shp</code>, <code>.dbf</code>, <code>.shx</code>, <code>.prj</code>) tanpa perlu konversi manual. Sistem akan otomatis mengekstrak & memprosesnya.
-                    </div>
-
-                    <div class="bg-white p-3 rounded border mb-3" style="border-radius:10px !important;">
-                        <label class="font-weight-bold mb-2 d-block text-dark small">
-                            <i class="fas fa-folder-open text-primary mr-1"></i>Pilih File ZIP atau GeoJSON
+                <div class="modal-body p-4 bg-white">
+                    
+                    <!-- 1. Pilihan Kategori Lapisan Peta -->
+                    <div class="form-group mb-3">
+                        <label class="font-weight-bold text-dark mb-1" style="font-size:0.84rem;">
+                            <i class="fas fa-layer-group text-primary mr-1"></i> Tentukan Kategori Lapisan Peta:
                         </label>
-                        <div class="custom-file">
-                            <input type="file" name="file_geojson[]" class="custom-file-input" id="inputUploadGeojson" multiple accept=".zip,.geojson,.json" required onchange="handleFileChange(this)">
-                            <label class="custom-file-label text-truncate" for="inputUploadGeojson" id="labelUploadGeojson">Pilih satu atau beberapa file...</label>
-                        </div>
-                        <small class="form-text text-muted mt-2">
-                            <i class="fas fa-info-circle text-primary mr-1"></i>Dapat mengunggah banyak file sekaligus (maksimal 256 MB per file).
+                        <select name="kategori" id="selectKategoriUpload" class="form-control" style="border-radius:8px;font-size:0.86rem;font-weight:600;border:1.5px solid #cbd5e1;height:42px;">
+                            <option value="auto" selected>🔄 Otomatis (Deteksi dari nama file yang diunggah)</option>
+                            <option value="baku">🌱 Lahan Baku (Daerah Irigasi Baku)</option>
+                            <option value="fungsional">💧 Lahan Fungsional (Aktif Teraliri Air)</option>
+                            <option value="potensial">📐 Lahan Potensial (Rencana Pengembangan)</option>
+                            <option value="saluran">🛤️ Jaringan Saluran (Primer, Sekunder &amp; Tersier)</option>
+                            <option value="bangunan">🏛️ Bangunan Air (Pintu Air, Bendung &amp; Bangunan)</option>
+                            <option value="ws_kapuas">🌊 Wilayah Sungai &amp; DAS Kapuas</option>
+                        </select>
+                        <small class="text-muted" style="font-size:0.75rem;">
+                            Pilih kategori agar file otomatis terkelompok ke layer peta yang tepat tanpa perlu mengubah nama file.
                         </small>
-                        <div id="kelolaGisUploadStatus" class="small font-weight-bold text-primary mt-2" style="display:none;"></div>
                     </div>
 
-                    <div class="alert alert-warning py-2 px-3 small mb-0 rounded" style="background:#fffbeb;border:1px solid #fde68a;color:#92400e;">
-                        <i class="fas fa-lightbulb mr-1 text-warning"></i>
-                        <strong>Tips Penamaan:</strong> Beri awalan nama seperti <code>baku_</code>, <code>fungsional_</code>, <code>potensial_</code>, <code>saluran_</code>, atau <code>bangunan_</code> agar otomatis terkelompok pada layer peta.
+                    <!-- 2. Area Unggah Drag & Drop Modern -->
+                    <div class="dropzone-box text-center p-4 rounded mb-2" id="dropzoneBox" onclick="document.getElementById('inputUploadGeojson').click()" style="border: 2px dashed #93c5fd; background: #f8fafc; border-radius: 12px; cursor: pointer; transition: all 0.2s;">
+                        <input type="file" name="file_geojson[]" id="inputUploadGeojson" multiple accept=".geojson,.json,.zip" required onchange="handleFileChange(this)" style="display:none;">
+                        
+                        <div id="dropzoneEmptyState">
+                            <div class="mb-2">
+                                <i class="fas fa-cloud-upload-alt text-primary" style="font-size: 2.5rem; opacity: 0.85;"></i>
+                            </div>
+                            <div class="font-weight-bold text-dark" style="font-size: 0.95rem;">
+                                Klik untuk memilih file, atau tarik &amp; lepas ke sini
+                            </div>
+                            <div class="text-muted small mt-1">
+                                Bisa unggah 1 file satuan atau banyak file sekaligus
+                            </div>
+                            <div class="mt-3 d-flex justify-content-center flex-wrap" style="gap:6px;">
+                                <span class="badge badge-light border text-primary font-weight-bold px-2 py-1" style="font-size:0.72rem;border-radius:6px;">
+                                    <i class="fas fa-file-code mr-1"></i>.GEOJSON
+                                </span>
+                                <span class="badge badge-light border text-info font-weight-bold px-2 py-1" style="font-size:0.72rem;border-radius:6px;">
+                                    <i class="fas fa-file-alt mr-1"></i>.JSON
+                                </span>
+                                <span class="badge badge-light border text-secondary font-weight-bold px-2 py-1" style="font-size:0.72rem;border-radius:6px;">
+                                    <i class="fas fa-file-archive mr-1"></i>.ZIP (Shapefile)
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Pratinjau File Terpilih -->
+                        <div id="dropzoneSelectedState" style="display:none;">
+                            <div class="mb-2">
+                                <i class="fas fa-check-circle text-success" style="font-size: 2.2rem;"></i>
+                            </div>
+                            <div class="font-weight-bold text-dark" id="selectedFileSummary" style="font-size: 0.95rem;">
+                                File Terpilih
+                            </div>
+                            <div id="selectedFileList" class="text-muted small mt-2 text-left bg-white p-2 rounded border" style="max-height:120px;overflow-y:auto;font-size:0.78rem;"></div>
+                            <button type="button" class="btn btn-sm btn-link text-danger mt-2 font-weight-bold" onclick="clearSelectedFiles(event)" style="font-size:0.78rem;">
+                                <i class="fas fa-times-circle mr-1"></i> Ganti / Batalkan Pilihan
+                            </button>
+                        </div>
                     </div>
+
+                    <!-- Indikator Status Proses -->
+                    <div id="kelolaGisUploadStatus" class="alert alert-info py-2 px-3 small font-weight-bold text-primary mt-3 mb-0" style="display:none;border-radius:8px;background:#eff6ff;border:1px solid #bfdbfe;">
+                        <i class="fas fa-spinner fa-spin mr-1"></i> Memproses unggahan...
+                    </div>
+
                 </div>
 
-                <div class="modal-footer bg-white border-top py-3 px-4">
-                    <button type="button" class="btn btn-light border font-weight-bold px-3 btn-sm" data-dismiss="modal" style="border-radius:6px;">Batal</button>
-                    <button type="submit" id="btnKelolaGisSubmit" class="btn btn-primary font-weight-bold px-4 btn-sm shadow-sm" style="background:#2563eb;border-color:#2563eb;border-radius:6px;">
-                        <i class="fas fa-cloud-upload-alt mr-1"></i>Mulai Unggah
-                    </button>
+                <div class="modal-footer bg-light border-top py-3 px-4 d-flex justify-content-between align-items-center">
+                    <small class="text-muted" style="font-size:0.75rem;">
+                        <i class="fas fa-shield-alt text-success mr-1"></i> Maks. 256 MB per file
+                    </small>
+                    <div style="gap:8px;" class="d-flex">
+                        <button type="button" class="btn btn-light border font-weight-bold px-3 btn-sm" data-dismiss="modal" style="border-radius:8px;">Batal</button>
+                        <button type="submit" id="btnKelolaGisSubmit" class="btn btn-primary font-weight-bold px-4 btn-sm shadow-sm" style="background:#1d4ed8;border-color:#1d4ed8;border-radius:8px;">
+                            <i class="fas fa-cloud-upload-alt mr-1"></i> Mulai Unggah
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -543,15 +595,84 @@
 @push('scripts')
 <script>
     function handleFileChange(input) {
-        var label = document.getElementById('labelUploadGeojson');
-        if (input.files.length === 1) {
-            label.textContent = input.files[0].name;
-        } else if (input.files.length > 1) {
-            label.textContent = input.files.length + ' file dipilih';
+        var files = input.files;
+        var emptyState = document.getElementById('dropzoneEmptyState');
+        var selectedState = document.getElementById('dropzoneSelectedState');
+        var summary = document.getElementById('selectedFileSummary');
+        var list = document.getElementById('selectedFileList');
+
+        if (!files || files.length === 0) {
+            if (emptyState) emptyState.style.display = 'block';
+            if (selectedState) selectedState.style.display = 'none';
+            return;
+        }
+
+        if (emptyState) emptyState.style.display = 'none';
+        if (selectedState) selectedState.style.display = 'block';
+
+        if (files.length === 1) {
+            var f = files[0];
+            var sizeStr = f.size > 1024 * 1024 ? (f.size / (1024 * 1024)).toFixed(2) + ' MB' : (f.size / 1024).toFixed(1) + ' KB';
+            summary.innerHTML = '<span class="text-primary font-weight-bold">' + f.name + '</span> (' + sizeStr + ')';
+            list.innerHTML = '<div class="d-flex align-items-center justify-content-between p-1"><span><i class="fas fa-file text-primary mr-2"></i>' + f.name + '</span><span class="badge badge-light border text-muted">' + sizeStr + '</span></div>';
         } else {
-            label.textContent = 'Pilih satu atau beberapa file...';
+            summary.innerHTML = '<span class="text-primary font-weight-bold">' + files.length + ' file dipilih</span>';
+            var html = '';
+            for (var i = 0; i < files.length; i++) {
+                var f = files[i];
+                var sizeStr = f.size > 1024 * 1024 ? (f.size / (1024 * 1024)).toFixed(2) + ' MB' : (f.size / 1024).toFixed(1) + ' KB';
+                html += '<div class="d-flex align-items-center justify-content-between py-1 border-bottom"><span><i class="fas fa-file text-primary mr-2"></i>' + f.name + '</span><span class="badge badge-light border text-muted">' + sizeStr + '</span></div>';
+            }
+            list.innerHTML = html;
         }
     }
+
+    function clearSelectedFiles(e) {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        var input = document.getElementById('inputUploadGeojson');
+        if (input) input.value = '';
+        var emptyState = document.getElementById('dropzoneEmptyState');
+        var selectedState = document.getElementById('dropzoneSelectedState');
+        if (emptyState) emptyState.style.display = 'block';
+        if (selectedState) selectedState.style.display = 'none';
+    }
+
+    // Drag and drop event listeners untuk Dropzone
+    document.addEventListener('DOMContentLoaded', function() {
+        var dropzone = document.getElementById('dropzoneBox');
+        if (!dropzone) return;
+
+        ['dragenter', 'dragover'].forEach(function(eventName) {
+            dropzone.addEventListener(eventName, function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                dropzone.style.borderColor = '#1d4ed8';
+                dropzone.style.background = '#eff6ff';
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(function(eventName) {
+            dropzone.addEventListener(eventName, function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                dropzone.style.borderColor = '#93c5fd';
+                dropzone.style.background = '#f8fafc';
+            }, false);
+        });
+
+        dropzone.addEventListener('drop', function(e) {
+            var dt = e.dataTransfer;
+            var files = dt.files;
+            var input = document.getElementById('inputUploadGeojson');
+            if (input && files && files.length > 0) {
+                input.files = files;
+                handleFileChange(input);
+            }
+        }, false);
+    });
 
     function openRenameModal(fileName) {
         document.getElementById('renameOldName').value = fileName;
@@ -623,6 +744,9 @@
 
         var formData = new FormData();
         formData.append('_token', form.querySelector('input[name="_token"]').value);
+        var kategoriSelect = document.getElementById('selectKategoriUpload');
+        var kategori = kategoriSelect ? kategoriSelect.value : 'auto';
+        formData.append('kategori', kategori);
 
         for (var i = 0; i < files.length; i++) {
             var file = files[i];
@@ -639,12 +763,18 @@
                             geojson.forEach(function(gj, idx) {
                                 var rawName = gj.fileName || (file.name.replace(/\.zip$/i, '') + (idx > 0 ? '_' + idx : ''));
                                 var cleanName = rawName.replace(/[^a-zA-Z0-9_\-]/g, '_') + '.geojson';
+                                if (kategori && kategori !== 'auto' && !cleanName.toLowerCase().startsWith(kategori + '_')) {
+                                    cleanName = kategori + '_' + cleanName;
+                                }
                                 var blob = new Blob([JSON.stringify(gj)], { type: 'application/geo+json' });
                                 formData.append('file_geojson[]', blob, cleanName);
                             });
                         } else if (geojson && geojson.type) {
                             var rawName = geojson.fileName || file.name.replace(/\.zip$/i, '');
                             var cleanName = rawName.replace(/[^a-zA-Z0-9_\-]/g, '_') + '.geojson';
+                            if (kategori && kategori !== 'auto' && !cleanName.toLowerCase().startsWith(kategori + '_')) {
+                                cleanName = kategori + '_' + cleanName;
+                            }
                             var blob = new Blob([JSON.stringify(geojson)], { type: 'application/geo+json' });
                             formData.append('file_geojson[]', blob, cleanName);
                         } else {

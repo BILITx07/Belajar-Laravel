@@ -184,6 +184,22 @@ class AdminController extends Controller
         $files = is_array($rawFiles) ? $rawFiles : [$rawFiles];
         $uploaded = [];
         $failed = [];
+        $kategori = $request->input('kategori', 'auto');
+
+        // Fungsi pembantu untuk membubuhkan prefix kategori jika dipilih pengguna
+        $applyKategoriPrefix = function ($fileName, $cat) {
+            if (!$cat || $cat === 'auto') {
+                return $fileName;
+            }
+            $prefix = strtolower($cat) . '_';
+            $knownPrefixes = ['baku_', 'fungsional_', 'potensial_', 'saluran_', 'bangunan_', 'ws_kapuas_', 'ws_'];
+            foreach ($knownPrefixes as $kp) {
+                if (str_starts_with(strtolower($fileName), $kp)) {
+                    return $fileName; // Sudah memiliki awalan kategori
+                }
+            }
+            return $prefix . $fileName;
+        };
 
         foreach ($files as $file) {
             if (!$file->isValid()) {
@@ -217,8 +233,9 @@ class AdminController extends Controller
                         if (in_array($entryExt, ['json', 'geojson'])) {
                             $fileContent = $zip->getFromIndex($i);
                             if ($fileContent !== false) {
-                                file_put_contents($destinationPath . '/' . $entryName, $fileContent);
-                                $uploaded[] = $entryName;
+                                $targetName = $applyKategoriPrefix($entryName, $kategori);
+                                file_put_contents($destinationPath . '/' . $targetName, $fileContent);
+                                $uploaded[] = $targetName;
                                 $extractedInZip++;
                             }
                         }
@@ -242,8 +259,9 @@ class AdminController extends Controller
                     }
                 }
 
-                $file->move($destinationPath, $namaFile);
-                $uploaded[] = $namaFile;
+                $targetName = $applyKategoriPrefix($namaFile, $kategori);
+                $file->move($destinationPath, $targetName);
+                $uploaded[] = $targetName;
             }
         }
 
