@@ -366,9 +366,9 @@
 
         <!-- Tombol Aksi & Profil Petugas -->
         <div class="bws-topbar-actions">
-            <!-- Tombol Pintasan Lihat Peta WebGIS -->
-            <a href="{{ route('peta') }}" target="_blank" class="btn btn-sm btn-warning font-weight-bold d-inline-flex align-items-center shadow-sm mr-2" style="border-radius: 20px; font-size: 0.8rem; padding: 5px 14px; background: #f59e0b; border: none; color: #1e293b; transition: all 0.2s ease;" title="Buka Halaman Peta WebGIS di Tab Baru untuk Melihat Tampilan Spasial">
-                <i class="fas fa-map-marked-alt mr-1.5"></i> Lihat Peta <i class="fas fa-external-link-alt ml-1 fa-xs" style="opacity:0.75;"></i>
+            <!-- Tombol Pintasan Lihat Peta WebGIS (Navigasi Langsung di Tab yang Sama) -->
+            <a href="{{ route('peta') }}" class="btn btn-sm btn-warning font-weight-bold d-inline-flex align-items-center shadow-sm mr-2" style="border-radius: 20px; font-size: 0.82rem; padding: 5px 16px; background: #f59e0b; border: none; color: #1e293b; transition: all 0.2s ease;" title="Buka Halaman Peta WebGIS">
+                <i class="fas fa-map mr-1.5"></i> Lihat Peta
             </a>
 
             <!-- Fullscreen Toggle -->
