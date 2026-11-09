@@ -1,18 +1,47 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="100%" height="100%">
   <defs>
+    <!-- Gradasi Biru PU Aliran Air Irigasi -->
+    <linearGradient id="badgeWater" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e40af"/>
+      <stop offset="50%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+
+    <!-- Gradasi Hijau Subur Lahan Pertanian Kalbar -->
+    <linearGradient id="badgeField" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="50%" stop-color="#059669"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+
+    <!-- Gradasi Emas PU Koordinat Spasial -->
+    <linearGradient id="badgeGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fde047"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+
     <filter id="badgeShadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.12"/>
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.14"/>
     </filter>
   </defs>
 
   <g filter="url(#badgeShadow)">
-    <!-- Base Squircle Badge -->
-    <rect x="10" y="10" width="100" height="100" rx="26" fill="#ffffff" stroke="#e2e8f0" stroke-width="2"/>
+    <!-- Base Squircle Badge Putih Mewah -->
+    <rect x="8" y="8" width="104" height="104" rx="28" fill="#ffffff" stroke="#e2e8f0" stroke-width="2"/>
     
-    <!-- 1. Bingkai Geospasial Utama (Royal Blue PU - Spasial) -->
-    <rect x="28" y="28" width="46" height="46" rx="10" stroke="#1d4ed8" stroke-width="9" stroke-linejoin="round"/>
+    <!-- 1. Balok Spasial Lahan Irigasi / Petak Sawah (Emerald Green) -->
+    <rect x="44" y="48" width="54" height="54" rx="16" fill="url(#badgeField)"/>
     
-    <!-- 2. Balok Spasial Aksen (Emerald Green - Daerah Irigasi & Pertanian Kalbar) -->
-    <rect x="58" y="58" width="34" height="34" rx="8" fill="#16a34a"/>
+    <!-- Garis Saluran Sekunder Halus Pada Lahan -->
+    <path d="M54 75 Q 71 65, 88 75" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" opacity="0.35" fill="none"/>
+    <path d="M71 56 V 94" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" opacity="0.25" fill="none"/>
+
+    <!-- 2. Lengkungan Saluran Utama Air Irigasi 'S' (Royal Blue ke Cyan) -->
+    <path d="M26 68 V 38 C26 30, 32 24, 40 24 H70 C78 24, 84 30, 84 38 C84 46, 78 52, 70 52 H46 C38 52, 32 58, 32 66 V 82" 
+          stroke="url(#badgeWater)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+    <!-- 3. Titik Simpul Koordinat Spasial Emas PU (GIS Node) -->
+    <circle cx="40" cy="24" r="8" fill="url(#badgeGold)" stroke="#ffffff" stroke-width="3.5"/>
+    <circle cx="84" cy="38" r="6" fill="#ffffff" opacity="0.9"/>
   </g>
 </svg>
