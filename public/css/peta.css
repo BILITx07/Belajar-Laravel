@@ -1396,6 +1396,316 @@ body {
 }
 
 /* ============================================================
+   9. METRIK DATA IRIGASI KALBAR & FOOTER RESMI BWSK I
+   ============================================================ */
+
+/* Container Metrik */
+.sipdira-metrics-block {
+    margin-top: 36px;
+    margin-bottom: 34px;
+}
+
+.sipdira-metrics-header {
+    margin-bottom: 20px;
+}
+
+.sipdira-metrics-tag {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: #1d4ed8;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 4px;
+}
+
+.sipdira-metrics-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.4px;
+    margin: 0 0 6px 0;
+}
+
+.sipdira-metrics-subtitle {
+    font-size: 13.5px;
+    color: #64748b;
+    margin: 0;
+}
+
+/* Card Metrik */
+.sipdira-metric-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 22px 20px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.sipdira-metric-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+    border-color: #cbd5e1;
+}
+
+.sipdira-metric-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3.5px;
+    background: transparent;
+    transition: background 0.25s ease;
+}
+
+.sipdira-metric-card.theme-blue::after { background: #1d4ed8; }
+.sipdira-metric-card.theme-cyan::after { background: #0891b2; }
+.sipdira-metric-card.theme-green::after { background: #16a34a; }
+.sipdira-metric-card.theme-amber::after { background: #f59e0b; }
+
+.sipdira-metric-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.sipdira-metric-icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.sipdira-metric-card.theme-blue .sipdira-metric-icon-wrap {
+    background: #eff6ff;
+    color: #1d4ed8;
+}
+
+.sipdira-metric-card.theme-cyan .sipdira-metric-icon-wrap {
+    background: #ecfeff;
+    color: #0891b2;
+}
+
+.sipdira-metric-card.theme-green .sipdira-metric-icon-wrap {
+    background: #f0fdf4;
+    color: #16a34a;
+}
+
+.sipdira-metric-card.theme-amber .sipdira-metric-icon-wrap {
+    background: #fffbeb;
+    color: #d97706;
+}
+
+.sipdira-metric-indicator {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.sipdira-metric-card.theme-blue .sipdira-metric-indicator { background: #eff6ff; color: #1e40af; }
+.sipdira-metric-card.theme-cyan .sipdira-metric-indicator { background: #ecfeff; color: #0e7490; }
+.sipdira-metric-card.theme-green .sipdira-metric-indicator { background: #f0fdf4; color: #15803d; }
+.sipdira-metric-card.theme-amber .sipdira-metric-indicator { background: #fffbeb; color: #b45309; }
+
+.sipdira-metric-val {
+    font-size: 27px;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.1;
+    margin-bottom: 4px;
+    letter-spacing: -0.5px;
+}
+
+.sipdira-metric-unit {
+    font-size: 16px;
+    font-weight: 700;
+    color: #64748b;
+    margin-left: 2px;
+}
+
+.sipdira-metric-label {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 4px;
+}
+
+.sipdira-metric-note {
+    font-size: 11.5px;
+    color: #64748b;
+    line-height: 1.4;
+    margin-top: auto;
+}
+
+/* ============================================================
+   10. FOOTER RESMI KEDINASAN BWS KALIMANTAN I
+   ============================================================ */
+.bws-official-footer {
+    background: linear-gradient(145deg, #0a223a 0%, #0d2d4c 100%);
+    border-top: 3.5px solid #f59e0b;
+    border-radius: 20px;
+    padding: 38px 36px 20px 36px;
+    color: #ffffff;
+    margin-top: 36px;
+    box-shadow: 0 10px 30px rgba(10, 34, 58, 0.18);
+}
+
+.bws-footer-brand-wrap {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+.bws-footer-logo-pu {
+    width: 44px;
+    height: 44px;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid #facc15;
+    flex-shrink: 0;
+}
+
+.bws-footer-logo-sipdira {
+    width: 44px;
+    height: 44px;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
+}
+
+.bws-footer-title {
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: #ffffff;
+    line-height: 1.2;
+    margin: 0;
+}
+
+.bws-footer-subtitle {
+    font-size: 11.5px;
+    color: rgba(255, 255, 255, 0.78);
+    line-height: 1.25;
+    margin-top: 2px;
+}
+
+.bws-footer-address {
+    font-size: 12.5px;
+    color: rgba(255, 255, 255, 0.82);
+    line-height: 1.6;
+    margin-top: 12px;
+    max-width: 380px;
+}
+
+.bws-footer-col-title {
+    font-size: 13.5px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: #facc15;
+    margin-bottom: 16px;
+}
+
+.bws-footer-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 12.5px;
+}
+
+.bws-footer-list li {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.bws-footer-list li i {
+    color: #38bdf8;
+    margin-top: 3px;
+    font-size: 13px;
+    width: 16px;
+    flex-shrink: 0;
+}
+
+.bws-footer-list a {
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    transition: color 0.18s ease;
+}
+
+.bws-footer-list a:hover {
+    color: #38bdf8;
+    text-decoration: underline;
+}
+
+.bws-footer-social-wrap {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+}
+
+.bws-footer-social-pill {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #ffffff !important;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+}
+
+.bws-footer-social-pill:hover {
+    background: #ffffff;
+    color: #0a223a !important;
+    transform: translateY(-2px);
+}
+
+.bws-footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    margin-top: 30px;
+    padding-top: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 11.5px;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+/* ============================================================
    7. RESPONSIF MOBILE & TABLET (MAKS 991px)
    ============================================================ */
 @media (max-width: 991.98px) {
