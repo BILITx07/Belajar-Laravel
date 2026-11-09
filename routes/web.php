@@ -104,6 +104,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
         Route::get('/kelola-gis', [AdminController::class, 'kelolaGis'])->name('kelola-gis');
         Route::get('/data-gis', [AdminController::class, 'kelolaGis'])->name('data-gis');
+        Route::get('/preview-peta', [AdminController::class, 'previewPeta'])->name('preview-peta');
 
         // Aksi CRUD Data Spasial
         Route::post('/upload', [AdminController::class, 'upload'])->name('upload');

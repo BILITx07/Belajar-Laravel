@@ -159,6 +159,27 @@ class AdminController extends Controller
     }
 
     /**
+     * Halaman Uji Coba & Pratinjau Peta Khusus Administrator (Laboratorium Spasial Admin)
+     * Digunakan oleh Admin untuk memeriksa apakah file GIS yang baru diunggah nimbul/muncul di peta atau tidak.
+     */
+    public function previewPeta(Request $request)
+    {
+        $allFiles = $this->scanGeojsonFiles();
+        $stats = $this->getGisStats();
+        $lokasi = WebGisController::getLokasiData();
+
+        $geojsonFiles = array_map(fn($f) => $f['name'], $allFiles);
+
+        return view('admin.preview_peta', [
+            'title'        => 'Uji Coba & Pratinjau Peta Spasial Admin — BWS Kalimantan I',
+            'allFiles'     => $allFiles,
+            'geojsonFiles' => $geojsonFiles,
+            'stats'        => $stats,
+            'lokasi'       => $lokasi,
+        ]);
+    }
+
+    /**
      * Upload File Spasial Baru (Mendukung .geojson, .json, dan arsip .zip)
      */
     public function upload(Request $request)

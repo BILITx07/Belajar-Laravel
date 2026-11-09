@@ -366,9 +366,14 @@
 
         <!-- Tombol Aksi & Profil Petugas -->
         <div class="bws-topbar-actions">
-            <!-- Tombol Pintasan Buka Peta Interaktif (Preview Data Langsung di Tab Baru) -->
-            <a href="{{ route('peta') }}" target="_blank" class="btn btn-sm btn-warning font-weight-bold d-inline-flex align-items-center shadow-sm mr-2" style="border-radius: 20px; font-size: 0.8rem; padding: 5px 14px; background: #f59e0b; border: none; color: #1e293b; transition: all 0.2s ease;" title="Buka Peta Interaktif di Tab Baru untuk Menguji Tampilan Spasial">
-                <i class="fas fa-map-marked-alt mr-1.5"></i> Lihat Peta <i class="fas fa-external-link-alt ml-1 fa-xs" style="opacity:0.75;"></i>
+            <!-- Tombol Pintasan Uji Coba Peta Khusus Admin -->
+            <a href="{{ route('admin.preview-peta') }}" class="btn btn-sm btn-warning font-weight-bold d-inline-flex align-items-center shadow-sm mr-2" style="border-radius: 20px; font-size: 0.8rem; padding: 5px 14px; background: #f59e0b; border: none; color: #1e293b; transition: all 0.2s ease;" title="Buka Laboratorium Uji Coba Peta Khusus Admin untuk Verifikasi Data Upload">
+                <i class="fas fa-vial mr-1.5"></i> Uji Coba Peta
+            </a>
+
+            <!-- Tombol Pintasan Buka Web Publik -->
+            <a href="{{ route('peta') }}" target="_blank" class="bws-action-icon text-white mr-1" title="Buka Halaman Publik WebGIS (Tab Baru)">
+                <i class="fas fa-globe"></i>
             </a>
 
             <!-- Fullscreen Toggle -->
@@ -520,7 +525,13 @@
             <span>Master Data</span>
         </a>
 
-        <!-- 3. Manajemen User (Hanya Super Admin) -->
+        <!-- 3. Uji Coba Peta (Laboratorium Spasial Khusus Admin) -->
+        <a href="{{ route('admin.preview-peta') }}" class="bws-nav-link {{ request()->routeIs('admin.preview-peta') ? 'active' : '' }}">
+            <i class="fas fa-map-marked-alt text-success"></i>
+            <span>Uji Coba Peta</span>
+        </a>
+
+        <!-- 4. Manajemen User (Hanya Super Admin) -->
         @if(Auth::check() && Auth::user()->role === 'superadmin')
         <a href="{{ route('users.index') }}" class="bws-nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
             <i class="fas fa-user-friends text-info"></i>
@@ -528,7 +539,7 @@
         </a>
         @endif
 
-        <!-- 4. Log Aktivitas (Audit Trail Operasional Data) -->
+        <!-- 5. Log Aktivitas (Audit Trail Operasional Data) -->
         <a href="{{ route('admin.activity-logs') }}" class="bws-nav-link {{ request()->routeIs('admin.activity-logs*') ? 'active' : '' }}">
             <i class="fas fa-history text-secondary"></i>
             <span>Log Aktivitas</span>
