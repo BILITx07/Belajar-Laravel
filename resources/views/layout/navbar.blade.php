@@ -197,13 +197,6 @@
             </a>
         </li>
 
-        <!-- Menu Link: Hubungi kami (Membuka Modal Kontak Resmi BWSK I) -->
-        <li class="nav-item d-none d-lg-block">
-            <a href="javascript:void(0)" class="qrop-nav-text-link" data-toggle="modal" data-target="#modalKontakResmi" title="Kontak &amp; Layanan Resmi BWS Kalimantan I">
-                Hubungi kami
-            </a>
-        </li>
-
         <!-- Tombol Layar Penuh -->
         <li class="nav-item d-none d-sm-block">
             <a class="nav-link p-2 d-flex align-items-center justify-content-center qrop-icon-btn" href="#" onclick="toggleFullScreen(event)" title="Layar Penuh">

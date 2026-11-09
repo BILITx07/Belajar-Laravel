@@ -393,10 +393,10 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content border-0 shadow-lg" style="border-radius: 18px; overflow: hidden;">
             
-            <!-- Modal Header (Gaya Resmi Kedinasan PU) -->
-            <div class="modal-header text-white px-4 py-3" style="background: linear-gradient(135deg, #093c52 0%, #0d5c70 50%, #117887 100%);">
+            <!-- Modal Header (Gaya Resmi Kedinasan PU Navy & Emas) -->
+            <div class="modal-header text-white px-4 py-3" style="background: linear-gradient(135deg, #10143a 0%, #1a1c54 100%); border-bottom: 3.5px solid #f59e0b;">
                 <div class="d-flex align-items-center">
-                    <div class="mr-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 44px; height: 44px; background: #ffffff; border-radius: 12px; color: #1d4ed8; font-size: 20px; border: 2px solid rgba(250, 214, 5, 0.9);">
+                    <div class="mr-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 44px; height: 44px; background: #ffffff; border-radius: 12px; color: #1a1c54; font-size: 20px; border: 2px solid #fad605;">
                         <i class="fas fa-book-reader"></i>
                     </div>
                     <div>

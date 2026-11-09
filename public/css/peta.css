@@ -1811,6 +1811,30 @@ body {
     color: #fad605 !important;
 }
 
+/* Tab Panduan Aplikasi Khas PU Navy & Emas */
+#pills-tab-panduan .nav-link {
+    color: #475569;
+    background: #f1f5f9;
+    margin: 0 4px;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+#pills-tab-panduan .nav-link:hover {
+    color: #1a1c54;
+    background: #e2e8f0;
+}
+
+#pills-tab-panduan .nav-link.active {
+    background: #1a1c54 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(26, 28, 84, 0.28) !important;
+}
+
+#pills-tab-panduan .nav-link.active i {
+    color: #fad605 !important;
+}
+
 /* ============================================================
    7. RESPONSIF MOBILE & TABLET (MAKS 991px)
    ============================================================ */
