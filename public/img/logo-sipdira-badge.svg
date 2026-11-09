@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="100%" height="100%">
+  <defs>
+    <!-- Background Shield Gradasi Biru PU -->
+    <linearGradient id="badgeBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e40af"/>
+      <stop offset="45%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#0f274a"/>
+    </linearGradient>
+
+    <!-- Gradasi Emas PU -->
+    <linearGradient id="badgeGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fde047"/>
+      <stop offset="60%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+
+    <!-- Gradasi Aliran Irigasi Cyan-Hijau -->
+    <linearGradient id="waterFlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="50%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+
+    <filter id="badgeShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#badgeShadow)">
+    <!-- Base Squircle Shield -->
+    <rect x="10" y="10" width="100" height="100" rx="28" fill="url(#badgeBlue)"/>
+    <rect x="10" y="10" width="100" height="100" rx="28" fill="none" stroke="url(#badgeGold)" stroke-width="2.5" stroke-opacity="0.85"/>
+
+    <!-- Grid Garis Lintang & Bujur Peta (GIS Spatial Coordinate Lines) -->
+    <path d="M10 50 Q 60 45, 110 50" stroke="#ffffff" stroke-width="1" stroke-opacity="0.12" fill="none"/>
+    <path d="M10 70 Q 60 75, 110 70" stroke="#ffffff" stroke-width="1" stroke-opacity="0.12" fill="none"/>
+    <path d="M50 10 Q 45 60, 50 110" stroke="#ffffff" stroke-width="1" stroke-opacity="0.12" fill="none"/>
+    <path d="M70 10 Q 75 60, 70 110" stroke="#ffffff" stroke-width="1" stroke-opacity="0.12" fill="none"/>
+
+    <!-- Dynamic Flowing 'S' Shape (SIPDIRA / Saluran Irigasi) -->
+    <path d="M78 34 C 62 30, 40 38, 42 52 C 44 64, 76 60, 78 72 C 80 84, 58 92, 40 86" 
+          stroke="url(#waterFlow)" stroke-width="8" stroke-linecap="round" fill="none"/>
+
+    <!-- Pin Titik Spasial Emas di Ujung Saluran -->
+    <circle cx="78" cy="34" r="5" fill="#f59e0b" stroke="#ffffff" stroke-width="2"/>
+    <circle cx="40" cy="86" r="4" fill="#38bdf8" stroke="#ffffff" stroke-width="1.5"/>
+  </g>
+</svg>

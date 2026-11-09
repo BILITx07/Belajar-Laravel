@@ -152,16 +152,11 @@
         <!-- Garis Pembatas Vertikal (Persis QROP) -->
         <div class="qrop-nav-divider d-none d-sm-block"></div>
 
-        <!-- 2. Logo Brand Aplikasi Spasial: Ikon Geometris + Teks Bold QROP Style -->
+        <!-- 2. Logo Brand Aplikasi Spasial: Logo Resmi SIPDIRA -->
         <a href="{{ route('peta') }}" class="d-flex align-items-center text-decoration-none">
-            <!-- Ikon Geometris Spatial Modern ala QROP (4 Kotak Modul Grid) -->
-            <div class="mr-2.5 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 34px; height: 34px;">
-                <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="2" y="2" width="13" height="13" rx="3" fill="#1d4ed8"/>
-                    <rect x="18" y="2" width="13" height="13" rx="3" fill="#3b82f6"/>
-                    <rect x="2" y="18" width="13" height="13" rx="3" fill="#60a5fa"/>
-                    <rect x="18" y="18" width="9" height="9" rx="2.5" fill="#f59e0b"/>
-                </svg>
+            <!-- Logo Ikon Resmi SIPDIRA (Modular Spatial & Aliran Irigasi BWSK I) -->
+            <div class="mr-2.5 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 38px; height: 38px;">
+                <img src="{{ asset('img/logo-sipdira.svg') }}" alt="Logo SIPDIRA" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
             <div class="d-flex flex-column">
                 <div class="qrop-brand-title">

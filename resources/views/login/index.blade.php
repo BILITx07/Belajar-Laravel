@@ -464,7 +464,7 @@
             <!-- Header Logo PU Resmi & Judul Web GIS -->
             <div class="brand-header-box">
                 <div class="brand-icon-glass">
-                    <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo PU">
+                    <img src="{{ asset('img/logo-sipdira.svg') }}" alt="Logo SIPDIRA">
                 </div>
                 <div class="brand-text-block">
                     <h1>SIPDIRA</h1>
