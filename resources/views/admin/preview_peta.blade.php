@@ -220,13 +220,13 @@
 
         <div class="d-flex align-items-center" style="gap: 8px;">
             <a href="{{ route('admin.kelola-gis') }}" class="btn btn-outline-secondary btn-sm font-weight-bold px-3 shadow-xs" style="border-radius: 20px; height: 36px; display: inline-flex; align-items: center;">
-                <i class="fas fa-layer-group mr-1.5"></i> Kelola Data GIS
+                <i class="fas fa-layer-group mr-2"></i> Kelola Data GIS
             </a>
             <button type="button" class="btn btn-primary btn-sm font-weight-bold px-3 shadow-sm text-white" style="border-radius: 20px; height: 36px; background: #1d4ed8; border: none; display: inline-flex; align-items: center;" data-toggle="modal" data-target="#modalUploadStudio">
-                <i class="fas fa-cloud-upload-alt mr-1.5"></i> Upload File Baru
+                <i class="fas fa-cloud-upload-alt mr-2"></i> Upload File Baru
             </button>
             <a href="{{ route('peta') }}" target="_blank" class="btn btn-light border btn-sm font-weight-bold px-3 shadow-xs" style="border-radius: 20px; height: 36px; display: inline-flex; align-items: center;" title="Buka Halaman Publik WebGIS untuk Melihat Versi Pengunjung">
-                <i class="fas fa-external-link-alt mr-1.5 text-muted"></i> Web Publik
+                <i class="fas fa-external-link-alt mr-2 text-muted"></i> Web Publik
             </a>
         </div>
     </div>
@@ -410,7 +410,7 @@
 
                 <!-- Notification Toast Inside Map -->
                 <div id="mapStudioToast" class="position-absolute shadow-lg border" style="bottom: 20px; right: 20px; z-index: 999; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); border-radius: 10px; padding: 8px 14px; font-size: 0.78rem; display: none;">
-                    <i class="fas fa-info-circle text-primary mr-1.5"></i>
+                    <i class="fas fa-info-circle text-primary mr-2"></i>
                     <span id="mapStudioToastMsg" class="font-weight-bold text-dark"></span>
                 </div>
             </div>
@@ -582,7 +582,7 @@
                     },
                     onEachFeature: function(feature, layer) {
                         var props = feature.properties || {};
-                        var popupHtml = '<div class="popup-header"><i class="fas fa-layer-group mr-1.5"></i> ' + (props.NAMA_DIR || props.Nama_DIR || props.nama || fileName) + '</div>';
+                        var popupHtml = '<div class="popup-header"><i class="fas fa-layer-group mr-2"></i> ' + (props.NAMA_DIR || props.Nama_DIR || props.nama || fileName) + '</div>';
                         popupHtml += '<div class="popup-body"><table class="table table-sm popup-table mb-0">';
                         for (var key in props) {
                             if (props.hasOwnProperty(key)) {

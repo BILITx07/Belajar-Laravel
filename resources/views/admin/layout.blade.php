@@ -86,6 +86,47 @@
             gap: 16px;
         }
 
+        /* Tombol Pintasan Lihat Peta Modern & Mewah */
+        .btn-lihat-peta-modern {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: linear-gradient(135deg, #fcd34d 0%, #f59e0b 55%, #d97706 100%);
+            color: #0f274a !important;
+            font-weight: 800;
+            font-size: 0.81rem;
+            letter-spacing: 0.2px;
+            padding: 6px 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            box-shadow: 0 3px 12px rgba(217, 119, 6, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.7);
+            text-decoration: none !important;
+            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            line-height: 1.2;
+        }
+
+        .btn-lihat-peta-modern:hover {
+            background: linear-gradient(135deg, #fde68a 0%, #fbbf24 55%, #f59e0b 100%);
+            transform: translateY(-1.5px);
+            box-shadow: 0 6px 18px rgba(217, 119, 6, 0.5), inset 0 1px 2px #ffffff;
+            color: #0a1b33 !important;
+        }
+
+        .btn-lihat-peta-modern:active {
+            transform: translateY(0.5px);
+            box-shadow: 0 2px 6px rgba(217, 119, 6, 0.3);
+        }
+
+        .btn-lihat-peta-modern i {
+            font-size: 0.84rem;
+            color: #0f274a;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-lihat-peta-modern:hover i {
+            transform: scale(1.15);
+        }
+
         .bws-action-icon {
             color: rgba(255, 255, 255, 0.85);
             font-size: 1.05rem;
@@ -366,9 +407,10 @@
 
         <!-- Tombol Aksi & Profil Petugas -->
         <div class="bws-topbar-actions">
-            <!-- Tombol Pintasan Lihat Peta WebGIS (Navigasi Langsung di Tab yang Sama) -->
-            <a href="{{ route('peta') }}" class="btn btn-sm btn-warning font-weight-bold d-inline-flex align-items-center shadow-sm mr-2" style="border-radius: 20px; font-size: 0.82rem; padding: 5px 16px; background: #f59e0b; border: none; color: #1e293b; transition: all 0.2s ease;" title="Buka Halaman Peta WebGIS">
-                <i class="fas fa-map mr-1.5"></i> Lihat Peta
+            <!-- Tombol Pintasan Lihat Peta WebGIS Modern -->
+            <a href="{{ route('peta') }}" class="btn-lihat-peta-modern mr-2" title="Buka Halaman Peta WebGIS">
+                <i class="fas fa-map-marked-alt"></i>
+                <span>Lihat Peta</span>
             </a>
 
             <!-- Fullscreen Toggle -->

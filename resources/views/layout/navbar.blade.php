@@ -102,9 +102,10 @@
 
         @auth
         <!-- TOMBOL KEMBALI KE PANEL ADMIN (SEAMLESS BRIDGE) -->
-        <li class="nav-item mr-1.5">
-            <a href="{{ route('admin.dashboard') }}" class="btn btn-sm btn-primary font-weight-bold d-flex align-items-center px-2.5 py-1 shadow-xs text-white" style="border-radius: 18px; font-size: 0.78rem; background: #1d4ed8; border: none; height: 32px;" title="Kembali ke Dashboard Administrator">
-                <i class="fas fa-th-large mr-1.5" style="font-size: 11px;"></i> Panel Admin
+        <li class="nav-item mr-2">
+            <a href="{{ route('admin.dashboard') }}" class="btn btn-sm btn-primary font-weight-bold d-inline-flex align-items-center px-3 py-1 shadow-sm text-white" style="border-radius: 18px; font-size: 0.78rem; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border: none; height: 32px; gap: 6px;" title="Kembali ke Dashboard Administrator">
+                <i class="fas fa-th-large" style="font-size: 11px;"></i>
+                <span>Panel Admin</span>
             </a>
         </li>
 
