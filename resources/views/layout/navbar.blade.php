@@ -86,10 +86,10 @@
     <!-- Bagian Kanan: Menu Link Ramping & Tombol Aksi -->
     <ul class="navbar-nav ml-auto align-items-center" style="gap: 12px;">
 
-        <!-- Menu Link Panduan Aplikasi -->
+        <!-- Menu Link Petunjuk Penggunaan -->
         <li class="nav-item d-none d-sm-block">
-            <a href="javascript:void(0)" class="nav-link font-weight-bold px-2 bws-nav-link-custom" data-toggle="modal" data-target="#modalPanduanAplikasi" style="font-size: 13px;" title="Buku Panduan Penggunaan">
-                <i class="fas fa-clipboard-list mr-1" style="color: #2563eb;"></i> Panduan Aplikasi
+            <a href="javascript:void(0)" class="nav-link font-weight-bold px-2 bws-nav-link-custom" data-toggle="modal" data-target="#modalPanduanAplikasi" style="font-size: 13px;" title="Petunjuk Penggunaan WebGIS">
+                <i class="fas fa-book-reader mr-1" style="color: #2563eb;"></i> Petunjuk Penggunaan
             </a>
         </li>
 

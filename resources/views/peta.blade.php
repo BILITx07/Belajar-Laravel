@@ -242,107 +242,149 @@
 
 </div>
 
-<!-- MODAL PANDUAN PENGGUNAAN APLIKASI -->
+<!-- MODAL PETUNJUK PENGGUNAAN WEBGIS (Resmi & Profesional) -->
 <div class="modal fade" id="modalPanduanAplikasi" tabindex="-1" role="dialog" aria-labelledby="modalPanduanLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
-            <div class="modal-header text-white" style="background: linear-gradient(135deg, #0d3875 0%, #174ea6 100%);">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 18px; overflow: hidden;">
+            
+            <!-- Modal Header (Gaya Resmi Kedinasan PU) -->
+            <div class="modal-header text-white px-4 py-3" style="background: linear-gradient(135deg, #093c52 0%, #0d5c70 50%, #117887 100%);">
                 <div class="d-flex align-items-center">
-                    <div class="mr-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: #f59e0b; border-radius: 10px; color: #0d3875; font-size: 18px;">
-                        <i class="fas fa-clipboard-check"></i>
+                    <div class="mr-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 44px; height: 44px; background: #ffffff; border-radius: 12px; color: #1d4ed8; font-size: 20px; border: 2px solid rgba(250, 214, 5, 0.9);">
+                        <i class="fas fa-book-reader"></i>
                     </div>
                     <div>
-                        <h5 class="modal-title font-weight-bold text-white mb-0" id="modalPanduanLabel" style="font-size: 1.15rem;">
-                            Buku Panduan Penggunaan WebGIS
+                        <h5 class="modal-title font-weight-bold text-white mb-0" id="modalPanduanLabel" style="font-size: 1.15rem; letter-spacing: 0.3px;">
+                            Petunjuk Penggunaan WebGIS
                         </h5>
-                        <small style="color: rgba(255,255,255,0.85);">Balai Wilayah Sungai Kalimantan I — Kementerian Pekerjaan Umum</small>
+                        <small style="color: rgba(255, 255, 255, 0.88); font-size: 0.78rem;">
+                            Balai Wilayah Sungai Kalimantan I &bull; Direktorat Jenderal Sumber Daya Air
+                        </small>
                     </div>
                 </div>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 0.9;">
-                    <span aria-hidden="true">&times;</span>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 0.85; text-shadow: none;">
+                    <span aria-hidden="true" style="font-size: 1.5rem;">&times;</span>
                 </button>
             </div>
             
             <div class="modal-body p-4">
+                <!-- Navigasi Tab Modern -->
                 <ul class="nav nav-pills nav-fill mb-3" id="pills-tab-panduan" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active font-weight-bold small py-2" id="tab-peta-link" data-toggle="pill" href="#tab-peta" role="tab">
-                            <i class="fas fa-map-marked-alt mr-1"></i> 1. Lapisan Peta
+                        <a class="nav-link active font-weight-bold py-2" id="tab-peta-link" data-toggle="pill" href="#tab-peta" role="tab" style="font-size: 0.85rem; border-radius: 10px;">
+                            <i class="fas fa-layer-group mr-1"></i> 1. Lapisan &amp; Simbol Peta
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link font-weight-bold small py-2" id="tab-filter-link" data-toggle="pill" href="#tab-filter" role="tab">
-                            <i class="fas fa-filter mr-1"></i> 2. Pencarian &amp; Filter
+                        <a class="nav-link font-weight-bold py-2" id="tab-filter-link" data-toggle="pill" href="#tab-filter" role="tab" style="font-size: 0.85rem; border-radius: 10px;">
+                            <i class="fas fa-search-location mr-1"></i> 2. Pencarian &amp; Filter
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link font-weight-bold small py-2" id="tab-popup-link" data-toggle="pill" href="#tab-popup" role="tab">
-                            <i class="fas fa-info-circle mr-1"></i> 3. Rincian Objek
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link font-weight-bold small py-2" id="tab-tabel-link" data-toggle="pill" href="#tab-tabel" role="tab">
-                            <i class="fas fa-table mr-1"></i> 4. Tabel &amp; Halaman
+                        <a class="nav-link font-weight-bold py-2" id="tab-popup-link" data-toggle="pill" href="#tab-popup" role="tab" style="font-size: 0.85rem; border-radius: 10px;">
+                            <i class="fas fa-info-circle mr-1"></i> 3. Interaksi &amp; Detail
                         </a>
                     </li>
                 </ul>
 
-                <div class="tab-content border rounded p-3 bg-light" id="pills-tabContent" style="min-height: 220px; font-size: 13px; line-height: 1.6;">
+                <!-- Konten Tab Panduan -->
+                <div class="tab-content border rounded p-3 bg-white shadow-sm" id="pills-tabContent" style="min-height: 230px; font-size: 13px; line-height: 1.6; border-color: #e2e8f0 !important;">
+                    
+                    <!-- TAB 1: LAPISAN & SIMBOL PETA -->
                     <div class="tab-pane fade show active" id="tab-peta" role="tabpanel">
                         <div class="font-weight-bold text-primary mb-2" style="font-size: 14px;">
-                            <i class="fas fa-palette mr-1"></i> Memahami Arti Warna Layer Spasial
+                            <i class="fas fa-palette mr-1"></i> Klasifikasi Data Spasial Irigasi
                         </div>
-                        <p class="text-secondary mb-2">Setiap poligon dan garis di peta memiliki arti khusus sesuai standar klasifikasi irigasi Kementerian PU:</p>
+                        <p class="text-secondary mb-3">Setiap warna dan bentuk geometri pada peta merepresentasikan objek sumber daya air resmi BWS Kalimantan I:</p>
+                        
                         <div class="row">
                             <div class="col-md-6 mb-2">
-                                <div class="p-2 border rounded bg-white"><span class="badge badge-success px-2 mr-1">Hijau</span> <strong>Lahan Baku:</strong> Lahan siap tanam yang masuk cakupan irigasi.</div>
+                                <div class="p-2 border rounded bg-light d-flex align-items-center">
+                                    <span class="badge badge-success px-2 py-1 mr-2" style="min-width: 70px;">Hijau</span>
+                                    <div><strong>Lahan Baku:</strong> Lahan siap tanam dalam kewenangan Daerah Irigasi Rawa (DIR).</div>
+                                </div>
                             </div>
                             <div class="col-md-6 mb-2">
-                                <div class="p-2 border rounded bg-white"><span class="badge badge-primary px-2 mr-1">Biru</span> <strong>Lahan Fungsional:</strong> Lahan yang sudah aktif menerima aliran air.</div>
+                                <div class="p-2 border rounded bg-light d-flex align-items-center">
+                                    <span class="badge badge-primary px-2 py-1 mr-2" style="min-width: 70px;">Biru</span>
+                                    <div><strong>Lahan Fungsional:</strong> Lahan aktif beririgasi dan beroperasi O&amp;P rutin.</div>
+                                </div>
                             </div>
                             <div class="col-md-6 mb-2">
-                                <div class="p-2 border rounded bg-white"><span class="badge badge-warning text-dark px-2 mr-1">Oranye</span> <strong>Lahan Potensial:</strong> Lahan rencana perluasan irigasi.</div>
+                                <div class="p-2 border rounded bg-light d-flex align-items-center">
+                                    <span class="badge badge-warning text-dark px-2 py-1 mr-2" style="min-width: 70px;">Kuning</span>
+                                    <div><strong>Lahan Potensial:</strong> Wilayah perencanaan pengembangan potensi irigasi.</div>
+                                </div>
                             </div>
                             <div class="col-md-6 mb-2">
-                                <div class="p-2 border rounded bg-white"><span class="badge badge-info px-2 mr-1" style="background:#0284c7; color:#fff;">Biru Laut</span> <strong>Jaringan Saluran:</strong> Saluran primer, sekunder, &amp; tersier.</div>
+                                <div class="p-2 border rounded bg-light d-flex align-items-center">
+                                    <span class="badge badge-info px-2 py-1 mr-2" style="background:#0284c7; color:#fff; min-width: 70px;">Cyan</span>
+                                    <div><strong>Jaringan Saluran:</strong> Trase garis saluran pembawa primer, sekunder, &amp; tersier.</div>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-1">
+                                <div class="p-2 border rounded bg-light d-flex align-items-center">
+                                    <span class="badge px-2 py-1 mr-2" style="background:#d97706; color:#fff; min-width: 70px;">Oranye</span>
+                                    <div><strong>Bangunan Air:</strong> Titik pintu air, bendung, sadap, gorong-gorong, dan pos hidrologi.</div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
+                    <!-- TAB 2: PENCARIAN & FILTER -->
                     <div class="tab-pane fade" id="tab-filter" role="tabpanel">
-                        <div class="font-weight-bold text-primary mb-2" style="font-size: 14px;"><i class="fas fa-search mr-1"></i> Menemukan Lokasi dengan Cepat</div>
+                        <div class="font-weight-bold text-primary mb-2" style="font-size: 14px;">
+                            <i class="fas fa-search mr-1"></i> Cara Cepat Menemukan Objek Irigasi
+                        </div>
                         <ul class="pl-3 text-secondary mb-2">
-                            <li class="mb-1"><strong>Pencarian Pintar:</strong> Ketik nama daerah irigasi (misal: <em>"Pemangkat"</em> atau <em>"Sungai Kinjil"</em>) pada kotak cari sidebar kiri, lalu klik hasil yang muncul.</li>
-                            <li class="mb-1"><strong>Filter Kabupaten:</strong> Pilih Kabupaten pada dropdown untuk langsung mempersempit fokus peta ke wilayah Sambas, Kubu Raya, atau Ketapang.</li>
-                            <li><strong>Centang Kategori:</strong> Klik baris kategori di sidebar kiri jika Anda ingin mengaktifkan/menonaktifkan kategori tertentu.</li>
+                            <li class="mb-2">
+                                <strong>Pencarian Pintar (*Sidebar* Kiri):</strong> Ketikkan nama pos atau daerah irigasi (misal: <em>"Pemangkat"</em>, <em>"Sungai Daun"</em>, atau <em>"Kubu"</em>) pada kotak pencarian, lalu klik hasil yang muncul untuk langsung menuju lokasi.
+                            </li>
+                            <li class="mb-2">
+                                <strong>Filter Kabupaten:</strong> Gunakan menu pilihan wilayah untuk membatasi fokus peta ke Kabupaten tertentu (Kabupaten Sambas, Kubu Raya, atau Ketapang).
+                            </li>
+                            <li class="mb-1">
+                                <strong>Tombol Kategori Layer:</strong> Klik baris kategori (*Lahan Baku*, *Fungsional*, *Saluran*, *Bangunan Air*) di panel kiri untuk menampilkan atau menyembunyikan lapisan tertentu dari peta.
+                            </li>
                         </ul>
                     </div>
 
+                    <!-- TAB 3: INTERAKSI & DETAIL -->
                     <div class="tab-pane fade" id="tab-popup" role="tabpanel">
-                        <div class="font-weight-bold text-primary mb-2" style="font-size: 14px;"><i class="fas fa-crosshairs mr-1"></i> Membaca Kartu Rincian Objek</div>
-                        <p class="text-secondary mb-2">Saat Anda mengklik poligon lahan atau saluran di peta:</p>
-                        <ul class="pl-3 text-secondary mb-0">
-                            <li class="mb-1">Peta secara otomatis <strong>memusatkan kamera (*smooth flyTo*)</strong> ke koordinat akurat.</li>
-                            <li class="mb-1">Muncul <strong>kartu detail modern</strong> yang menampilkan Nama Pos, Kabupaten, Luas Baku (Ha), Luas Fungsional (Ha), dan status data.</li>
-                            <li>Tersedia tombol <strong>"Lihat di Tabel"</strong> untuk mencari baris data terkait di tabel bawah.</li>
+                        <div class="font-weight-bold text-primary mb-2" style="font-size: 14px;">
+                            <i class="fas fa-mouse-pointer mr-1"></i> Membaca Informasi &amp; Koordinat Objek
+                        </div>
+                        <p class="text-secondary mb-2">Peta ini bersifat interaktif dan akurat secara geospasial:</p>
+                        <ul class="pl-3 text-secondary mb-2">
+                            <li class="mb-2">
+                                <strong>Klik Objek pada Peta:</strong> Setiap kali Anda mengklik poligon lahan, garis saluran, atau ikon bangunan air, peta akan melakukan <strong>pusat kamera otomatis (*smooth flyTo*)</strong> langsung ke titik koordinat presisi.
+                            </li>
+                            <li class="mb-2">
+                                <strong>Kartu Informasi Melayang:</strong> Di atas objek yang diklik akan muncul kartu pop-up modern berisi Nama Objek, Kategori, Kabupaten, serta data teknis resmi dari Buku DIR BWS Kalimantan I.
+                            </li>
+                            <li class="mb-1">
+                                <strong>Navigasi Peta:</strong> Anda dapat memperbesar (*zoom-in*), memperkecil (*zoom-out*), atau menggeser peta secara bebas menggunakan mouse komputer atau sentuhan layar sentuh pada HP.
+                            </li>
                         </ul>
                     </div>
+                </div>
 
-                    <div class="tab-pane fade" id="tab-tabel" role="tabpanel">
-                        <div class="font-weight-bold text-primary mb-2" style="font-size: 14px;"><i class="fas fa-list-ol mr-1"></i> Navigasi Tabel &amp; Tombol Halaman</div>
-                        <ul class="pl-3 text-secondary mb-0">
-                            <li class="mb-1">Tabel dibatasi <strong>10 data per halaman</strong> agar tidak berat dan tidak perlu scroll panjang.</li>
-                            <li class="mb-1">Gunakan tombol angka <strong>[ 1 ] [ 2 ] [ 3 ]...</strong> di bawah tabel untuk berpindah ke halaman berikutnya.</li>
-                            <li class="mb-1">Gunakan tab filter di atas tabel untuk memfilter langsung berdasarkan <em>Baku</em>, <em>Fungsional</em>, atau <em>Saluran</em>.</li>
-                            <li>Klik tombol <strong>"🎯 Fokus"</strong> di baris tabel mana saja untuk langsung meluncur ke objek tersebut di peta.</li>
-                        </ul>
+                <!-- Tips Navigasi Praktis -->
+                <div class="p-2 px-3 rounded mt-3 d-flex align-items-center" style="background: rgba(29, 78, 216, 0.06); border: 1px dashed rgba(29, 78, 216, 0.25); font-size: 12.5px; color: #1e40af;">
+                    <i class="fas fa-lightbulb text-warning mr-2 fa-lg"></i>
+                    <div>
+                        <strong>Tips Praktis:</strong> Gunakan tombol <strong>Layar Penuh</strong> (<i class="fas fa-expand mx-1"></i>) pada pojok kanan atas navbar untuk melihat sebaran jaringan irigasi secara maksimal dan leluasa.
                     </div>
                 </div>
             </div>
 
-            <div class="modal-footer bg-light py-2">
-                <button type="button" class="btn btn-primary btn-sm font-weight-bold px-4" data-dismiss="modal">
-                    Mengerti &amp; Tutup Panduan
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light py-2 px-4 justify-content-between">
+                <small class="text-muted" style="font-size: 11.5px;">
+                    <i class="fas fa-shield-alt text-success mr-1"></i> Data Spasial Resmi SISDA BWS Kalimantan I
+                </small>
+                <button type="button" class="btn btn-primary btn-sm font-weight-bold px-4 shadow-sm" data-dismiss="modal" style="border-radius: 8px;">
+                    Mengerti &amp; Tutup
                 </button>
             </div>
         </div>
