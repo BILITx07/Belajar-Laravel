@@ -488,6 +488,54 @@
                         </div>
                     </div>
 
+                    <!-- 3. PEMILAH FILE DI DALAM ARSIP ZIP (PILIH 1 PER 1 DARI DALAM ZIP) -->
+                    <div id="zipPickerSection" style="display:none;" class="mt-3">
+                        <div class="card border shadow-sm" style="border-radius:10px; overflow:hidden; border-color:#93c5fd !important;">
+                            <div class="card-header bg-light py-2 px-3 d-flex align-items-center justify-content-between flex-wrap" style="gap:6px;">
+                                <div>
+                                    <strong class="text-primary" style="font-size:0.84rem;">
+                                        <i class="fas fa-file-archive mr-1"></i> Pemilah File Dari Dalam ZIP
+                                    </strong>
+                                    <div class="text-muted small" id="zipPickerSummary" style="font-size:0.75rem;">
+                                        Membaca file di dalam ZIP...
+                                    </div>
+                                </div>
+                                <div class="btn-group btn-group-sm">
+                                    <button type="button" class="btn btn-outline-primary btn-sm py-1 px-2 font-weight-bold" style="font-size:0.75rem;" onclick="toggleAllZipEntries(true)">
+                                        Pilih Semua
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm py-1 px-2 font-weight-bold" style="font-size:0.75rem;" onclick="toggleAllZipEntries(false)">
+                                        Kosongkan
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Filter Pencarian File Cepat dalam ZIP -->
+                            <div class="p-2 bg-white border-bottom">
+                                <div class="input-group input-group-sm">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-light border-right-0"><i class="fas fa-search text-muted"></i></span>
+                                    </div>
+                                    <input type="text" id="searchZipEntry" class="form-control border-left-0" placeholder="Ketik nama file (contoh: Pemangkat, Kubu, Saluran)..." onkeyup="filterZipEntries(this.value)">
+                                </div>
+                            </div>
+
+                            <!-- List Box Checkbox File-File dalam ZIP -->
+                            <div class="p-2 bg-white" id="zipEntriesContainer" style="max-height: 190px; overflow-y: auto; font-size: 0.8rem;">
+                                <!-- Daftar checkbox di-render secara dinamis oleh JavaScript -->
+                            </div>
+
+                            <div class="card-footer bg-light py-2 px-3 d-flex align-items-center justify-content-between">
+                                <span class="small font-weight-bold text-dark" id="zipSelectedCounter">
+                                    0 file dipilih
+                                </span>
+                                <small class="text-muted" style="font-size:0.72rem;">
+                                    Centang file yang ingin diunggah saja
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Indikator Status Proses -->
                     <div id="kelolaGisUploadStatus" class="alert alert-info py-2 px-3 small font-weight-bold text-primary mt-3 mb-0" style="display:none;border-radius:8px;background:#eff6ff;border:1px solid #bfdbfe;">
                         <i class="fas fa-spinner fa-spin mr-1"></i> Memproses unggahan...
@@ -593,28 +641,47 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
-    function handleFileChange(input) {
+    var activeZipInstance = null;
+    var activeZipEntries = [];
+
+    async function handleFileChange(input) {
         var files = input.files;
         var emptyState = document.getElementById('dropzoneEmptyState');
         var selectedState = document.getElementById('dropzoneSelectedState');
         var summary = document.getElementById('selectedFileSummary');
         var list = document.getElementById('selectedFileList');
+        var zipSection = document.getElementById('zipPickerSection');
+
+        activeZipInstance = null;
+        activeZipEntries = [];
+        if (zipSection) zipSection.style.display = 'none';
 
         if (!files || files.length === 0) {
             if (emptyState) emptyState.style.display = 'block';
             if (selectedState) selectedState.style.display = 'none';
+            updateSubmitButtonText(0);
             return;
         }
 
         if (emptyState) emptyState.style.display = 'none';
         if (selectedState) selectedState.style.display = 'block';
 
-        if (files.length === 1) {
+        if (files.length === 1 && files[0].name.toLowerCase().endsWith('.zip')) {
             var f = files[0];
             var sizeStr = f.size > 1024 * 1024 ? (f.size / (1024 * 1024)).toFixed(2) + ' MB' : (f.size / 1024).toFixed(1) + ' KB';
             summary.innerHTML = '<span class="text-primary font-weight-bold">' + f.name + '</span> (' + sizeStr + ')';
-            list.innerHTML = '<div class="d-flex align-items-center justify-content-between p-1"><span><i class="fas fa-file text-primary mr-2"></i>' + f.name + '</span><span class="badge badge-light border text-muted">' + sizeStr + '</span></div>';
+            list.innerHTML = '<div class="d-flex align-items-center justify-content-between p-1"><span><i class="fas fa-file-archive text-warning mr-2"></i>' + f.name + '</span><span class="badge badge-light border text-muted">' + sizeStr + '</span></div>';
+            
+            // Periksa & bongkar isi file ZIP agar bisa dipilih 1-per-1
+            await inspectZipFile(f);
+        } else if (files.length === 1) {
+            var f = files[0];
+            var sizeStr = f.size > 1024 * 1024 ? (f.size / (1024 * 1024)).toFixed(2) + ' MB' : (f.size / 1024).toFixed(1) + ' KB';
+            summary.innerHTML = '<span class="text-primary font-weight-bold">' + f.name + '</span> (' + sizeStr + ')';
+            list.innerHTML = '<div class="d-flex align-items-center justify-content-between p-1"><span><i class="fas fa-file-code text-primary mr-2"></i>' + f.name + '</span><span class="badge badge-light border text-muted">' + sizeStr + '</span></div>';
+            updateSubmitButtonText(1);
         } else {
             summary.innerHTML = '<span class="text-primary font-weight-bold">' + files.length + ' file dipilih</span>';
             var html = '';
@@ -624,6 +691,124 @@
                 html += '<div class="d-flex align-items-center justify-content-between py-1 border-bottom"><span><i class="fas fa-file text-primary mr-2"></i>' + f.name + '</span><span class="badge badge-light border text-muted">' + sizeStr + '</span></div>';
             }
             list.innerHTML = html;
+            updateSubmitButtonText(files.length);
+        }
+    }
+
+    // Fungsi membaca & membedah isi file ZIP untuk dipilih satuan
+    async function inspectZipFile(file) {
+        var zipSection = document.getElementById('zipPickerSection');
+        var zipSummary = document.getElementById('zipPickerSummary');
+        var container = document.getElementById('zipEntriesContainer');
+
+        if (typeof JSZip === 'undefined') {
+            updateSubmitButtonText(1);
+            return;
+        }
+
+        zipSection.style.display = 'block';
+        zipSummary.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Membaca daftar file di dalam ' + file.name + '...';
+        container.innerHTML = '<div class="text-center p-3 text-muted"><i class="fas fa-spinner fa-spin mr-1"></i> Membuka arsip ZIP...</div>';
+
+        try {
+            var zip = await JSZip.loadAsync(file);
+            activeZipInstance = zip;
+            activeZipEntries = [];
+
+            zip.forEach(function(relativePath, zipEntry) {
+                if (zipEntry.dir) return;
+                var baseName = relativePath.split('/').pop();
+                if (baseName.startsWith('.') || relativePath.includes('__MACOSX')) return;
+                var ext = baseName.split('.').pop().toLowerCase();
+                if (['json', 'geojson'].includes(ext)) {
+                    activeZipEntries.push({
+                        path: relativePath,
+                        name: baseName,
+                        entry: zipEntry
+                    });
+                }
+            });
+
+            if (activeZipEntries.length === 0) {
+                zipSummary.innerHTML = '<span class="text-danger"><i class="fas fa-exclamation-circle mr-1"></i> Tidak ditemukan file .geojson/.json di dalam ZIP</span>';
+                container.innerHTML = '<div class="text-center p-3 text-muted">Tidak ada file spasial yang dapat diimpor di dalam file ZIP ini.</div>';
+                updateSubmitButtonText(0);
+                return;
+            }
+
+            zipSummary.innerHTML = 'Ditemukan <strong class="text-primary">' + activeZipEntries.length + ' file</strong> di dalam ZIP. Centang file yang ingin Anda unggah:';
+            renderZipEntriesList(activeZipEntries);
+        } catch (err) {
+            console.error('JSZip error:', err);
+            zipSummary.innerHTML = '<span class="text-danger">Gagal membaca isi ZIP: ' + err.message + '</span>';
+            updateSubmitButtonText(1);
+        }
+    }
+
+    function renderZipEntriesList(entries) {
+        var container = document.getElementById('zipEntriesContainer');
+        var html = '';
+        entries.forEach(function(item, idx) {
+            html += '<div class="custom-control custom-checkbox zip-entry-row py-1 px-2 rounded mb-1 border-bottom" data-name="' + item.name.toLowerCase() + '" style="background:#fcfcfc;">' +
+                        '<input type="checkbox" class="custom-control-input zip-entry-checkbox" id="chkZip_' + idx + '" value="' + item.path + '" checked onchange="updateZipSelectedCounter()">' +
+                        '<label class="custom-control-label d-flex align-items-center justify-content-between w-100 cursor-pointer" for="chkZip_' + idx + '" style="cursor:pointer;font-size:0.79rem;">' +
+                            '<span class="text-truncate font-weight-bold text-dark mr-2">' +
+                                '<i class="fas fa-file-code text-primary mr-1"></i> ' + item.name +
+                            '</span>' +
+                            '<span class="badge badge-light border text-muted" style="font-size:0.68rem;">' + (item.entry._data ? (item.entry._data.uncompressedSize > 1024 ? (item.entry._data.uncompressedSize/1024).toFixed(0) + ' KB' : item.entry._data.uncompressedSize + ' B') : 'File') + '</span>' +
+                        '</label>' +
+                    '</div>';
+        });
+        container.innerHTML = html;
+        updateZipSelectedCounter();
+    }
+
+    function toggleAllZipEntries(checked) {
+        var checkboxes = document.querySelectorAll('.zip-entry-checkbox');
+        checkboxes.forEach(function(cb) {
+            var row = cb.closest('.zip-entry-row');
+            if (row && row.style.display !== 'none') {
+                cb.checked = checked;
+            }
+        });
+        updateZipSelectedCounter();
+    }
+
+    function filterZipEntries(keyword) {
+        var q = keyword.toLowerCase().trim();
+        var rows = document.querySelectorAll('.zip-entry-row');
+        rows.forEach(function(row) {
+            var name = row.getAttribute('data-name') || '';
+            if (!q || name.includes(q)) {
+                row.style.display = 'block';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    function updateZipSelectedCounter() {
+        var checked = document.querySelectorAll('.zip-entry-checkbox:checked');
+        var total = document.querySelectorAll('.zip-entry-checkbox');
+        var counter = document.getElementById('zipSelectedCounter');
+        if (counter) {
+            counter.innerHTML = '<span class="text-primary font-weight-bold">' + checked.length + ' dari ' + total.length + ' file</span> dicentang untuk diunggah';
+        }
+        updateSubmitButtonText(checked.length);
+    }
+
+    function updateSubmitButtonText(count) {
+        var submitBtn = document.getElementById('btnKelolaGisSubmit');
+        if (!submitBtn) return;
+        if (count === 0) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-cloud-upload-alt mr-1"></i> Pilih Minimal 1 File';
+        } else if (count === 1) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-cloud-upload-alt mr-1"></i> Mulai Unggah (1 File Terpilih)';
+        } else {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-cloud-upload-alt mr-1"></i> Mulai Unggah (' + count + ' File Terpilih)';
         }
     }
 
@@ -634,10 +819,15 @@
         }
         var input = document.getElementById('inputUploadGeojson');
         if (input) input.value = '';
+        activeZipInstance = null;
+        activeZipEntries = [];
+        var zipSection = document.getElementById('zipPickerSection');
+        if (zipSection) zipSection.style.display = 'none';
         var emptyState = document.getElementById('dropzoneEmptyState');
         var selectedState = document.getElementById('dropzoneSelectedState');
         if (emptyState) emptyState.style.display = 'block';
         if (selectedState) selectedState.style.display = 'none';
+        updateSubmitButtonText(0);
     }
 
     // Drag and drop event listeners untuk Dropzone
@@ -727,7 +917,7 @@
         document.getElementById('formBulkDelete').submit();
     }
 
-    // Handle Upload ZIP Shapefile & GeoJSON via shpjs
+    // Handle Upload ZIP Shapefile & GeoJSON via shpjs / JSZip
     async function handleKelolaGisUpload(form, event) {
         event.preventDefault();
         var fileInput = document.getElementById('inputUploadGeojson');
@@ -748,51 +938,80 @@
         var kategori = kategoriSelect ? kategoriSelect.value : 'auto';
         formData.append('kategori', kategori);
 
-        for (var i = 0; i < files.length; i++) {
-            var file = files[i];
-            var ext = file.name.split('.').pop().toLowerCase();
+        // KASUS 1: File ZIP dengan Pemilah Checkbox Aktif
+        if (activeZipInstance && activeZipEntries.length > 0) {
+            var checkedBoxes = document.querySelectorAll('.zip-entry-checkbox:checked');
+            if (checkedBoxes.length === 0) {
+                alert('Silakan centang minimal satu file dari dalam ZIP yang ingin diunggah.');
+                submitBtn.disabled = false;
+                statusText.style.display = 'none';
+                return false;
+            }
 
-            if (ext === 'zip') {
-                statusText.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Mengekstrak paket Shapefile ZIP: ' + file.name + '...';
-                try {
-                    if (typeof shp !== 'undefined') {
-                        var buffer = await file.arrayBuffer();
-                        var geojson = await shp(buffer);
+            statusText.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Mengekstrak ' + checkedBoxes.length + ' file terpilih dari dalam ZIP...';
 
-                        if (Array.isArray(geojson)) {
-                            geojson.forEach(function(gj, idx) {
-                                var rawName = gj.fileName || (file.name.replace(/\.zip$/i, '') + (idx > 0 ? '_' + idx : ''));
+            for (var k = 0; k < checkedBoxes.length; k++) {
+                var zipPath = checkedBoxes[k].value;
+                var zipEntry = activeZipInstance.file(zipPath);
+                if (zipEntry) {
+                    var baseName = zipPath.split('/').pop();
+                    var content = await zipEntry.async('string');
+                    var cleanName = baseName.replace(/[^a-zA-Z0-9_\-.]/g, '_');
+                    if (kategori && kategori !== 'auto' && !cleanName.toLowerCase().startsWith(kategori + '_')) {
+                        cleanName = kategori + '_' + cleanName;
+                    }
+                    var blob = new Blob([content], { type: 'application/geo+json' });
+                    formData.append('file_geojson[]', blob, cleanName);
+                }
+            }
+        } else {
+            // KASUS 2: File Biasa (.geojson / .json tunggal atau multi-file)
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var ext = file.name.split('.').pop().toLowerCase();
+
+                if (ext === 'zip') {
+                    statusText.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Mengekstrak paket Shapefile ZIP: ' + file.name + '...';
+                    try {
+                        if (typeof shp !== 'undefined') {
+                            var buffer = await file.arrayBuffer();
+                            var geojson = await shp(buffer);
+
+                            if (Array.isArray(geojson)) {
+                                geojson.forEach(function(gj, idx) {
+                                    var rawName = gj.fileName || (file.name.replace(/\.zip$/i, '') + (idx > 0 ? '_' + idx : ''));
+                                    var cleanName = rawName.replace(/[^a-zA-Z0-9_\-]/g, '_') + '.geojson';
+                                    if (kategori && kategori !== 'auto' && !cleanName.toLowerCase().startsWith(kategori + '_')) {
+                                        cleanName = kategori + '_' + cleanName;
+                                    }
+                                    var blob = new Blob([JSON.stringify(gj)], { type: 'application/geo+json' });
+                                    formData.append('file_geojson[]', blob, cleanName);
+                                });
+                            } else if (geojson && geojson.type) {
+                                var rawName = geojson.fileName || file.name.replace(/\.zip$/i, '');
                                 var cleanName = rawName.replace(/[^a-zA-Z0-9_\-]/g, '_') + '.geojson';
                                 if (kategori && kategori !== 'auto' && !cleanName.toLowerCase().startsWith(kategori + '_')) {
                                     cleanName = kategori + '_' + cleanName;
                                 }
-                                var blob = new Blob([JSON.stringify(gj)], { type: 'application/geo+json' });
+                                var blob = new Blob([JSON.stringify(geojson)], { type: 'application/geo+json' });
                                 formData.append('file_geojson[]', blob, cleanName);
-                            });
-                        } else if (geojson && geojson.type) {
-                            var rawName = geojson.fileName || file.name.replace(/\.zip$/i, '');
-                            var cleanName = rawName.replace(/[^a-zA-Z0-9_\-]/g, '_') + '.geojson';
-                            if (kategori && kategori !== 'auto' && !cleanName.toLowerCase().startsWith(kategori + '_')) {
-                                cleanName = kategori + '_' + cleanName;
+                            } else {
+                                formData.append('file_geojson[]', file, file.name);
                             }
-                            var blob = new Blob([JSON.stringify(geojson)], { type: 'application/geo+json' });
-                            formData.append('file_geojson[]', blob, cleanName);
                         } else {
                             formData.append('file_geojson[]', file, file.name);
                         }
-                    } else {
+                    } catch (err) {
+                        console.warn('shpjs conversion fallback:', err);
                         formData.append('file_geojson[]', file, file.name);
                     }
-                } catch (err) {
-                    console.warn('shpjs conversion fallback:', err);
+                } else {
                     formData.append('file_geojson[]', file, file.name);
                 }
-            } else {
-                formData.append('file_geojson[]', file, file.name);
             }
         }
 
-        statusText.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Menyimpan ke server...';
+        statusText.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Menyimpan ke server BWS Kalimantan I...';
 
         try {
             var response = await fetch(form.action, {
