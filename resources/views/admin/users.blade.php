@@ -168,7 +168,7 @@
                                 </td>
                                 <td class="align-middle">
                                     <span class="badge badge-light border text-secondary px-2 py-1 font-weight-bold" style="font-size: 0.8rem; background: #f8fafc; border-color: #e2e8f0;">
-                                        <i class="fas fa-at text-muted mr-1"></i>{{ $user->display_username }}
+                                        <i class="fas fa-at text-muted" style="font-size:0.75rem;margin-right:2px;"></i>{{ $user->display_username }}
                                     </span>
                                 </td>
                                 <td class="align-middle" style="font-size: 0.84rem;">
@@ -194,15 +194,15 @@
                                         </span>
                                     @endif
                                 </td>
-                                <td class="text-center align-middle">
-                                    <div class="d-flex align-items-center justify-content-center" style="gap: 8px;">
-                                        <!-- Tombol Edit -->
+                                <td class="text-center align-middle py-3">
+                                    <div class="d-inline-flex align-items-center justify-content-center" style="gap: 6px;">
+                                        <!-- Tombol Edit User -->
                                         <button type="button" 
-                                                class="btn btn-sm shadow-sm d-inline-flex align-items-center justify-content-center"
-                                                style="width: 32px; height: 32px; border-radius: 8px; background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; transition: all 0.2s ease;"
-                                                title="Edit User"
-                                                onmouseover="this.style.background='#10b981'; this.style.color='#fff';"
-                                                onmouseout="this.style.background='#ecfdf5'; this.style.color='#059669';"
+                                                class="btn btn-sm d-inline-flex align-items-center justify-content-center"
+                                                style="width: 32px; height: 32px; border-radius: 7px; background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; transition: all 0.15s ease;"
+                                                title="Edit Data User"
+                                                onmouseover="this.style.background='#16a34a'; this.style.color='#ffffff'; this.style.borderColor='#16a34a';"
+                                                onmouseout="this.style.background='#f0fdf4'; this.style.color='#16a34a'; this.style.borderColor='#bbf7d0';"
                                                 onclick="openEditUserModal({{ json_encode([
                                                     'id'       => $user->id,
                                                     'name'     => $user->name,
@@ -211,19 +211,28 @@
                                                     'phone'    => $user->phone,
                                                     'role'     => $user->role,
                                                 ]) }})">
-                                            <i class="fas fa-pen fa-xs"></i>
+                                            <i class="fas fa-pen" style="font-size: 0.8rem;"></i>
                                         </button>
 
-                                        <!-- Tombol Hapus -->
+                                        <!-- Tombol Hapus User -->
                                         @if(Auth::id() !== $user->id)
                                         <button type="button" 
-                                                class="btn btn-sm shadow-sm d-inline-flex align-items-center justify-content-center"
-                                                style="width: 32px; height: 32px; border-radius: 8px; background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; transition: all 0.2s ease;"
-                                                title="Hapus User"
-                                                onmouseover="this.style.background='#ef4444'; this.style.color='#fff';"
-                                                onmouseout="this.style.background='#fef2f2'; this.style.color='#dc2626';"
+                                                class="btn btn-sm d-inline-flex align-items-center justify-content-center"
+                                                style="width: 32px; height: 32px; border-radius: 7px; background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; transition: all 0.15s ease;"
+                                                title="Hapus Akun User"
+                                                onmouseover="this.style.background='#dc2626'; this.style.color='#ffffff'; this.style.borderColor='#dc2626';"
+                                                onmouseout="this.style.background='#fef2f2'; this.style.color='#dc2626'; this.style.borderColor='#fecaca';"
                                                 onclick="confirmDeleteUser({{ $user->id }}, '{{ addslashes($user->name) }}')">
-                                            <i class="fas fa-trash fa-xs"></i>
+                                            <i class="fas fa-trash-alt" style="font-size: 0.8rem;"></i>
+                                        </button>
+                                        @else
+                                        <!-- Placeholder Terkunci agar Kolom Edit Selalu Sejajar Sempurna -->
+                                        <button type="button" 
+                                                class="btn btn-sm d-inline-flex align-items-center justify-content-center disabled"
+                                                style="width: 32px; height: 32px; border-radius: 7px; background: #f8fafc; color: #cbd5e1; border: 1px solid #e2e8f0; cursor: not-allowed; opacity: 0.7;"
+                                                title="Akun Anda sendiri tidak dapat dihapus"
+                                                disabled>
+                                            <i class="fas fa-trash-alt" style="font-size: 0.8rem;"></i>
                                         </button>
                                         @endif
                                     </div>
