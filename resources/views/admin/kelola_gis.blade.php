@@ -133,65 +133,20 @@
                         </div>
 
                         @if(($currentTab ?? 'active') === 'active')
-                        <!-- Custom Modern Category Filter Dropdown (Bukan Native OS Select) -->
-                        @php
-                            $activeCategoryLabel = 'Semua Kategori';
-                            $activeCategoryIcon = 'fa-layer-group text-primary';
-                            if (($filterType ?? '') === 'baku') {
-                                $activeCategoryLabel = 'Lahan Baku';
-                                $activeCategoryIcon = 'fa-leaf text-success';
-                            } elseif (($filterType ?? '') === 'fungsional') {
-                                $activeCategoryLabel = 'Lahan Fungsional';
-                                $activeCategoryIcon = 'fa-water text-primary';
-                            } elseif (($filterType ?? '') === 'potensial') {
-                                $activeCategoryLabel = 'Lahan Potensial';
-                                $activeCategoryIcon = 'fa-seedling text-warning';
-                            } elseif (($filterType ?? '') === 'saluran') {
-                                $activeCategoryLabel = 'Jaringan Saluran';
-                                $activeCategoryIcon = 'fa-stream text-danger';
-                            } elseif (($filterType ?? '') === 'bangunan') {
-                                $activeCategoryLabel = 'Bangunan Air';
-                                $activeCategoryIcon = 'fa-landmark text-purple';
-                            } elseif (($filterType ?? '') === 'ws_kapuas') {
-                                $activeCategoryLabel = 'WS Kapuas';
-                                $activeCategoryIcon = 'fa-globe-asia text-info';
-                            }
-                        @endphp
-                        <div class="dropdown">
-                            <input type="hidden" name="type" id="filterTypeInput" value="{{ $filterType ?? 'semua' }}">
-                            <button class="btn btn-sm btn-white border shadow-sm dropdown-toggle font-weight-bold d-inline-flex align-items-center justify-content-between" type="button" id="btnFilterCategory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height:38px; border-radius:8px; font-size:0.82rem; min-width:185px; border-color:#cbd5e1; background:#ffffff;">
-                                <span class="d-flex align-items-center text-truncate mr-2">
-                                    <i class="fas {{ $activeCategoryIcon }} mr-2"></i> {{ $activeCategoryLabel }}
-                                </span>
-                            </button>
-                            <div class="dropdown-menu shadow-lg border-0 py-2 anim-scale-up" aria-labelledby="btnFilterCategory" style="border-radius:12px; min-width:220px; font-size:0.82rem; box-shadow: 0 10px 30px rgba(0,0,0,0.12) !important;">
-                                <a class="dropdown-item py-2 px-3 d-flex align-items-center {{ ($filterType ?? 'semua') === 'semua' ? 'active font-weight-bold' : 'text-dark' }}" href="javascript:void(0)" onclick="selectCategoryFilter('semua')">
-                                    <i class="fas fa-layer-group mr-2 text-primary fa-fw"></i> Semua Kategori
-                                </a>
-                                <div class="dropdown-divider my-1"></div>
-                                <div class="dropdown-header text-uppercase font-weight-bold text-muted px-3 py-1" style="font-size:0.67rem; letter-spacing:0.5px;">
-                                    Daerah Irigasi (DIR)
-                                </div>
-                                <a class="dropdown-item py-2 px-3 d-flex align-items-center {{ ($filterType ?? '') === 'baku' ? 'active font-weight-bold' : 'text-dark' }}" href="javascript:void(0)" onclick="selectCategoryFilter('baku')">
-                                    <i class="fas fa-leaf mr-2 text-success fa-fw"></i> Lahan Baku (DIR Baku)
-                                </a>
-                                <a class="dropdown-item py-2 px-3 d-flex align-items-center {{ ($filterType ?? '') === 'fungsional' ? 'active font-weight-bold' : 'text-dark' }}" href="javascript:void(0)" onclick="selectCategoryFilter('fungsional')">
-                                    <i class="fas fa-water mr-2 text-primary fa-fw"></i> Lahan Fungsional
-                                </a>
-                                <a class="dropdown-item py-2 px-3 d-flex align-items-center {{ ($filterType ?? '') === 'potensial' ? 'active font-weight-bold' : 'text-dark' }}" href="javascript:void(0)" onclick="selectCategoryFilter('potensial')">
-                                    <i class="fas fa-seedling mr-2 text-warning fa-fw"></i> Lahan Potensial
-                                </a>
-                                <div class="dropdown-divider my-1"></div>
-                                <div class="dropdown-header text-uppercase font-weight-bold text-muted px-3 py-1" style="font-size:0.67rem; letter-spacing:0.5px;">
-                                    Infrastruktur Pengairan
-                                </div>
-                                <a class="dropdown-item py-2 px-3 d-flex align-items-center {{ ($filterType ?? '') === 'saluran' ? 'active font-weight-bold' : 'text-dark' }}" href="javascript:void(0)" onclick="selectCategoryFilter('saluran')">
-                                    <i class="fas fa-stream mr-2 text-danger fa-fw"></i> Jaringan Saluran
-                                </a>
-                                <a class="dropdown-item py-2 px-3 d-flex align-items-center {{ ($filterType ?? '') === 'bangunan' ? 'active font-weight-bold' : 'text-dark' }}" href="javascript:void(0)" onclick="selectCategoryFilter('bangunan')">
-                                    <i class="fas fa-landmark mr-2 fa-fw" style="color:#8b5cf6;"></i> Bangunan Air
-                                </a>
-                            </div>
+                        <!-- Pilihan Kategori Spasial (Kotak Pilihan Rapi & Terstruktur) -->
+                        <div class="d-flex align-items-center">
+                            <select name="type" class="custom-select custom-select-sm font-weight-bold text-dark border shadow-sm" style="height: 38px; border-radius: 8px; font-size: 0.83rem; min-width: 195px; border-color: #cbd5e1; background: #ffffff; cursor: pointer;" onchange="document.getElementById('filterForm').submit()">
+                                <option value="semua" {{ ($filterType ?? 'semua') === 'semua' ? 'selected' : '' }}>Semua Kategori</option>
+                                <optgroup label="Daerah Irigasi (DIR)">
+                                    <option value="baku" {{ ($filterType ?? '') === 'baku' ? 'selected' : '' }}>DIR Baku</option>
+                                    <option value="fungsional" {{ ($filterType ?? '') === 'fungsional' ? 'selected' : '' }}>DIR Fungsional</option>
+                                    <option value="potensial" {{ ($filterType ?? '') === 'potensial' ? 'selected' : '' }}>DIR Potensial</option>
+                                </optgroup>
+                                <optgroup label="Infrastruktur Pengairan">
+                                    <option value="saluran" {{ ($filterType ?? '') === 'saluran' ? 'selected' : '' }}>Jaringan Saluran</option>
+                                    <option value="bangunan" {{ ($filterType ?? '') === 'bangunan' ? 'selected' : '' }}>Bangunan Air</option>
+                                </optgroup>
+                            </select>
                         </div>
 
                         <!-- Tombol Hapus Masal (Khusus Super Admin) -->
@@ -729,23 +684,6 @@
     .zip-entry-row input[type="checkbox"] {
         cursor: pointer;
     }
-    .dropdown-item {
-        transition: all 0.15s ease-in-out;
-        border-radius: 8px;
-        margin: 2px 6px;
-        width: calc(100% - 12px);
-    }
-    .dropdown-item:hover {
-        background-color: #eff6ff !important;
-        color: #1d4ed8 !important;
-    }
-    .dropdown-item.active {
-        background-color: #1d4ed8 !important;
-        color: #ffffff !important;
-    }
-    .dropdown-item.active i {
-        color: #ffffff !important;
-    }
 </style>
 @endpush
 
@@ -754,14 +692,6 @@
 <script>
     var activeZipInstance = null;
     var activeZipEntries = [];
-
-    function selectCategoryFilter(cat) {
-        var input = document.getElementById('filterTypeInput');
-        if (input) {
-            input.value = cat;
-            document.getElementById('filterForm').submit();
-        }
-    }
 
     async function handleFileChange(input) {
         var files = input.files;
