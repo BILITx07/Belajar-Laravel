@@ -170,10 +170,13 @@
             </p>
         </div>
 
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center" style="gap: 8px;">
             <span class="badge badge-light border text-secondary px-3 py-2 font-weight-bold shadow-sm" style="border-radius: 20px; font-size: 0.8rem; background: #fff;">
-                <i class="fas fa-calendar-alt text-primary mr-2"></i> {{ \Carbon\Carbon::now()->isoFormat('dddd, D MMMM Y') }}
+                <i class="fas fa-calendar-alt text-primary mr-2"></i> {{ \Carbon\Carbon::now()->locale('id')->isoFormat('dddd, D MMMM Y') }}
             </span>
+            <a href="{{ route('admin.kelola-gis') }}" class="btn btn-sm btn-primary shadow-sm font-weight-bold" style="border-radius: 20px; font-size: 0.78rem; padding: 6px 14px;">
+                <i class="fas fa-cloud-upload-alt mr-1"></i> Upload File GIS
+            </a>
         </div>
     </div>
 
@@ -225,7 +228,7 @@
                 <div class="siperisda-body">
                     <i class="fas fa-leaf siperisda-icon"></i>
                     <div class="siperisda-value">{{ str_replace(' Ha', '', $statistik['total_luas_baku'] ?? '24.500') }}<span class="siperisda-unit">Ha</span></div>
-                    <div class="siperisda-label">Lahan Baku Siap</div>
+                    <div class="siperisda-label">Lahan Baku Siap Tanam</div>
                 </div>
                 <div class="siperisda-footer">
                     <span>Daerah Irigasi Baku</span>
@@ -413,7 +416,7 @@
                                         {{ $act['description'] ?? '-' }}
                                     </div>
                                     <div class="text-muted" style="font-size: 0.72rem;">
-                                        <i class="far fa-clock mr-1"></i>{{ \Carbon\Carbon::parse($act['time'])->diffForHumans() }}
+                                        <i class="far fa-clock mr-1"></i>{{ \Carbon\Carbon::parse($act['time'])->locale('id')->diffForHumans() }}
                                     </div>
                                 </div>
                             </div>

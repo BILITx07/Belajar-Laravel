@@ -162,7 +162,7 @@
                                     {{ $log['description'] ?? '-' }}
                                 </div>
                                 <div class="text-muted" style="font-size: 10px;">
-                                    <i class="far fa-clock mr-1"></i>{{ \Carbon\Carbon::parse($log['time'])->diffForHumans() }}
+                                    <i class="far fa-clock mr-1"></i>{{ \Carbon\Carbon::parse($log['time'])->locale('id')->diffForHumans() }}
                                 </div>
                             </div>
                         </div>
