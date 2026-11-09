@@ -401,151 +401,183 @@
      MODAL UPLOAD FILE GEOJSON
      ========================================== -->
 <div class="modal fade" id="modalUpload" tabindex="-1" role="dialog" aria-labelledby="modalUploadLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:540px;">
-        <div class="modal-content border-0 shadow-lg" style="border-radius:16px;overflow:hidden;">
-            <!-- Header Modal Modern -->
-            <div class="modal-header text-white py-3 px-4" style="background: linear-gradient(135deg, #093c52 0%, #0d5c70 50%, #1d4ed8 100%);">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:880px; width:95%;">
+        <div class="modal-content border-0 shadow-lg" style="border-radius:18px; overflow:hidden;">
+            <!-- Header Modal Resmi BWS Kalimantan I -->
+            <div class="modal-header text-white py-3 px-4" style="background: linear-gradient(135deg, #093c52 0%, #0d5c70 45%, #1d4ed8 100%);">
                 <div class="d-flex align-items-center">
-                    <div class="mr-3 d-flex align-items-center justify-content-center shadow-sm" style="width:40px;height:40px;background:rgba(255,255,255,0.18);border-radius:10px;border:1px solid rgba(255,255,255,0.3);">
+                    <div class="mr-3 d-flex align-items-center justify-content-center shadow-sm" style="width:42px;height:42px;background:rgba(255,255,255,0.18);border-radius:12px;border:1.5px solid rgba(255,255,255,0.35);">
                         <i class="fas fa-cloud-upload-alt fa-lg text-white"></i>
                     </div>
                     <div>
-                        <h5 class="modal-title font-weight-bold text-white mb-0" id="modalUploadLabel" style="font-size:1.1rem;letter-spacing:0.3px;">
-                            Unggah Data Geospasial
+                        <h5 class="modal-title font-weight-bold text-white mb-0" id="modalUploadLabel" style="font-size:1.15rem;letter-spacing:0.3px;">
+                            Unggah Data Geospasial Irigasi
                         </h5>
-                        <small style="color:rgba(255,255,255,0.85);font-size:0.78rem;">
-                            Bisa 1 file langsung (.geojson / .json) atau paket Shapefile (.zip)
+                        <small style="color:rgba(255,255,255,0.88);font-size:0.78rem;">
+                            Balai Wilayah Sungai Kalimantan I &bull; Direktorat Jenderal Sumber Daya Air
                         </small>
                     </div>
                 </div>
                 <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="outline:none;opacity:0.85;">
-                    <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true" style="font-size:1.6rem;">&times;</span>
                 </button>
             </div>
             
             <form id="formUploadKelolaGis" action="{{ route('admin.upload') }}" method="POST" enctype="multipart/form-data" onsubmit="handleKelolaGisUpload(this, event)">
                 @csrf
-                <div class="modal-body p-4 bg-white">
-                    
-                    <!-- 1. Pilihan Kategori Lapisan Peta -->
-                    <div class="form-group mb-3">
-                        <label class="font-weight-bold text-dark mb-1" style="font-size:0.84rem;">
-                            <i class="fas fa-layer-group text-primary mr-1"></i> Tentukan Kategori Lapisan Peta:
-                        </label>
-                        <select name="kategori" id="selectKategoriUpload" class="form-control" style="border-radius:8px;font-size:0.86rem;font-weight:600;border:1.5px solid #cbd5e1;height:42px;">
-                            <option value="auto" selected>🔄 Otomatis (Deteksi dari nama file yang diunggah)</option>
-                            <option value="baku">🌱 Lahan Baku (Daerah Irigasi Baku)</option>
-                            <option value="fungsional">💧 Lahan Fungsional (Aktif Teraliri Air)</option>
-                            <option value="potensial">📐 Lahan Potensial (Rencana Pengembangan)</option>
-                            <option value="saluran">🛤️ Jaringan Saluran (Primer, Sekunder &amp; Tersier)</option>
-                            <option value="bangunan">🏛️ Bangunan Air (Pintu Air, Bendung &amp; Bangunan)</option>
-                            <option value="ws_kapuas">🌊 Wilayah Sungai &amp; DAS Kapuas</option>
-                        </select>
-                        <small class="text-muted" style="font-size:0.75rem;">
-                            Pilih kategori agar file otomatis terkelompok ke layer peta yang tepat tanpa perlu mengubah nama file.
-                        </small>
-                    </div>
-
-                    <!-- 2. Area Unggah Drag & Drop Modern -->
-                    <div class="dropzone-box text-center p-4 rounded mb-2" id="dropzoneBox" onclick="document.getElementById('inputUploadGeojson').click()" style="border: 2px dashed #93c5fd; background: #f8fafc; border-radius: 12px; cursor: pointer; transition: all 0.2s;">
-                        <input type="file" name="file_geojson[]" id="inputUploadGeojson" multiple accept=".geojson,.json,.zip" required onchange="handleFileChange(this)" style="display:none;">
+                <div class="modal-body p-4 bg-light">
+                    <div class="row" style="row-gap: 16px;">
                         
-                        <div id="dropzoneEmptyState">
-                            <div class="mb-2">
-                                <i class="fas fa-cloud-upload-alt text-primary" style="font-size: 2.5rem; opacity: 0.85;"></i>
-                            </div>
-                            <div class="font-weight-bold text-dark" style="font-size: 0.95rem;">
-                                Klik untuk memilih file, atau tarik &amp; lepas ke sini
-                            </div>
-                            <div class="text-muted small mt-1">
-                                Bisa unggah 1 file satuan atau banyak file sekaligus
-                            </div>
-                            <div class="mt-3 d-flex justify-content-center flex-wrap" style="gap:6px;">
-                                <span class="badge badge-light border text-primary font-weight-bold px-2 py-1" style="font-size:0.72rem;border-radius:6px;">
-                                    <i class="fas fa-file-code mr-1"></i>.GEOJSON
-                                </span>
-                                <span class="badge badge-light border text-info font-weight-bold px-2 py-1" style="font-size:0.72rem;border-radius:6px;">
-                                    <i class="fas fa-file-alt mr-1"></i>.JSON
-                                </span>
-                                <span class="badge badge-light border text-secondary font-weight-bold px-2 py-1" style="font-size:0.72rem;border-radius:6px;">
-                                    <i class="fas fa-file-archive mr-1"></i>.ZIP (Shapefile)
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Pratinjau File Terpilih -->
-                        <div id="dropzoneSelectedState" style="display:none;">
-                            <div class="mb-2">
-                                <i class="fas fa-check-circle text-success" style="font-size: 2.2rem;"></i>
-                            </div>
-                            <div class="font-weight-bold text-dark" id="selectedFileSummary" style="font-size: 0.95rem;">
-                                File Terpilih
-                            </div>
-                            <div id="selectedFileList" class="text-muted small mt-2 text-left bg-white p-2 rounded border" style="max-height:120px;overflow-y:auto;font-size:0.78rem;"></div>
-                            <button type="button" class="btn btn-sm btn-link text-danger mt-2 font-weight-bold" onclick="clearSelectedFiles(event)" style="font-size:0.78rem;">
-                                <i class="fas fa-times-circle mr-1"></i> Ganti / Batalkan Pilihan
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- 3. PEMILAH FILE DI DALAM ARSIP ZIP (PILIH 1 PER 1 DARI DALAM ZIP) -->
-                    <div id="zipPickerSection" style="display:none;" class="mt-3">
-                        <div class="card border shadow-sm" style="border-radius:10px; overflow:hidden; border-color:#93c5fd !important;">
-                            <div class="card-header bg-light py-2 px-3 d-flex align-items-center justify-content-between flex-wrap" style="gap:6px;">
-                                <div>
-                                    <strong class="text-primary" style="font-size:0.84rem;">
-                                        <i class="fas fa-file-archive mr-1"></i> Pemilah File Dari Dalam ZIP
-                                    </strong>
-                                    <div class="text-muted small" id="zipPickerSummary" style="font-size:0.75rem;">
-                                        Membaca file di dalam ZIP...
-                                    </div>
-                                </div>
-                                <div class="btn-group btn-group-sm">
-                                    <button type="button" class="btn btn-outline-primary btn-sm py-1 px-2 font-weight-bold" style="font-size:0.75rem;" onclick="toggleAllZipEntries(true)">
-                                        Pilih Semua
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm py-1 px-2 font-weight-bold" style="font-size:0.75rem;" onclick="toggleAllZipEntries(false)">
-                                        Kosongkan
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Filter Pencarian File Cepat dalam ZIP -->
-                            <div class="p-2 bg-white border-bottom">
-                                <div class="input-group input-group-sm">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-light border-right-0"><i class="fas fa-search text-muted"></i></span>
-                                    </div>
-                                    <input type="text" id="searchZipEntry" class="form-control border-left-0" placeholder="Ketik nama file (contoh: Pemangkat, Kubu, Saluran)..." onkeyup="filterZipEntries(this.value)">
-                                </div>
-                            </div>
-
-                            <!-- List Box Checkbox File-File dalam ZIP -->
-                            <div class="p-2 bg-white" id="zipEntriesContainer" style="max-height: 190px; overflow-y: auto; font-size: 0.8rem;">
-                                <!-- Daftar checkbox di-render secara dinamis oleh JavaScript -->
-                            </div>
-
-                            <div class="card-footer bg-light py-2 px-3 d-flex align-items-center justify-content-between">
-                                <span class="small font-weight-bold text-dark" id="zipSelectedCounter">
-                                    0 file dipilih
-                                </span>
-                                <small class="text-muted" style="font-size:0.72rem;">
-                                    Centang file yang ingin diunggah saja
+                        <!-- ═══ KOLOM KIRI (LEBAR 42%): PEMILIHAN FILE & KATEGORI ═══ -->
+                        <div class="col-lg-5 col-md-5 d-flex flex-column justify-content-between">
+                            
+                            <!-- 1. Dropdown Kategori Lapisan Peta -->
+                            <div class="form-group mb-3 bg-white p-3 rounded border shadow-sm" style="border-radius:12px !important;">
+                                <label class="font-weight-bold text-dark mb-1 d-block" style="font-size:0.82rem;">
+                                    <i class="fas fa-layer-group text-primary mr-1"></i> Kategori Lapisan Peta:
+                                </label>
+                                <select name="kategori" id="selectKategoriUpload" class="form-control" style="border-radius:8px;font-size:0.82rem;font-weight:600;border:1.5px solid #cbd5e1;height:40px;">
+                                    <option value="auto" selected>🔄 Otomatis (Sesuai nama file)</option>
+                                    <option value="baku">🌱 Lahan Baku (DIR Baku)</option>
+                                    <option value="fungsional">💧 Lahan Fungsional (Aktif Teraliri)</option>
+                                    <option value="potensial">📐 Lahan Potensial (Pengembangan)</option>
+                                    <option value="saluran">🛤️ Jaringan Saluran Air</option>
+                                    <option value="bangunan">🏛️ Bangunan Air &amp; Bendung</option>
+                                    <option value="ws_kapuas">🌊 Wilayah Sungai Kapuas</option>
+                                </select>
+                                <small class="text-muted d-block mt-1" style="font-size:0.72rem;line-height:1.35;">
+                                    Pilih kategori agar data otomatis masuk ke layer peta yang tepat.
                                 </small>
                             </div>
+
+                            <!-- 2. Area Unggah Drag & Drop -->
+                            <div class="dropzone-box text-center p-3 rounded bg-white border shadow-sm d-flex flex-column justify-content-center align-items-center" id="dropzoneBox" onclick="document.getElementById('inputUploadGeojson').click()" style="border: 2px dashed #93c5fd !important; border-radius: 12px; cursor: pointer; transition: all 0.2s; min-height: 205px;">
+                                <input type="file" name="file_geojson[]" id="inputUploadGeojson" multiple accept=".geojson,.json,.zip" required onchange="handleFileChange(this)" style="display:none;">
+                                
+                                <div id="dropzoneEmptyState">
+                                    <div class="mb-2">
+                                        <i class="fas fa-cloud-upload-alt text-primary" style="font-size: 2.4rem; opacity: 0.9;"></i>
+                                    </div>
+                                    <div class="font-weight-bold text-dark" style="font-size: 0.9rem;">
+                                        Pilih File dari Komputer
+                                    </div>
+                                    <div class="text-muted small mt-1" style="font-size: 0.74rem;">
+                                        atau seret &amp; lepas file ke kotak ini
+                                    </div>
+                                    <div class="mt-2 d-flex justify-content-center flex-wrap" style="gap:4px;">
+                                        <span class="badge badge-light border text-primary font-weight-bold px-2 py-1" style="font-size:0.68rem;border-radius:6px;">.GEOJSON</span>
+                                        <span class="badge badge-light border text-info font-weight-bold px-2 py-1" style="font-size:0.68rem;border-radius:6px;">.JSON</span>
+                                        <span class="badge badge-light border text-secondary font-weight-bold px-2 py-1" style="font-size:0.68rem;border-radius:6px;">.ZIP</span>
+                                    </div>
+                                </div>
+
+                                <!-- Pratinjau File Terpilih -->
+                                <div id="dropzoneSelectedState" style="display:none; width: 100%;">
+                                    <div class="mb-2">
+                                        <i class="fas fa-check-circle text-success" style="font-size: 2rem;"></i>
+                                    </div>
+                                    <div class="font-weight-bold text-dark text-truncate px-2" id="selectedFileSummary" style="font-size: 0.88rem;">
+                                        File Terpilih
+                                    </div>
+                                    <div id="selectedFileList" class="text-muted small mt-2 text-left bg-light p-2 rounded border" style="max-height:85px;overflow-y:auto;font-size:0.75rem;"></div>
+                                    <button type="button" class="btn btn-sm btn-link text-danger mt-2 font-weight-bold" onclick="clearSelectedFiles(event)" style="font-size:0.75rem;">
+                                        <i class="fas fa-times-circle mr-1"></i> Ganti File Lain
+                                    </button>
+                                </div>
+                            </div>
+
                         </div>
+
+                        <!-- ═══ KOLOM KANAN (LEBAR 58%): PEMILAH ISI ZIP ATAU INFORMASI PANDUAN ═══ -->
+                        <div class="col-lg-7 col-md-7">
+                            
+                            <!-- Keadaan 1: Belum Ada ZIP yang Dipilih (Panduan Bersih) -->
+                            <div id="zipPickerEmptyNotice" class="card border-0 shadow-sm h-100" style="border-radius:12px;background:#ffffff; min-height: 310px;">
+                                <div class="card-body p-4 d-flex flex-column justify-content-center text-center text-muted">
+                                    <div class="mb-3">
+                                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle" style="width:54px;height:54px;background:#eff6ff;color:#2563eb;font-size:24px;">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                    </div>
+                                    <h6 class="font-weight-bold text-dark mb-1" style="font-size:0.95rem;">
+                                        Dukungan Format Spasial Fleksibel
+                                    </h6>
+                                    <p class="small text-muted mb-3" style="font-size:0.78rem;line-height:1.5;">
+                                        Anda dapat mengunggah <strong>1 file satuan (.geojson / .json)</strong> langsung tanpa kompresi, atau memilih <strong>file arsip paket (.zip)</strong>.
+                                    </p>
+                                    <div class="text-left bg-light p-3 rounded border" style="font-size:0.75rem;line-height:1.5;">
+                                        <div class="d-flex align-items-start mb-2">
+                                            <i class="fas fa-check text-success mr-2 mt-1"></i>
+                                            <div><strong>Unggah 1 File:</strong> Cukup pilih file .geojson Anda, sistem langsung menyimpannya ke peta.</div>
+                                        </div>
+                                        <div class="d-flex align-items-start">
+                                            <i class="fas fa-check text-success mr-2 mt-1"></i>
+                                            <div><strong>Unggah Arsip ZIP:</strong> Sistem otomatis mendeteksi isi file di dalamnya sehingga Anda bisa memilih file tertentu saja.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Keadaan 2: File ZIP Dipilih (Panel Pemilah Checkbox Canggih) -->
+                            <div id="zipPickerSection" class="card border-0 shadow-sm h-100 flex-column" style="display:none; border-radius:12px; overflow:hidden; min-height:310px;">
+                                <div class="card-header bg-white py-2 px-3 border-bottom d-flex align-items-center justify-content-between flex-wrap" style="gap:6px;">
+                                    <div>
+                                        <strong class="text-primary" style="font-size:0.84rem;">
+                                            <i class="fas fa-file-archive mr-1"></i> Pemilah File dalam ZIP
+                                        </strong>
+                                        <div class="text-muted small" id="zipPickerSummary" style="font-size:0.74rem;">
+                                            Membaca isi berkas...
+                                        </div>
+                                    </div>
+                                    <div class="btn-group btn-group-sm">
+                                        <button type="button" class="btn btn-outline-primary btn-sm py-1 px-2 font-weight-bold" style="font-size:0.72rem;border-radius:6px 0 0 6px;" onclick="toggleAllZipEntries(true)">
+                                            Pilih Semua
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm py-1 px-2 font-weight-bold" style="font-size:0.72rem;border-radius:0 6px 6px 0;" onclick="toggleAllZipEntries(false)">
+                                            Kosongkan
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Filter Pencarian Cepat -->
+                                <div class="p-2 bg-white border-bottom">
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-light border-right-0" style="font-size:0.75rem;"><i class="fas fa-search text-muted"></i></span>
+                                        </div>
+                                        <input type="text" id="searchZipEntry" class="form-control border-left-0" style="font-size:0.78rem;" placeholder="Cari nama file (contoh: Pemangkat, Kubu, Saluran)..." onkeyup="filterZipEntries(this.value)">
+                                    </div>
+                                </div>
+
+                                <!-- List Box Checkbox dengan Layout Rapi & Checkbox Utuh (Tidak Terpotong) -->
+                                <div class="p-2 bg-white" id="zipEntriesContainer" style="height: 195px; max-height: 195px; overflow-y: auto; font-size: 0.8rem;">
+                                    <!-- Diisi secara dinamis oleh JavaScript -->
+                                </div>
+
+                                <div class="card-footer bg-light py-2 px-3 d-flex align-items-center justify-content-between border-top">
+                                    <span class="small font-weight-bold text-dark" id="zipSelectedCounter" style="font-size:0.78rem;">
+                                        0 file dipilih
+                                    </span>
+                                    <small class="text-muted" style="font-size:0.72rem;">
+                                        Centang file yang ingin Anda masukkan ke peta
+                                    </small>
+                                </div>
+                            </div>
+
+                        </div>
+
                     </div>
 
                     <!-- Indikator Status Proses -->
                     <div id="kelolaGisUploadStatus" class="alert alert-info py-2 px-3 small font-weight-bold text-primary mt-3 mb-0" style="display:none;border-radius:8px;background:#eff6ff;border:1px solid #bfdbfe;">
-                        <i class="fas fa-spinner fa-spin mr-1"></i> Memproses unggahan...
+                        <i class="fas fa-spinner fa-spin mr-1"></i> Memproses unggahan ke server BWS Kalimantan I...
                     </div>
 
                 </div>
 
-                <div class="modal-footer bg-light border-top py-3 px-4 d-flex justify-content-between align-items-center">
+                <div class="modal-footer bg-white border-top py-3 px-4 d-flex justify-content-between align-items-center">
                     <small class="text-muted" style="font-size:0.75rem;">
-                        <i class="fas fa-shield-alt text-success mr-1"></i> Maks. 256 MB per file
+                        <i class="fas fa-shield-alt text-success mr-1"></i> Data Spasial Resmi BWS Kalimantan I &bull; Maks. 256 MB
                     </small>
                     <div style="gap:8px;" class="d-flex">
                         <button type="button" class="btn btn-light border font-weight-bold px-3 btn-sm" data-dismiss="modal" style="border-radius:8px;">Batal</button>
@@ -640,6 +672,24 @@
 
 @endsection
 
+@push('styles')
+<style>
+    .zip-entry-row {
+        transition: all 0.15s ease-in-out;
+        border-color: #e2e8f0 !important;
+        cursor: pointer;
+    }
+    .zip-entry-row:hover {
+        background-color: #eff6ff !important;
+        border-color: #93c5fd !important;
+        box-shadow: 0 2px 4px rgba(37,99,235,0.06);
+    }
+    .zip-entry-row input[type="checkbox"] {
+        cursor: pointer;
+    }
+</style>
+@endpush
+
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
@@ -652,11 +702,13 @@
         var selectedState = document.getElementById('dropzoneSelectedState');
         var summary = document.getElementById('selectedFileSummary');
         var list = document.getElementById('selectedFileList');
+        var emptyNotice = document.getElementById('zipPickerEmptyNotice');
         var zipSection = document.getElementById('zipPickerSection');
 
         activeZipInstance = null;
         activeZipEntries = [];
         if (zipSection) zipSection.style.display = 'none';
+        if (emptyNotice) emptyNotice.style.display = 'block';
 
         if (!files || files.length === 0) {
             if (emptyState) emptyState.style.display = 'block';
@@ -697,6 +749,7 @@
 
     // Fungsi membaca & membedah isi file ZIP untuk dipilih satuan
     async function inspectZipFile(file) {
+        var emptyNotice = document.getElementById('zipPickerEmptyNotice');
         var zipSection = document.getElementById('zipPickerSection');
         var zipSummary = document.getElementById('zipPickerSummary');
         var container = document.getElementById('zipEntriesContainer');
@@ -706,7 +759,8 @@
             return;
         }
 
-        zipSection.style.display = 'block';
+        if (emptyNotice) emptyNotice.style.display = 'none';
+        if (zipSection) zipSection.style.display = 'flex';
         zipSummary.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Membaca daftar file di dalam ' + file.name + '...';
         container.innerHTML = '<div class="text-center p-3 text-muted"><i class="fas fa-spinner fa-spin mr-1"></i> Membuka arsip ZIP...</div>';
 
@@ -749,15 +803,17 @@
         var container = document.getElementById('zipEntriesContainer');
         var html = '';
         entries.forEach(function(item, idx) {
-            html += '<div class="custom-control custom-checkbox zip-entry-row py-1 px-2 rounded mb-1 border-bottom" data-name="' + item.name.toLowerCase() + '" style="background:#fcfcfc;">' +
-                        '<input type="checkbox" class="custom-control-input zip-entry-checkbox" id="chkZip_' + idx + '" value="' + item.path + '" checked onchange="updateZipSelectedCounter()">' +
-                        '<label class="custom-control-label d-flex align-items-center justify-content-between w-100 cursor-pointer" for="chkZip_' + idx + '" style="cursor:pointer;font-size:0.79rem;">' +
-                            '<span class="text-truncate font-weight-bold text-dark mr-2">' +
-                                '<i class="fas fa-file-code text-primary mr-1"></i> ' + item.name +
+            var sizeStr = item.entry._data ? (item.entry._data.uncompressedSize > 1024 ? (item.entry._data.uncompressedSize / 1024).toFixed(0) + ' KB' : item.entry._data.uncompressedSize + ' B') : 'File';
+            html += '<label class="d-flex align-items-center justify-content-between p-2 rounded mb-1 border zip-entry-row" style="background:#ffffff; margin-bottom:5px;" data-name="' + item.name.toLowerCase() + '">' +
+                        '<div class="d-flex align-items-center mr-2" style="min-width:0; overflow:hidden;">' +
+                            '<input type="checkbox" class="zip-entry-checkbox" id="chkZip_' + idx + '" value="' + item.path + '" checked onchange="updateZipSelectedCounter()" style="width:16px; height:16px; min-width:16px; accent-color:#1d4ed8; cursor:pointer; margin:0 10px 0 2px; flex-shrink:0;">' +
+                            '<i class="fas fa-file-code text-primary mr-2" style="font-size:0.85rem; flex-shrink:0;"></i>' +
+                            '<span class="text-truncate font-weight-bold text-dark" style="font-size:0.8rem;" title="' + item.name + '">' +
+                                item.name +
                             '</span>' +
-                            '<span class="badge badge-light border text-muted" style="font-size:0.68rem;">' + (item.entry._data ? (item.entry._data.uncompressedSize > 1024 ? (item.entry._data.uncompressedSize/1024).toFixed(0) + ' KB' : item.entry._data.uncompressedSize + ' B') : 'File') + '</span>' +
-                        '</label>' +
-                    '</div>';
+                        '</div>' +
+                        '<span class="badge badge-light border text-muted flex-shrink-0" style="font-size:0.68rem; padding:3px 6px;">' + sizeStr + '</span>' +
+                    '</label>';
         });
         container.innerHTML = html;
         updateZipSelectedCounter();
@@ -780,9 +836,9 @@
         rows.forEach(function(row) {
             var name = row.getAttribute('data-name') || '';
             if (!q || name.includes(q)) {
-                row.style.display = 'block';
+                row.style.setProperty('display', 'flex', 'important');
             } else {
-                row.style.display = 'none';
+                row.style.setProperty('display', 'none', 'important');
             }
         });
     }
@@ -792,7 +848,7 @@
         var total = document.querySelectorAll('.zip-entry-checkbox');
         var counter = document.getElementById('zipSelectedCounter');
         if (counter) {
-            counter.innerHTML = '<span class="text-primary font-weight-bold">' + checked.length + ' dari ' + total.length + ' file</span> dicentang untuk diunggah';
+            counter.innerHTML = '<span class="text-primary font-weight-bold">' + checked.length + ' dari ' + total.length + ' file</span> dicentang';
         }
         updateSubmitButtonText(checked.length);
     }
@@ -821,8 +877,10 @@
         if (input) input.value = '';
         activeZipInstance = null;
         activeZipEntries = [];
+        var emptyNotice = document.getElementById('zipPickerEmptyNotice');
         var zipSection = document.getElementById('zipPickerSection');
         if (zipSection) zipSection.style.display = 'none';
+        if (emptyNotice) emptyNotice.style.display = 'block';
         var emptyState = document.getElementById('dropzoneEmptyState');
         var selectedState = document.getElementById('dropzoneSelectedState');
         if (emptyState) emptyState.style.display = 'block';
