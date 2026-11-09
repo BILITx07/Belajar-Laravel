@@ -54,12 +54,25 @@
     </div>
     @endif
 
-    <!-- Header Title & Breadcrumb Persis Referensi FEWS BWS Kalimantan I -->
-    <div class="d-flex align-items-center justify-content-between mb-3">
-        <h4 class="font-weight-bold mb-0" style="letter-spacing: 0.5px; font-size: 1.05rem; color: #495057;">
-            MASTER DATA GIS
-        </h4>
-        <span class="text-muted small" style="font-weight: 500;">Menu Utama</span>
+    <!-- Breadcrumb & Header Halaman Profesional -->
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-3" style="gap: 8px;">
+        <div>
+            <div class="d-flex align-items-center text-muted small mb-1" style="font-size: 0.78rem;">
+                <a href="{{ route('admin.dashboard') }}" class="text-decoration-none text-muted">
+                    <i class="fas fa-home mr-1"></i> Dashboard
+                </a>
+                <span class="mx-2 text-muted">/</span>
+                <span class="text-primary font-weight-bold">Master Data GIS</span>
+            </div>
+            <h4 class="font-weight-bold text-dark mb-0" style="letter-spacing: 0.3px; font-size: 1.15rem;">
+                Master Data Geospasial Irigasi
+            </h4>
+        </div>
+        <div class="d-flex align-items-center" style="gap: 8px;">
+            <span class="badge badge-light border text-muted px-3 py-2 font-weight-normal shadow-sm" style="border-radius: 20px; font-size: 0.76rem; background: #ffffff;">
+                <i class="fas fa-map-marked-alt text-primary mr-1"></i> WebGIS Balai Wilayah Sungai Kalimantan I
+            </span>
+        </div>
     </div>
 
     @php
@@ -75,17 +88,17 @@
     @endphp
 
     <!-- Card Tabel Data Bersih ala Referensi FEWS BWS -->
-    <div class="card border-0 shadow-sm" style="border-radius:12px;overflow:hidden;background:#fff;">
+    <div class="card border-0 shadow-sm" style="border-radius:14px;overflow:hidden;background:#fff;">
         <div class="card-body p-4">
 
             <!-- Card Header: Judul & Tombol Aksi -->
-            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-3 pb-2 border-bottom" style="gap: 12px;">
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-3 pb-3 border-bottom" style="gap: 12px;">
                 <div>
                     <h5 class="font-weight-bold text-dark mb-1" style="font-size: 1.15rem;">
-                        Daftar File Geospasial
+                        Daftar Berkas Geospasial
                     </h5>
                     <p class="text-muted small mb-0">
-                        {{ ($currentTab ?? 'active') === 'trash' ? 'File geospasial yang sedang berada di kotak sampah sementara (dapat dipulihkan kapan saja).' : 'Kelola file spasial aktif yang saat ini tampil di peta interaktif WebGIS BWS Kalimantan I.' }}
+                        {{ ($currentTab ?? 'active') === 'trash' ? 'File geospasial yang sedang berada di kotak sampah sementara (dapat dipulihkan kapan saja).' : 'Kelola berkas spasial aktif yang saat ini tampil di peta interaktif WebGIS BWS Kalimantan I.' }}
                     </p>
                 </div>
 
@@ -101,7 +114,7 @@
                         </form>
                         @endif
                     @else
-                        <button type="button" class="btn text-white font-weight-bold px-4 py-2 shadow-sm d-inline-flex align-items-center justify-content-center" style="background:#2563eb;border-radius:25px;font-size:0.88rem;height:38px;transition:all 0.2s ease;" data-toggle="modal" data-target="#modalUpload">
+                        <button type="button" class="btn text-white font-weight-bold px-4 py-2 shadow-sm d-inline-flex align-items-center justify-content-center" style="background:#1d4ed8;border-radius:25px;font-size:0.88rem;height:38px;transition:all 0.2s ease;" data-toggle="modal" data-target="#modalUpload">
                             <i class="fas fa-cloud-upload-alt mr-2"></i>Upload File Baru
                         </button>
                     @endif
@@ -112,12 +125,12 @@
             <div class="d-flex align-items-center mb-3 pb-2 border-bottom" style="gap: 8px;">
                 <a href="{{ route('admin.kelola-gis', ['tab' => 'active']) }}" 
                    class="btn btn-sm {{ ($currentTab ?? 'active') === 'active' ? 'btn-primary text-white font-weight-bold shadow-sm' : 'btn-light text-muted' }}" 
-                   style="border-radius: 20px; font-size: 0.84rem; padding: 5px 16px;">
+                   style="border-radius: 20px; font-size: 0.84rem; padding: 6px 18px; {{ ($currentTab ?? 'active') === 'active' ? 'background:#1d4ed8;border-color:#1d4ed8;' : '' }}">
                     <i class="fas fa-folder-open mr-1"></i> File Aktif ({{ $totalActive ?? 0 }})
                 </a>
                 <a href="{{ route('admin.kelola-gis', ['tab' => 'trash']) }}" 
                    class="btn btn-sm {{ ($currentTab ?? '') === 'trash' ? 'btn-danger text-white font-weight-bold shadow-sm' : 'btn-light text-muted' }}" 
-                   style="border-radius: 20px; font-size: 0.84rem; padding: 5px 16px;">
+                   style="border-radius: 20px; font-size: 0.84rem; padding: 6px 18px;">
                     <i class="fas fa-trash-alt mr-1"></i> Kotak Sampah ({{ $totalTrash ?? 0 }})
                 </a>
             </div>
@@ -127,39 +140,41 @@
                 <input type="hidden" name="tab" value="{{ $currentTab ?? 'active' }}">
                 <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between mb-3" style="gap:14px;">
                     
-                    <!-- Left: Tampilkan X entri & Bulk Delete -->
+                    <!-- Left: Tampilkan X entri & Filter Kategori & Bulk Delete -->
                     <div class="d-flex align-items-center flex-wrap" style="gap:10px;">
-                        <div class="d-flex align-items-center text-muted small">
-                            <span class="mr-2">Tampilkan</span>
-                            <select name="per_page" class="form-control form-control-sm" style="width:75px;border-radius:6px;" onchange="document.getElementById('filterForm').submit()">
+                        <div class="d-flex align-items-center text-muted small bg-light px-2 py-1 rounded border shadow-sm" style="height: 38px; border-color:#cbd5e1;">
+                            <span class="mr-2 text-dark font-weight-bold" style="font-size: 0.78rem;">Tampilkan</span>
+                            <select name="per_page" class="custom-select custom-select-sm border-0 bg-transparent font-weight-bold text-primary" style="width: 65px; height: 30px; font-size: 0.82rem; cursor: pointer;" onchange="document.getElementById('filterForm').submit()">
                                 <option value="10" {{ ($perPage ?? 10) == 10 ? 'selected' : '' }}>10</option>
                                 <option value="25" {{ ($perPage ?? 10) == 25 ? 'selected' : '' }}>25</option>
                                 <option value="50" {{ ($perPage ?? 10) == 50 ? 'selected' : '' }}>50</option>
                                 <option value="100" {{ ($perPage ?? 10) == 100 ? 'selected' : '' }}>100</option>
                             </select>
-                            <span class="ml-2">entri</span>
+                            <span class="ml-1 text-muted" style="font-size: 0.78rem;">entri</span>
                         </div>
 
                         @if(($currentTab ?? 'active') === 'active')
                         <!-- Dropdown Filter Kategori -->
-                        <select name="type" class="form-control form-control-sm" style="width:175px;border-radius:6px;" onchange="document.getElementById('filterForm').submit()">
-                            <option value="semua" {{ ($filterType ?? 'semua') === 'semua' ? 'selected' : '' }}>Semua Kategori</option>
-                            <optgroup label="🌾 Irigasi">
-                                <option value="irigasi" {{ ($filterType ?? '') === 'irigasi' ? 'selected' : '' }}>Semua Irigasi</option>
-                                <option value="baku" {{ ($filterType ?? '') === 'baku' ? 'selected' : '' }}>DIR Baku</option>
-                                <option value="fungsional" {{ ($filterType ?? '') === 'fungsional' ? 'selected' : '' }}>DIR Fungsional</option>
-                                <option value="potensial" {{ ($filterType ?? '') === 'potensial' ? 'selected' : '' }}>DIR Potensial</option>
-                            </optgroup>
-                            <optgroup label="🏗️ Infrastruktur">
-                                <option value="infrastruktur" {{ ($filterType ?? '') === 'infrastruktur' ? 'selected' : '' }}>Semua Infrastruktur</option>
-                                <option value="saluran" {{ ($filterType ?? '') === 'saluran' ? 'selected' : '' }}>Jaringan Saluran</option>
-                                <option value="bangunan" {{ ($filterType ?? '') === 'bangunan' ? 'selected' : '' }}>Bangunan Air</option>
-                            </optgroup>
-                        </select>
+                        <div class="d-flex align-items-center">
+                            <select name="type" class="custom-select custom-select-sm font-weight-bold text-dark border shadow-sm" style="height: 38px; border-radius: 8px; font-size: 0.82rem; min-width: 175px; border-color: #cbd5e1;" onchange="document.getElementById('filterForm').submit()">
+                                <option value="semua" {{ ($filterType ?? 'semua') === 'semua' ? 'selected' : '' }}>🌐 Semua Kategori</option>
+                                <optgroup label="🌾 Daerah Irigasi (DIR)">
+                                    <option value="irigasi" {{ ($filterType ?? '') === 'irigasi' ? 'selected' : '' }}>Semua Irigasi</option>
+                                    <option value="baku" {{ ($filterType ?? '') === 'baku' ? 'selected' : '' }}>🌱 DIR Baku</option>
+                                    <option value="fungsional" {{ ($filterType ?? '') === 'fungsional' ? 'selected' : '' }}>💧 DIR Fungsional</option>
+                                    <option value="potensial" {{ ($filterType ?? '') === 'potensial' ? 'selected' : '' }}>📐 DIR Potensial</option>
+                                </optgroup>
+                                <optgroup label="🏗️ Infrastruktur Pengairan">
+                                    <option value="infrastruktur" {{ ($filterType ?? '') === 'infrastruktur' ? 'selected' : '' }}>Semua Infrastruktur</option>
+                                    <option value="saluran" {{ ($filterType ?? '') === 'saluran' ? 'selected' : '' }}>🛤️ Jaringan Saluran</option>
+                                    <option value="bangunan" {{ ($filterType ?? '') === 'bangunan' ? 'selected' : '' }}>🏛️ Bangunan Air</option>
+                                </optgroup>
+                            </select>
+                        </div>
 
                         <!-- Tombol Hapus Masal (Khusus Super Admin) -->
                         @if(Auth::check() && Auth::user()->isSuperAdmin())
-                        <button type="button" class="btn btn-sm btn-outline-danger font-weight-bold" id="btnBulkDelete" disabled onclick="submitBulkDelete()" style="border-radius:6px;display:none;">
+                        <button type="button" class="btn btn-sm btn-danger font-weight-bold shadow-sm d-inline-flex align-items-center" id="btnBulkDelete" disabled onclick="submitBulkDelete()" style="border-radius:8px; height:38px; font-size:0.8rem; display:none;">
                             <i class="fas fa-trash-alt mr-1"></i>Hapus Terpilih (<span id="bulkCount">0</span>)
                         </button>
                         @endif
@@ -169,17 +184,17 @@
                     <!-- Right: Search Input -->
                     <div class="d-flex align-items-center" style="gap:8px;">
                         <span class="text-muted small">Cari:</span>
-                        <div class="input-group input-group-sm" style="width:230px;">
-                            <input type="text" name="search" class="form-control" placeholder="Ketik nama file..." value="{{ $search ?? '' }}" style="border-radius:6px 0 0 6px;">
+                        <div class="input-group input-group-sm shadow-sm" style="width:240px;">
+                            <input type="text" name="search" class="form-control" placeholder="Ketik nama file..." value="{{ $search ?? '' }}" style="border-radius:8px 0 0 8px; border-color:#cbd5e1; height:38px; font-size:0.82rem;">
                             <div class="input-group-append">
-                                <button class="btn btn-primary px-3" type="submit" style="border-radius:0 6px 6px 0;background:#2563eb;">
+                                <button class="btn btn-primary px-3" type="submit" style="border-radius:0 8px 8px 0; background:#1d4ed8; border-color:#1d4ed8;">
                                     <i class="fas fa-search"></i>
                                 </button>
                             </div>
                         </div>
                         @if($search || ($filterType && $filterType !== 'semua'))
-                            <a href="{{ route('admin.kelola-gis', ['tab' => $currentTab ?? 'active']) }}" class="btn btn-sm btn-light border text-muted" title="Reset filter" style="border-radius:6px;">
-                                <i class="fas fa-times"></i>
+                            <a href="{{ route('admin.kelola-gis', ['tab' => $currentTab ?? 'active']) }}" class="btn btn-sm btn-light border text-danger font-weight-bold d-inline-flex align-items-center shadow-sm" title="Reset filter" style="border-radius:8px; height:38px; font-size:0.78rem;">
+                                <i class="fas fa-redo-alt mr-1"></i> Reset
                             </a>
                         @endif
                     </div>
@@ -192,39 +207,42 @@
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0" style="font-size:0.87rem;">
                     <thead style="background:#fef2f2;border-top:1px solid #fecaca;border-bottom:2px solid #fca5a5;">
-                        <tr class="text-danger font-weight-bold" style="font-size:0.8rem;letter-spacing:0.3px;">
-                            <th width="50" class="text-center">No.</th>
-                            <th>Nama File Terhapus</th>
-                            <th width="120">Ukuran</th>
-                            <th width="170">Waktu Dihapus</th>
-                            <th width="150">Dihapus Oleh</th>
-                            <th width="150" class="text-center">Tindakan</th>
+                        <tr class="text-danger font-weight-bold text-uppercase" style="font-size:0.75rem;letter-spacing:0.4px;">
+                            <th width="50" class="text-center align-middle">No.</th>
+                            <th class="align-middle">Nama File Terhapus</th>
+                            <th width="120" class="align-middle">Ukuran</th>
+                            <th width="170" class="align-middle">Waktu Dihapus</th>
+                            <th width="150" class="align-middle">Dihapus Oleh</th>
+                            <th width="140" class="text-center align-middle">Tindakan</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($fileList as $index => $file)
-                            <tr style="border-bottom:1px solid #f1f5f9;">
+                            <tr class="table-gis-row" style="border-bottom:1px solid #f1f5f9;">
                                 <td class="text-center text-muted align-middle font-weight-bold">
                                     {{ ($offset ?? 0) + $index + 1 }}
                                 </td>
                                 <td class="align-middle">
                                     <div class="d-flex align-items-center">
-                                        <div class="mr-3 rounded d-flex align-items-center justify-content-center" style="width:34px;height:34px;background:#fee2e2;color:#dc2626;">
+                                        <div class="mr-3 rounded d-flex align-items-center justify-content-center shadow-sm flex-shrink-0" style="width:36px;height:36px;background:#fee2e2;color:#dc2626;border-radius:10px !important;">
                                             <i class="fas fa-file-archive"></i>
                                         </div>
-                                        <div>
-                                            <div class="font-weight-bold text-dark" style="max-width:340px;word-break:break-all;">
+                                        <div style="min-width:0;">
+                                            <div class="font-weight-bold text-dark" style="word-break:break-word;overflow-wrap:anywhere;line-height:1.4;" title="{{ $file['name'] }}">
                                                 {{ $file['name'] }}
                                             </div>
-                                            <small class="text-danger"><i class="fas fa-exclamation-circle mr-1"></i>Status: Di Kotak Sampah</small>
+                                            <small class="text-danger"><i class="fas fa-exclamation-circle mr-1"></i>Status: Berada di Kotak Sampah</small>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="align-middle font-weight-bold text-secondary">
+                                <td class="align-middle font-weight-bold text-secondary" style="font-family:'SFMono-Regular',Consolas,monospace;font-size:0.82rem;">
                                     {{ $file['size'] }}
                                 </td>
                                 <td class="align-middle text-muted" style="font-size:0.82rem;">
-                                    <i class="far fa-clock mr-1 text-danger"></i> {{ $file['deleted_at'] }}
+                                    <div class="d-flex align-items-center">
+                                        <i class="far fa-clock mr-2 text-danger"></i>
+                                        <span>{{ $file['deleted_at'] }}</span>
+                                    </div>
                                 </td>
                                 <td class="align-middle">
                                     <span class="badge badge-light border text-muted font-weight-bold px-2 py-1" style="font-size:0.75rem;">
@@ -237,7 +255,7 @@
                                         <form action="{{ route('admin.gis.restore') }}" method="POST" class="d-inline" onsubmit="return confirm('Pulihkan file \'{{ $file['name'] }}\' kembali aktif ke peta WebGIS?');">
                                             @csrf
                                             <input type="hidden" name="file_name" value="{{ $file['name'] }}">
-                                            <button type="submit" class="btn btn-sm shadow-sm d-inline-flex align-items-center" style="border-radius:6px; background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; font-size:0.78rem; font-weight:700; padding:4px 10px;" title="Pulihkan File Kembali Aktif">
+                                            <button type="submit" class="btn btn-sm shadow-sm d-inline-flex align-items-center" style="border-radius:8px; background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; font-size:0.78rem; font-weight:700; padding:5px 12px;" title="Pulihkan File Kembali Aktif">
                                                 <i class="fas fa-undo mr-1"></i> Pulihkan
                                             </button>
                                         </form>
@@ -248,7 +266,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <input type="hidden" name="file_name" value="{{ $file['name'] }}">
-                                            <button type="submit" class="btn btn-sm shadow-sm d-inline-flex align-items-center" style="border-radius:6px; background:#fef2f2; color:#dc2626; border:1px solid #fecaca; font-size:0.78rem; font-weight:700; padding:4px 8px;" title="Hapus Permanen Selamanya">
+                                            <button type="submit" class="btn btn-sm shadow-sm d-inline-flex align-items-center" style="border-radius:8px; background:#fef2f2; color:#dc2626; border:1px solid #fecaca; font-size:0.78rem; font-weight:700; padding:5px 9px;" title="Hapus Permanen Selamanya">
                                                 <i class="fas fa-times"></i>
                                             </button>
                                         </form>
@@ -276,16 +294,16 @@
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0" style="font-size:0.87rem;" id="tableGisData">
                     <thead style="background:#f8fafc;border-top:1px solid #e2e8f0;border-bottom:2px solid #e2e8f0;">
-                        <tr class="text-muted font-weight-bold" style="font-size:0.8rem;letter-spacing:0.3px;">
-                            <th width="40" class="text-center">
-                                <input type="checkbox" id="checkAll" onchange="toggleAllChecks(this)">
+                        <tr class="text-muted font-weight-bold text-uppercase" style="font-size:0.75rem;letter-spacing:0.5px;">
+                            <th width="40" class="text-center align-middle">
+                                <input type="checkbox" id="checkAll" onchange="toggleAllChecks(this)" style="cursor:pointer; width:15px; height:15px; accent-color:#1d4ed8;">
                             </th>
-                            <th width="50" class="text-center">No.</th>
-                            <th>Nama File</th>
-                            <th width="190">Kategori</th>
-                            <th width="120">Ukuran</th>
-                            <th width="170">Waktu Terdaftar</th>
-                            <th width="120" class="text-center">Aksi</th>
+                            <th width="45" class="text-center align-middle">No.</th>
+                            <th class="align-middle">Nama File Spasial</th>
+                            <th width="175" class="align-middle">Kategori Master Data</th>
+                            <th width="110" class="align-middle">Ukuran</th>
+                            <th width="165" class="align-middle">Waktu Terdaftar</th>
+                            <th width="110" class="text-center align-middle">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -293,36 +311,44 @@
                             @php
                                 $catInfo = $catLabels[$file['category']] ?? ['Lainnya', '#64748b', 'fa-file'];
                             @endphp
-                            <tr style="border-bottom:1px solid #f1f5f9;">
+                            <tr class="table-gis-row" style="border-bottom:1px solid #f1f5f9;">
                                 <td class="text-center align-middle">
-                                    <input type="checkbox" class="file-check" value="{{ $file['name'] }}" onchange="updateBulkCount()">
+                                    <input type="checkbox" class="file-check" value="{{ $file['name'] }}" onchange="updateBulkCount()" style="cursor:pointer; width:15px; height:15px; accent-color:#1d4ed8;">
                                 </td>
                                 <td class="text-center text-muted align-middle font-weight-bold">
                                     {{ ($offset ?? 0) + $index + 1 }}
                                 </td>
                                 <td class="align-middle">
                                     <div class="d-flex align-items-center">
-                                        <div class="mr-3 rounded d-flex align-items-center justify-content-center" style="width:34px;height:34px;background:#eff6ff;color:#2563eb;">
+                                        <div class="mr-3 rounded d-flex align-items-center justify-content-center shadow-sm flex-shrink-0" style="width:36px;height:36px;background:#eff6ff;color:#2563eb;border-radius:10px !important;">
                                             <i class="fas fa-file-code"></i>
                                         </div>
-                                        <div>
-                                            <div class="font-weight-bold text-dark" style="max-width:320px;word-break:break-all;">
+                                        <div style="min-width:0;">
+                                            <div class="font-weight-bold text-dark" style="word-break:break-word;overflow-wrap:anywhere;line-height:1.4;" title="{{ $file['name'] }}">
                                                 {{ $file['name'] }}
                                             </div>
-                                            <small class="text-muted">Format: .{{ $file['extension'] }}</small>
+                                            <div class="d-flex align-items-center mt-1" style="gap:6px;">
+                                                <span class="badge badge-light border text-muted" style="font-size:0.68rem;padding:2px 6px;border-radius:4px;">
+                                                    .{{ strtoupper($file['extension']) }}
+                                                </span>
+                                                <span class="text-muted" style="font-size:0.72rem;">&bull; Terdaftar di WebGIS</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="align-middle">
-                                    <span class="badge px-2 py-1 font-weight-bold" style="background:{{ $catInfo[1] }}18;color:{{ $catInfo[1] }};border-radius:6px;font-size:0.75rem;">
+                                    <span class="badge px-2 py-1 font-weight-bold" style="background:{{ $catInfo[1] }}15;color:{{ $catInfo[1] }};border:1px solid {{ $catInfo[1] }}30;border-radius:6px;font-size:0.75rem;">
                                         <i class="fas {{ $catInfo[2] }} mr-1"></i>{{ $catInfo[0] }}
                                     </span>
                                 </td>
-                                <td class="align-middle font-weight-bold text-secondary">
+                                <td class="align-middle font-weight-bold text-secondary" style="font-family:'SFMono-Regular',Consolas,monospace;font-size:0.82rem;">
                                     {{ $file['size'] }}
                                 </td>
                                 <td class="align-middle text-muted" style="font-size:0.8rem;">
-                                    {{ $file['date'] }}
+                                    <div class="d-flex align-items-center">
+                                        <i class="far fa-clock text-muted mr-2" style="font-size:0.82rem;opacity:0.7;"></i>
+                                        <span>{{ $file['date'] }}</span>
+                                    </div>
                                 </td>
                                 <td class="text-center align-middle">
                                     <div class="d-flex align-items-center justify-content-center" style="gap:8px;">
@@ -352,14 +378,15 @@
                 </table>
             </div>
             @endif
-                    </tbody>
-                </table>
-            </div>
 
             <!-- Bagian Bawah: Info & Navigasi Halaman ala Referensi -->
             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mt-4 pt-3 border-top" style="gap:12px;">
                 <div class="text-muted small">
-                    Menampilkan <strong>{{ count($fileList) }}</strong> sampai <strong>{{ min(($offset ?? 0) + ($perPage ?? 10), $totalItems ?? 0) }}</strong> dari <strong>{{ $totalItems ?? 0 }}</strong> entri
+                    @php
+                        $startItem = ($totalItems ?? 0) > 0 ? ($offset ?? 0) + 1 : 0;
+                        $endItem = min(($offset ?? 0) + count($fileList), $totalItems ?? 0);
+                    @endphp
+                    Menampilkan <strong>{{ $startItem }}</strong> &ndash; <strong>{{ $endItem }}</strong> dari <strong>{{ $totalItems ?? 0 }}</strong> berkas spasial
                 </div>
 
                 @if(($totalPages ?? 1) > 1)
@@ -658,6 +685,15 @@
 
 @push('styles')
 <style>
+    .table-gis-row {
+        transition: background-color 0.15s ease-in-out;
+    }
+    .table-gis-row:hover {
+        background-color: #f1f7ff !important;
+    }
+    .table-gis-row.row-selected {
+        background-color: #eff6ff !important;
+    }
     .zip-entry-row {
         transition: all 0.15s ease-in-out;
         border-color: #e2e8f0 !important;
@@ -967,13 +1003,26 @@
         var btn = document.getElementById('btnBulkDelete');
         var countSpan = document.getElementById('bulkCount');
         
-        countSpan.textContent = count;
-        if (count > 0) {
-            btn.style.display = 'inline-flex';
-            btn.disabled = false;
-        } else {
-            btn.style.display = 'none';
-            btn.disabled = true;
+        document.querySelectorAll('.file-check').forEach(function(cb) {
+            var row = cb.closest('tr');
+            if (row) {
+                if (cb.checked) {
+                    row.classList.add('row-selected');
+                } else {
+                    row.classList.remove('row-selected');
+                }
+            }
+        });
+
+        if (countSpan) countSpan.textContent = count;
+        if (btn) {
+            if (count > 0) {
+                btn.style.display = 'inline-flex';
+                btn.disabled = false;
+            } else {
+                btn.style.display = 'none';
+                btn.disabled = true;
+            }
         }
     }
 
