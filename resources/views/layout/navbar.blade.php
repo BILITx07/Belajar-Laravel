@@ -1,5 +1,5 @@
 <!-- Topbar Resmi BWS Kalimantan I (Real Aesthetic Frosted Glass / Efek Kaca Nyata) -->
-<nav class="navbar navbar-expand sticky-top px-3 px-md-4 py-2 bws-glass-navbar" style="height: 70px; z-index: 1030;">
+<nav class="navbar navbar-expand sticky-top px-3 px-md-4 py-1.5 bws-glass-navbar" style="height: 58px; z-index: 1030;">
 
     <style>
         /* Efek Kaca Nyata (Real Frosted Ice Glassmorphism) */
@@ -69,14 +69,14 @@
     <div class="d-flex align-items-center">
         <!-- Logo PU Kotak Squircle Tajam & Berbingkai Emas -->
         <a href="{{ route('peta') }}" class="d-flex align-items-center text-decoration-none">
-            <div class="mr-3 d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; min-width: 44px; background: #ffffff; border-radius: 11px; border: 1.5px solid rgba(250, 214, 5, 0.95); padding: 5px; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);">
+            <div class="mr-2.5 d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; min-width: 36px; background: #ffffff; border-radius: 9px; border: 1.5px solid rgba(250, 214, 5, 0.95); padding: 3px; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);">
                 <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo Kementerian PU" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
             <div class="d-flex flex-column">
-                <span class="font-weight-bold" style="font-size: 1.05rem; letter-spacing: -0.2px; line-height: 1.2; color: #0f172a;">
+                <span class="font-weight-bold" style="font-size: 0.92rem; letter-spacing: -0.2px; line-height: 1.15; color: #0f172a;">
                     WEBGIS BWS KALIMANTAN I
                 </span>
-                <span class="d-none d-md-block text-muted font-weight-medium" style="font-size: 0.72rem; line-height: 1.25;">
+                <span class="d-none d-md-block text-muted font-weight-medium" style="font-size: 0.68rem; line-height: 1.2;">
                     Direktorat Jenderal Sumber Daya Air &bull; Kementerian Pekerjaan Umum
                 </span>
             </div>
@@ -84,27 +84,27 @@
     </div>
 
     <!-- Bagian Kanan: Menu Link Ramping & Tombol Aksi -->
-    <ul class="navbar-nav ml-auto align-items-center" style="gap: 12px;">
+    <ul class="navbar-nav ml-auto align-items-center" style="gap: 10px;">
 
         <!-- Menu Link Petunjuk Penggunaan -->
         <li class="nav-item d-none d-sm-block">
-            <a href="javascript:void(0)" class="nav-link font-weight-bold px-2 bws-nav-link-custom" data-toggle="modal" data-target="#modalPanduanAplikasi" style="font-size: 13px;" title="Petunjuk Penggunaan WebGIS">
+            <a href="javascript:void(0)" class="nav-link font-weight-bold px-2 bws-nav-link-custom" data-toggle="modal" data-target="#modalPanduanAplikasi" style="font-size: 12px;" title="Petunjuk Penggunaan WebGIS">
                 <i class="fas fa-book-reader mr-1" style="color: #2563eb;"></i> Petunjuk Penggunaan
             </a>
         </li>
 
         <!-- Tombol Layar Penuh -->
         <li class="nav-item">
-            <a class="nav-link p-2 d-flex align-items-center justify-content-center bws-nav-link-custom" href="#" onclick="toggleFullScreen(event)" title="Layar Penuh">
+            <a class="nav-link p-2 d-flex align-items-center justify-content-center bws-nav-link-custom" href="#" onclick="toggleFullScreen(event)" title="Layar Penuh" style="font-size: 13px;">
                 <i class="fas fa-expand"></i>
             </a>
         </li>
 
         @auth
         <!-- TOMBOL KEMBALI KE PANEL ADMIN (SEAMLESS BRIDGE) -->
-        <li class="nav-item mr-2">
-            <a href="{{ route('admin.dashboard') }}" class="btn btn-sm btn-primary font-weight-bold d-flex align-items-center px-3 py-1.5 shadow-sm text-white" style="border-radius: 20px; font-size: 0.82rem; background: #1d4ed8; border: none; height: 36px;" title="Kembali ke Dashboard Administrator">
-                <i class="fas fa-th-large mr-1.5"></i> Panel Admin
+        <li class="nav-item mr-1.5">
+            <a href="{{ route('admin.dashboard') }}" class="btn btn-sm btn-primary font-weight-bold d-flex align-items-center px-2.5 py-1 shadow-xs text-white" style="border-radius: 18px; font-size: 0.78rem; background: #1d4ed8; border: none; height: 32px;" title="Kembali ke Dashboard Administrator">
+                <i class="fas fa-th-large mr-1.5" style="font-size: 11px;"></i> Panel Admin
             </a>
         </li>
 

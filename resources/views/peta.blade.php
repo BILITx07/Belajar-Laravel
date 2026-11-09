@@ -404,6 +404,13 @@
             }, 200);
         }
     }
+    document.addEventListener('DOMContentLoaded', function() {
+        [100, 300, 600, 1200].forEach(function(delay) {
+            setTimeout(function() {
+                if (window.map) window.map.invalidateSize();
+            }, delay);
+        });
+    });
 </script>
 <script src="{{ asset('js/peta-map.js') }}?v={{ file_exists(public_path('js/peta-map.js')) ? filemtime(public_path('js/peta-map.js')) : time() }}"></script>
 @endpush
