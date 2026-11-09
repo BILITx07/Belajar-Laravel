@@ -231,6 +231,16 @@
                 <div id="map"></div>
             </div>
 
+            <!-- Strip Info Bawah Peta (Persis Gambar Referensi QROP) -->
+            <div class="bws-map-footer-strip">
+                <span class="bws-map-footer-left">
+                    <span class="bws-pulse-dot mr-1"></span> Lokasi daerah irigasi ditandai pada peta.
+                </span>
+                <span class="bws-map-footer-right">
+                    Geser untuk menjelajah &bull; Klik ikon untuk detail
+                </span>
+            </div>
+
         </main>
 
     </div>
@@ -291,184 +301,85 @@
         </div>
 
         <!-- ============================================================ -->
-        <!-- 3.1 METRIK DATA IRIGASI KALBAR (KHAS BWS KALIMANTAN I)      -->
+        <!-- 4. BANNER KRING LAYANAN & KONTAK (PERSIS BANNER HIJAU QROP)  -->
         <!-- ============================================================ -->
-        <div class="sipdira-metrics-block">
-            <div class="sipdira-metrics-header d-flex flex-column flex-md-row justify-content-between align-items-md-end">
-                <div>
-                    <span class="sipdira-metrics-tag" style="color: #1a1c54;"><i class="fas fa-chart-pie mr-1 text-warning"></i> Data Spasial Terpadu</span>
-                    <h3 class="sipdira-metrics-title" style="color: #1a1c54;">Statistik Daerah Irigasi Kalimantan Barat</h3>
-                    <p class="sipdira-metrics-subtitle">Rekapitulasi luasan lahan, jaringan saluran irigasi, dan bangunan air kewenangan BWS Kalimantan I.</p>
-                </div>
-                <div class="mt-2 mt-md-0 text-md-right">
-                    <span class="badge badge-light px-3 py-2 border font-weight-bold shadow-xs" style="font-size: 11.5px; color: #1a1c54; background: rgba(255, 255, 255, 0.95); border: 1.5px solid rgba(250, 214, 5, 0.6) !important; border-radius: 10px;">
-                        <i class="fas fa-satellite mr-1 text-warning"></i> Terintegrasi WebGIS Spasial
-                    </span>
-                </div>
+        <div id="kontak-layanan" class="sipdira-kring-banner">
+            <div class="sipdira-kring-info">
+                <div class="sipdira-kring-tag">KRING PENGAWASAN &amp; LAYANAN</div>
+                <h3 class="sipdira-kring-title">Butuh informasi lebih lanjut?</h3>
+                <p class="sipdira-kring-desc">Hubungi Balai Wilayah Sungai Kalimantan I Pontianak.</p>
             </div>
-
-            <div class="row">
-                <!-- Kartu 1: Lahan Baku Irigasi -->
-                <div class="col-12 col-sm-6 col-lg-3 mb-3 mb-lg-0">
-                    <div class="sipdira-metric-card theme-blue">
-                        <div class="sipdira-metric-top">
-                            <div class="sipdira-metric-icon-wrap">
-                                <i class="fas fa-seedling"></i>
-                            </div>
-                            <span class="sipdira-metric-indicator">Total Luas</span>
-                        </div>
-                        <div class="sipdira-metric-val">
-                            45.820 <span class="sipdira-metric-unit">Ha</span>
-                        </div>
-                        <div class="sipdira-metric-label">Luas Lahan Baku Irigasi</div>
-                        <div class="sipdira-metric-note">Potensi total daerah irigasi terdata di Kalimantan Barat.</div>
+            <div class="sipdira-kring-actions">
+                <!-- Tombol WhatsApp -->
+                <a href="https://wa.me/6285389999100" target="_blank" rel="noopener noreferrer" class="sipdira-contact-pill" title="Hubungi melalui WhatsApp">
+                    <div class="sipdira-pill-icon whatsapp">
+                        <i class="fab fa-whatsapp"></i>
                     </div>
-                </div>
-
-                <!-- Kartu 2: Lahan Fungsional -->
-                <div class="col-12 col-sm-6 col-lg-3 mb-3 mb-lg-0">
-                    <div class="sipdira-metric-card theme-cyan">
-                        <div class="sipdira-metric-top">
-                            <div class="sipdira-metric-icon-wrap">
-                                <i class="fas fa-tint"></i>
-                            </div>
-                            <span class="sipdira-metric-indicator">Aktif Mengalir</span>
-                        </div>
-                        <div class="sipdira-metric-val">
-                            32.450 <span class="sipdira-metric-unit">Ha</span>
-                        </div>
-                        <div class="sipdira-metric-label">Lahan Fungsional</div>
-                        <div class="sipdira-metric-note">Lahan pertanian pangan yang aktif terairi secara kontinyu.</div>
+                    <div class="sipdira-pill-text">
+                        <div class="sipdira-pill-label">WhatsApp</div>
+                        <div class="sipdira-pill-value">+62 853 8999 9100</div>
                     </div>
-                </div>
-
-                <!-- Kartu 3: Jaringan Saluran -->
-                <div class="col-12 col-sm-6 col-lg-3 mb-3 mb-lg-0">
-                    <div class="sipdira-metric-card theme-green">
-                        <div class="sipdira-metric-top">
-                            <div class="sipdira-metric-icon-wrap">
-                                <i class="fas fa-route"></i>
-                            </div>
-                            <span class="sipdira-metric-indicator">Primer &amp; Sekunder</span>
-                        </div>
-                        <div class="sipdira-metric-val">
-                            184,5 <span class="sipdira-metric-unit">Km</span>
-                        </div>
-                        <div class="sipdira-metric-label">Panjang Jaringan Saluran</div>
-                        <div class="sipdira-metric-note">Jaringan saluran pembawa dan pembuang irigasi teknis.</div>
+                    <div class="sipdira-pill-arrow">
+                        <i class="fas fa-external-link-alt"></i>
                     </div>
-                </div>
+                </a>
 
-                <!-- Kartu 4: Bangunan Air -->
-                <div class="col-12 col-sm-6 col-lg-3 mb-3 mb-lg-0">
-                    <div class="sipdira-metric-card theme-amber">
-                        <div class="sipdira-metric-top">
-                            <div class="sipdira-metric-icon-wrap">
-                                <i class="fas fa-archway"></i>
-                            </div>
-                            <span class="sipdira-metric-indicator">Bangunan SDA</span>
-                        </div>
-                        <div class="sipdira-metric-val">
-                            128 <span class="sipdira-metric-unit">Unit</span>
-                        </div>
-                        <div class="sipdira-metric-label">Bangunan &amp; Pintu Air</div>
-                        <div class="sipdira-metric-note">Bendung, intake, pintu air, dan gorong-gorong pengendali.</div>
+                <!-- Tombol Instagram -->
+                <a href="https://instagram.com/bwskalimantan1" target="_blank" rel="noopener noreferrer" class="sipdira-contact-pill" title="Kunjungi Instagram Resmi @bwskalimantan1">
+                    <div class="sipdira-pill-icon instagram">
+                        <i class="fab fa-instagram"></i>
                     </div>
-                </div>
+                    <div class="sipdira-pill-text">
+                        <div class="sipdira-pill-label">Instagram</div>
+                        <div class="sipdira-pill-value">@bwskalimantan1</div>
+                    </div>
+                    <div class="sipdira-pill-arrow">
+                        <i class="fas fa-external-link-alt"></i>
+                    </div>
+                </a>
             </div>
         </div>
 
         <!-- ============================================================ -->
-        <!-- 3.2 FOOTER RESMI KEDINASAN BWS KALIMANTAN I                 -->
+        <!-- 5. BAR COUNTER PENGUNJUNG (PERSIS GAMBAR REFERENSI QROP)     -->
         <!-- ============================================================ -->
-        <footer id="kontak-layanan" class="bws-official-footer">
-            <div class="row">
-                <!-- Kolom 1: Profil Instansi Resmi -->
-                <div class="col-lg-5 col-md-12 mb-4 mb-lg-0">
-                    <div class="bws-footer-brand-wrap">
-                        <div class="bws-footer-logo-pu">
-                            <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo PU" style="width: 100%; height: 100%; object-fit: contain;">
-                        </div>
-                        <div class="bws-footer-logo-sipdira">
-                            <img src="{{ asset('img/logo-sipdira.svg') }}" alt="Logo SIPDIRA" style="width: 100%; height: 100%; object-fit: contain;">
-                        </div>
-                        <div>
-                            <h4 class="bws-footer-title">SIPDIRA SPASIAL</h4>
-                            <div class="bws-footer-subtitle">Sistem Informasi Peta Daerah Irigasi &bull; BWS Kalimantan I</div>
-                        </div>
-                    </div>
-                    <p class="bws-footer-address">
-                        <strong>Balai Wilayah Sungai Kalimantan I Pontianak</strong><br>
-                        Direktorat Jenderal Sumber Daya Air &bull; Kementerian Pekerjaan Umum<br>
-                        <i class="fas fa-map-marker-alt text-warning mr-1"></i> Jl. Paris II No. 1, Kota Pontianak, Kalimantan Barat 78124
-                    </p>
-                    <div class="bws-footer-social-wrap">
-                        <a href="https://instagram.com/bwskalimantan1" target="_blank" rel="noopener noreferrer" class="bws-footer-social-pill">
-                            <i class="fab fa-instagram text-danger"></i> @bwskalimantan1
-                        </a>
-                        <a href="https://wa.me/6285389999100" target="_blank" rel="noopener noreferrer" class="bws-footer-social-pill">
-                            <i class="fab fa-whatsapp text-success"></i> +62 853 8999 9100
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Kolom 2: Layanan & Kontak Resmi -->
-                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
-                    <h5 class="bws-footer-col-title">Layanan &amp; Pengaduan</h5>
-                    <ul class="bws-footer-list">
-                        <li>
-                            <i class="fas fa-phone-alt"></i>
-                            <span>Telepon: (0561) 742182 / 742183</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-envelope"></i>
-                            <span>Email: <a href="mailto:bwskalimantan1@pu.go.id">bwskalimantan1@pu.go.id</a></span>
-                        </li>
-                        <li>
-                            <i class="fas fa-clock"></i>
-                            <span>Jam Layanan: Senin - Jumat (08.00 - 16.00 WIB)</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-shield-alt"></i>
-                            <span>Pengaduan Publik: LAPOR! / Kring SDA Kalimantan I</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Kolom 3: Tautan Terkait Instansi -->
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="bws-footer-col-title">Tautan Terkait</h5>
-                    <ul class="bws-footer-list">
-                        <li>
-                            <i class="fas fa-external-link-alt"></i>
-                            <a href="https://pu.go.id" target="_blank" rel="noopener noreferrer">Kementerian Pekerjaan Umum</a>
-                        </li>
-                        <li>
-                            <i class="fas fa-external-link-alt"></i>
-                            <a href="https://sda.pu.go.id" target="_blank" rel="noopener noreferrer">Ditjen Sumber Daya Air</a>
-                        </li>
-                        <li>
-                            <i class="fas fa-external-link-alt"></i>
-                            <a href="https://sigi.pu.go.id" target="_blank" rel="noopener noreferrer">SIGI Geospasial PU</a>
-                        </li>
-                        <li>
-                            <i class="fas fa-external-link-alt"></i>
-                            <a href="https://tanahair.indonesia.go.id" target="_blank" rel="noopener noreferrer">Ina-Geoportal BIG</a>
-                        </li>
-                    </ul>
-                </div>
+        <div class="sipdira-visitor-counter-bar">
+            <div class="sipdira-visitor-left">
+                <i class="fas fa-user-friends mr-1.5"></i>
+                <span>Pengunjung</span>
             </div>
-
-            <!-- Bar Bawah Hak Cipta & Integritas Geospasial -->
-            <div class="bws-footer-bottom">
-                <div>
-                    &copy; {{ date('Y') }} <strong>SIPDIRA SPASIAL</strong> &bull; Balai Wilayah Sungai Kalimantan I Pontianak. Seluruh Hak Cipta Dilindungi.
-                </div>
-                <div>
-                    <span class="mr-2"><i class="fas fa-check-circle text-success mr-1"></i> Standar Data Geospasial Nasional</span>
-                </div>
+            <div class="sipdira-visitor-stats">
+                <span class="sipdira-stat-item">
+                    <span class="sipdira-stat-label">Total pengunjung</span>
+                    <span class="sipdira-stat-num">65.396</span>
+                </span>
+                <span class="sipdira-stat-item">
+                    <span class="sipdira-stat-label">Hari ini</span>
+                    <span class="sipdira-stat-num">12</span>
+                </span>
+                <span class="sipdira-stat-item">
+                    <span class="sipdira-stat-label">Bulan ini</span>
+                    <span class="sipdira-stat-num">179</span>
+                </span>
             </div>
-        </footer>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 6. FOOTER COPYRIGHT BAWAH (PERSIS BAGIAN TERBAWAH QROP)      -->
+        <!-- ============================================================ -->
+        <div class="sipdira-qrop-footer-bottom">
+            <div>
+                &copy; {{ date('Y') }} <strong>Balai Wilayah Sungai Kalimantan I Pontianak</strong>
+            </div>
+            <div>
+                <a href="javascript:void(0)" class="sipdira-footer-link" data-toggle="modal" data-target="#modalPanduanAplikasi">Kebijakan Privasi</a>
+            </div>
+            <div>
+                <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;" class="sipdira-footer-link">
+                    Kembali ke peta <i class="fas fa-arrow-up ml-1"></i>
+                </a>
+            </div>
+        </div>
 
     </section>
 

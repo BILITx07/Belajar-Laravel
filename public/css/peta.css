@@ -41,12 +41,12 @@ body {
 }
 
 /* ============================================================
-   1. WADAH HALAMAN (PADDING LEGA & TERPUSAT ALA QROP)
+   1. WADAH HALAMAN (PERSIS PROPORSI RAPAT & RAPI QROP)
    ============================================================ */
 .bws-qrop-page {
-    max-width: 1480px;
+    max-width: 1240px;
     margin: 0 auto;
-    padding: 16px 20px 30px 20px;
+    padding: 20px 20px 36px 20px;
 }
 
 /* ============================================================
@@ -56,11 +56,11 @@ body {
     background: linear-gradient(135deg, rgba(26, 28, 84, 0.96) 0%, rgba(20, 24, 75, 0.94) 50%, rgba(29, 78, 216, 0.90) 100%);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-radius: 20px;
+    border-radius: 16px;
     border: 1.5px solid rgba(250, 214, 5, 0.35);
-    padding: 26px 34px;
+    padding: 24px 30px;
     color: #ffffff;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -149,19 +149,19 @@ body {
 
 /* SIDEBAR KIRI GLASSMORPHISM (PERSIS GAMBAR 1 REFERENSI QROP) */
 .bws-sidebar-card {
-    width: 340px;
-    min-width: 340px;
-    max-width: 340px;
-    background: rgba(255, 255, 255, 0.85);
+    width: 320px;
+    min-width: 320px;
+    max-width: 320px;
+    background: rgba(255, 255, 255, 0.90);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.75);
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
     padding: 20px 18px;
     display: flex;
     flex-direction: column;
     gap: 13px;
-    box-shadow: 0 10px 35px rgba(15, 23, 42, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
     align-self: stretch;
     height: 100%;
     box-sizing: border-box;
@@ -639,26 +639,75 @@ body {
     background: #b45309;
 }
 
-/* Wadah Kartu Peta Glassmorphism */
+/* Wadah Kartu Peta Glassmorphism (Persis Proporsi QROP) */
 .bws-leaflet-card {
     background: #ffffff;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
     overflow: hidden;
     position: relative;
-    box-shadow: 0 10px 35px rgba(15, 23, 42, 0.06);
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
     flex: 1;
     display: flex;
     flex-direction: column;
-    min-height: 630px;
+    min-height: 560px;
+    height: 560px;
 }
 
 #map {
     width: 100%;
     height: 100%;
-    min-height: 630px;
+    min-height: 560px;
     flex: 1;
     background: #e2e8f0;
+}
+
+/* Strip Info Bawah Peta (Persis Gambar Referensi QROP) */
+.bws-map-footer-strip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 4px 2px 4px;
+    font-size: 11.5px;
+    color: #64748b;
+}
+
+.bws-pulse-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #10b981;
+    display: inline-block;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
+}
+
+.bws-map-footer-left {
+    display: flex;
+    align-items: center;
+}
+
+/* Footer Bottom QROP (Copyright, Kebijakan Privasi & Kembali ke Peta) */
+.sipdira-qrop-footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 4px 28px 4px;
+    font-size: 12px;
+    color: #94a3b8;
+    border-top: 1px solid #f1f5f9;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.sipdira-footer-link {
+    color: #64748b;
+    text-decoration: none;
+    transition: color 0.18s ease;
+}
+
+.sipdira-footer-link:hover {
+    color: #0f172a;
+    text-decoration: underline;
 }
 
 /* Skala Peta Leaflet (Scale Bar) Elegan & Bersih */
@@ -1057,8 +1106,8 @@ body {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1.5px solid rgba(250, 214, 5, 0.45);
-    border-radius: 20px;
-    padding: 38px 28px;
+    border-radius: 16px;
+    padding: 32px 22px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1216,9 +1265,11 @@ body {
 /* Banner Hijau Kontak Kring Pengawasan & Layanan */
 .sipdira-kring-banner {
     background: linear-gradient(135deg, #15803d 0%, #166534 100%);
-    border-radius: 18px;
-    padding: 26px 34px;
+    border-radius: 16px;
+    padding: 24px 32px;
     color: #ffffff;
+    margin-top: 32px;
+    margin-bottom: 24px;
     margin-top: 34px;
     margin-bottom: 24px;
     display: flex;
