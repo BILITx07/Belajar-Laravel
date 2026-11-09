@@ -170,13 +170,10 @@
             </p>
         </div>
 
-        <div class="d-flex align-items-center" style="gap: 8px;">
-            <span class="badge badge-light border text-secondary px-3 py-2 font-weight-bold shadow-sm" style="border-radius: 20px; font-size: 0.8rem; background: #fff;">
+        <div class="d-flex align-items-center">
+            <span class="badge badge-light border text-secondary px-3 py-2 font-weight-bold shadow-sm" style="border-radius: 20px; font-size: 0.8rem; background: #ffffff; border-color: #e2e8f0;">
                 <i class="fas fa-calendar-alt text-primary mr-2"></i> {{ \Carbon\Carbon::now()->locale('id')->isoFormat('dddd, D MMMM Y') }}
             </span>
-            <a href="{{ route('admin.kelola-gis') }}" class="btn btn-sm btn-primary shadow-sm font-weight-bold" style="border-radius: 20px; font-size: 0.78rem; padding: 6px 14px;">
-                <i class="fas fa-cloud-upload-alt mr-1"></i> Upload File GIS
-            </a>
         </div>
     </div>
 
@@ -209,17 +206,19 @@
     <div class="row mb-4" style="row-gap: 16px;">
         <!-- Card 1: Total Layer Spasial (Cyan) -->
         <div class="col-xl-2 col-lg-4 col-md-6 col-sm-6">
-            <div class="siperisda-card bg-sip-cyan">
-                <div class="siperisda-body">
-                    <i class="fas fa-layer-group siperisda-icon"></i>
-                    <div class="siperisda-value">{{ $stats['total_files'] ?? count($geojsonFiles) }}</div>
-                    <div class="siperisda-label">Total File Spasial</div>
+            <a href="{{ route('admin.kelola-gis') }}" class="text-decoration-none text-reset d-block" title="Klik untuk Kelola & Upload File Spasial">
+                <div class="siperisda-card bg-sip-cyan">
+                    <div class="siperisda-body">
+                        <i class="fas fa-layer-group siperisda-icon"></i>
+                        <div class="siperisda-value">{{ $stats['total_files'] ?? count($geojsonFiles) }}</div>
+                        <div class="siperisda-label">Total File Spasial</div>
+                    </div>
+                    <div class="siperisda-footer">
+                        <span>File GeoJSON &amp; SHP</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
                 </div>
-                <div class="siperisda-footer">
-                    <span>File GeoJSON &amp; SHP</span>
-                    <i class="fas fa-arrow-right"></i>
-                </div>
-            </div>
+            </a>
         </div>
 
         <!-- Card 2: Lahan Baku (Green) -->

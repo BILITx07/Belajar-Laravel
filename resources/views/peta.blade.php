@@ -159,11 +159,6 @@
 
             <!-- Footer Instansi BWSK I -->
             <div class="bws-sidebar-bottom-footer mt-auto pt-3 border-top">
-                @auth
-                <a href="{{ route('admin.kelola-gis') }}" class="btn btn-primary btn-block font-weight-bold shadow-sm py-2 mb-2" style="font-size: 12px; border-radius: 8px;">
-                    <i class="fas fa-cloud-upload-alt mr-1"></i> Upload File GIS
-                </a>
-                @endauth
                 <div class="text-muted" style="font-size: 11px;">
                     <div class="font-weight-bold text-dark">Balai Wilayah Sungai Kalimantan I</div>
                     <div>Pontianak &bull; Kementerian Pekerjaan Umum</div>
