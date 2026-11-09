@@ -1,6 +1,6 @@
 @extends('layout.master')
 
-@section('title', 'BWS KALIMANTAN I - SIG Daerah Irigasi')
+@section('title', 'SIPDIRA - Sistem Informasi Peta Daerah Irigasi BWS Kalimantan I')
 @section('hide_footer', true)
 
 @push('styles')
@@ -16,7 +16,7 @@
     <div class="bws-hero-card">
         <div class="bws-hero-content">
             <div class="bws-hero-pretitle">
-                <span class="bws-dot-hero"></span> DATA SPASIAL BWS KALIMANTAN I
+                <span class="bws-dot-hero"></span> DATA SPASIAL SIPDIRA &bull; BWS KALIMANTAN I
             </div>
             <h1 class="bws-hero-title">
                 Peta Daerah Irigasi &amp; Jaringan SDA.

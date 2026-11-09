@@ -165,11 +165,11 @@
             </div>
             <div class="d-flex flex-column">
                 <div class="qrop-brand-title">
-                    <span class="qrop-word-main">WEBGIS</span>
+                    <span class="qrop-word-main">SIPDIRA</span>
                     <span class="qrop-word-sub">SPASIAL</span>
                 </div>
                 <div class="qrop-brand-agency d-none d-md-block">
-                    Ditjen Sumber Daya Air &bull; Kementerian PU
+                    Sistem Informasi Peta Daerah Irigasi &bull; BWS Kalimantan I
                 </div>
             </div>
         </a>

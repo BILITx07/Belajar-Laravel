@@ -453,13 +453,13 @@
             </div>
             <div class="d-flex flex-column text-white">
                 <span class="font-weight-bold" style="font-size:0.95rem; letter-spacing:0.4px; line-height:1.2;">
-                    WEBGIS BWS KALIMANTAN I
+                    SIPDIRA &bull; BWS KALIMANTAN I
                 </span>
-                <span style="font-size:0.72rem; color:rgba(255,255,255,0.9); line-height:1.15; font-weight:500;">
-                    Direktorat Jenderal Sumber Daya Air
+                <span style="font-size:0.72rem; color:rgba(255,255,255,0.95); line-height:1.15; font-weight:600;">
+                    Sistem Informasi Peta Daerah Irigasi
                 </span>
-                <span style="font-size:0.72rem; color:rgba(255,255,255,0.9); line-height:1.15; font-weight:500;">
-                    Kementerian Pekerjaan Umum
+                <span style="font-size:0.7rem; color:rgba(255,255,255,0.85); line-height:1.15; font-weight:500;">
+                    Ditjen Sumber Daya Air &bull; Kementerian PU
                 </span>
             </div>
         </div>

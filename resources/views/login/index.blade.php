@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{{ $title ?? 'Masuk' }} - WEB GIS BWS KALIMANTAN I</title>
+    <title>{{ $title ?? 'Masuk' }} - SIPDIRA BWS KALIMANTAN I</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="{{ asset('img/logo-pu-badge.svg') }}">
@@ -467,8 +467,8 @@
                     <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo PU">
                 </div>
                 <div class="brand-text-block">
-                    <h1>WEB GIS</h1>
-                    <span>BWS KALIMANTAN I</span>
+                    <h1>SIPDIRA</h1>
+                    <span>Sistem Informasi Peta Daerah Irigasi</span>
                 </div>
             </div>
 

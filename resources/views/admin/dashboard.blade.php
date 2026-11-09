@@ -162,11 +162,11 @@
                     DASHBOARD UTAMA
                 </h4>
                 <span class="badge badge-primary px-2 py-1 font-weight-bold" style="font-size: 0.72rem; border-radius: 6px; background: #174ea6;">
-                    BWS KALIMANTAN I
+                    SIPDIRA &bull; BWSK I
                 </span>
             </div>
             <p class="text-muted small mb-0 mt-1" style="font-size: 0.82rem;">
-                Monitoring Spasial Daerah Irigasi Kewenangan Balai Wilayah Sungai Kalimantan I Pontianak
+                Monitoring Spasial Sistem Informasi Peta Daerah Irigasi BWS Kalimantan I Pontianak
             </p>
         </div>
 
