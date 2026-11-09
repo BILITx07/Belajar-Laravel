@@ -506,6 +506,7 @@
     </header>
 
     <!-- ═══ 2. MENU NAVIGASI ADMIN SEKUNDER (SESUAI GAMBAR REFERENSI FEWS BWS) ═══ -->
+    @if(!request()->routeIs('profile'))
     <nav class="bws-subnavbar">
         <!-- 1. Dashboard -->
         <a href="{{ route('admin.dashboard') }}" class="bws-nav-link {{ request()->routeIs('admin.dashboard', 'dashboard', 'admin.index') ? 'active' : '' }}">
@@ -533,6 +534,7 @@
             <span>Log Aktivitas</span>
         </a>
     </nav>
+    @endif
 
     <!-- ═══ 3. KONTEN UTAMA HALAMAN ═══ -->
     <main class="admin-main-container">
