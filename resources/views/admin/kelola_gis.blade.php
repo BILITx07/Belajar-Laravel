@@ -54,25 +54,18 @@
     </div>
     @endif
 
-    <!-- Breadcrumb & Header Halaman Profesional -->
-    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-3" style="gap: 8px;">
-        <div>
-            <div class="d-flex align-items-center text-muted small mb-1" style="font-size: 0.78rem;">
-                <a href="{{ route('admin.dashboard') }}" class="text-decoration-none text-muted">
-                    <i class="fas fa-home mr-1"></i> Dashboard
-                </a>
-                <span class="mx-2 text-muted">/</span>
-                <span class="text-primary font-weight-bold">Master Data GIS</span>
-            </div>
-            <h4 class="font-weight-bold text-dark mb-0" style="letter-spacing: 0.3px; font-size: 1.15rem;">
-                Master Data Geospasial Irigasi
-            </h4>
+    <!-- Breadcrumb & Header Halaman Bersih & Profesional -->
+    <div class="mb-4">
+        <div class="d-flex align-items-center text-muted small mb-1" style="font-size: 0.78rem;">
+            <a href="{{ route('admin.dashboard') }}" class="text-decoration-none text-muted">
+                <i class="fas fa-home mr-1"></i> Dashboard
+            </a>
+            <span class="mx-2 text-muted">/</span>
+            <span class="text-primary font-weight-bold">Master Data GIS</span>
         </div>
-        <div class="d-flex align-items-center" style="gap: 8px;">
-            <span class="badge badge-light border text-muted px-3 py-2 font-weight-normal shadow-sm" style="border-radius: 20px; font-size: 0.76rem; background: #ffffff;">
-                <i class="fas fa-map-marked-alt text-primary mr-1"></i> WebGIS Balai Wilayah Sungai Kalimantan I
-            </span>
-        </div>
+        <h4 class="font-weight-bold text-dark mb-0" style="letter-spacing: 0.3px; font-size: 1.25rem;">
+            Master Data Geospasial Irigasi
+        </h4>
     </div>
 
     @php
