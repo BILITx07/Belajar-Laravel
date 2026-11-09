@@ -9,10 +9,10 @@
     <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-4 pb-1" style="gap: 12px;">
         <div>
             <h4 class="font-weight-bold mb-0 text-dark" style="letter-spacing: -0.3px; font-size: 1.25rem;">
-                Log Aktivitas &amp; Jejak Audit
+                Riwayat Aktivitas Sistem
             </h4>
             <p class="text-muted small mb-0 mt-1" style="font-size: 0.84rem;">
-                Rekam jejak operasional dan pengawasan keamanan data geospasial BWS Kalimantan I Pontianak.
+                Catatan riwayat kegiatan operasional dan perubahan data WebGIS BWS Kalimantan I.
             </p>
         </div>
 
@@ -208,7 +208,7 @@
                             <th width="16%" class="font-weight-bold py-3">Waktu &amp; Tanggal</th>
                             <th width="20%" class="font-weight-bold py-3">Petugas / Aktor</th>
                             <th width="14%" class="font-weight-bold py-3">Jenis Aksi</th>
-                            <th width="33%" class="font-weight-bold py-3">Rincian Catatan Audit</th>
+                            <th width="33%" class="font-weight-bold py-3">Rincian Aktivitas</th>
                             <th width="12%" class="text-center font-weight-bold py-3">IP Address</th>
                         </tr>
                     </thead>
@@ -332,7 +332,7 @@
             <!-- Footer Pagination & Keterangan -->
             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mt-4 pt-3 border-top" style="gap: 12px;">
                 <div class="text-muted small">
-                    Menampilkan <strong>{{ count($logs) }}</strong> dari <strong>{{ $totalLogs }}</strong> total aktivitas audit
+                    Menampilkan <strong>{{ count($logs) }}</strong> dari <strong>{{ $totalLogs }}</strong> total riwayat aktivitas
                 </div>
 
                 @if($totalPages > 1)
@@ -387,7 +387,7 @@
                 </div>
                 <h6 class="font-weight-bold text-dark mb-1">Bersihkan Riwayat Log?</h6>
                 <p class="text-muted small mb-0">
-                    Seluruh catatan rekam jejak audit dan aktivitas operasional akan dihapus permanen.
+                    Seluruh catatan riwayat kegiatan operasional akan dihapus permanen dari sistem.
                 </p>
                 <small class="text-danger d-block mt-2 font-weight-bold">Tindakan ini tidak dapat dibatalkan!</small>
             </div>
