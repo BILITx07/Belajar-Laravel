@@ -100,12 +100,12 @@
                 </div>
             </div>
 
-            <!-- Tab Navigasi: File Aktif vs Kotak Sampah -->
+            <!-- Tab Navigasi: Data Aktif vs Kotak Sampah -->
             <div class="d-flex align-items-center mb-3 pb-2 border-bottom" style="gap: 8px;">
                 <a href="{{ route('admin.kelola-gis', ['tab' => 'active']) }}" 
                    class="btn btn-sm {{ ($currentTab ?? 'active') === 'active' ? 'btn-primary text-white font-weight-bold shadow-sm' : 'btn-light text-muted' }}" 
                    style="border-radius: 20px; font-size: 0.84rem; padding: 6px 18px; {{ ($currentTab ?? 'active') === 'active' ? 'background:#1d4ed8;border-color:#1d4ed8;' : '' }}">
-                    <i class="fas fa-folder-open mr-1"></i> File Aktif ({{ $totalActive ?? 0 }})
+                    <i class="fas fa-database mr-1"></i> Data Aktif ({{ $totalActive ?? 0 }})
                 </a>
                 <a href="{{ route('admin.kelola-gis', ['tab' => 'trash']) }}" 
                    class="btn btn-sm {{ ($currentTab ?? '') === 'trash' ? 'btn-danger text-white font-weight-bold shadow-sm' : 'btn-light text-muted' }}" 
