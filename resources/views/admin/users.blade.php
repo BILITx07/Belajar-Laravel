@@ -1,17 +1,9 @@
 @extends('admin.layout')
 
-@section('title', 'Manajemen User — FEWS BWS Kalimantan I')
+@section('title', 'Manajemen User — WebGIS BWS Kalimantan I')
 
 @section('content')
 <div class="anim-fade-in">
-
-    <!-- Header Title & Breadcrumb Persis Referensi FEWS BWS Kalimantan I -->
-    <div class="d-flex align-items-center justify-content-between mb-3">
-        <h4 class="font-weight-bold mb-0" style="letter-spacing: 0.5px; font-size: 1.05rem; color: #495057;">
-            MANAJEMEN USER
-        </h4>
-        <span class="text-muted small" style="font-weight: 500;">Menu Utama</span>
-    </div>
 
     <!-- Flash Alerts -->
     @if(session('success'))
@@ -43,8 +35,12 @@
     @endif
 
     @if($errors->any())
-    <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert" style="border-radius:10px;">
-        <ul class="mb-0 pl-3">
+    <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert" style="border-radius:10px;border-left:4px solid #ef4444;">
+        <div class="d-flex align-items-center mb-1">
+            <i class="fas fa-exclamation-circle mr-2 text-danger"></i>
+            <strong>Terjadi kesalahan input:</strong>
+        </div>
+        <ul class="mb-0 pl-4 small">
             @foreach($errors->all() as $err)
                 <li>{{ $err }}</li>
             @endforeach
@@ -55,110 +51,152 @@
     </div>
     @endif
 
-    <!-- Card Utama Sesuai Referensi FEWS BWS Kalimantan I -->
+    <!-- Card Utama Manajemen User -->
     <div class="card border-0 shadow-sm" style="border-radius: 12px; overflow: hidden; background: #ffffff;">
         <div class="card-body p-4">
 
-            <!-- Card Header: Judul & Tombol Tambah User -->
+            <!-- Card Header: Judul, Subtitle & Tombol Tambah User -->
             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-4 pb-2 border-bottom" style="gap: 12px;">
-                <h5 class="font-weight-bold text-dark mb-0" style="font-size: 1.15rem;">
-                    Daftar User Aplikasi
-                </h5>
+                <div>
+                    <h5 class="font-weight-bold text-dark mb-1" style="font-size: 1.18rem; letter-spacing: -0.3px;">
+                        Daftar User Aplikasi
+                    </h5>
+                    <p class="text-muted small mb-0">
+                        Kelola akun hak akses administrator dan staf operator WebGIS BWS Kalimantan I.
+                    </p>
+                </div>
                 <button type="button" 
                         class="btn text-white font-weight-bold px-4 py-2 shadow-sm d-inline-flex align-items-center justify-content-center"
-                        style="background: #2563eb; border-radius: 25px; font-size: 0.88rem; transition: all 0.2s ease;"
+                        style="background: #1d4ed8; border-radius: 25px; font-size: 0.88rem; height: 38px; transition: all 0.2s ease;"
                         data-toggle="modal" 
                         data-target="#modalTambahUser">
-                    <i class="fas fa-plus mr-2"></i> Tambah User
+                    <i class="fas fa-user-plus mr-2"></i> Tambah User Baru
                 </button>
             </div>
 
-            <!-- Toolbar: Tampilkan entri & Cari -->
-            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-3" style="gap: 12px;">
-                <div class="d-flex align-items-center text-muted" style="font-size: 0.88rem;">
-                    <span class="mr-2">Tampilkan</span>
-                    <select class="form-control form-control-sm d-inline-block px-2 text-center" 
-                            style="width: 70px; border-radius: 6px;" 
+            <!-- Toolbar: Tampilkan entri & Cari Terpadu -->
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3" style="gap: 12px;">
+                <!-- Left: Tampilkan X entri -->
+                <div class="d-flex align-items-center text-muted small bg-light px-2 py-1 rounded border shadow-sm" style="height: 38px; border-color:#cbd5e1;">
+                    <span class="mr-2 text-dark font-weight-bold" style="font-size: 0.78rem;">Tampilkan</span>
+                    <select class="custom-select custom-select-sm border-0 bg-transparent font-weight-bold text-primary" 
+                            style="width: 65px; height: 30px; font-size: 0.82rem; cursor: pointer;" 
                             onchange="window.location.href='{{ request()->fullUrlWithQuery(['per_page' => 'PLACEHOLDER']) }}'.replace('PLACEHOLDER', this.value)">
                         <option value="10" {{ $perPage == 10 ? 'selected' : '' }}>10</option>
                         <option value="25" {{ $perPage == 25 ? 'selected' : '' }}>25</option>
                         <option value="50" {{ $perPage == 50 ? 'selected' : '' }}>50</option>
                         <option value="100" {{ $perPage == 100 ? 'selected' : '' }}>100</option>
                     </select>
-                    <span class="ml-2">entri</span>
+                    <span class="ml-1 text-muted" style="font-size: 0.78rem;">entri</span>
                 </div>
 
-                <div class="d-flex align-items-center text-muted" style="font-size: 0.88rem;">
-                    <span class="mr-2">Cari:</span>
-                    <form method="GET" action="{{ route('users.index') }}" class="m-0">
-                        <input type="hidden" name="per_page" value="{{ $perPage }}">
+                <!-- Right: Cari Terpadu -->
+                <form method="GET" action="{{ route('users.index') }}" class="m-0 d-flex align-items-center" style="gap: 8px;">
+                    <input type="hidden" name="per_page" value="{{ $perPage }}">
+                    <div class="input-group input-group-sm shadow-sm" style="width: 260px;">
                         <input type="text" 
                                name="search" 
                                value="{{ $search }}" 
-                               class="form-control form-control-sm" 
-                               style="width: 220px; border-radius: 6px;" 
-                               placeholder=""
-                               onkeypress="if(event.key === 'Enter') this.form.submit()">
-                    </form>
-                </div>
+                               class="form-control font-weight-normal border" 
+                               style="border-radius: 8px 0 0 8px; font-size: 0.83rem; height: 38px; border-color: #cbd5e1;" 
+                               placeholder="Ketik nama, email, username...">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary px-3" type="submit" style="background:#1d4ed8; border-color:#1d4ed8; border-radius: 0 8px 8px 0; height: 38px;">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    @if(!empty($search))
+                    <a href="{{ route('users.index', ['per_page' => $perPage]) }}" class="btn btn-sm btn-outline-secondary d-flex align-items-center shadow-sm" style="height: 38px; border-radius: 8px; font-size: 0.8rem;" title="Reset Pencarian">
+                        <i class="fas fa-times mr-1"></i> Reset
+                    </a>
+                    @endif
+                </form>
             </div>
 
-            <!-- Tabel Pengguna ala FEWS BWS -->
+            <!-- Tabel Pengguna ala Enterprise Modern -->
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0" style="font-size: 0.88rem;">
                     <thead>
-                        <tr class="text-dark font-weight-bold" style="border-top: 1px solid #f1f5f9; border-bottom: 2px solid #e2e8f0; color: #1e293b;">
-                            <th width="5%" class="text-center font-weight-bold">No.</th>
-                            <th width="24%" class="font-weight-bold">
-                                Nama <i class="fas fa-sort text-muted ml-1 fa-xs" style="opacity: 0.5;"></i>
-                            </th>
-                            <th width="16%" class="font-weight-bold">
-                                Username <i class="fas fa-sort text-muted ml-1 fa-xs" style="opacity: 0.5;"></i>
-                            </th>
-                            <th width="15%" class="font-weight-bold">
-                                No. HP <i class="fas fa-sort text-muted ml-1 fa-xs" style="opacity: 0.5;"></i>
-                            </th>
-                            <th width="20%" class="font-weight-bold">
-                                Email <i class="fas fa-sort text-muted ml-1 fa-xs" style="opacity: 0.5;"></i>
-                            </th>
-                            <th width="12%" class="font-weight-bold">
-                                Role <i class="fas fa-sort text-muted ml-1 fa-xs" style="opacity: 0.5;"></i>
-                            </th>
-                            <th width="8%" class="text-center font-weight-bold">Aksi</th>
+                        <tr class="text-secondary font-weight-bold text-uppercase" style="background: #f8fafc; border-top: 1px solid #f1f5f9; border-bottom: 2px solid #e2e8f0; font-size: 0.76rem; letter-spacing: 0.5px;">
+                            <th width="5%" class="text-center font-weight-bold py-3">No.</th>
+                            <th width="28%" class="font-weight-bold py-3">Nama Pengguna</th>
+                            <th width="15%" class="font-weight-bold py-3">Username</th>
+                            <th width="14%" class="font-weight-bold py-3">No. HP</th>
+                            <th width="20%" class="font-weight-bold py-3">Email</th>
+                            <th width="10%" class="font-weight-bold py-3">Role</th>
+                            <th width="8%" class="text-center font-weight-bold py-3">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($users as $index => $user)
+                            @php
+                                $words = explode(' ', trim($user->name));
+                                $initials = '';
+                                foreach (array_slice($words, 0, 2) as $w) {
+                                    $initials .= strtoupper(mb_substr($w, 0, 1));
+                                }
+                                $palette = [
+                                    ['bg' => '#eff6ff', 'text' => '#1d4ed8', 'border' => '#bfdbfe'],
+                                    ['bg' => '#f0fdf4', 'text' => '#15803d', 'border' => '#bbf7d0'],
+                                    ['bg' => '#fef3c7', 'text' => '#b45309', 'border' => '#fde68a'],
+                                    ['bg' => '#f3e8ff', 'text' => '#7e22ce', 'border' => '#e9d5ff'],
+                                    ['bg' => '#fce7f3', 'text' => '#be185d', 'border' => '#fbcfe8'],
+                                ];
+                                $colorIdx = abs(crc32($user->email ?? $user->name)) % count($palette);
+                                $theme = $palette[$colorIdx];
+                            @endphp
                             <tr style="border-bottom: 1px solid #f1f5f9;">
-                                <td class="text-center text-muted align-middle">
+                                <td class="text-center text-muted align-middle font-weight-bold" style="font-size: 0.82rem;">
                                     {{ $users->firstItem() + $index }}
                                 </td>
-                                <td class="align-middle font-weight-bold text-dark">
-                                    {{ $user->name }}
+                                <td class="align-middle py-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-circle d-flex align-items-center justify-content-center font-weight-bold mr-3 shadow-xs" 
+                                             style="width: 38px; height: 38px; min-width: 38px; background: {{ $theme['bg'] }}; color: {{ $theme['text'] }}; border: 1px solid {{ $theme['border'] }}; font-size: 0.84rem;">
+                                            {{ $initials ?: 'U' }}
+                                        </div>
+                                        <div>
+                                            <div class="font-weight-bold text-dark" style="font-size: 0.9rem;">
+                                                {{ $user->name }}
+                                            </div>
+                                            <small class="text-muted d-block" style="font-size: 0.74rem;">
+                                                <i class="far fa-clock mr-1"></i>{{ $user->created_at ? $user->created_at->format('d/m/Y H:i') : '-' }}
+                                            </small>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td class="align-middle text-muted">
-                                    {{ $user->display_username }}
+                                <td class="align-middle">
+                                    <span class="badge badge-light border text-secondary px-2 py-1 font-weight-bold" style="font-size: 0.8rem; background: #f8fafc; border-color: #e2e8f0;">
+                                        <i class="fas fa-at text-muted mr-1"></i>{{ $user->display_username }}
+                                    </span>
                                 </td>
-                                <td class="align-middle text-muted">
-                                    {{ $user->phone ?: '-' }}
+                                <td class="align-middle" style="font-size: 0.84rem;">
+                                    @if($user->phone)
+                                        <span class="text-dark"><i class="fas fa-phone-alt text-muted mr-1 fa-xs"></i>{{ $user->phone }}</span>
+                                    @else
+                                        <span class="text-muted font-italic">-</span>
+                                    @endif
                                 </td>
-                                <td class="align-middle text-dark">
-                                    {{ $user->email }}
+                                <td class="align-middle" style="font-size: 0.84rem;">
+                                    <span class="text-dark">
+                                        <i class="far fa-envelope text-muted mr-1"></i>{{ $user->email }}
+                                    </span>
                                 </td>
                                 <td class="align-middle">
                                     @if(strtolower($user->role) === 'superadmin')
-                                        <span class="badge badge-light border font-weight-bold px-2 py-1" style="font-size:0.78rem; border-radius:6px; background:#eff6ff; color:#1d4ed8; border-color:#bfdbfe;">
+                                        <span class="badge border font-weight-bold px-2 py-1" style="font-size:0.77rem; border-radius:6px; background:#eff6ff; color:#1d4ed8; border-color:#bfdbfe;">
                                             <i class="fas fa-shield-alt mr-1"></i> Super Admin
                                         </span>
                                     @else
-                                        <span class="badge badge-light border font-weight-bold px-2 py-1" style="font-size:0.78rem; border-radius:6px; background:#f0fdf4; color:#15803d; border-color:#bbf7d0;">
+                                        <span class="badge border font-weight-bold px-2 py-1" style="font-size:0.77rem; border-radius:6px; background:#f0fdf4; color:#15803d; border-color:#bbf7d0;">
                                             <i class="fas fa-user-tie mr-1"></i> Admin
                                         </span>
                                     @endif
                                 </td>
                                 <td class="text-center align-middle">
                                     <div class="d-flex align-items-center justify-content-center" style="gap: 8px;">
-                                        <!-- Tombol Edit Ramping & Halus -->
+                                        <!-- Tombol Edit -->
                                         <button type="button" 
                                                 class="btn btn-sm shadow-sm d-inline-flex align-items-center justify-content-center"
                                                 style="width: 32px; height: 32px; border-radius: 8px; background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; transition: all 0.2s ease;"
@@ -176,7 +214,7 @@
                                             <i class="fas fa-pen fa-xs"></i>
                                         </button>
 
-                                        <!-- Tombol Hapus Ramping & Halus -->
+                                        <!-- Tombol Hapus -->
                                         @if(Auth::id() !== $user->id)
                                         <button type="button" 
                                                 class="btn btn-sm shadow-sm d-inline-flex align-items-center justify-content-center"
@@ -195,8 +233,8 @@
                             <tr>
                                 <td colspan="7" class="text-center py-5 text-muted">
                                     <i class="fas fa-user-slash fa-3x text-muted mb-3 d-block" style="opacity: 0.4;"></i>
-                                    <div class="font-weight-bold mb-1">Belum ada data user</div>
-                                    <p class="small mb-0">Klik tombol "+ Tambah User" untuk menambahkan pengguna baru.</p>
+                                    <div class="font-weight-bold mb-1">Tidak ada data user ditemukan</div>
+                                    <p class="small mb-0">Klik tombol "+ Tambah User Baru" untuk mendaftarkan akun baru.</p>
                                 </td>
                             </tr>
                         @endforelse
@@ -208,9 +246,9 @@
             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mt-4 pt-3 border-top" style="gap: 12px;">
                 <div class="text-muted small">
                     @if($users->total() > 0)
-                        Menampilkan <strong>{{ $users->firstItem() }}</strong> sampai <strong>{{ $users->lastItem() }}</strong> dari <strong>{{ $users->total() }}</strong> entri
+                        Menampilkan <strong>{{ $users->firstItem() }}</strong> – <strong>{{ $users->lastItem() }}</strong> dari <strong>{{ $users->total() }}</strong> pengguna terdaftar
                     @else
-                        Menampilkan <strong>0</strong> dari <strong>0</strong> entri
+                        Menampilkan <strong>0</strong> pengguna
                     @endif
                 </div>
 
@@ -222,13 +260,13 @@
                 <div>
                     <ul class="pagination pagination-sm mb-0">
                         <li class="page-item disabled">
-                            <span class="page-link">&lsaquo;</span>
+                            <span class="page-link" style="border-radius: 6px 0 0 6px;">&lsaquo;</span>
                         </li>
                         <li class="page-item active">
-                            <span class="page-link" style="background: #2563eb; border-color: #2563eb;">1</span>
+                            <span class="page-link" style="background: #1d4ed8; border-color: #1d4ed8;">1</span>
                         </li>
                         <li class="page-item disabled">
-                            <span class="page-link">&rsaquo;</span>
+                            <span class="page-link" style="border-radius: 0 6px 6px 0;">&rsaquo;</span>
                         </li>
                     </ul>
                 </div>
@@ -246,16 +284,16 @@
 <div class="modal fade" id="modalTambahUser" tabindex="-1" role="dialog" aria-labelledby="modalTambahUserLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 520px;">
         <div class="modal-content border-0 shadow-lg" style="border-radius: 14px; overflow: hidden;">
-            <div class="modal-header text-white py-3 px-4" style="background: linear-gradient(135deg, #1d64d8 0%, #1e40af 100%);">
+            <div class="modal-header text-white py-3 px-4" style="background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);">
                 <div class="d-flex align-items-center">
-                    <div class="mr-3 d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: rgba(255,255,255,0.2); border-radius: 8px;">
+                    <div class="mr-3 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px; background: rgba(255,255,255,0.2); border-radius: 10px;">
                         <i class="fas fa-user-plus fa-lg text-white"></i>
                     </div>
                     <div>
                         <h5 class="modal-title font-weight-bold text-white mb-0" id="modalTambahUserLabel" style="font-size: 1.05rem;">
                             Tambah User Baru
                         </h5>
-                        <small class="text-white-50">Menambahkan akun petugas atau operator aplikasi</small>
+                        <small class="text-white-50">Daftarkan akun administrator atau staf operator WebGIS</small>
                     </div>
                 </div>
                 <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="outline: none;">
@@ -268,30 +306,30 @@
                 <div class="modal-body p-4 bg-white">
                     <div class="form-group mb-3">
                         <label class="font-weight-bold small text-dark mb-1">Nama Lengkap <span class="text-danger">*</span></label>
-                        <input type="text" name="name" class="form-control" required placeholder="Contoh: Operator FEWS">
+                        <input type="text" name="name" class="form-control" required placeholder="Contoh: Budi Santoso, S.T.">
                     </div>
 
                     <div class="row">
                         <div class="col-md-6 form-group mb-3">
                             <label class="font-weight-bold small text-dark mb-1">Username</label>
-                            <input type="text" name="username" class="form-control" placeholder="Contoh: operator">
+                            <input type="text" name="username" class="form-control" placeholder="Contoh: budisantoso">
                         </div>
                         <div class="col-md-6 form-group mb-3">
-                            <label class="font-weight-bold small text-dark mb-1">No. HP / Telepon</label>
+                            <label class="font-weight-bold small text-dark mb-1">No. HP / WhatsApp</label>
                             <input type="text" name="phone" class="form-control" placeholder="Contoh: 08123456789">
                         </div>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label class="font-weight-bold small text-dark mb-1">Email <span class="text-danger">*</span></label>
-                        <input type="email" name="email" class="form-control" required placeholder="operator@gmail.com">
+                        <label class="font-weight-bold small text-dark mb-1">Alamat Email <span class="text-danger">*</span></label>
+                        <input type="email" name="email" class="form-control" required placeholder="budi@pu.go.id">
                     </div>
 
                     <div class="row">
                         <div class="col-md-6 form-group mb-3">
-                            <label class="font-weight-bold small text-dark mb-1">Role / Peran <span class="text-danger">*</span></label>
-                            <select name="role" class="form-control" required>
-                                <option value="admin" selected>Admin</option>
+                            <label class="font-weight-bold small text-dark mb-1">Hak Akses / Role <span class="text-danger">*</span></label>
+                            <select name="role" class="custom-select" required>
+                                <option value="admin" selected>Admin (Operator)</option>
                                 <option value="superadmin">Super Admin</option>
                             </select>
                         </div>
@@ -304,7 +342,7 @@
 
                 <div class="modal-footer bg-light border-top py-3 px-4">
                     <button type="button" class="btn btn-light border font-weight-bold btn-sm px-3" data-dismiss="modal" style="border-radius: 6px;">Batal</button>
-                    <button type="submit" class="btn btn-primary font-weight-bold btn-sm px-4 shadow-sm" style="background: #2563eb; border-color: #2563eb; border-radius: 6px;">
+                    <button type="submit" class="btn text-white font-weight-bold btn-sm px-4 shadow-sm" style="background: #1d4ed8; border-color: #1d4ed8; border-radius: 6px;">
                         <i class="fas fa-check mr-1"></i> Simpan User
                     </button>
                 </div>
@@ -319,11 +357,19 @@
 <div class="modal fade" id="modalEditUser" tabindex="-1" role="dialog" aria-labelledby="modalEditUserLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 520px;">
         <div class="modal-content border-0 shadow-lg" style="border-radius: 14px; overflow: hidden;">
-            <div class="modal-header border-0 py-3 px-4" style="background: #f0fdf4;">
-                <h5 class="modal-title font-weight-bold" id="modalEditUserLabel" style="font-size: 1.05rem; color: #166534;">
-                    <i class="fas fa-user-edit mr-2 text-success"></i> Edit Data User
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <div class="modal-header text-white py-3 px-4" style="background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);">
+                <div class="d-flex align-items-center">
+                    <div class="mr-3 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px; background: rgba(255,255,255,0.2); border-radius: 10px;">
+                        <i class="fas fa-user-edit fa-lg text-white"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title font-weight-bold text-white mb-0" id="modalEditUserLabel" style="font-size: 1.05rem;">
+                            Edit Data User
+                        </h5>
+                        <small class="text-white-50">Perbarui profil, hak akses, atau kata sandi akun</small>
+                    </div>
+                </div>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="outline: none;">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -343,34 +389,34 @@
                             <input type="text" name="username" id="editUserUsername" class="form-control">
                         </div>
                         <div class="col-md-6 form-group mb-3">
-                            <label class="font-weight-bold small text-dark mb-1">No. HP / Telepon</label>
+                            <label class="font-weight-bold small text-dark mb-1">No. HP / WhatsApp</label>
                             <input type="text" name="phone" id="editUserPhone" class="form-control">
                         </div>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label class="font-weight-bold small text-dark mb-1">Email <span class="text-danger">*</span></label>
+                        <label class="font-weight-bold small text-dark mb-1">Alamat Email <span class="text-danger">*</span></label>
                         <input type="email" name="email" id="editUserEmail" class="form-control" required>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6 form-group mb-3">
-                            <label class="font-weight-bold small text-dark mb-1">Role / Peran <span class="text-danger">*</span></label>
-                            <select name="role" id="editUserRole" class="form-control" required>
-                                <option value="admin">Admin</option>
+                            <label class="font-weight-bold small text-dark mb-1">Hak Akses / Role <span class="text-danger">*</span></label>
+                            <select name="role" id="editUserRole" class="custom-select" required>
+                                <option value="admin">Admin (Operator)</option>
                                 <option value="superadmin">Super Admin</option>
                             </select>
                         </div>
                         <div class="col-md-6 form-group mb-3">
                             <label class="font-weight-bold small text-dark mb-1">Ganti Password (Opsional)</label>
-                            <input type="password" name="password" class="form-control" minlength="6" placeholder="Biarkan kosong jika tidak diubah">
+                            <input type="password" name="password" class="form-control" minlength="6" placeholder="Kosongkan jika tak diubah">
                         </div>
                     </div>
                 </div>
 
-                <div class="modal-footer bg-light border-top py-2 px-4">
+                <div class="modal-footer bg-light border-top py-3 px-4">
                     <button type="button" class="btn btn-light border font-weight-bold btn-sm px-3" data-dismiss="modal" style="border-radius: 6px;">Batal</button>
-                    <button type="submit" class="btn btn-success font-weight-bold btn-sm px-4 shadow-sm" style="background: #10b981; border-color: #10b981; border-radius: 6px;">
+                    <button type="submit" class="btn text-white font-weight-bold btn-sm px-4 shadow-sm" style="background: #1d4ed8; border-color: #1d4ed8; border-radius: 6px;">
                         <i class="fas fa-check mr-1"></i> Simpan Perubahan
                     </button>
                 </div>
@@ -386,7 +432,7 @@
     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
         <div class="modal-content border-0 shadow-lg" style="border-radius: 14px; overflow: hidden;">
             <div class="modal-body p-4 text-center">
-                <div class="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 54px; height: 54px; background: #fee2e2; color: #ef4444;">
+                <div class="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-3 shadow-xs" style="width: 56px; height: 56px; background: #fee2e2; color: #ef4444;">
                     <i class="fas fa-trash-alt fa-lg"></i>
                 </div>
                 <h6 class="font-weight-bold text-dark mb-1">Hapus Pengguna?</h6>
@@ -398,7 +444,7 @@
                 <form id="formDeleteUser" method="POST">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger font-weight-bold btn-sm px-4" style="background: #ef4444; border-color: #ef4444; border-radius: 6px;">
+                    <button type="submit" class="btn btn-danger font-weight-bold btn-sm px-4 shadow-sm" style="background: #ef4444; border-color: #ef4444; border-radius: 6px;">
                         <i class="fas fa-trash-alt mr-1"></i> Ya, Hapus
                     </button>
                 </form>
@@ -416,7 +462,7 @@
         document.getElementById('editUserUsername').value = user.username || '';
         document.getElementById('editUserEmail').value = user.email || '';
         document.getElementById('editUserPhone').value = user.phone || '';
-        document.getElementById('editUserRole').value = user.role || 'user';
+        document.getElementById('editUserRole').value = user.role || 'admin';
         
         var form = document.getElementById('formEditUser');
         form.action = '/users/' + user.id;
