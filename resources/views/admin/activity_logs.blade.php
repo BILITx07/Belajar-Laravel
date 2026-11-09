@@ -10,14 +10,14 @@
         <div>
             <div class="d-flex align-items-center" style="gap: 8px;">
                 <h4 class="font-weight-bold mb-0 text-dark" style="letter-spacing: -0.3px; font-size: 1.25rem;">
-                    Log Aktivitas &amp; Audit Trail
+                    Log Aktivitas &amp; Jejak Audit
                 </h4>
                 <span class="badge badge-light border text-primary font-weight-bold px-2 py-1" style="font-size: 0.74rem; border-radius: 6px; background: #eff6ff; border-color: #bfdbfe;">
-                    <i class="fas fa-shield-alt mr-1"></i> BWS Kalimantan I
+                    <i class="fas fa-shield-alt mr-1"></i> Audit Sistem
                 </span>
             </div>
             <p class="text-muted small mb-0 mt-1" style="font-size: 0.84rem;">
-                Rekam jejak operasional, keamanan data geospasial, dan riwayat audit WebGIS Balai Wilayah Sungai Kalimantan I.
+                Rekam jejak operasional dan pengawasan keamanan data geospasial BWS Kalimantan I Pontianak.
             </p>
         </div>
 
