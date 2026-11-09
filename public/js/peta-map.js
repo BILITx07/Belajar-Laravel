@@ -31,6 +31,14 @@ var map = L.map('map', {
 window.map = map;
 var mapBounds = L.latLngBounds();
 
+// Pastikan ukuran peta selalu pas dan responsif mengikuti tinggi kontainer
+window.addEventListener('resize', function() {
+    map.invalidateSize();
+});
+setTimeout(function() {
+    map.invalidateSize();
+}, 250);
+
 /* Skala Peta Metrik (Cartographic Scale Bar) */
 L.control.scale({
     imperial: false,
