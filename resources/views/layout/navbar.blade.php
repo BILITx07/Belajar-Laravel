@@ -163,9 +163,6 @@
                     <span class="qrop-word-main">SIPDIRA</span>
                     <span class="qrop-word-sub">SPASIAL</span>
                 </div>
-                <div class="qrop-brand-agency d-none d-md-block">
-                    Sistem Informasi Peta Daerah Irigasi &bull; BWS Kalimantan I
-                </div>
             </div>
         </a>
     </div>
@@ -173,16 +170,23 @@
     <!-- ═══ BAGIAN KANAN: MENU TEKS & TOMBOL AKSI ALA QROP ═══ -->
     <ul class="navbar-nav ml-auto align-items-center" style="gap: 16px;">
 
-        <!-- Menu Link: Tentang WebGIS / Panduan -->
+        <!-- Menu Link: Tentang SIPDIRA (Scroll ke Section Tentang) -->
+        <li class="nav-item d-none d-lg-block">
+            <a href="#tentang-sipdira" class="qrop-nav-text-link" title="Tentang Layanan SIPDIRA">
+                Tentang SIPDIRA
+            </a>
+        </li>
+
+        <!-- Menu Link: Petunjuk Penggunaan -->
         <li class="nav-item d-none d-lg-block">
             <a href="javascript:void(0)" class="qrop-nav-text-link" data-toggle="modal" data-target="#modalPanduanAplikasi" title="Petunjuk & Panduan Penggunaan">
                 Petunjuk Penggunaan
             </a>
         </li>
 
-        <!-- Menu Link: Hubungi kami -->
+        <!-- Menu Link: Hubungi kami (Scroll ke Kontak BWSK I) -->
         <li class="nav-item d-none d-lg-block">
-            <a href="javascript:void(0)" class="qrop-nav-text-link" data-toggle="modal" data-target="#modalHubungiKami" title="Kontak & Alamat BWS Kalimantan I">
+            <a href="#kontak-layanan" class="qrop-nav-text-link" title="Kontak & Layanan BWS Kalimantan I">
                 Hubungi kami
             </a>
         </li>

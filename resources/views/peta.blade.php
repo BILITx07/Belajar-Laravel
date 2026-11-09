@@ -235,6 +235,123 @@
 
     </div>
 
+    <!-- ============================================================ -->
+    <!-- 3. TENTANG SIPDIRA & KRING LAYANAN (PERSIS GAMBAR REFERENSI) -->
+    <!-- ============================================================ -->
+    <section id="tentang-sipdira" class="sipdira-about-section">
+        
+        <div class="row align-items-stretch">
+            <!-- Kolom Kiri: Kartu Brand Kotak Modern (Persis Card Kiri QROP) -->
+            <div class="col-lg-4 col-md-5 mb-4 mb-md-0">
+                <div class="sipdira-brand-about-card h-100">
+                    <div class="sipdira-about-logo-wrap">
+                        <img src="{{ asset('img/logo-sipdira.svg') }}" alt="Logo SIPDIRA" class="sipdira-about-logo-img">
+                    </div>
+                    <div class="sipdira-about-brand-text">
+                        <span class="sipdira-about-title-main">SIPDIRA</span>
+                        <span class="sipdira-about-title-sub">SPASIAL</span>
+                    </div>
+                    <div class="sipdira-about-brand-caption">
+                        SISTEM INFORMASI PETA DAERAH IRIGASI
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kolom Kanan: Teks Layanan & Accordion Panduan -->
+            <div class="col-lg-8 col-md-7 d-flex flex-column justify-content-center">
+                <div class="sipdira-about-content pl-lg-3">
+                    <div class="sipdira-service-tag">TENTANG LAYANAN</div>
+                    <h2 class="sipdira-about-headline">
+                        Informasi spasial daerah irigasi,<br class="d-none d-lg-block">
+                        lebih dekat dan mudah dipahami.
+                    </h2>
+                    <p class="sipdira-about-desc">
+                        SIPDIRA Spasial (Sistem Informasi Peta Daerah Irigasi Berbasis Data Spasial) merupakan sistem informasi pemetaan geospasial Balai Wilayah Sungai Kalimantan I Pontianak, Direktorat Jenderal Sumber Daya Air. Halaman ini menyajikan peta sebaran daerah irigasi kewenangan pusat maupun provinsi, luasan fungsional dan potensial, jaringan saluran primer, sekunder, serta bangunan air penunjang ketahanan pangan Kalimantan Barat.
+                    </p>
+
+                    <!-- Accordion Cara Menggunakan Peta (Persis QROP) -->
+                    <div class="sipdira-how-to-accordion">
+                        <button class="sipdira-how-to-toggle collapsed" type="button" data-toggle="collapse" data-target="#collapseCaraPeta" aria-expanded="false" aria-controls="collapseCaraPeta">
+                            <span>Cara menggunakan peta</span>
+                            <i class="fas fa-chevron-down sipdira-chevron"></i>
+                        </button>
+                        <div class="collapse" id="collapseCaraPeta">
+                            <div class="sipdira-how-to-body">
+                                <ul class="sipdira-guide-steps">
+                                    <li><strong>1. Cari Daerah Irigasi:</strong> Gunakan kotak pencarian pada sidebar kiri atau pilih wilayah kabupaten untuk memusatkan peta ke lokasi yang diinginkan.</li>
+                                    <li><strong>2. Pilih Kategori Layer:</strong> Centang atau nonaktifkan layer data spasial seperti Lahan Baku, Lahan Fungsional, Lahan Potensial, Jaringan Saluran, dan Bangunan Air.</li>
+                                    <li><strong>3. Interaksi dengan Peta:</strong> Klik ikon lokasi pada peta untuk melihat detail informasi teknis, luasan hektare, dan data hidrologi.</li>
+                                    <li><strong>4. Mode Citra Satelit:</strong> Beralih ke citra satelit resolusi tinggi dengan mengklik tombol "Satelit" pada panel kontrol peta.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Banner Kring Pengawasan & Layanan Kontak (Persis Banner Hijau QROP) -->
+        <div id="kontak-layanan" class="sipdira-kring-banner">
+            <div class="sipdira-kring-info">
+                <div class="sipdira-kring-tag">KRING PENGAWASAN &amp; LAYANAN</div>
+                <h3 class="sipdira-kring-title">Butuh informasi lebih lanjut?</h3>
+                <p class="sipdira-kring-desc">Hubungi Balai Wilayah Sungai Kalimantan I Pontianak.</p>
+            </div>
+            <div class="sipdira-kring-actions">
+                <!-- Tombol WhatsApp -->
+                <a href="https://wa.me/6285389999100" target="_blank" rel="noopener noreferrer" class="sipdira-contact-pill" title="Hubungi melalui WhatsApp">
+                    <div class="sipdira-pill-icon whatsapp">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <div class="sipdira-pill-text">
+                        <div class="sipdira-pill-label">WhatsApp</div>
+                        <div class="sipdira-pill-value">+62 853 8999 9100</div>
+                    </div>
+                    <div class="sipdira-pill-arrow">
+                        <i class="fas fa-external-link-alt"></i>
+                    </div>
+                </a>
+
+                <!-- Tombol Instagram -->
+                <a href="https://instagram.com/bwskalimantan1" target="_blank" rel="noopener noreferrer" class="sipdira-contact-pill" title="Kunjungi Instagram Resmi @bwskalimantan1">
+                    <div class="sipdira-pill-icon instagram">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <div class="sipdira-pill-text">
+                        <div class="sipdira-pill-label">Instagram</div>
+                        <div class="sipdira-pill-value">@bwskalimantan1</div>
+                    </div>
+                    <div class="sipdira-pill-arrow">
+                        <i class="fas fa-external-link-alt"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Bar Counter Pengunjung (Persis Bagian Bawah Gambar QROP) -->
+        <div class="sipdira-visitor-counter-bar">
+            <div class="sipdira-visitor-left">
+                <i class="fas fa-user-friends mr-1"></i>
+                <span>Pengunjung</span>
+            </div>
+            <div class="sipdira-visitor-stats">
+                <span class="sipdira-stat-item">
+                    <span class="sipdira-stat-label">Total pengunjung</span>
+                    <span class="sipdira-stat-num">65.396</span>
+                </span>
+                <span class="sipdira-stat-item">
+                    <span class="sipdira-stat-label">Hari ini</span>
+                    <span class="sipdira-stat-num">12</span>
+                </span>
+                <span class="sipdira-stat-item">
+                    <span class="sipdira-stat-label">Bulan ini</span>
+                    <span class="sipdira-stat-num">179</span>
+                </span>
+            </div>
+        </div>
+
+    </section>
+
 </div>
 
 <!-- MODAL PETUNJUK PENGGUNAAN WEBGIS (Resmi & Profesional) -->

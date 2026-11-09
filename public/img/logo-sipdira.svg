@@ -1,69 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="100%" height="100%">
-  <defs>
-    <!-- Gradasi Biru Utama PU (Aliran Air & Saluran Irigasi) -->
-    <linearGradient id="sipdiraBlueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#2563eb"/>
-      <stop offset="60%" stop-color="#1d4ed8"/>
-      <stop offset="100%" stop-color="#0f3b7a"/>
-    </linearGradient>
-
-    <!-- Gradasi Hijau Pertanian (Lahan Baku & Fungsional) -->
-    <linearGradient id="sipdiraGreenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#34d399"/>
-      <stop offset="100%" stop-color="#059669"/>
-    </linearGradient>
-
-    <!-- Gradasi Emas PU (Pintu Air, Titik Lokasi & Kedaulatan Pangan) -->
-    <linearGradient id="sipdiraGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fde047"/>
-      <stop offset="50%" stop-color="#f59e0b"/>
-      <stop offset="100%" stop-color="#d97706"/>
-    </linearGradient>
-
-    <!-- Gradasi Cyan Air Jernih -->
-    <linearGradient id="sipdiraCyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#38bdf8"/>
-      <stop offset="100%" stop-color="#0284c7"/>
-    </linearGradient>
-
-    <!-- Ambient Shadow Halus -->
-    <filter id="softGlow" x="-15%" y="-15%" width="130%" height="130%">
-      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#0f274a" flood-opacity="0.12"/>
-    </filter>
-  </defs>
-
-  <!-- WADAH MODULAR EMBLEM (KOMBINASI SPATIAL GRID & ALIRAN AIR IRIGASI) -->
-  <g filter="url(#softGlow)">
-    <!-- 1. Modul Kiri Atas: Layer Spasial & Saluran Induk (Biru Royal PU) -->
-    <rect x="14" y="14" width="42" height="42" rx="11" fill="url(#sipdiraBlueGrad)"/>
-
-    <!-- Aksen Garis Aliran Air di Modul Kiri Atas -->
-    <path d="M22 40 C 28 32, 38 28, 48 24" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-opacity="0.9" fill="none"/>
-    <path d="M26 48 C 34 40, 42 36, 50 32" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-opacity="0.8" fill="none"/>
-
-    <!-- 2. Modul Kanan Atas: Lahan Irigasi Siap Tanam (Hijau Zamrud) -->
-    <rect x="64" y="14" width="42" height="42" rx="11" fill="url(#sipdiraGreenGrad)"/>
-
-    <!-- Aksen Daun Pertanian / Bibit Padi di Modul Kanan Atas -->
-    <path d="M85 24 C 76 28, 74 40, 85 46 C 96 40, 94 28, 85 24 Z" fill="#ffffff" fill-opacity="0.95"/>
-    <path d="M85 28 L 85 44" stroke="#059669" stroke-width="1.8" stroke-linecap="round"/>
-
-    <!-- 3. Modul Kiri Bawah: Jaringan Distribusi Air & Rawa (Cyan Hidrologi) -->
-    <rect x="14" y="64" width="42" height="42" rx="11" fill="url(#sipdiraCyanGrad)"/>
-
-    <!-- Gelombang Air Jernih Irigasi di Modul Kiri Bawah -->
-    <path d="M22 85 C 28 80, 32 90, 38 85 C 44 80, 48 90, 50 85" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round" fill="none"/>
-    <circle cx="35" cy="74" r="3" fill="#ffffff"/>
-
-    <!-- 4. Modul Kanan Bawah: Titik Koordinat Peta & Bangunan Air PU (Emas PU Ikonik) -->
-    <rect x="64" y="64" width="42" height="42" rx="11" fill="url(#sipdiraGoldGrad)"/>
-
-    <!-- Pin Koordinat Spasial di Modul Emas -->
-    <path d="M85 73 C 80.5 73, 77 76.5, 77 81 C 77 86.5, 85 96, 85 96 C 85 96, 93 86.5, 93 81 C 93 76.5, 89.5 73, 85 73 Z" fill="#ffffff"/>
-    <circle cx="85" cy="80.5" r="3" fill="#d97706"/>
-
-    <!-- 5. Titik Sambungan Sentral (Pusat Integrasi Data Spasial) -->
-    <circle cx="60" cy="60" r="7" fill="#ffffff" stroke="#0f274a" stroke-width="2" stroke-opacity="0.1"/>
-    <circle cx="60" cy="60" r="3.5" fill="#f59e0b"/>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+  <!-- Logo Geometris Minimalis & Elegan SIPDIRA (Simple & Berkelas ala QROP) -->
+  <!-- 1. Bingkai Geospasial Utama (Royal Blue PU - Spasial & Keairan) -->
+  <rect x="4" y="4" width="24" height="24" rx="5" stroke="#1d4ed8" stroke-width="5" stroke-linejoin="round"/>
+  
+  <!-- 2. Balok Spasial Aksen (Emerald Green - Daerah Irigasi & Pertanian Kalbar) -->
+  <rect x="20" y="20" width="16" height="16" rx="4" fill="#16a34a"/>
 </svg>
