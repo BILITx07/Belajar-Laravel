@@ -50,19 +50,19 @@
                     <i class="fas fa-search"></i>
                 </div>
                 <div>
-                    <h5 class="bws-sidebar-main-title">Jelajahi objek irigasi</h5>
-                    <div class="bws-sidebar-main-sub">Mulai dari nama atau file data spasial.</div>
+                    <h5 class="bws-sidebar-main-title">Pencarian Data Irigasi</h5>
+                    <div class="bws-sidebar-main-sub">Cari berdasarkan nama daerah atau wilayah administratif.</div>
                 </div>
             </div>
 
             <!-- Field 1: Cari Usaha atau Alamat / Pos Irigasi -->
             <div class="bws-field-block">
-                <label class="bws-field-label">Cari pos atau daerah irigasi</label>
+                <label class="bws-field-label">Cari Daerah Irigasi (DIR)</label>
                 <div class="bws-input-container">
                     <input type="text"
                            class="form-control bws-text-input"
                            id="sidebarSearchInput"
-                           placeholder="Nama pos, DIR, atau file..."
+                           placeholder="Ketik nama daerah atau lokasi irigasi..."
                            autocomplete="off"
                            onkeyup="handleSidebarSearch(this.value)">
                     <button type="button"
@@ -71,7 +71,7 @@
                             onclick="clearSidebarSearch()"
                             title="Hapus pencarian">&times;</button>
                 </div>
-                <small class="bws-field-hint">Pilih hasil pencarian untuk melihat detail. Maksimal 150 karakter.</small>
+                <small class="bws-field-hint">Klik hasil pencarian untuk memfokuskan lokasi pada peta.</small>
                 <!-- Dropdown Hasil Autocomplete -->
                 <div id="sidebarSearchResults" class="bws-dropdown-results" style="display: none;"></div>
             </div>
@@ -207,22 +207,22 @@
                     <span class="bws-dot-green-qrop"></span>
                     <span class="font-weight-bold text-dark ml-2" style="font-size: 13.5px;">Peta Daerah Irigasi</span>
                     <span class="text-muted mx-2">/</span>
-                    <span class="text-muted small font-weight-bold" id="currentBreadcrumbLabel">Kalimantan Barat</span>
+                    <span class="text-muted small font-weight-bold" id="currentBreadcrumbLabel">Seluruh Kalimantan Barat</span>
                 </div>
 
                 <div class="d-flex align-items-center" style="gap: 8px;">
-                    <!-- Switcher Peta Jalan vs Satelit Rapi -->
+                    <!-- Switcher Peta Standar vs Satelit Rapi -->
                     <div class="btn-group btn-group-sm bws-basemap-group shadow-sm" role="group">
-                        <button type="button" class="btn btn-sm bws-basemap-btn active" id="btnBasemapOsm" onclick="switchBasemap('osm')" title="Ganti ke Peta Jalan OpenStreetMap">
-                            <i class="fas fa-map mr-1"></i> Jalan
+                        <button type="button" class="btn btn-sm bws-basemap-btn active" id="btnBasemapOsm" onclick="switchBasemap('osm')" title="Ganti ke Peta Standar / Peta Vektor">
+                            <i class="fas fa-map mr-1"></i> Peta
                         </button>
                         <button type="button" class="btn btn-sm bws-basemap-btn" id="btnBasemapSat" onclick="switchBasemap('sat')" title="Ganti ke Citra Satelit Google">
                             <i class="fas fa-satellite mr-1"></i> Satelit
                         </button>
                     </div>
 
-                    <button type="button" class="btn btn-sm btn-white bws-action-pill shadow-sm" onclick="resetToKalbar()" title="Reset tampilan Kalimantan Barat">
-                        <i class="fas fa-home mr-1 text-primary"></i> Reset
+                    <button type="button" class="btn btn-sm btn-white bws-action-pill shadow-sm" onclick="resetToKalbar()" title="Kembalikan tampilan ke seluruh Kalimantan Barat">
+                        <i class="fas fa-home mr-1 text-primary"></i> Atur Ulang
                     </button>
                 </div>
             </div>
