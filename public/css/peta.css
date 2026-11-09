@@ -4,9 +4,10 @@
  */
 
 :root {
-    --bws-navy: #0d3875;
+    --bws-navy: #1a1c54;
     --bws-blue: #1d4ed8;
-    --bws-yellow: #f59e0b;
+    --bws-yellow: #fad605;
+    --pu-gold: #f59e0b;
     --qrop-green: #10b981;
     --qrop-bg: #f8fafc;
     --qrop-card: #ffffff;
@@ -27,11 +28,11 @@ html {
 
 body {
     font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-    background-color: #f1f5f9;
+    background-color: #f6f8fc;
     background-image: 
-        radial-gradient(at 10% 10%, rgba(37, 99, 235, 0.07) 0px, transparent 50%),
-        radial-gradient(at 90% 15%, rgba(245, 158, 11, 0.06) 0px, transparent 50%),
-        radial-gradient(at 50% 80%, rgba(16, 185, 129, 0.05) 0px, transparent 50%);
+        radial-gradient(at 10% 8%, rgba(26, 28, 84, 0.08) 0px, transparent 55%),
+        radial-gradient(at 90% 12%, rgba(245, 158, 11, 0.08) 0px, transparent 50%),
+        radial-gradient(at 50% 85%, rgba(29, 78, 216, 0.05) 0px, transparent 55%);
     background-attachment: fixed;
     color: var(--qrop-text-main);
     margin: 0;
@@ -49,14 +50,14 @@ body {
 }
 
 /* ============================================================
-   2. KARTU HERO BANNER BESAR & MEWAH (PERSIS GAMBAR 1 QROP)
+   2. KARTU HERO BANNER BESAR & MEWAH (TEMA RESMI PU & GLASSMORPHISM)
    ============================================================ */
 .bws-hero-card {
-    background: linear-gradient(135deg, rgba(13, 56, 117, 0.94) 0%, rgba(21, 83, 163, 0.90) 65%, rgba(29, 100, 216, 0.88) 100%);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: linear-gradient(135deg, rgba(26, 28, 84, 0.96) 0%, rgba(20, 24, 75, 0.94) 50%, rgba(29, 78, 216, 0.90) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.22);
+    border: 1.5px solid rgba(250, 214, 5, 0.35);
     padding: 26px 34px;
     color: #ffffff;
     margin-bottom: 18px;
@@ -65,7 +66,7 @@ body {
     align-items: center;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 12px 35px rgba(13, 56, 117, 0.16), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+    box-shadow: 0 16px 45px rgba(26, 28, 84, 0.22), inset 0 1px 1px rgba(255, 255, 255, 0.3);
 }
 
 .bws-hero-content {
@@ -78,7 +79,7 @@ body {
     font-weight: 800;
     letter-spacing: 1.2px;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(255, 255, 255, 0.9);
     margin-bottom: 8px;
     display: flex;
     align-items: center;
@@ -86,10 +87,11 @@ body {
 }
 
 .bws-dot-hero {
-    width: 7px;
-    height: 7px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background: #f59e0b;
+    background: #fad605;
+    box-shadow: 0 0 12px rgba(250, 214, 5, 0.9);
     display: inline-block;
 }
 
@@ -104,7 +106,7 @@ body {
 
 .bws-hero-desc {
     font-size: 13.5px;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(255, 255, 255, 0.88);
     margin: 0;
     max-width: 760px;
     line-height: 1.5;
@@ -113,7 +115,7 @@ body {
 .bws-hero-location {
     background: rgba(255, 255, 255, 0.12);
     backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.22);
+    border: 1.5px solid rgba(250, 214, 5, 0.35);
     border-radius: 30px;
     padding: 8px 18px;
     color: #ffffff;
@@ -127,12 +129,12 @@ body {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(250, 214, 5, 0.2);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 14px;
-    color: #fbbf24;
+    color: #fad605;
 }
 
 /* ============================================================
@@ -549,20 +551,20 @@ body {
 
 .bws-action-pill:hover {
     background: #ffffff;
-    color: #1d4ed8;
-    border-color: #94a3b8;
+    color: #1a1c54;
+    border-color: #1a1c54;
 }
 
 /* Basemap Switcher Glassmorphism di Atas Peta */
 .bws-basemap-group {
-    background: rgba(255, 255, 255, 0.82);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
     border-radius: 8px;
     overflow: hidden;
     padding: 2px;
-    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+    box-shadow: 0 4px 14px rgba(26, 28, 84, 0.08);
 }
 
 .bws-basemap-btn {
@@ -577,18 +579,18 @@ body {
 }
 
 .bws-basemap-btn:hover {
-    color: #1d4ed8;
+    color: #1a1c54;
     background: #f1f5f9;
 }
 
 .bws-basemap-btn.active {
-    background: #1d4ed8 !important;
+    background: #1a1c54 !important;
     color: #ffffff !important;
-    box-shadow: 0 1px 4px rgba(29, 78, 216, 0.3) !important;
+    box-shadow: 0 2px 6px rgba(26, 28, 84, 0.35) !important;
 }
 
 .bws-basemap-btn.active i {
-    color: #ffffff !important;
+    color: #fad605 !important;
 }
 
 /* Marker Simbol Bangunan Air Dinamis (Titik Halus saat Zoom Jauh -> Ikon Pintu Air saat Zoom Dekat) */
@@ -1049,28 +1051,32 @@ body {
     border-top: 1px solid rgba(226, 232, 240, 0.8);
 }
 
-/* Card Brand Kotak Kiri */
+/* Card Brand Kotak Kiri (Glassmorphism Khas PU Navy & Emas) */
 .sipdira-brand-about-card {
-    background: #edf5f0;
-    border: 1px solid rgba(22, 163, 74, 0.18);
-    border-radius: 18px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.94) 0%, rgba(246, 248, 255, 0.88) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1.5px solid rgba(250, 214, 5, 0.45);
+    border-radius: 20px;
     padding: 38px 28px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 14px 38px rgba(26, 28, 84, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.95);
 }
 
 .sipdira-brand-about-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(22, 163, 74, 0.08);
+    transform: translateY(-3px);
+    box-shadow: 0 18px 45px rgba(26, 28, 84, 0.14);
+    border-color: #f59e0b;
 }
 
 .sipdira-about-logo-wrap {
-    width: 68px;
-    height: 68px;
+    width: 72px;
+    height: 72px;
     margin-bottom: 18px;
     display: flex;
     align-items: center;
@@ -1081,7 +1087,7 @@ body {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.08));
+    filter: drop-shadow(0 4px 10px rgba(26, 28, 84, 0.12));
 }
 
 .sipdira-about-brand-text {
@@ -1094,7 +1100,7 @@ body {
     font-size: 26px;
     font-weight: 900;
     letter-spacing: 3.5px;
-    color: #0f172a;
+    color: #1a1c54;
     font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
@@ -1102,7 +1108,7 @@ body {
     font-size: 23px;
     font-weight: 900;
     letter-spacing: 2.8px;
-    color: #0f172a;
+    color: #f59e0b;
     font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
@@ -1124,7 +1130,7 @@ body {
     font-size: 11.5px;
     font-weight: 800;
     letter-spacing: 1.8px;
-    color: #16a34a;
+    color: #1a1c54;
     text-transform: uppercase;
     margin-bottom: 10px;
     display: inline-block;
@@ -1155,8 +1161,8 @@ body {
 .sipdira-how-to-toggle {
     background: transparent;
     border: none;
-    color: #16a34a;
-    font-weight: 700;
+    color: #1a1c54;
+    font-weight: 800;
     font-size: 14.5px;
     padding: 0;
     display: inline-flex;
@@ -1169,7 +1175,7 @@ body {
 
 .sipdira-how-to-toggle:hover,
 .sipdira-how-to-toggle:focus {
-    color: #15803d;
+    color: #f59e0b;
     outline: none;
     text-decoration: none;
 }
@@ -1555,13 +1561,13 @@ body {
    10. FOOTER RESMI KEDINASAN BWS KALIMANTAN I
    ============================================================ */
 .bws-official-footer {
-    background: linear-gradient(145deg, #0a223a 0%, #0d2d4c 100%);
-    border-top: 3.5px solid #f59e0b;
+    background: linear-gradient(145deg, #10143a 0%, #1a1c54 50%, #151e4d 100%);
+    border-top: 3.5px solid #fad605;
     border-radius: 20px;
     padding: 38px 36px 20px 36px;
     color: #ffffff;
     margin-top: 36px;
-    box-shadow: 0 10px 30px rgba(10, 34, 58, 0.18);
+    box-shadow: 0 14px 40px rgba(16, 20, 58, 0.25);
 }
 
 .bws-footer-brand-wrap {

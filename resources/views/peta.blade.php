@@ -296,13 +296,13 @@
         <div class="sipdira-metrics-block">
             <div class="sipdira-metrics-header d-flex flex-column flex-md-row justify-content-between align-items-md-end">
                 <div>
-                    <span class="sipdira-metrics-tag"><i class="fas fa-chart-pie mr-1"></i> Data Spasial Terpadu</span>
-                    <h3 class="sipdira-metrics-title">Statistik Daerah Irigasi Kalimantan Barat</h3>
+                    <span class="sipdira-metrics-tag" style="color: #1a1c54;"><i class="fas fa-chart-pie mr-1 text-warning"></i> Data Spasial Terpadu</span>
+                    <h3 class="sipdira-metrics-title" style="color: #1a1c54;">Statistik Daerah Irigasi Kalimantan Barat</h3>
                     <p class="sipdira-metrics-subtitle">Rekapitulasi luasan lahan, jaringan saluran irigasi, dan bangunan air kewenangan BWS Kalimantan I.</p>
                 </div>
                 <div class="mt-2 mt-md-0 text-md-right">
-                    <span class="badge badge-light px-3 py-2 border font-weight-bold" style="font-size: 11.5px; color: #1e40af; background: #eff6ff; border-color: #bfdbfe !important; border-radius: 8px;">
-                        <i class="fas fa-satellite mr-1"></i> Terintegrasi WebGIS Spasial
+                    <span class="badge badge-light px-3 py-2 border font-weight-bold shadow-xs" style="font-size: 11.5px; color: #1a1c54; background: rgba(255, 255, 255, 0.95); border: 1.5px solid rgba(250, 214, 5, 0.6) !important; border-radius: 10px;">
+                        <i class="fas fa-satellite mr-1 text-warning"></i> Terintegrasi WebGIS Spasial
                     </span>
                 </div>
             </div>
