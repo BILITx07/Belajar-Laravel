@@ -93,14 +93,9 @@
                         </form>
                         @endif
                     @else
-                        <div class="d-flex align-items-center" style="gap: 8px;">
-                            <a href="{{ route('peta') }}" target="_blank" class="btn btn-outline-primary font-weight-bold px-3 py-2 shadow-sm d-inline-flex align-items-center justify-content-center" style="border-radius:25px;font-size:0.84rem;height:38px;background:#ffffff;border-color:#bfdbfe;" title="Buka Peta Interaktif di Tab Baru untuk Melihat Tampilan Data">
-                                <i class="fas fa-eye mr-2"></i>Uji Coba Peta
-                            </a>
-                            <button type="button" class="btn text-white font-weight-bold px-4 py-2 shadow-sm d-inline-flex align-items-center justify-content-center" style="background:#1d4ed8;border-radius:25px;font-size:0.88rem;height:38px;transition:all 0.2s ease;" data-toggle="modal" data-target="#modalUpload">
-                                <i class="fas fa-cloud-upload-alt mr-2"></i>Upload File Baru
-                            </button>
-                        </div>
+                        <button type="button" class="btn text-white font-weight-bold px-4 py-2 shadow-sm d-inline-flex align-items-center justify-content-center" style="background:#1d4ed8;border-radius:25px;font-size:0.88rem;height:38px;transition:all 0.2s ease;" data-toggle="modal" data-target="#modalUpload">
+                            <i class="fas fa-cloud-upload-alt mr-2"></i>Upload File Baru
+                        </button>
                     @endif
                 </div>
             </div>
