@@ -1763,6 +1763,55 @@ body {
 }
 
 /* ============================================================
+   10. FOOTER BERSIH & ELEGAN (STANDAR ENTERPRISE/KEMENTERIAN PU)
+   ============================================================ */
+.sipdira-clean-footer {
+    margin-top: 36px;
+    padding: 24px 4px 12px 4px;
+    border-top: 1.5px solid rgba(226, 232, 240, 0.9);
+}
+
+.sipdira-footer-mini-pu {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.sipdira-footer-instansi-text {
+    font-size: 12.5px;
+    color: #334155;
+    line-height: 1.4;
+}
+
+.sipdira-footer-instansi-text strong {
+    color: #1a1c54;
+    font-weight: 800;
+}
+
+.sipdira-btn-back-top {
+    font-size: 12px;
+    font-weight: 700;
+    color: #334155;
+    border-radius: 9px;
+    padding: 7px 16px;
+    transition: all 0.2s ease;
+    background: #ffffff;
+}
+
+.sipdira-btn-back-top:hover {
+    background: #1a1c54;
+    color: #ffffff;
+    border-color: #1a1c54;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(26, 28, 84, 0.2);
+}
+
+.sipdira-btn-back-top:hover i {
+    color: #fad605 !important;
+}
+
+/* ============================================================
    7. RESPONSIF MOBILE & TABLET (MAKS 991px)
    ============================================================ */
 @media (max-width: 991.98px) {

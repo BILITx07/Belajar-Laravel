@@ -301,88 +301,91 @@
         </div>
 
         <!-- ============================================================ -->
-        <!-- 4. BANNER KRING LAYANAN & KONTAK (PERSIS BANNER HIJAU QROP)  -->
+        <!-- 4. FOOTER RESMI KEMENTERIAN PU (BERSIH & ELEGAN)             -->
         <!-- ============================================================ -->
-        <div id="kontak-layanan" class="sipdira-kring-banner">
-            <div class="sipdira-kring-info">
-                <div class="sipdira-kring-tag">KRING PENGAWASAN &amp; LAYANAN</div>
-                <h3 class="sipdira-kring-title">Butuh informasi lebih lanjut?</h3>
-                <p class="sipdira-kring-desc">Hubungi Balai Wilayah Sungai Kalimantan I Pontianak.</p>
-            </div>
-            <div class="sipdira-kring-actions">
-                <!-- Tombol WhatsApp -->
-                <a href="https://wa.me/6285389999100" target="_blank" rel="noopener noreferrer" class="sipdira-contact-pill" title="Hubungi melalui WhatsApp">
-                    <div class="sipdira-pill-icon whatsapp">
-                        <i class="fab fa-whatsapp"></i>
+        <footer class="sipdira-clean-footer" id="kontak-layanan">
+            <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
+                <div class="sipdira-footer-left-info d-flex align-items-center mb-2 mb-md-0">
+                    <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo PU" class="sipdira-footer-mini-pu mr-2.5">
+                    <div class="sipdira-footer-instansi-text">
+                        <span>&copy; {{ date('Y') }} <strong>SIPDIRA SPASIAL</strong> &bull; Balai Wilayah Sungai Kalimantan I Pontianak</span>
+                        <div class="text-muted small">Direktorat Jenderal Sumber Daya Air &bull; Kementerian Pekerjaan Umum</div>
                     </div>
-                    <div class="sipdira-pill-text">
-                        <div class="sipdira-pill-label">WhatsApp</div>
-                        <div class="sipdira-pill-value">+62 853 8999 9100</div>
-                    </div>
-                    <div class="sipdira-pill-arrow">
-                        <i class="fas fa-external-link-alt"></i>
-                    </div>
-                </a>
-
-                <!-- Tombol Instagram -->
-                <a href="https://instagram.com/bwskalimantan1" target="_blank" rel="noopener noreferrer" class="sipdira-contact-pill" title="Kunjungi Instagram Resmi @bwskalimantan1">
-                    <div class="sipdira-pill-icon instagram">
-                        <i class="fab fa-instagram"></i>
-                    </div>
-                    <div class="sipdira-pill-text">
-                        <div class="sipdira-pill-label">Instagram</div>
-                        <div class="sipdira-pill-value">@bwskalimantan1</div>
-                    </div>
-                    <div class="sipdira-pill-arrow">
-                        <i class="fas fa-external-link-alt"></i>
-                    </div>
-                </a>
+                </div>
+                <div class="sipdira-footer-right-action">
+                    <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;" class="btn btn-sm btn-light border sipdira-btn-back-top shadow-xs" title="Kembali ke atas peta">
+                        <i class="fas fa-arrow-up mr-1 text-primary"></i> Kembali ke Atas
+                    </a>
+                </div>
             </div>
-        </div>
-
-        <!-- ============================================================ -->
-        <!-- 5. BAR COUNTER PENGUNJUNG (PERSIS GAMBAR REFERENSI QROP)     -->
-        <!-- ============================================================ -->
-        <div class="sipdira-visitor-counter-bar">
-            <div class="sipdira-visitor-left">
-                <i class="fas fa-user-friends mr-1.5"></i>
-                <span>Pengunjung</span>
-            </div>
-            <div class="sipdira-visitor-stats">
-                <span class="sipdira-stat-item">
-                    <span class="sipdira-stat-label">Total pengunjung</span>
-                    <span class="sipdira-stat-num">65.396</span>
-                </span>
-                <span class="sipdira-stat-item">
-                    <span class="sipdira-stat-label">Hari ini</span>
-                    <span class="sipdira-stat-num">12</span>
-                </span>
-                <span class="sipdira-stat-item">
-                    <span class="sipdira-stat-label">Bulan ini</span>
-                    <span class="sipdira-stat-num">179</span>
-                </span>
-            </div>
-        </div>
-
-        <!-- ============================================================ -->
-        <!-- 6. FOOTER COPYRIGHT BAWAH (PERSIS BAGIAN TERBAWAH QROP)      -->
-        <!-- ============================================================ -->
-        <div class="sipdira-qrop-footer-bottom">
-            <div>
-                &copy; {{ date('Y') }} <strong>Balai Wilayah Sungai Kalimantan I Pontianak</strong>
-            </div>
-            <div>
-                <a href="javascript:void(0)" class="sipdira-footer-link" data-toggle="modal" data-target="#modalPanduanAplikasi">Kebijakan Privasi</a>
-            </div>
-            <div>
-                <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;" class="sipdira-footer-link">
-                    Kembali ke peta <i class="fas fa-arrow-up ml-1"></i>
-                </a>
-            </div>
-        </div>
+        </footer>
 
     </section>
 
+</div>
+
+<!-- MODAL KONTAK RESMI BWS KALIMANTAN I (BERSIH & PROFESIONAL) -->
+<div class="modal fade" id="modalKontakResmi" tabindex="-1" role="dialog" aria-labelledby="modalKontakLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 18px; overflow: hidden;">
+            <div class="modal-header text-white px-4 py-3" style="background: linear-gradient(135deg, #10143a 0%, #1a1c54 100%); border-bottom: 3.5px solid #f59e0b;">
+                <div class="d-flex align-items-center">
+                    <div class="mr-3 d-flex align-items-center justify-content-center bg-white shadow-xs" style="width: 42px; height: 42px; border-radius: 10px; border: 1.5px solid #fad605; padding: 4px;">
+                        <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo PU" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                    <div>
+                        <h6 class="modal-title font-weight-bold text-white mb-0" id="modalKontakLabel" style="font-size: 1.05rem; letter-spacing: 0.3px;">
+                            Kontak &amp; Layanan Resmi
+                        </h6>
+                        <small style="color: rgba(255, 255, 255, 0.88); font-size: 0.76rem;">
+                            Balai Wilayah Sungai Kalimantan I Pontianak
+                        </small>
+                    </div>
+                </div>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 0.85; text-shadow: none;">
+                    <span aria-hidden="true" style="font-size: 1.4rem;">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="mb-3 d-flex align-items-start">
+                    <div class="mr-3 text-primary mt-1" style="font-size: 16px; width: 22px; text-align: center;"><i class="fas fa-map-marker-alt text-danger"></i></div>
+                    <div>
+                        <strong class="d-block text-dark font-weight-bold" style="font-size: 13.5px;">Alamat Kantor</strong>
+                        <div class="text-muted small" style="line-height: 1.45;">Jl. Paris II No. 1, Kota Pontianak, Kalimantan Barat 78124</div>
+                    </div>
+                </div>
+                <div class="mb-3 d-flex align-items-start">
+                    <div class="mr-3 text-primary mt-1" style="font-size: 16px; width: 22px; text-align: center;"><i class="fas fa-phone-alt text-primary"></i></div>
+                    <div>
+                        <strong class="d-block text-dark font-weight-bold" style="font-size: 13.5px;">Telepon Kantor</strong>
+                        <div class="text-muted small">(0561) 742182 / 742183</div>
+                    </div>
+                </div>
+                <div class="mb-3 d-flex align-items-start">
+                    <div class="mr-3 text-primary mt-1" style="font-size: 16px; width: 22px; text-align: center;"><i class="fas fa-envelope text-info"></i></div>
+                    <div>
+                        <strong class="d-block text-dark font-weight-bold" style="font-size: 13.5px;">Email Kedinasan</strong>
+                        <div class="text-muted small"><a href="mailto:bwskalimantan1@pu.go.id" class="text-primary font-weight-bold">bwskalimantan1@pu.go.id</a></div>
+                    </div>
+                </div>
+                <div class="mb-4 d-flex align-items-start">
+                    <div class="mr-3 text-primary mt-1" style="font-size: 16px; width: 22px; text-align: center;"><i class="far fa-clock text-warning"></i></div>
+                    <div>
+                        <strong class="d-block text-dark font-weight-bold" style="font-size: 13.5px;">Jam Layanan Publik</strong>
+                        <div class="text-muted small">Senin - Jumat: 08.00 - 16.00 WIB</div>
+                    </div>
+                </div>
+                <div class="pt-3 border-top d-flex justify-content-between" style="gap: 10px;">
+                    <a href="https://wa.me/6285389999100" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-success font-weight-bold flex-fill py-2 d-flex align-items-center justify-content-center shadow-xs" style="border-radius: 10px; gap: 6px;">
+                        <i class="fab fa-whatsapp font-weight-bold" style="font-size: 15px;"></i> WhatsApp BWS
+                    </a>
+                    <a href="https://instagram.com/bwskalimantan1" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-danger font-weight-bold flex-fill py-2 d-flex align-items-center justify-content-center" style="border-radius: 10px; gap: 6px;">
+                        <i class="fab fa-instagram" style="font-size: 15px;"></i> Instagram Resmi
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- MODAL PETUNJUK PENGGUNAAN WEBGIS (Resmi & Profesional) -->

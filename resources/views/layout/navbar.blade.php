@@ -197,9 +197,9 @@
             </a>
         </li>
 
-        <!-- Menu Link: Hubungi kami (Scroll ke Kontak BWSK I) -->
+        <!-- Menu Link: Hubungi kami (Membuka Modal Kontak Resmi BWSK I) -->
         <li class="nav-item d-none d-lg-block">
-            <a href="#kontak-layanan" class="qrop-nav-text-link" title="Kontak & Layanan BWS Kalimantan I">
+            <a href="javascript:void(0)" class="qrop-nav-text-link" data-toggle="modal" data-target="#modalKontakResmi" title="Kontak &amp; Layanan Resmi BWS Kalimantan I">
                 Hubungi kami
             </a>
         </li>
