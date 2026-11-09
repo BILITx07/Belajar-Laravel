@@ -205,19 +205,26 @@
                 <i class="fas fa-chevron-down ml-2 text-muted" style="font-size: 10px;"></i>
             </a>
             
-            <div class="dropdown-menu dropdown-menu-right shadow-lg border-0 animated--grow-in mt-2 p-0" aria-labelledby="userMenuBtn" style="border-radius: 14px; min-width: 230px; overflow: hidden; box-shadow: 0 10px 30px rgba(15,23,42,0.18) !important;">
+            <div class="dropdown-menu dropdown-menu-right shadow-lg border-0 animated--grow-in mt-2 p-0" aria-labelledby="userMenuBtn" style="border-radius: 14px; min-width: 235px; overflow: hidden; box-shadow: 0 10px 30px rgba(15,23,42,0.18) !important;">
                 <div class="px-3 py-3 border-bottom" style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);">
-                    <div class="d-flex align-items-center">
-                        <div class="rounded-circle text-white d-flex align-items-center justify-content-center mr-2.5 shadow-xs overflow-hidden flex-shrink-0" style="width: 36px; height: 36px; background: linear-gradient(135deg, #1d4ed8, #1e40af); border: 2px solid #facc15; font-size: 0.85rem; font-weight: 800;">
+                    <div class="d-flex align-items-center" style="gap: 12px;">
+                        <div class="rounded-circle text-white d-flex align-items-center justify-content-center shadow-xs overflow-hidden flex-shrink-0" style="width: 42px; height: 42px; background: linear-gradient(135deg, #1d4ed8, #1e40af); border: 2.5px solid #facc15; font-size: 0.95rem; font-weight: 800; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
                             @if(Auth::check() && Auth::user()->avatar_url)
                                 <img src="{{ Auth::user()->avatar_url }}" alt="Foto" style="width: 100%; height: 100%; object-fit: cover;">
                             @else
                                 <span>{{ Auth::user()->initials ?? 'AB' }}</span>
                             @endif
                         </div>
-                        <div style="min-width: 0;">
-                            <div class="text-dark font-weight-bold text-truncate" style="font-size: 0.88rem;">{{ Auth::user()->name }}</div>
-                            <span class="badge badge-primary px-2 py-0.5 mt-0.5" style="font-size: 9.5px;">{{ strtoupper(Auth::user()->role_label ?? 'Admin') }}</span>
+                        <div class="d-flex flex-column justify-content-center" style="min-width: 0; flex: 1;">
+                            <div class="font-weight-bold text-truncate" style="font-size: 0.9rem; line-height: 1.25; color: #0f172a;">
+                                {{ Auth::user()->name }}
+                            </div>
+                            <div class="text-truncate mb-1.5" style="font-size: 0.76rem; line-height: 1.2; color: #64748b;">
+                                {{ Auth::user()->email ?? '' }}
+                            </div>
+                            <span class="badge border font-weight-bold px-2 py-0.5" style="font-size: 0.68rem; border-radius: 6px; background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; width: fit-content;">
+                                {{ Auth::user()->role_label ?? 'Admin' }}
+                            </span>
                         </div>
                     </div>
                 </div>
