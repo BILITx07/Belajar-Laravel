@@ -11,37 +11,11 @@
 <div class="bws-qrop-page">
 
     <!-- ============================================================ -->
-    <!-- 1. KARTU BANNER HERO MEWAH (PERSIS SEPERTI GAMBAR 1 QROP)    -->
-    <!-- ============================================================ -->
-    <div class="bws-hero-card">
-        <div class="bws-hero-content">
-            <div class="bws-hero-pretitle">
-                <span class="bws-dot-hero"></span> DATA SPASIAL BWS KALIMANTAN I
-            </div>
-            <h1 class="bws-hero-title">
-                Peta Daerah Irigasi &amp; Jaringan SDA.
-            </h1>
-            <p class="bws-hero-desc">
-                Temukan sebaran Daerah Irigasi, Jaringan Saluran, dan Bangunan Air di Kalimantan Barat dalam satu peta.
-            </p>
-        </div>
-        <div class="bws-hero-location d-none d-md-flex align-items-center">
-            <div class="bws-location-icon-box">
-                <i class="fas fa-map-marker-alt"></i>
-            </div>
-            <div>
-                <div class="font-weight-bold" style="font-size: 13px;">Kalimantan Barat</div>
-                <small style="color: rgba(255, 255, 255, 0.75);">BWS Kalimantan I Pontianak</small>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============================================================ -->
-    <!-- 2. WADAH UTAMA KONTEN: SIDEBAR + PETA SEJAJAR                -->
+    <!-- WADAH UTAMA KONTEN: SIDEBAR KIRI + PETA INTERAKTIF 100% VH  -->
     <!-- ============================================================ -->
     <div class="bws-qrop-workspace">
 
-        <!-- ── SIDEBAR KIRI (PERSIS GAMBAR 1 REFERENSI QROP) ── -->
+        <!-- ── SIDEBAR KIRI (PANEL FILTER & LAYER) ── -->
         <aside class="bws-sidebar-card">
 
             <!-- Header Sidebar dengan Lingkaran Ikon -->
@@ -204,10 +178,13 @@
             <!-- Header Peta Ramping (Breadcrumb Kiri & Badge Kanan) -->
             <div class="bws-map-topbar">
                 <div class="d-flex align-items-center">
-                    <span class="bws-dot-green-qrop"></span>
-                    <span class="font-weight-bold text-dark ml-2" style="font-size: 13.5px;">Peta Daerah Irigasi</span>
-                    <span class="text-muted mx-2">/</span>
-                    <span class="text-muted small font-weight-bold" id="currentBreadcrumbLabel">Seluruh Kalimantan Barat</span>
+                    <button type="button" class="btn btn-sm btn-white bws-action-pill shadow-sm mr-2.5" id="btnToggleSidebar" onclick="toggleSidebar()" title="Sembunyikan / Tampilkan Panel Kontrol">
+                        <i class="fas fa-sliders-h text-primary mr-1"></i> <span class="d-none d-sm-inline">Panel Kontrol</span>
+                    </button>
+                    <span class="bws-dot-green-qrop ml-1"></span>
+                    <span class="font-weight-bold text-dark ml-2" style="font-size: 13.5px;">Peta Daerah Irigasi &amp; Jaringan SDA</span>
+                    <span class="text-muted mx-2 d-none d-md-inline">/</span>
+                    <span class="text-muted small font-weight-bold d-none d-md-inline" id="currentBreadcrumbLabel">Seluruh Kalimantan Barat</span>
                 </div>
 
                 <div class="d-flex align-items-center" style="gap: 8px;">
@@ -408,6 +385,23 @@
             if (typeof toggleCategoryLayer === 'function') {
                 toggleCategoryLayer(cat, chk.checked);
             }
+        }
+    }
+
+    function toggleSidebar() {
+        var sidebar = document.querySelector('.bws-sidebar-card');
+        var btn = document.getElementById('btnToggleSidebar');
+        if (sidebar) {
+            if (sidebar.style.display === 'none') {
+                sidebar.style.display = '';
+                if (btn) btn.classList.remove('active');
+            } else {
+                sidebar.style.display = 'none';
+                if (btn) btn.classList.add('active');
+            }
+            setTimeout(function() {
+                if (window.map) window.map.invalidateSize();
+            }, 200);
         }
     }
 </script>
