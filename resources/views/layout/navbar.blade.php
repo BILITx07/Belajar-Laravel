@@ -101,6 +101,13 @@
         </li>
 
         @auth
+        <!-- TOMBOL KEMBALI KE PANEL ADMIN (SEAMLESS BRIDGE) -->
+        <li class="nav-item mr-2">
+            <a href="{{ route('admin.dashboard') }}" class="btn btn-sm btn-primary font-weight-bold d-flex align-items-center px-3 py-1.5 shadow-sm text-white" style="border-radius: 20px; font-size: 0.82rem; background: #1d4ed8; border: none; height: 36px;" title="Kembali ke Dashboard Administrator">
+                <i class="fas fa-th-large mr-1.5"></i> Panel Admin
+            </a>
+        </li>
+
         <!-- NOTIFIKASI AKTIVITAS KHUSUS ADMIN -->
         @php
             $recentLogs = \App\Helpers\ActivityLogger::getRecent(5);
@@ -198,6 +205,11 @@
                     <div class="text-dark font-weight-bold" style="font-size: 13px;">{{ Auth::user()->name }}</div>
                     <span class="badge badge-primary px-2 py-0 mt-1" style="font-size: 10px;">{{ strtoupper(Auth::user()->role ?? 'Petugas') }}</span>
                 </div>
+                <!-- 0. Dashboard Admin -->
+                <a class="dropdown-item py-2 text-primary font-weight-bold d-flex align-items-center" href="{{ route('admin.dashboard') }}" style="font-size: 13px;">
+                    <i class="fas fa-th-large fa-sm fa-fw mr-2 text-primary"></i> Dashboard Admin
+                </a>
+                <div class="dropdown-divider my-1"></div>
                 <!-- 1. Pengaturan Akun -->
                 <a class="dropdown-item py-2 text-dark font-weight-bold d-flex align-items-center" href="{{ route('profile') }}" style="font-size: 13px;">
                     <i class="fas fa-user-cog fa-sm fa-fw mr-2 text-info"></i> Pengaturan Akun

@@ -26,6 +26,7 @@ class User extends Authenticatable
         'password',
         'role',
         'last_login_at',
+        'avatar',
     ];
 
     /**
@@ -76,6 +77,17 @@ class User extends Authenticatable
             'admin'      => 'Admin Operasional',
             default      => 'Viewer Publik',
         };
+    }
+
+    /**
+     * Accessor URL Avatar Pengguna
+     */
+    public function getAvatarUrlAttribute(): ?string
+    {
+        if (!empty($this->avatar)) {
+            return asset('storage/' . $this->avatar);
+        }
+        return null;
     }
 
     public function isSuperAdmin(): bool

@@ -366,6 +366,11 @@
 
         <!-- Tombol Aksi & Profil Petugas -->
         <div class="bws-topbar-actions">
+            <!-- Tombol Pintasan Buka Peta Interaktif (Preview Data Langsung di Tab Baru) -->
+            <a href="{{ route('peta') }}" target="_blank" class="btn btn-sm btn-warning font-weight-bold d-inline-flex align-items-center shadow-sm mr-2" style="border-radius: 20px; font-size: 0.8rem; padding: 5px 14px; background: #f59e0b; border: none; color: #1e293b; transition: all 0.2s ease;" title="Buka Peta Interaktif di Tab Baru untuk Menguji Tampilan Spasial">
+                <i class="fas fa-map-marked-alt mr-1.5"></i> Lihat Peta <i class="fas fa-external-link-alt ml-1 fa-xs" style="opacity:0.75;"></i>
+            </a>
+
             <!-- Fullscreen Toggle -->
             <a href="#" class="bws-action-icon d-none d-sm-flex" onclick="toggleFullScreen(event)" title="Layar Penuh" style="opacity:0.95;">
                 <i class="fas fa-expand fa-lg text-white"></i>
@@ -461,8 +466,12 @@
             <!-- Profile Dropdown (Hanya Pengaturan Akun & Logout Sesuai Permintaan) -->
             <div class="dropdown">
                 <div class="bws-user-trigger" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownUserMenu" style="background:rgba(255,255,255,0.16); border-radius:25px; padding:3px 12px 3px 4px;">
-                    <div class="rounded-circle bg-white d-flex align-items-center justify-content-center mr-2 shadow-sm" style="width:32px; height:32px;">
-                        <i class="fas fa-user-shield" style="color:#1d64d8; font-size:13px;"></i>
+                    <div class="rounded-circle bg-white d-flex align-items-center justify-content-center mr-2 shadow-sm overflow-hidden" style="width:32px; height:32px;">
+                        @if(Auth::check() && Auth::user()->avatar_url)
+                            <img src="{{ Auth::user()->avatar_url }}" alt="Avatar" style="width:100%; height:100%; object-fit:cover;">
+                        @else
+                            <i class="fas fa-user-shield" style="color:#1d64d8; font-size:13px;"></i>
+                        @endif
                     </div>
                     <div class="d-flex flex-column text-left mr-1">
                         <span class="font-weight-bold text-white line-height-1" style="font-size:0.84rem; line-height:1.2;">

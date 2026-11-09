@@ -27,12 +27,25 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name'   => 'required|string|max:255',
+            'avatar' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ], [
             'name.required' => 'Nama lengkap wajib diisi.',
+            'avatar.image'  => 'Berkas avatar harus berupa gambar.',
+            'avatar.mimes'  => 'Format gambar avatar harus jpg, jpeg, png, atau webp.',
+            'avatar.max'    => 'Ukuran foto profil maksimal 2MB.',
         ]);
 
         $user->name = $request->name;
+
+        if ($request->hasFile('avatar')) {
+            if ($user->avatar && \Illuminate\Support\Facades\Storage::disk('public')->exists($user->avatar)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($user->avatar);
+            }
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $user->avatar = $path;
+        }
+
         $user->save();
 
         return back()->with('success_profile', 'Profil berhasil diperbarui.');
