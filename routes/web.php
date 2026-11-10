@@ -23,6 +23,9 @@ use App\Models\User;
 // =========================================================================
 Route::get('/', [WebGisController::class, 'index'])->name('home');
 Route::get('/peta', [WebGisController::class, 'index'])->name('peta');
+Route::get('/kebijakan-privasi', function () {
+    return view('kebijakan_privasi');
+})->name('kebijakan-privasi');
 
 // =========================================================================
 // 2. SISTEM AUTENTIKASI (LOGIN & LOGOUT)
