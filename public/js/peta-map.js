@@ -32,7 +32,7 @@ var googleStreets = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z=
 var map = L.map('map', {
     center: defaultCenter,
     zoom: 8,
-    layers: [googleStreets],
+    layers: [osm],
     zoomControl: true
 });
 if (map.attributionControl) {
@@ -164,11 +164,11 @@ window.switchBasemap = function(type) {
 
     if (type === 'sat') {
         if (!map.hasLayer(googleSat)) map.addLayer(googleSat);
-    } else if (type === 'osm') {
-        if (!map.hasLayer(osm)) map.addLayer(osm);
-    } else {
-        // default: 'streets'
+    } else if (type === 'streets') {
         if (!map.hasLayer(googleStreets)) map.addLayer(googleStreets);
+    } else {
+        // default: 'osm' (OpenStreetMap)
+        if (!map.hasLayer(osm)) map.addLayer(osm);
     }
 
     // Sinkronkan radio input pada floating layer panel

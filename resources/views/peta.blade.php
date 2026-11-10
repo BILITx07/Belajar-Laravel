@@ -835,11 +835,11 @@
                                     <span class="bws-layer-item-label">Google Satellite</span>
                                 </label>
                                 <label class="bws-layer-item-row">
-                                    <input type="radio" name="floating_basemap" value="streets" class="bws-custom-radio" checked onchange="switchBasemap('streets')">
+                                    <input type="radio" name="floating_basemap" value="streets" class="bws-custom-radio" onchange="switchBasemap('streets')">
                                     <span class="bws-layer-item-label">Google Streets</span>
                                 </label>
                                 <label class="bws-layer-item-row">
-                                    <input type="radio" name="floating_basemap" value="osm" class="bws-custom-radio" onchange="switchBasemap('osm')">
+                                    <input type="radio" name="floating_basemap" value="osm" class="bws-custom-radio" checked onchange="switchBasemap('osm')">
                                     <span class="bws-layer-item-label">OpenStreetMap</span>
                                 </label>
                             </div>
