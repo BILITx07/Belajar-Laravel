@@ -74,7 +74,7 @@ class User extends Authenticatable
     {
         return match (strtolower($this->role ?? 'admin')) {
             'superadmin' => 'Super Admin',
-            'admin'      => 'Admin Operasional',
+            'admin'      => 'Staff Admin',
             default      => 'Viewer Publik',
         };
     }

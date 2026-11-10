@@ -81,16 +81,32 @@
                     </p>
                 </div>
 
-                <div class="d-flex align-items-center" style="gap:10px;">
+                <div class="d-flex align-items-center flex-wrap" style="gap:10px;">
+                    <!-- Ekspor CSV (Staf & Super Admin) -->
+                    <a href="{{ route('admin.export-rekap') }}" class="btn btn-outline-success font-weight-bold px-3 py-2 shadow-sm d-inline-flex align-items-center justify-content-center" style="border-radius:8px;font-size:0.84rem;height:38px;background:#fff;" title="Ekspor Rekapitulasi Data Geospasial ke CSV">
+                        <i class="fas fa-file-csv mr-1.5 text-success"></i>Ekspor CSV
+                    </a>
+
+                    <!-- Backup ZIP (Khusus Super Admin) -->
+                    @if(Auth::check() && Auth::user()->isSuperAdmin())
+                    <a href="{{ route('admin.backup-gis') }}" class="btn text-white font-weight-bold px-3 py-2 shadow-sm d-inline-flex align-items-center justify-content-center" style="background:#1e293b;border:1px solid #1e293b;border-radius:8px;font-size:0.84rem;height:38px;" title="Unduh Arsip .ZIP Seluruh Berkas Spasial (Khusus Super Admin)">
+                        <i class="fas fa-file-archive mr-1.5 text-warning"></i>Backup (.ZIP)
+                    </a>
+                    @endif
+
                     @if(($currentTab ?? 'active') === 'trash')
                         @if(($totalTrash ?? 0) > 0 && Auth::check() && Auth::user()->isSuperAdmin())
                         <form action="{{ route('admin.gis.empty-trash') }}" method="POST" onsubmit="return confirm('Peringatan: Kosongkan seluruh kotak sampah? Semua file di dalam kotak sampah akan dihapus permanen selamanya.');">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger font-weight-bold px-3 py-2 shadow-sm d-inline-flex align-items-center" style="border-radius:25px;font-size:0.84rem;height:38px;">
+                            <button type="submit" class="btn btn-danger font-weight-bold px-3 py-2 shadow-sm d-inline-flex align-items-center" style="border-radius:8px;font-size:0.84rem;height:38px;">
                                 <i class="fas fa-trash mr-2"></i>Kosongkan Kotak Sampah
                             </button>
                         </form>
+                        @elseif(($totalTrash ?? 0) > 0)
+                        <span class="badge badge-light border text-muted px-3 py-2 font-weight-medium" style="border-radius:8px; font-size:0.78rem;">
+                            <i class="fas fa-info-circle text-primary mr-1"></i> Pembersihan permanen oleh Super Admin
+                        </span>
                         @endif
                     @else
                         <button type="button" class="btn text-white font-weight-bold px-4 py-2 shadow-sm d-inline-flex align-items-center justify-content-center" style="background:#10143a;border:1px solid #10143a;border-radius:8px;font-size:0.86rem;height:38px;transition:all 0.18s ease;" onmouseover="this.style.background='#1c2262';this.style.borderColor='#1c2262';" onmouseout="this.style.background='#10143a';this.style.borderColor='#10143a';" data-toggle="modal" data-target="#modalUpload">

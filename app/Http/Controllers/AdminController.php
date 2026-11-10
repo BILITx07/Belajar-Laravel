@@ -615,6 +615,135 @@ class AdminController extends Controller
     }
 
     /**
+     * Unduh Cadangan Penuh Seluruh File GeoJSON (.ZIP) — Khusus Super Admin
+     */
+    public function backupGis(Request $request)
+    {
+        if (!auth()->check() || strtolower(auth()->user()->role ?? '') !== 'superadmin') {
+            return redirect()->back()->with('error', 'Akses Ditolak: Fitur cadangan penuh sistem hanya diizinkan untuk Super Admin.');
+        }
+
+        $geojsonPath = public_path('geojson');
+        if (!File::exists($geojsonPath)) {
+            return redirect()->back()->with('error', 'Direktori data geospasial tidak ditemukan.');
+        }
+
+        $files = File::files($geojsonPath);
+        if (empty($files)) {
+            return redirect()->back()->with('error', 'Tidak ada data spasial yang tersedia untuk dicadangkan.');
+        }
+
+        $zipFileName = 'BACKUP_SPASIAL_BWSK1_' . date('Ymd_His') . '.zip';
+        $tempDir = storage_path('app/temp');
+        if (!File::exists($tempDir)) {
+            File::makeDirectory($tempDir, 0755, true);
+        }
+        $zipFilePath = $tempDir . '/' . $zipFileName;
+
+        $zip = new \ZipArchive();
+        if ($zip->open($zipFilePath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === true) {
+            foreach ($files as $file) {
+                $zip->addFile($file->getRealPath(), $file->getFilename());
+            }
+            $zip->close();
+
+            ActivityLogger::log('backup', "Mengunduh cadangan penuh " . count($files) . " file geospasial (.zip)");
+
+            return response()->download($zipFilePath, $zipFileName, [
+                'Content-Type' => 'application/zip',
+            ])->deleteFileAfterSend(true);
+        }
+
+        return redirect()->back()->with('error', 'Gagal membuat file arsip ZIP cadangan.');
+    }
+
+    /**
+     * Ekspor Rekapitulasi Data Luasan Daerah Irigasi (.CSV Excel)
+     */
+    public function exportRekap(Request $request)
+    {
+        $lokasi = WebGisController::getLokasiData();
+        $fileName = 'REKAP_DAERAH_IRIGASI_BWSK1_' . date('Ymd_His') . '.csv';
+
+        $headers = [
+            'Content-Type'        => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => "attachment; filename=\"{$fileName}\"",
+            'Pragma'              => 'no-cache',
+            'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires'             => '0',
+        ];
+
+        $callback = function () use ($lokasi) {
+            $handle = fopen('php://output', 'w');
+            // Tulis UTF-8 BOM agar Microsoft Excel di Windows membaca karakter & angka secara sempurna
+            fprintf($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
+
+            // Judul Dokumen
+            fputcsv($handle, ['REKAPITULASI DATA SPASIAL DAERAH IRIGASI (DIR)']);
+            fputcsv($handle, ['BALAI WILAYAH SUNGAI KALIMANTAN I PONTIANAK']);
+            fputcsv($handle, ['Tanggal Unduh:', date('d-m-Y H:i:s')]);
+            fputcsv($handle, ['Petugas Pengunduh:', auth()->check() ? auth()->user()->name . ' (' . auth()->user()->role_label . ')' : 'Petugas']);
+            fputcsv($handle, []);
+
+            // Header Kolom
+            fputcsv($handle, [
+                'No',
+                'Nama Daerah Irigasi (DIR)',
+                'Kabupaten',
+                'Luas Baku (Ha)',
+                'Luas Fungsional (Ha)',
+                'Luas Potensial (Ha)',
+                'Persentase Fungsional (%)',
+                'Kewenangan Pengelolaan'
+            ]);
+
+            $totalBaku = 0;
+            $totalFung = 0;
+            $no = 1;
+
+            foreach ($lokasi as $item) {
+                $baku = (float) ($item['luas_baku'] ?? 0);
+                $fung = (float) ($item['luas_fung'] ?? 0);
+                $potensial = max(0, $baku - $fung);
+                $persen = $baku > 0 ? round(($fung / $baku) * 100, 1) . '%' : '0%';
+
+                $totalBaku += $baku;
+                $totalFung += $fung;
+
+                fputcsv($handle, [
+                    $no++,
+                    $item['nama'] ?? '-',
+                    $item['kabupaten'] ?? '-',
+                    number_format($baku, 0, ',', '.'),
+                    number_format($fung, 0, ',', '.'),
+                    number_format($potensial, 0, ',', '.'),
+                    $persen,
+                    'BWS Kalimantan I'
+                ]);
+            }
+
+            // Baris Total Akumulasi
+            fputcsv($handle, []);
+            fputcsv($handle, [
+                '',
+                'TOTAL KESELURUHAN',
+                count($lokasi) . ' DIR',
+                number_format($totalBaku, 0, ',', '.'),
+                number_format($totalFung, 0, ',', '.'),
+                number_format(max(0, $totalBaku - $totalFung), 0, ',', '.'),
+                $totalBaku > 0 ? round(($totalFung / $totalBaku) * 100, 1) . '%' : '0%',
+                ''
+            ]);
+
+            fclose($handle);
+        };
+
+        ActivityLogger::log('export', 'Mengunduh rekapitulasi data luasan daerah irigasi (.csv)');
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    /**
      * Halaman Log Aktivitas Audit Petugas & Operasional
      */
     public function activityLogs(Request $request)

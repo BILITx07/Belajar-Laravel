@@ -110,20 +110,26 @@ Route::middleware('auth')->group(function () {
         Route::get('/data-gis', [AdminController::class, 'kelolaGis'])->name('data-gis');
         Route::get('/preview-peta', [AdminController::class, 'previewPeta'])->name('preview-peta');
 
-        // Aksi CRUD Data Spasial
+        // Aksi CRUD Data Spasial (Staf & Super Admin)
         Route::post('/upload', [AdminController::class, 'upload'])->name('upload');
         Route::post('/rename', [AdminController::class, 'rename'])->name('rename');
         Route::delete('/delete', [AdminController::class, 'delete'])->name('delete');
-        Route::delete('/delete-bulk', [AdminController::class, 'deleteBulk'])->name('delete-bulk');
-
-        // Soft Delete & Kotak Sampah Data Spasial
         Route::post('/gis/restore', [AdminController::class, 'restoreGis'])->name('gis.restore');
-        Route::delete('/gis/force-delete', [AdminController::class, 'forceDeleteGis'])->name('gis.force-delete');
-        Route::delete('/gis/empty-trash', [AdminController::class, 'emptyTrashGis'])->name('gis.empty-trash');
+
+        // Ekspor Rekapitulasi Data (Staf & Super Admin)
+        Route::get('/export-rekap', [AdminController::class, 'exportRekap'])->name('export-rekap');
 
         // Halaman Log Aktivitas (Audit Trail Operasional Data)
         Route::get('/activity-logs', [AdminController::class, 'activityLogs'])->name('activity-logs');
-        Route::delete('/activity-logs/clear', [AdminController::class, 'clearActivityLogs'])->name('activity-logs.clear');
+
+        // Fitur Berisiko Tinggi & Bersih Sistem (KHUSUS SUPER ADMIN)
+        Route::middleware('role:superadmin')->group(function () {
+            Route::delete('/delete-bulk', [AdminController::class, 'deleteBulk'])->name('delete-bulk');
+            Route::delete('/gis/force-delete', [AdminController::class, 'forceDeleteGis'])->name('gis.force-delete');
+            Route::delete('/gis/empty-trash', [AdminController::class, 'emptyTrashGis'])->name('gis.empty-trash');
+            Route::delete('/activity-logs/clear', [AdminController::class, 'clearActivityLogs'])->name('activity-logs.clear');
+            Route::get('/backup-gis', [AdminController::class, 'backupGis'])->name('backup-gis');
+        });
     });
 
     // Profile & Akun

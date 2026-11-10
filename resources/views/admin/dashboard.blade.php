@@ -186,7 +186,17 @@
             </p>
         </div>
 
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center flex-wrap" style="gap: 10px;">
+            <a href="{{ route('admin.export-rekap') }}" class="btn btn-sm btn-outline-success font-weight-bold shadow-sm d-inline-flex align-items-center" style="border-radius: 8px; font-size: 0.82rem; padding: 6px 14px; background: #ffffff;" title="Unduh Rekapitulasi Data Spasial &amp; Luas Lahan (CSV)">
+                <i class="fas fa-file-csv mr-1.5 text-success"></i> Unduh Rekap (.CSV)
+            </a>
+
+            @if(Auth::check() && Auth::user()->isSuperAdmin())
+            <a href="{{ route('admin.backup-gis') }}" class="btn btn-sm btn-dark font-weight-bold shadow-sm d-inline-flex align-items-center" style="border-radius: 8px; font-size: 0.82rem; padding: 6px 14px; background: #10143a; border-color: #10143a;" title="Cadangkan Seluruh File GeoJSON &amp; SHP ke Arsip .ZIP (Khusus Super Admin)">
+                <i class="fas fa-file-archive mr-1.5 text-warning"></i> Backup Peta (.ZIP)
+            </a>
+            @endif
+
             <span class="badge badge-light border text-secondary px-3 py-2 font-weight-bold shadow-sm" style="border-radius: 20px; font-size: 0.8rem; background: #ffffff; border-color: #e2e8f0;">
                 <i class="fas fa-calendar-alt text-primary mr-2"></i> {{ \Carbon\Carbon::now()->locale('id')->isoFormat('dddd, D MMMM Y') }}
             </span>
@@ -319,6 +329,25 @@
 
         <!-- Card 6: Petugas Sistem -->
         <div class="col-xl-2 col-lg-4 col-md-6 col-sm-6">
+            @if(Auth::check() && Auth::user()->isSuperAdmin())
+            <a href="{{ route('users.index') }}" class="text-decoration-none text-reset d-block" title="Kelola Akun Petugas Sistem (Khusus Super Admin)">
+                <div class="siperisda-card" style="transition: transform 0.2s, box-shadow 0.2s;">
+                    <div class="siperisda-body">
+                        <div class="siperisda-card-top">
+                            <span class="siperisda-label">Petugas Sistem</span>
+                            <div class="siperisda-icon-box" style="background: rgba(16, 20, 58, 0.08); color: #10143a;">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                        </div>
+                        <div class="siperisda-value">{{ $totalUsers ?? 2 }}<span class="siperisda-unit">Akun</span></div>
+                    </div>
+                    <div class="siperisda-footer" style="color: #1d4ed8; font-weight: 600;">
+                        <span>Kelola Pengguna &rarr;</span>
+                        <i class="fas fa-users-cog"></i>
+                    </div>
+                </div>
+            </a>
+            @else
             <div class="siperisda-card">
                 <div class="siperisda-body">
                     <div class="siperisda-card-top">
@@ -330,10 +359,11 @@
                     <div class="siperisda-value">{{ $totalUsers ?? 2 }}<span class="siperisda-unit">Akun</span></div>
                 </div>
                 <div class="siperisda-footer">
-                    <span>Super Admin &amp; Admin</span>
+                    <span>Super Admin &amp; Staff</span>
                     <i class="fas fa-shield-alt text-secondary"></i>
                 </div>
             </div>
+            @endif
         </div>
     </div>
 
