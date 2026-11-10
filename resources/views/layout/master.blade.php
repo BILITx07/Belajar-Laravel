@@ -43,6 +43,39 @@
             --pu-yellow: #f6b93b;
             --pu-gold: #e58e26;
         }
+
+        /* Scroll to Top - Executive PU Navy & Gold */
+        .scroll-to-top {
+            background: #10143a !important;
+            border-radius: 12px !important;
+            border: 1.5px solid rgba(250, 214, 5, 0.45) !important;
+            box-shadow: 0 4px 14px rgba(16, 20, 58, 0.25) !important;
+            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            z-index: 1045 !important;
+            width: 42px !important;
+            height: 42px !important;
+            line-height: 38px !important;
+            right: 1.25rem !important;
+            bottom: 1.25rem !important;
+        }
+        .scroll-to-top i {
+            color: #fad605 !important;
+            font-size: 15px !important;
+            font-weight: 800 !important;
+            transition: transform 0.2s ease !important;
+        }
+        .scroll-to-top:focus,
+        .scroll-to-top:hover {
+            background: #1c2262 !important;
+            border-color: #fad605 !important;
+            box-shadow: 0 6px 20px rgba(16, 20, 58, 0.35) !important;
+            transform: translateY(-3px) !important;
+            text-decoration: none !important;
+        }
+        .scroll-to-top:hover i {
+            color: #ffffff !important;
+            transform: translateY(-2px) !important;
+        }
     </style>
     @stack('styles')
 </head>

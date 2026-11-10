@@ -312,11 +312,6 @@
                         <div class="text-muted small">Direktorat Jenderal Sumber Daya Air &bull; Kementerian Pekerjaan Umum</div>
                     </div>
                 </div>
-                <div class="sipdira-footer-right-action">
-                    <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;" class="btn btn-sm btn-light border sipdira-btn-back-top shadow-xs" title="Kembali ke atas peta">
-                        <i class="fas fa-arrow-up mr-1 text-primary"></i> Kembali ke Atas
-                    </a>
-                </div>
             </div>
         </footer>
 
