@@ -424,7 +424,7 @@
     <!-- ═══ 3. PREVIEW PETA GIS & LOG AKTIVITAS AUDIT (DOKUMENTASI LAPORAN MAGANG) ═══ -->
     <div class="row">
         <!-- Kolom Kiri: Peta Interaktif Ringkas & Quick Focus -->
-        <div class="col-xl-7 col-lg-6">
+        <div class="{{ Auth::check() && (Auth::user()->isSuperAdmin() || Auth::user()->role === 'superadmin') ? 'col-xl-7 col-lg-6' : 'col-12' }}">
             <div class="dashboard-panel-card">
                 <div class="panel-card-header flex-wrap" style="gap: 10px;">
                     <div class="d-flex align-items-center" style="gap: 8px;">
@@ -446,7 +446,8 @@
             </div>
         </div>
 
-        <!-- Kolom Kanan: Log Aktivitas Sistem (Pusat Notifikasi Riil) -->
+        @if(Auth::check() && (Auth::user()->isSuperAdmin() || Auth::user()->role === 'superadmin'))
+        <!-- Kolom Kanan: Log Aktivitas Sistem (Khusus Super Admin) -->
         <div class="col-xl-5 col-lg-6">
             <div class="dashboard-panel-card">
                 <div class="panel-card-header">
@@ -454,8 +455,8 @@
                         <i class="fas fa-history text-info"></i>
                         <span>Riwayat Aktivitas Petugas</span>
                     </h5>
-                    <a href="{{ route('admin.kelola-gis') }}" class="small font-weight-bold text-primary">
-                        Kelola Master Data &raquo;
+                    <a href="{{ route('admin.activity-logs') }}" class="small font-weight-bold text-primary">
+                        Semua Log Aktivitas &raquo;
                     </a>
                 </div>
                 <div class="panel-card-body p-0">
@@ -498,6 +499,8 @@
                 </div>
             </div>
         </div>
+        @endif
+    </div>
     </div>
 
     <!-- ═══ 4. TABEL FILE GEOSPASIAL TERKINI (REFERENSI FEWS BWS) ═══ -->

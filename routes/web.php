@@ -119,15 +119,15 @@ Route::middleware('auth')->group(function () {
         // Ekspor Rekapitulasi Data (Staf & Super Admin)
         Route::get('/export-rekap', [AdminController::class, 'exportRekap'])->name('export-rekap');
 
-        // Halaman Log Aktivitas (Audit Trail Operasional Data)
-        Route::get('/activity-logs', [AdminController::class, 'activityLogs'])->name('activity-logs');
-
-        // Fitur Berisiko Tinggi & Bersih Sistem (KHUSUS SUPER ADMIN)
+        // Fitur Khusus & Berisiko Tinggi (KHUSUS SUPER ADMIN)
         Route::middleware('role:superadmin')->group(function () {
+            // Halaman & Pembersihan Log Aktivitas (Audit Trail Operasional Data)
+            Route::get('/activity-logs', [AdminController::class, 'activityLogs'])->name('activity-logs');
+            Route::delete('/activity-logs/clear', [AdminController::class, 'clearActivityLogs'])->name('activity-logs.clear');
+
             Route::delete('/delete-bulk', [AdminController::class, 'deleteBulk'])->name('delete-bulk');
             Route::delete('/gis/force-delete', [AdminController::class, 'forceDeleteGis'])->name('gis.force-delete');
             Route::delete('/gis/empty-trash', [AdminController::class, 'emptyTrashGis'])->name('gis.empty-trash');
-            Route::delete('/activity-logs/clear', [AdminController::class, 'clearActivityLogs'])->name('activity-logs.clear');
             Route::get('/backup-gis', [AdminController::class, 'backupGis'])->name('backup-gis');
         });
     });

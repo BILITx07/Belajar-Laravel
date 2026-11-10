@@ -535,7 +535,8 @@
                 <i class="fas fa-expand"></i>
             </a>
 
-            <!-- NOTIFIKASI AKTIVITAS KHUSUS ADMIN & SUPER ADMIN -->
+            <!-- NOTIFIKASI AKTIVITAS KHUSUS SUPER ADMIN -->
+            @if(Auth::check() && (Auth::user()->isSuperAdmin() || Auth::user()->role === 'superadmin'))
             @php
                 $recentLogs = \App\Helpers\ActivityLogger::getRecent(5);
                 $countLogs = count($recentLogs);
@@ -621,6 +622,7 @@
                     </div>
                 </div>
             </div>
+            @endif
 
             <!-- Profile Dropdown Ultra-Modern & Elegan -->
             <div class="dropdown">
@@ -709,18 +711,20 @@
             </a>
 
             <!-- 3. Manajemen User (Hanya Super Admin) -->
-            @if(Auth::check() && Auth::user()->role === 'superadmin')
+            @if(Auth::check() && (Auth::user()->isSuperAdmin() || Auth::user()->role === 'superadmin'))
             <a href="{{ route('users.index') }}" class="bws-segment-tab {{ request()->routeIs('users.*') ? 'active' : '' }}">
                 <i class="fas fa-user-friends"></i>
                 <span>Manajemen User</span>
             </a>
             @endif
 
-            <!-- 4. Log Aktivitas -->
+            <!-- 4. Log Aktivitas (Hanya Super Admin) -->
+            @if(Auth::check() && (Auth::user()->isSuperAdmin() || Auth::user()->role === 'superadmin'))
             <a href="{{ route('admin.activity-logs') }}" class="bws-segment-tab {{ request()->routeIs('admin.activity-logs*') ? 'active' : '' }}">
                 <i class="fas fa-history"></i>
                 <span>Log Aktivitas</span>
             </a>
+            @endif
         </div>
     </nav>
     @endif

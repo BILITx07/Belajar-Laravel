@@ -213,7 +213,8 @@
             </a>
         </li>
 
-        <!-- NOTIFIKASI AKTIVITAS KHUSUS ADMIN -->
+        <!-- NOTIFIKASI AKTIVITAS KHUSUS SUPER ADMIN -->
+        @if(Auth::check() && (Auth::user()->isSuperAdmin() || Auth::user()->role === 'superadmin'))
         @php
             $recentLogs = \App\Helpers\ActivityLogger::getRecent(5);
             $countLogs = count($recentLogs);
@@ -292,6 +293,7 @@
                 </div>
             </div>
         </li>
+        @endif
 
         <!-- Profil Admin -->
         <li class="nav-item dropdown no-arrow">

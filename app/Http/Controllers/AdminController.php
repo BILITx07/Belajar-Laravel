@@ -744,10 +744,14 @@ class AdminController extends Controller
     }
 
     /**
-     * Halaman Log Aktivitas Audit Petugas & Operasional
+     * Halaman Log Aktivitas Audit Petugas & Operasional (Khusus Super Admin)
      */
     public function activityLogs(Request $request)
     {
+        if (!auth()->check() || !auth()->user()->isSuperAdmin()) {
+            abort(403, 'Akses Ditolak: Halaman Log Aktivitas hanya dapat diakses oleh Super Admin.');
+        }
+
         $search       = trim((string) $request->input('search', ''));
         $actionFilter = $request->input('action', 'all');
         $allLogs      = ActivityLogger::getAll();
