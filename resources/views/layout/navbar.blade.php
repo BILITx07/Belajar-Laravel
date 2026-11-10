@@ -8,9 +8,18 @@
             -webkit-backdrop-filter: blur(20px) !important;
             border-bottom: 3.5px solid #f59e0b !important;
             box-shadow: 0 4px 20px rgba(26, 28, 84, 0.07) !important;
-            padding-top: 10px !important;
-            padding-bottom: 10px !important;
+            padding: 10px 20px !important;
             transition: all 0.3s ease;
+        }
+
+        .bws-navbar-inner-container {
+            max-width: 1240px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         /* 1. Lambang Instansi di Kiri */
@@ -149,6 +158,7 @@
         }
     </style>
 
+    <div class="bws-navbar-inner-container">
     <!-- ═══ BAGIAN KIRI: LOGO INSTANSI & BRANDING SPASIAL PROPORSIONAL & MEWAH ═══ -->
     <div class="d-flex align-items-center">
         <!-- 1. Lambang Daerah / Instansi PU + Teks Nama Instansi di Bawah -->
@@ -362,6 +372,7 @@
         </li>
         @endauth
     </ul>
+    </div>
 
 </nav>
 

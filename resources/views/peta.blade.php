@@ -50,7 +50,7 @@
         background: #ffffff !important;
     }
     .sipdira-footer-right-links {
-        margin-right: 54px !important; /* Ruang lega agar tidak menempel/bertabrakan dengan floating scroll-to-top button */
+        margin-right: 0 !important;
     }
     .sipdira-footer-policy-link {
         color: #64748b !important;
@@ -83,11 +83,12 @@
     .bws-hero-card {
         background: linear-gradient(135deg, #10143a 0%, #161b4d 45%, #1c2364 100%) !important;
         border: 1px solid rgba(255, 255, 255, 0.08) !important;
-        border-radius: 18px !important;
+        border-radius: 16px !important;
         box-shadow: 0 12px 35px -5px rgba(16, 20, 58, 0.25) !important;
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
-        padding: 30px 36px !important;
+        padding: 24px 32px !important;
+        margin-bottom: 20px !important;
     }
     .bws-dot-hero {
         width: 6px !important;
@@ -898,10 +899,10 @@
     <!-- ============================================================ -->
     <section id="tentang-sipdira" class="sipdira-about-section">
         
-        <div class="row align-items-stretch">
+        <div class="sipdira-about-grid">
             <!-- Kolom Kiri: Kartu Brand Kotak Modern (Persis Card Kiri QROP) -->
-            <div class="col-lg-4 col-md-5 mb-4 mb-md-0">
-                <div class="sipdira-brand-about-card h-100">
+            <div class="sipdira-about-brand-col">
+                <div class="sipdira-brand-about-card">
                     <div class="sipdira-about-logo-wrap">
                         <img src="{{ asset('img/logo-sipdira.svg') }}" alt="Logo SIPDIRA" class="sipdira-about-logo-img">
                     </div>
@@ -916,8 +917,8 @@
             </div>
 
             <!-- Kolom Kanan: Teks Layanan & Accordion Panduan -->
-            <div class="col-lg-8 col-md-7 d-flex flex-column justify-content-center">
-                <div class="sipdira-about-content pl-lg-3">
+            <div class="sipdira-about-text-col">
+                <div class="sipdira-about-content">
                     <div class="sipdira-service-tag">TENTANG LAYANAN</div>
                     <h2 class="sipdira-about-headline">
                         Informasi spasial daerah irigasi,<br class="d-none d-lg-block">

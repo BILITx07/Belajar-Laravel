@@ -46,7 +46,7 @@ body {
 .bws-qrop-page {
     max-width: 1240px;
     margin: 0 auto;
-    padding: 20px 20px 36px 20px;
+    padding: 24px 20px 40px 20px;
 }
 
 /* ============================================================
@@ -54,9 +54,9 @@ body {
    ============================================================ */
 .bws-hero-card {
     background: linear-gradient(135deg, #10143a 0%, #161b4d 45%, #1c2364 100%);
-    border-radius: 18px;
+    border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 30px 36px;
+    padding: 24px 32px;
     color: #ffffff;
     margin-bottom: 20px;
     display: flex;
@@ -94,10 +94,10 @@ body {
 }
 
 .bws-hero-title {
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 800;
-    letter-spacing: -0.4px;
-    margin: 0 0 8px 0;
+    letter-spacing: -0.3px;
+    margin: 0 0 6px 0;
     line-height: 1.25;
     color: #ffffff;
 }
@@ -107,11 +107,11 @@ body {
 }
 
 .bws-hero-desc {
-    font-size: 14px;
+    font-size: 13.5px;
     color: rgba(255, 255, 255, 0.82);
     margin: 0;
     max-width: 680px;
-    line-height: 1.55;
+    line-height: 1.5;
 }
 
 .bws-hero-location {
@@ -169,6 +169,7 @@ body {
     gap: 18px;
     align-items: stretch;
     position: relative;
+    margin-bottom: 32px;
 }
 
 /* SIDEBAR KIRI GLASSMORPHISM (PERSIS GAMBAR 1 REFERENSI QROP) */
@@ -176,20 +177,16 @@ body {
     width: 320px;
     min-width: 320px;
     max-width: 320px;
-    background: rgba(255, 255, 255, 0.90);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: #ffffff;
     border-radius: 16px;
     border: 1px solid #e2e8f0;
-    padding: 20px 18px;
+    padding: 20px 18px 16px 18px;
     display: flex;
     flex-direction: column;
-    gap: 13px;
+    gap: 12px;
     box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
-    align-self: stretch;
-    height: 100%;
     box-sizing: border-box;
-    overflow-y: auto;
+    align-self: stretch;
 }
 
 /* Scrollbar Elegan & Halus untuk Sidebar */
@@ -535,9 +532,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
-    gap: 10px;
+    margin-bottom: 8px;
+    min-height: 26px;
+    flex-shrink: 0;
 }
 
 .bws-dot-green-qrop {
@@ -670,18 +667,18 @@ body {
     border: 1px solid #e2e8f0;
     overflow: hidden;
     position: relative;
-    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
-    flex: 1;
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
-    min-height: 560px;
-    height: 560px;
+    min-height: 500px;
+    height: auto;
 }
 
 #map {
     width: 100%;
     height: 100%;
-    min-height: 560px;
+    min-height: 500px;
     flex: 1;
     background: #e2e8f0;
 }
@@ -691,9 +688,11 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 4px 2px 4px;
+    padding: 8px 4px 0 4px;
     font-size: 11.5px;
     color: #64748b;
+    min-height: 24px;
+    flex-shrink: 0;
 }
 
 .bws-pulse-dot {
@@ -1120,16 +1119,38 @@ body {
    ============================================================ */
 .sipdira-about-section {
     margin-top: 36px;
-    padding-top: 24px;
-    border-top: 1px solid rgba(226, 232, 240, 0.8);
+    padding-top: 28px;
+    border-top: 1px solid #e2e8f0;
+}
+
+/* Grid Sejajar 2 Kolom (Persis Mengikuti Lebar Sidebar & Peta di Atasnya) */
+.sipdira-about-grid {
+    display: flex;
+    gap: 18px;
+    align-items: stretch;
+    width: 100%;
+}
+
+.sipdira-about-brand-col {
+    width: 320px;
+    min-width: 320px;
+    max-width: 320px;
+    flex-shrink: 0;
+}
+
+.sipdira-about-text-col {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 10px;
 }
 
 /* Card Brand Kotak Kiri (Glassmorphism Khas PU Navy & Emas) */
 .sipdira-brand-about-card {
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.94) 0%, rgba(246, 248, 255, 0.88) 100%);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1.5px solid rgba(250, 214, 5, 0.45);
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
     border-radius: 16px;
     padding: 32px 22px;
     display: flex;
@@ -1137,13 +1158,15 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 14px 38px rgba(26, 28, 84, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.95);
+    height: 100%;
+    min-height: 260px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
 }
 
 .sipdira-brand-about-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 18px 45px rgba(26, 28, 84, 0.14);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(16, 20, 58, 0.08);
     border-color: #f59e0b;
 }
 
@@ -1926,6 +1949,18 @@ body {
         max-width: 100%;
         position: static;
         max-height: none;
+    }
+    .sipdira-about-grid {
+        flex-direction: column;
+        gap: 20px;
+    }
+    .sipdira-about-brand-col {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+    }
+    .sipdira-about-text-col {
+        padding-left: 0;
     }
     #map {
         height: 440px;
