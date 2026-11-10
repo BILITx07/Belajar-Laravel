@@ -35,7 +35,8 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [RegistrasiController::class, 'store']);
 });
 
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+// Mendukung method POST (tombol form) maupun GET (akses langsung URL browser) agar tidak error 405
+Route::match(['get', 'post'], '/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Reset Password
 Route::get('/forgot-password', function () {
