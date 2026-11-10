@@ -478,17 +478,12 @@
                 <div class="bws-logo-box">
                     <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo Kementerian PU" style="width: 100%; height: 100%; object-fit: contain;">
                 </div>
-                <div class="d-flex flex-column">
-                    <div class="d-flex align-items-center" style="gap: 8px;">
-                        <span class="bws-brand-title">
-                            SIPDIRA <span style="color: #fad605;">SPASIAL</span>
-                        </span>
-                        <span class="badge font-weight-bold d-none d-md-inline-block" style="background: rgba(250, 214, 5, 0.16); color: #fad605; border: 1px solid rgba(250, 214, 5, 0.45); font-size: 0.65rem; padding: 2px 7px; border-radius: 6px; letter-spacing: 0.4px;">
-                            BWS KALIMANTAN I
-                        </span>
+                <div class="d-flex flex-column justify-content-center">
+                    <div class="bws-brand-title">
+                        SIPDIRA <span style="color: #fad605; font-weight: 800;">SPASIAL</span>
                     </div>
                     <span class="bws-brand-sub d-none d-sm-inline-block">
-                        Sistem Informasi Peta Daerah Irigasi &bull; Ditjen SDA, Kementerian PU
+                        Balai Wilayah Sungai Kalimantan I &bull; Ditjen SDA Kementerian PU
                     </span>
                 </div>
             </a>
