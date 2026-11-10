@@ -197,6 +197,13 @@
             </a>
         </li>
 
+        <!-- Menu Link: Kontak & Layanan -->
+        <li class="nav-item d-none d-lg-block">
+            <a href="javascript:void(0)" class="qrop-nav-text-link" data-toggle="modal" data-target="#modalKontakLayanan" title="Kontak & Layanan BWS Kalimantan I">
+                Kontak &amp; Layanan
+            </a>
+        </li>
+
         <!-- Tombol Layar Penuh -->
         <li class="nav-item d-none d-sm-block">
             <a class="nav-link p-2 d-flex align-items-center justify-content-center qrop-icon-btn" href="#" onclick="toggleFullScreen(event)" title="Layar Penuh">

@@ -599,6 +599,146 @@
         </div>
     </div>
 </div>
+
+<!-- MODAL KONTAK & LAYANAN BWS KALIMANTAN I (Resmi & Elegan) -->
+<div class="modal fade" id="modalKontakLayanan" tabindex="-1" role="dialog" aria-labelledby="modalKontakLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 18px; overflow: hidden;">
+            
+            <!-- Modal Header (Gaya Resmi Kedinasan PU Navy & Emas) -->
+            <div class="modal-header text-white px-4 py-3" style="background: linear-gradient(135deg, #10143a 0%, #1a1c54 100%); border-bottom: 3.5px solid #f59e0b;">
+                <div class="d-flex align-items-center">
+                    <div class="mr-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 44px; height: 44px; background: #ffffff; border-radius: 12px; color: #1a1c54; font-size: 20px; border: 2px solid #fad605;">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title font-weight-bold text-white mb-0" id="modalKontakLabel" style="font-size: 1.15rem; letter-spacing: 0.3px;">
+                            Kontak &amp; Layanan Informasi Publik
+                        </h5>
+                        <small style="color: rgba(255, 255, 255, 0.88); font-size: 0.78rem;">
+                            Balai Wilayah Sungai Kalimantan I &bull; Direktorat Jenderal Sumber Daya Air
+                        </small>
+                    </div>
+                </div>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 0.85; text-shadow: none;">
+                    <span aria-hidden="true" style="font-size: 1.5rem;">&times;</span>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body p-4 bg-white" style="font-size: 13px; line-height: 1.6;">
+                
+                <!-- Sub-banner Sambutan Resmi -->
+                <div class="d-flex align-items-center p-3 rounded mb-3" style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #1a1c54; border-radius: 10px;">
+                    <div class="mr-3 d-flex align-items-center justify-content-center text-primary" style="width: 36px; height: 36px; background: rgba(26, 28, 84, 0.08); border-radius: 10px; font-size: 18px; flex-shrink: 0;">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div style="font-size: 12.5px; color: #334155;">
+                        Pelayanan Data Geospasial Daerah Irigasi Rawa (DIR), Rekomendasi Teknis Sumber Daya Air, serta Penanganan Aspirasi &amp; Pengaduan Masyarakat Kalimantan Barat.
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Kartu 1: Kantor Balai BWS Kalimantan I -->
+                    <div class="col-md-6 mb-3">
+                        <div class="p-3 rounded border bg-light h-100 d-flex flex-column" style="border-radius: 12px !important; border-color: #e2e8f0 !important;">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="mr-2.5 d-flex align-items-center justify-content-center shadow-xs" style="width: 34px; height: 34px; border-radius: 8px; background: rgba(220, 38, 38, 0.1); color: #dc2626; font-size: 15px; flex-shrink: 0;">
+                                    <i class="fas fa-map-marked-alt"></i>
+                                </div>
+                                <div>
+                                    <strong style="color: #0f172a; font-size: 13px;">Kantor BWS Kalimantan I</strong>
+                                    <div class="text-muted" style="font-size: 11px;">Alamat Kantor Balai Wilayah Sungai</div>
+                                </div>
+                            </div>
+                            <p class="text-secondary mb-2" style="font-size: 12px; line-height: 1.45;">
+                                Jl. Ahmad Yani No. 1, Bangka Belitung Laut, Kec. Pontianak Tenggara, Kota Pontianak, Kalimantan Barat 78124
+                            </p>
+                            <div class="mt-auto pt-2 border-top d-flex align-items-center justify-content-between" style="border-color: #e2e8f0 !important; font-size: 11.5px;">
+                                <span class="text-muted"><i class="far fa-clock text-warning mr-1"></i> 08.00 - 16.00 WIB</span>
+                                <a href="https://maps.google.com/?q=Balai+Wilayah+Sungai+Kalimantan+I+Pontianak" target="_blank" rel="noopener noreferrer" class="btn btn-xs btn-outline-primary font-weight-bold" style="border-radius: 6px; font-size: 11px; padding: 2px 8px;">
+                                    <i class="fas fa-external-link-alt mr-1"></i> Buka Peta
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kartu 2: Unit Pengelola Data & SISDA -->
+                    <div class="col-md-6 mb-3">
+                        <div class="p-3 rounded border bg-light h-100 d-flex flex-column" style="border-radius: 12px !important; border-color: #e2e8f0 !important;">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="mr-2.5 d-flex align-items-center justify-content-center shadow-xs" style="width: 34px; height: 34px; border-radius: 8px; background: rgba(37, 99, 235, 0.1); color: #2563eb; font-size: 15px; flex-shrink: 0;">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <div>
+                                    <strong style="color: #0f172a; font-size: 13px;">Unit SISDA &amp; Data Spasial</strong>
+                                    <div class="text-muted" style="font-size: 11px;">Pelayanan Data &amp; Informasi Geospasial</div>
+                                </div>
+                            </div>
+                            <div class="mb-2" style="font-size: 12px; line-height: 1.5;">
+                                <div class="d-flex align-items-center mb-1">
+                                    <i class="fas fa-phone-alt text-primary mr-2" style="width: 14px;"></i>
+                                    <span class="text-dark font-weight-bold">(0561) 732298 / 736040</span>
+                                </div>
+                                <div class="d-flex align-items-center mb-1">
+                                    <i class="fas fa-envelope text-primary mr-2" style="width: 14px;"></i>
+                                    <span class="text-dark">bws.kalimantan1@pu.go.id</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-globe text-primary mr-2" style="width: 14px;"></i>
+                                    <span class="text-secondary">sda.pu.go.id/balai/bwskalimantan1</span>
+                                </div>
+                            </div>
+                            <div class="mt-auto pt-2 border-top text-muted" style="border-color: #e2e8f0 !important; font-size: 11px;">
+                                <i class="fas fa-check-circle text-success mr-1"></i> Layanan permohonan data teknis &amp; peta resmi
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kartu 3: Kanal Pengaduan & Aspirasi Publik -->
+                    <div class="col-12">
+                        <div class="p-3 rounded border" style="background: rgba(245, 158, 11, 0.05); border-color: rgba(245, 158, 11, 0.3) !important; border-radius: 12px !important;">
+                            <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between">
+                                <div class="d-flex align-items-start mb-2 mb-md-0">
+                                    <div class="mr-2.5 d-flex align-items-center justify-content-center shadow-xs" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(245, 158, 11, 0.2); color: #b45309; font-size: 16px; flex-shrink: 0;">
+                                        <i class="fas fa-bullhorn"></i>
+                                    </div>
+                                    <div>
+                                        <strong style="color: #92400e; font-size: 13px;">Kanal Pengaduan &amp; Lapor Infrastruktur Irigasi</strong>
+                                        <p class="text-secondary mb-0" style="font-size: 12px; line-height: 1.4;">
+                                            Masyarakat dapat melaporkan kerusakan tanggul, pendangkalan saluran irigasi, atau kendala pintu air melalui kanal resmi nasional <strong>SP4N-LAPOR!</strong>
+                                        </p>
+                                    </div>
+                                </div>
+                                <a href="https://www.lapor.go.id" target="_blank" rel="noopener noreferrer" class="btn btn-sm text-dark font-weight-bold shadow-xs px-3 ml-md-3" style="background: #fad605; border: 1px solid #f59e0b; border-radius: 8px; font-size: 11.5px; white-space: nowrap;">
+                                    <i class="fas fa-paper-plane mr-1 text-dark"></i> Buat Laporan LAPOR!
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Catatan Keterbukaan Informasi Publik -->
+                <div class="mt-3 p-2 px-3 rounded text-muted d-flex align-items-center" style="background: #f8fafc; border: 1px dashed #cbd5e1; font-size: 11.5px; border-radius: 8px;">
+                    <i class="fas fa-balance-scale text-primary mr-2"></i>
+                    <div>
+                        Sesuai <strong>UU No. 14 Tahun 2008</strong> tentang Keterbukaan Informasi Publik, permohonan data dan informasi geospasial resmi BWS Kalimantan I tidak dipungut biaya retribusi (<strong>Gratis</strong>).
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light py-2.5 px-4 d-flex align-items-center justify-content-between">
+                <small class="text-muted" style="font-size: 11.5px;">
+                    <i class="fas fa-shield-alt text-success mr-1"></i> Pelayanan Informasi Publik Resmi BWS Kalimantan I
+                </small>
+                <button type="button" class="btn text-white btn-sm font-weight-bold px-4 shadow-sm" data-dismiss="modal" style="background: linear-gradient(135deg, #10143a 0%, #1a1c54 100%); border: 1.5px solid #fad605; border-radius: 8px; font-size: 12px;">
+                    <i class="fas fa-check mr-1 text-warning"></i> Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
