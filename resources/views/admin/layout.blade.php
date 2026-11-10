@@ -32,20 +32,20 @@
             min-height: 100vh;
         }
 
-        /* ── TOPBAR EXECUTIVE PU NAVY & GOLD ACCENT ── */
+        /* ── TOPBAR EXECUTIVE PU WHITE & GOLD ACCENT (SESUAI FOTO 2) ── */
         .bws-topbar-primary {
-            background: linear-gradient(135deg, #0d1033 0%, #15184a 50%, #1c2262 100%);
-            height: 68px;
-            padding: 0 24px;
+            background: #ffffff;
+            height: 72px;
+            padding: 0 28px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            color: #fff;
-            box-shadow: 0 4px 22px rgba(10, 14, 45, 0.32), 0 1px 0 rgba(250, 214, 5, 0.4);
+            color: #0f172a;
+            box-shadow: 0 2px 14px rgba(15, 23, 42, 0.05);
             position: sticky;
             top: 0;
             z-index: 1040;
-            border-bottom: 2.5px solid #f59e0b;
+            border-bottom: 2.5px solid #fad605;
         }
 
         .bws-brand-section {
@@ -53,129 +53,131 @@
             align-items: center;
         }
 
-        .bws-brand-section a:hover .bws-logo-box {
-            transform: scale(1.05);
-            box-shadow: 0 4px 14px rgba(250, 214, 5, 0.45);
-        }
-
-        .bws-logo-box {
+        /* 1. Lambang Instansi di Kiri */
+        .qrop-emblem-wrap {
             width: 44px;
             height: 44px;
-            min-width: 44px;
-            border-radius: 12px;
-            padding: 4.5px;
-            background: #ffffff;
-            border: 1.8px solid #fad605;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-            margin-right: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
+            transition: transform 0.2s ease;
         }
 
-        .bws-brand-title {
-            font-size: 1.05rem;
+        .qrop-emblem-wrap:hover {
+            transform: scale(1.05);
+        }
+
+        .qrop-emblem-text {
+            font-size: 8.5px;
             font-weight: 800;
             letter-spacing: 0.5px;
-            line-height: 1.2;
-            color: #ffffff;
+            color: #10143a;
+            text-align: center;
+            text-transform: uppercase;
+            line-height: 1.15;
+            margin-top: 2px;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
-        .bws-brand-sub {
-            font-size: 0.73rem;
-            color: rgba(255, 255, 255, 0.82);
-            line-height: 1.25;
-            margin-top: 2px;
-            font-weight: 500;
+        /* Garis Pembatas Vertikal Tipis Elegan */
+        .qrop-nav-divider {
+            height: 44px;
+            width: 1.5px;
+            background: #e2e8f0;
+            margin: 0 18px;
+        }
+
+        /* 2. Logo Brand Aplikasi Spasial (SIPDIRA SPASIAL) */
+        .qrop-word-main {
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: 2.5px;
+            color: #10143a;
+            line-height: 1.05;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .qrop-word-sub {
+            font-size: 15px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: #d97706;
+            line-height: 1.05;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         /* Nav Kanan Topbar */
         .bws-topbar-actions {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
         }
 
-        /* Tombol Pintasan Lihat Peta Glass Gold Elegan */
+        /* Tombol Pintasan Lihat Peta Ala Foto 2 */
         .btn-lihat-peta-modern {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, rgba(250, 214, 5, 0.15) 0%, rgba(245, 158, 11, 0.22) 100%);
-            color: #fad605 !important;
+            gap: 7px;
+            background: #f8fafc;
+            color: #10143a !important;
             font-weight: 700;
             font-size: 0.82rem;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.2px;
             padding: 7px 16px;
-            border-radius: 22px;
-            border: 1.5px solid rgba(250, 214, 5, 0.65);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            border: 1.5px solid #cbd5e1;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
             text-decoration: none !important;
-            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.2s ease;
+            height: 38px;
             line-height: 1.2;
         }
 
         .btn-lihat-peta-modern:hover {
-            background: linear-gradient(135deg, #fad605 0%, #f59e0b 100%);
-            color: #0d1033 !important;
-            border-color: #fad605;
-            transform: translateY(-1.5px);
-            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.45), inset 0 1px 2px #ffffff;
+            background: #10143a;
+            color: #ffffff !important;
+            border-color: #10143a;
+            box-shadow: 0 4px 12px rgba(16, 20, 58, 0.18);
         }
 
-        .btn-lihat-peta-modern:hover i {
-            color: #0d1033 !important;
-            transform: scale(1.15) rotate(-6deg);
-        }
-
-        .btn-lihat-peta-modern:active {
-            transform: translateY(0.5px);
-            box-shadow: 0 2px 6px rgba(245, 158, 11, 0.3);
-        }
-
-        .btn-lihat-peta-modern i {
+        .btn-lihat-peta-modern i.icon-peta {
             font-size: 0.88rem;
-            color: #fad605;
-            transition: transform 0.22s ease, color 0.22s ease;
+            color: #d97706;
+            transition: color 0.2s ease;
         }
 
-        /* Glass Action Icons (Fullscreen & Lonceng Notifikasi) */
+        .btn-lihat-peta-modern:hover i.icon-peta {
+            color: #fad605;
+        }
+
+        /* Action Icons (Fullscreen & Lonceng Notifikasi) */
         .bws-action-icon {
-            color: rgba(255, 255, 255, 0.88);
-            font-size: 0.98rem;
+            color: #475569;
+            font-size: 0.95rem;
             width: 38px;
             height: 38px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.16);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
             text-decoration: none !important;
             position: relative;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
         }
 
         .bws-action-icon:hover {
-            color: #fad605 !important;
-            background: rgba(255, 255, 255, 0.18);
-            border-color: rgba(250, 214, 5, 0.55);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+            color: #10143a !important;
+            background: #f1f5f9;
+            border-color: #cbd5e1;
         }
 
         .bws-notif-badge {
             position: absolute;
-            top: -3px;
-            right: -3px;
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            top: -2px;
+            right: -2px;
+            background: #ef4444;
             color: #fff;
             font-size: 0.65rem;
             font-weight: 800;
@@ -186,33 +188,31 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px solid #0d1033;
-            box-shadow: 0 2px 6px rgba(220, 38, 38, 0.5);
+            border: 2px solid #ffffff;
+            box-shadow: 0 1px 4px rgba(220, 38, 38, 0.3);
         }
+
         .bws-user-trigger {
             display: inline-flex;
             align-items: center;
             cursor: pointer;
             padding: 4px 14px 4px 5px;
             border-radius: 30px;
-            background: rgba(255, 255, 255, 0.09);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.15);
-            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
+            transition: all 0.2s ease;
             text-decoration: none !important;
-            color: #ffffff;
+            color: #1e293b;
             gap: 9px;
         }
 
         .bws-user-trigger:hover,
         .dropdown.show .bws-user-trigger {
-            background: rgba(255, 255, 255, 0.18);
-            border-color: rgba(250, 214, 5, 0.6);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.25);
-            transform: translateY(-1px);
-            color: #ffffff;
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+            color: #1e293b;
         }
 
         .bws-user-avatar-frame {
@@ -225,25 +225,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #0d1033 0%, #1e40af 100%);
+            background: linear-gradient(135deg, #10143a 0%, #1e40af 100%);
             border: 2px solid #fad605;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-            transition: transform 0.2s ease;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
             color: #ffffff;
             font-weight: 800;
             font-size: 0.78rem;
-            letter-spacing: 0.5px;
         }
 
         .bws-user-avatar-frame img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-
-        .bws-user-trigger:hover .bws-user-avatar-frame {
-            transform: scale(1.06);
-            border-color: #fde047;
         }
 
         .bws-user-info {
@@ -256,7 +249,7 @@
         .bws-user-name {
             font-weight: 700;
             font-size: 0.82rem;
-            color: #ffffff;
+            color: #0f172a;
             letter-spacing: 0.15px;
             white-space: nowrap;
         }
@@ -265,34 +258,33 @@
             font-size: 0.67rem;
             font-weight: 800;
             letter-spacing: 0.4px;
-            color: #fcd34d;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            color: #d97706;
         }
 
         .bws-user-chevron {
             font-size: 0.65rem;
-            color: rgba(255, 255, 255, 0.8);
+            color: #64748b;
             transition: transform 0.25s ease;
             margin-left: 1px;
         }
 
         .dropdown.show .bws-user-chevron {
             transform: rotate(180deg);
-            color: #ffffff;
+            color: #0f172a;
         }
 
         /* ── SUB-NAVBAR MENU NAVIGASI ADMIN (SESUAI GAMBAR REFERENSI BWS) ── */
         .bws-subnavbar {
             background: #ffffff;
             border-bottom: 1px solid var(--bws-border);
-            padding: 0 24px;
+            padding: 0 28px;
             display: flex;
             align-items: center;
             justify-content: flex-start;
             gap: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
             position: sticky;
-            top: 70px;
+            top: 72px;
             z-index: 1030;
         }
 
@@ -484,38 +476,50 @@
 </head>
 <body>
 
-    <!-- ═══ 1. NAVBAR UTAMA ATAS (TEMA EXECUTIVE PU NAVY & GOLD KEDINASAN RESMI) ═══ -->
+    <!-- ═══ 1. NAVBAR UTAMA ATAS (TEMA EXECUTIVE PU WHITE & GOLD SESUAI FOTO 2) ═══ -->
     <header class="bws-topbar-primary">
-        <!-- Logo & Instansi Resmi -->
+        <!-- Logo & Instansi Resmi (Sesuai Foto 2) -->
         <div class="bws-brand-section">
-            <a href="{{ route('admin.dashboard') }}" class="d-flex align-items-center text-decoration-none" title="SIPDIRA Spasial BWS Kalimantan I">
-                <div class="bws-logo-box">
-                    <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo Kementerian PU" style="width: 100%; height: 100%; object-fit: contain;">
+            <!-- 1. Lambang Daerah / Instansi PU + Teks Nama Instansi di Bawah -->
+            <a href="{{ route('admin.dashboard') }}" class="d-flex flex-column align-items-center text-decoration-none mr-1" title="Balai Wilayah Sungai Kalimantan I Pontianak">
+                <div class="qrop-emblem-wrap">
+                    <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo Kementerian Pekerjaan Umum" style="width: 42px; height: 42px; object-fit: contain;">
                 </div>
-                <div class="d-flex flex-column justify-content-center">
-                    <div class="bws-brand-title">
-                        SIPDIRA <span style="color: #fad605; font-weight: 800;">SPASIAL</span>
-                    </div>
-                    <span class="bws-brand-sub d-none d-sm-inline-block">
-                        Balai Wilayah Sungai Kalimantan I &bull; Ditjen SDA Kementerian PU
-                    </span>
+                <div class="qrop-emblem-text d-none d-sm-block">
+                    <div>BALAI WILAYAH SUNGAI</div>
+                    <div>KALIMANTAN I</div>
+                </div>
+            </a>
+
+            <!-- Garis Pembatas Vertikal Proporsional -->
+            <div class="qrop-nav-divider d-none d-sm-block"></div>
+
+            <!-- 2. Logo Brand Aplikasi Spasial: SIPDIRA SPASIAL -->
+            <a href="{{ route('admin.dashboard') }}" class="d-flex align-items-center text-decoration-none">
+                <!-- Logo Ikon Resmi SIPDIRA -->
+                <div class="mr-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 44px; height: 44px;">
+                    <img src="{{ asset('img/logo-sipdira.svg') }}" alt="Logo SIPDIRA" style="width: 100%; height: 100%; object-fit: contain;">
+                </div>
+                <div class="d-flex flex-column" style="line-height: 1.05;">
+                    <span class="qrop-word-main">SIPDIRA</span>
+                    <span class="qrop-word-sub">SPASIAL</span>
                 </div>
             </a>
         </div>
 
         <!-- Tombol Aksi & Profil Petugas -->
         <div class="bws-topbar-actions">
-            <!-- Tombol Pintasan Lihat Peta WebGIS Modern -->
+            <!-- Tombol Pintasan Lihat Peta WebGIS Modern Ala Foto 2 -->
             <a href="{{ route('peta') }}" class="btn-lihat-peta-modern mr-1" title="Buka Halaman Peta Publik WebGIS">
-                <i class="fas fa-compass"></i>
+                <i class="fas fa-compass icon-peta"></i>
                 <span class="d-none d-md-inline">Buka WebGIS</span>
                 <span class="d-inline d-md-none">Peta</span>
-                <i class="fas fa-external-link-alt d-none d-lg-inline" style="font-size: 0.68rem; opacity: 0.85;"></i>
+                <i class="fas fa-external-link-alt d-none d-lg-inline" style="font-size: 0.68rem; opacity: 0.7;"></i>
             </a>
 
             <!-- Fullscreen Toggle -->
             <a href="#" class="bws-action-icon d-none d-sm-flex" onclick="toggleFullScreen(event)" title="Layar Penuh">
-                <i class="fas fa-expand fa-lg text-white"></i>
+                <i class="fas fa-expand"></i>
             </a>
 
             <!-- NOTIFIKASI AKTIVITAS KHUSUS ADMIN & SUPER ADMIN -->
@@ -524,7 +528,7 @@
                 $countLogs = count($recentLogs);
             @endphp
             <div class="dropdown no-arrow position-relative">
-                <a class="bws-action-icon position-relative text-white" 
+                <a class="bws-action-icon position-relative" 
                    href="#" 
                    id="adminNotifDropdown" 
                    role="button" 
@@ -616,7 +620,7 @@
                                 <span>{{ Auth::user()->initials ?? 'AB' }}</span>
                             @endif
                         </div>
-                        <span class="position-absolute" style="width: 9.5px; height: 9.5px; background: #10b981; border: 1.5px solid #0d1033; border-radius: 50%; bottom: -1px; right: -1px; box-shadow: 0 0 6px rgba(16, 185, 129, 0.85);" title="Status: Online / Aktif"></span>
+                        <span class="position-absolute" style="width: 9.5px; height: 9.5px; background: #10b981; border: 1.5px solid #ffffff; border-radius: 50%; bottom: -1px; right: -1px; box-shadow: 0 0 4px rgba(16, 185, 129, 0.6);" title="Status: Online / Aktif"></span>
                     </div>
                     <div class="bws-user-info">
                         <span class="bws-user-name">
