@@ -238,38 +238,101 @@
         100% { transform: scale(2.2); opacity: 0; }
     }
 
-    /* ══ MODE PERLUAS PETA ALA QROP (IN-PAGE EXPAND, BUKAN FULLSCREEN MONITOR) ══ */
-    .bws-qrop-page.bws-map-expanded .bws-hero-card {
+    /* ══ MODE PERLUAS PETA PERSIS QROP (FIT 100% VIEWPORT, TANPA BISA DISCROLL) ══ */
+    html.bws-no-scroll,
+    body.bws-no-scroll {
+        overflow: hidden !important;
+        height: 100vh !important;
+        max-height: 100vh !important;
+    }
+
+    .bws-qrop-page.bws-map-expanded {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        max-height: 100vh !important;
+        overflow: hidden !important;
+        padding: 10px 14px 10px 14px !important;
+        background: #f1f5f9 !important;
+        z-index: 9999 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        box-sizing: border-box !important;
+    }
+
+    .bws-qrop-page.bws-map-expanded .bws-hero-card,
+    .bws-qrop-page.bws-map-expanded .bws-sidebar-card,
+    .bws-qrop-page.bws-map-expanded #tentang-sipdira,
+    .bws-qrop-page.bws-map-expanded .sipdira-about-section,
+    .bws-qrop-page.bws-map-expanded .sipdira-clean-footer,
+    .bws-qrop-page.bws-map-expanded #section-table,
+    .bws-qrop-page.bws-map-expanded .sipdira-btn-back-top,
+    .bws-qrop-page.bws-map-expanded .bws-scroll-top-btn {
         display: none !important;
     }
-    .bws-qrop-page.bws-map-expanded .bws-sidebar-card {
-        display: none !important;
-    }
+
     .bws-qrop-page.bws-map-expanded .bws-qrop-workspace {
-        gap: 0 !important;
-    }
-    .bws-qrop-page.bws-map-expanded .bws-map-container-column {
-        width: 100% !important;
-        max-width: 100% !important;
         flex: 1 1 100% !important;
+        height: 100% !important;
+        max-height: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
     }
-    .bws-qrop-page.bws-map-expanded .bws-leaflet-card {
-        height: calc(100vh - 165px) !important;
-        min-height: 560px !important;
-        border-radius: 16px !important;
-        border: 2px solid #166534 !important; /* Border hijau cartographic persis gambar 1 QROP */
+
+    .bws-qrop-page.bws-map-expanded .bws-map-container-column {
+        flex: 1 1 100% !important;
+        height: 100% !important;
+        max-height: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+        background: #ffffff !important;
+        border-radius: 14px !important;
+        border: 2.5px solid #166534 !important; /* Border hijau cartographic persis gambar 1 QROP */
         box-shadow: 0 10px 30px rgba(16, 20, 58, 0.12) !important;
     }
-    .bws-qrop-page.bws-map-expanded #map {
-        height: 100% !important;
-        min-height: 560px !important;
-    }
+
     .bws-qrop-page.bws-map-expanded .bws-map-topbar {
-        background: #f8fafc;
-        padding: 9px 16px;
-        border-radius: 12px;
-        border: 1px solid #e2e8f0;
-        margin-bottom: 10px;
+        margin: 0 !important;
+        padding: 9px 16px !important;
+        background: #ffffff !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+        border-radius: 12px 12px 0 0 !important;
+        flex-shrink: 0 !important;
+    }
+
+    .bws-qrop-page.bws-map-expanded .bws-leaflet-card {
+        flex: 1 1 auto !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        overflow: hidden !important;
+        position: relative !important;
+    }
+
+    .bws-qrop-page.bws-map-expanded #map {
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 0 !important;
+    }
+
+    .bws-qrop-page.bws-map-expanded .bws-map-footer-strip {
+        margin: 0 !important;
+        padding: 6px 16px !important;
+        background: #f8fafc !important;
+        border-top: 1px solid #e2e8f0 !important;
+        border-radius: 0 0 12px 12px !important;
+        flex-shrink: 0 !important;
     }
 
     /* ══ FLOATING LAYER CONTROL PANEL (PERSIS GAMBAR 2 REFERENSI QROP) ══ */

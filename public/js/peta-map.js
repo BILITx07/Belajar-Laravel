@@ -1218,6 +1218,15 @@ window.toggleMapFullscreen = function() {
 
     var isExpanded = page.classList.toggle('bws-map-expanded');
 
+    // Toggle kelas bws-no-scroll pada body & html agar scrollbar browser hilang total
+    if (isExpanded) {
+        document.body.classList.add('bws-no-scroll');
+        document.documentElement.classList.add('bws-no-scroll');
+    } else {
+        document.body.classList.remove('bws-no-scroll');
+        document.documentElement.classList.remove('bws-no-scroll');
+    }
+
     if (icon) {
         icon.className = isExpanded ? 'fas fa-compress' : 'fas fa-expand';
     }
@@ -1225,23 +1234,17 @@ window.toggleMapFullscreen = function() {
         btn.setAttribute('title', isExpanded ? 'Kembalikan Tampilan Normal (Tampilkan Sidebar) [Esc]' : 'Perluas Tampilan Peta (Sembunyikan Sidebar)');
     }
 
-    if (isExpanded) {
-        // Scroll halus ke area peta agar pas di dalam jendela browser
-        var workspace = document.querySelector('.bws-qrop-workspace');
-        if (workspace) {
-            var targetTop = workspace.getBoundingClientRect().top + window.pageYOffset - 16;
-            window.scrollTo({ top: targetTop, behavior: 'smooth' });
-        }
-    }
-
-    // Refresh ukuran viewport Leaflet secara bertahap dan mulus
+    // Refresh ukuran viewport Leaflet secara bertahap dan presisi
     if (window.map) {
         setTimeout(function() {
             window.map.invalidateSize();
-        }, 120);
+        }, 100);
         setTimeout(function() {
             window.map.invalidateSize();
-        }, 320);
+        }, 250);
+        setTimeout(function() {
+            window.map.invalidateSize();
+        }, 500);
     }
 };
 
