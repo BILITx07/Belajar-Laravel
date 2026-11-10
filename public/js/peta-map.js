@@ -28,6 +28,9 @@ var map = L.map('map', {
     layers: [osm],
     zoomControl: true
 });
+if (map.attributionControl) {
+    map.attributionControl.setPrefix('<a href="https://leafletjs.com" target="_blank" title="A JavaScript library for interactive maps">Leaflet</a>');
+}
 window.map = map;
 var mapBounds = L.latLngBounds();
 
@@ -142,8 +145,8 @@ syncMapZoomState();
 var layerBaku       = L.layerGroup().addTo(map);
 var layerFungsional = L.layerGroup().addTo(map);
 var layerPotensial  = L.layerGroup().addTo(map);
-var layerSaluran    = L.layerGroup().addTo(map);
-var layerBangunan   = L.layerGroup().addTo(map);
+var layerSaluran    = L.layerGroup(); // Default nonaktif saat pertama kali buka
+var layerBangunan   = L.layerGroup(); // Default nonaktif saat pertama kali buka
 var layerWsKapuas   = L.layerGroup();
 
 /* Fungsi Ganti Peta Dasar (Peta Jalan vs Satelit) via Tombol Rapi di Atas Peta */
@@ -607,7 +610,11 @@ window.focusFromSidebarSearch = function(name) {
     if (layerMap[target.categoryType] && !map.hasLayer(layerMap[target.categoryType])) {
         map.addLayer(layerMap[target.categoryType]);
         var chk = document.getElementById('chkLayer' + target.categoryType.charAt(0).toUpperCase() + target.categoryType.slice(1));
-        if (chk) chk.checked = true;
+        if (chk) {
+            chk.checked = true;
+            var cRow = chk.closest('.bws-category-row');
+            if (cRow) cRow.classList.remove('inactive');
+        }
     }
 
     // Scroll ke peta jika berada di luar viewport
@@ -905,7 +912,11 @@ function renderTable() {
             if (layerMap[row.categoryType] && !map.hasLayer(layerMap[row.categoryType])) {
                 map.addLayer(layerMap[row.categoryType]);
                 var chk = document.getElementById('chkLayer' + row.categoryType.charAt(0).toUpperCase() + row.categoryType.slice(1));
-                if (chk) chk.checked = true;
+                if (chk) {
+                    chk.checked = true;
+                    var cRow = chk.closest('.bws-category-row');
+                    if (cRow) cRow.classList.remove('inactive');
+                }
             }
 
             // 2. Smooth scroll otomatis ke atas menuju peta

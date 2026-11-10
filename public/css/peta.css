@@ -1931,3 +1931,12 @@ body {
         height: 440px;
     }
 }
+
+/* Sembunyikan Bendera Attribution Leaflet */
+.leaflet-attribution-flag,
+.leaflet-control-attribution svg {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    visibility: hidden !important;
+}

@@ -125,6 +125,15 @@
         font-size: 12px;
         line-height: 1.3;
     }
+
+    /* Sembunyikan Bendera Attribution Leaflet */
+    .leaflet-attribution-flag,
+    .leaflet-control-attribution svg {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+        visibility: hidden !important;
+    }
 </style>
 @endpush
 
@@ -265,7 +274,7 @@
                     </div>
 
                     <!-- 4. Jaringan Saluran -->
-                    <div class="bws-category-row" onclick="toggleQropCheckbox('chkLayerSaluran')">
+                    <div class="bws-category-row inactive" onclick="toggleQropCheckbox('chkLayerSaluran')">
                         <div class="bws-icon-pastel box-saluran">
                             <i class="fas fa-route"></i>
                         </div>
@@ -274,13 +283,13 @@
                             <small class="text-muted">Primer, Sekunder &amp; Tersier</small>
                         </div>
                         <div class="bws-check-wrap">
-                            <input type="checkbox" id="chkLayerSaluran" checked onchange="toggleCategoryLayer('saluran', this.checked); event.stopPropagation();">
+                            <input type="checkbox" id="chkLayerSaluran" onchange="toggleCategoryLayer('saluran', this.checked); event.stopPropagation();">
                             <span class="bws-green-badge"><i class="fas fa-check"></i></span>
                         </div>
                     </div>
 
                     <!-- 5. Bangunan Air -->
-                    <div class="bws-category-row" onclick="toggleQropCheckbox('chkLayerBangunan')">
+                    <div class="bws-category-row inactive" onclick="toggleQropCheckbox('chkLayerBangunan')">
                         <div class="bws-icon-pastel box-bangunan">
                             <i class="fas fa-archway"></i>
                         </div>
@@ -289,7 +298,7 @@
                             <small class="text-muted">Bendung &amp; Pintu Air</small>
                         </div>
                         <div class="bws-check-wrap">
-                            <input type="checkbox" id="chkLayerBangunan" checked onchange="toggleCategoryLayer('bangunan', this.checked); event.stopPropagation();">
+                            <input type="checkbox" id="chkLayerBangunan" onchange="toggleCategoryLayer('bangunan', this.checked); event.stopPropagation();">
                             <span class="bws-green-badge"><i class="fas fa-check"></i></span>
                         </div>
                     </div>

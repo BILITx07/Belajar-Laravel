@@ -76,6 +76,15 @@
             color: #ffffff !important;
             transform: translateY(-2px) !important;
         }
+
+        /* Hilangkan Bendera Attribution Leaflet */
+        .leaflet-attribution-flag,
+        .leaflet-control-attribution svg {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+            visibility: hidden !important;
+        }
     </style>
     @stack('styles')
 </head>
