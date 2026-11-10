@@ -273,56 +273,69 @@
             color: #0f172a;
         }
 
-        /* ── SUB-NAVBAR MENU NAVIGASI ADMIN (SESUAI GAMBAR REFERENSI BWS) ── */
+        /* ── SUB-NAVBAR MENU NAVIGASI ADMIN: SEGMENTED PILL CONTAINER (SOLUSI 1) ── */
         .bws-subnavbar {
             background: #ffffff;
             border-bottom: 1px solid var(--bws-border);
-            padding: 0 28px;
+            padding: 8px 28px;
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            gap: 8px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.02);
             position: sticky;
             top: 72px;
             z-index: 1030;
         }
 
-        .bws-nav-link {
+        .bws-segmented-nav {
             display: inline-flex;
             align-items: center;
-            padding: 13px 18px;
-            color: #64748b;
-            font-weight: 600;
-            font-size: 0.86rem;
-            text-decoration: none;
-            border-bottom: 3px solid transparent;
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .bws-segment-tab {
+            display: inline-flex;
+            align-items: center;
             gap: 8px;
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-size: 0.84rem;
+            font-weight: 600;
+            color: #64748b;
+            text-decoration: none !important;
+            transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+            line-height: 1.2;
         }
 
-        .bws-nav-link i {
+        .bws-segment-tab i {
+            font-size: 0.88rem;
             color: #94a3b8;
-            font-size: 0.92rem;
-            transition: all 0.2s ease;
+            transition: all 0.18s ease;
         }
 
-        .bws-nav-link:hover {
-            color: #10143a;
-            text-decoration: none;
+        .bws-segment-tab:hover {
+            color: #0f172a;
+            background: rgba(255, 255, 255, 0.65);
         }
 
-        .bws-nav-link:hover i {
+        .bws-segment-tab:hover i {
             color: #10143a;
         }
 
-        .bws-nav-link.active {
+        /* Status Aktif: Kartu Putih Timbul Mewah */
+        .bws-segment-tab.active {
+            background: #ffffff;
             color: #10143a;
-            border-bottom-color: #10143a;
             font-weight: 700;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08), 0 1px 1px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(226, 232, 240, 0.8);
         }
 
-        .bws-nav-link.active i {
+        .bws-segment-tab.active i {
             color: #10143a;
         }
 
@@ -679,34 +692,36 @@
         </div>
     </header>
 
-    <!-- ═══ 2. MENU NAVIGASI ADMIN SEKUNDER (SESUAI GAMBAR REFERENSI FEWS BWS) ═══ -->
+    <!-- ═══ 2. MENU NAVIGASI ADMIN SEKUNDER: SEGMENTED PILL CONTAINER (SOLUSI 1) ═══ -->
     @if(!request()->routeIs('profile'))
     <nav class="bws-subnavbar">
-        <!-- 1. Dashboard -->
-        <a href="{{ route('admin.dashboard') }}" class="bws-nav-link {{ request()->routeIs('admin.dashboard', 'dashboard', 'admin.index') ? 'active' : '' }}">
-            <i class="fas fa-th-large"></i>
-            <span>Dashboard</span>
-        </a>
+        <div class="bws-segmented-nav">
+            <!-- 1. Dashboard -->
+            <a href="{{ route('admin.dashboard') }}" class="bws-segment-tab {{ request()->routeIs('admin.dashboard', 'dashboard', 'admin.index') ? 'active' : '' }}">
+                <i class="fas fa-th-large"></i>
+                <span>Dashboard</span>
+            </a>
 
-        <!-- 2. Master Data (Direct Clean Navigation Link) -->
-        <a href="{{ route('admin.kelola-gis') }}" class="bws-nav-link {{ request()->routeIs('admin.kelola-gis', 'admin.data-gis') ? 'active' : '' }}">
-            <i class="fas fa-layer-group"></i>
-            <span>Master Data</span>
-        </a>
+            <!-- 2. Master Data -->
+            <a href="{{ route('admin.kelola-gis') }}" class="bws-segment-tab {{ request()->routeIs('admin.kelola-gis', 'admin.data-gis') ? 'active' : '' }}">
+                <i class="fas fa-layer-group"></i>
+                <span>Master Data</span>
+            </a>
 
-        <!-- 3. Manajemen User (Hanya Super Admin) -->
-        @if(Auth::check() && Auth::user()->role === 'superadmin')
-        <a href="{{ route('users.index') }}" class="bws-nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
-            <i class="fas fa-user-friends"></i>
-            <span>Manajemen User</span>
-        </a>
-        @endif
+            <!-- 3. Manajemen User (Hanya Super Admin) -->
+            @if(Auth::check() && Auth::user()->role === 'superadmin')
+            <a href="{{ route('users.index') }}" class="bws-segment-tab {{ request()->routeIs('users.*') ? 'active' : '' }}">
+                <i class="fas fa-user-friends"></i>
+                <span>Manajemen User</span>
+            </a>
+            @endif
 
-        <!-- 4. Log Aktivitas (Audit Trail Operasional Data) -->
-        <a href="{{ route('admin.activity-logs') }}" class="bws-nav-link {{ request()->routeIs('admin.activity-logs*') ? 'active' : '' }}">
-            <i class="fas fa-history"></i>
-            <span>Log Aktivitas</span>
-        </a>
+            <!-- 4. Log Aktivitas -->
+            <a href="{{ route('admin.activity-logs') }}" class="bws-segment-tab {{ request()->routeIs('admin.activity-logs*') ? 'active' : '' }}">
+                <i class="fas fa-history"></i>
+                <span>Log Aktivitas</span>
+            </a>
+        </div>
     </nav>
     @endif
 
