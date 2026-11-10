@@ -16,9 +16,10 @@
 
     <style>
         :root {
-            --bws-blue-header: #1553a3;
-            --bws-blue-gradient: linear-gradient(90deg, #0d3875 0%, #174ea6 55%, #1b5fb5 100%);
-            --bws-accent-yellow: #f59e0b;
+            --bws-blue-header: #10143a;
+            --bws-blue-gradient: linear-gradient(135deg, #0d1033 0%, #15184a 50%, #1c2262 100%);
+            --bws-accent-yellow: #fad605;
+            --bws-accent-gold: #f59e0b;
             --bws-bg-page: #f8fafc;
             --bws-border: #e2e8f0;
             --bws-text-dark: #1e293b;
@@ -31,20 +32,20 @@
             min-height: 100vh;
         }
 
-        /* ── TOPBAR BIRU UTAMA (SESUAI GAMBAR REFERENSI BWS) ── */
+        /* ── TOPBAR EXECUTIVE PU NAVY & GOLD ACCENT ── */
         .bws-topbar-primary {
-            background: var(--bws-blue-gradient);
-            height: 66px;
+            background: linear-gradient(135deg, #0d1033 0%, #15184a 50%, #1c2262 100%);
+            height: 68px;
             padding: 0 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             color: #fff;
-            box-shadow: 0 2px 8px rgba(13, 56, 117, 0.2);
+            box-shadow: 0 4px 22px rgba(10, 14, 45, 0.32), 0 1px 0 rgba(250, 214, 5, 0.4);
             position: sticky;
             top: 0;
             z-index: 1040;
-            border-bottom: 3.5px solid #ff9f1a;
+            border-bottom: 2.5px solid #f59e0b;
         }
 
         .bws-brand-section {
@@ -52,160 +53,185 @@
             align-items: center;
         }
 
-        .bws-logo-circle {
-            width: 40px;
-            height: 40px;
-            background: #ffc107;
-            border-radius: 50%;
+        .bws-brand-section a:hover .bws-logo-box {
+            transform: scale(1.05);
+            box-shadow: 0 4px 14px rgba(250, 214, 5, 0.45);
+        }
+
+        .bws-logo-box {
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+            border-radius: 12px;
+            padding: 4.5px;
+            background: #ffffff;
+            border: 1.8px solid #fad605;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            margin-right: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-            margin-right: 14px;
             flex-shrink: 0;
         }
 
         .bws-brand-title {
-            font-size: 0.95rem;
+            font-size: 1.05rem;
             font-weight: 800;
-            letter-spacing: 0.4px;
+            letter-spacing: 0.5px;
             line-height: 1.2;
             color: #ffffff;
         }
 
         .bws-brand-sub {
-            font-size: 0.72rem;
-            color: #dbeafe;
-            line-height: 1.1;
+            font-size: 0.73rem;
+            color: rgba(255, 255, 255, 0.82);
+            line-height: 1.25;
+            margin-top: 2px;
+            font-weight: 500;
         }
 
         /* Nav Kanan Topbar */
         .bws-topbar-actions {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
         }
 
-        /* Tombol Pintasan Lihat Peta Modern & Mewah */
+        /* Tombol Pintasan Lihat Peta Glass Gold Elegan */
         .btn-lihat-peta-modern {
             display: inline-flex;
             align-items: center;
-            gap: 7px;
-            background: linear-gradient(135deg, #fcd34d 0%, #f59e0b 55%, #d97706 100%);
-            color: #0f274a !important;
-            font-weight: 800;
-            font-size: 0.81rem;
-            letter-spacing: 0.2px;
-            padding: 6px 15px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.45);
-            box-shadow: 0 3px 12px rgba(217, 119, 6, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.7);
+            gap: 8px;
+            background: linear-gradient(135deg, rgba(250, 214, 5, 0.15) 0%, rgba(245, 158, 11, 0.22) 100%);
+            color: #fad605 !important;
+            font-weight: 700;
+            font-size: 0.82rem;
+            letter-spacing: 0.3px;
+            padding: 7px 16px;
+            border-radius: 22px;
+            border: 1.5px solid rgba(250, 214, 5, 0.65);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.2);
             text-decoration: none !important;
             transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
             line-height: 1.2;
         }
 
         .btn-lihat-peta-modern:hover {
-            background: linear-gradient(135deg, #fde68a 0%, #fbbf24 55%, #f59e0b 100%);
+            background: linear-gradient(135deg, #fad605 0%, #f59e0b 100%);
+            color: #0d1033 !important;
+            border-color: #fad605;
             transform: translateY(-1.5px);
-            box-shadow: 0 6px 18px rgba(217, 119, 6, 0.5), inset 0 1px 2px #ffffff;
-            color: #0a1b33 !important;
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.45), inset 0 1px 2px #ffffff;
+        }
+
+        .btn-lihat-peta-modern:hover i {
+            color: #0d1033 !important;
+            transform: scale(1.15) rotate(-6deg);
         }
 
         .btn-lihat-peta-modern:active {
             transform: translateY(0.5px);
-            box-shadow: 0 2px 6px rgba(217, 119, 6, 0.3);
+            box-shadow: 0 2px 6px rgba(245, 158, 11, 0.3);
         }
 
         .btn-lihat-peta-modern i {
-            font-size: 0.84rem;
-            color: #0f274a;
-            transition: transform 0.2s ease;
+            font-size: 0.88rem;
+            color: #fad605;
+            transition: transform 0.22s ease, color 0.22s ease;
         }
 
-        .btn-lihat-peta-modern:hover i {
-            transform: scale(1.15);
-        }
-
+        /* Glass Action Icons (Fullscreen & Lonceng Notifikasi) */
         .bws-action-icon {
-            color: rgba(255, 255, 255, 0.85);
-            font-size: 1.05rem;
-            width: 36px;
-            height: 36px;
+            color: rgba(255, 255, 255, 0.88);
+            font-size: 0.98rem;
+            width: 38px;
+            height: 38px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            position: relative;
             background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none !important;
+            position: relative;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
         }
 
         .bws-action-icon:hover {
-            color: #fff;
-            background: rgba(255, 255, 255, 0.2);
+            color: #fad605 !important;
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(250, 214, 5, 0.55);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
         }
 
         .bws-notif-badge {
             position: absolute;
-            top: -2px;
-            right: -2px;
-            background: #ef4444;
+            top: -3px;
+            right: -3px;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
             color: #fff;
             font-size: 0.65rem;
             font-weight: 800;
-            width: 17px;
-            height: 17px;
-            border-radius: 50%;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 10px;
+            padding: 0 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px solid #174ea6;
+            border: 2px solid #0d1033;
+            box-shadow: 0 2px 6px rgba(220, 38, 38, 0.5);
         }
-
         .bws-user-trigger {
             display: inline-flex;
             align-items: center;
             cursor: pointer;
-            padding: 3px 12px 3px 4px;
-            border-radius: 28px;
-            background: rgba(255, 255, 255, 0.14);
-            border: 1px solid rgba(255, 255, 255, 0.28);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+            padding: 4px 14px 4px 5px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.09);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.15);
             transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
             text-decoration: none !important;
             color: #ffffff;
-            gap: 8px;
+            gap: 9px;
         }
 
         .bws-user-trigger:hover,
         .dropdown.show .bws-user-trigger {
-            background: rgba(255, 255, 255, 0.24);
-            border-color: rgba(255, 255, 255, 0.5);
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(250, 214, 5, 0.6);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.25);
             transform: translateY(-1px);
             color: #ffffff;
         }
 
         .bws-user-avatar-frame {
-            width: 32px;
-            height: 32px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             overflow: hidden;
             flex-shrink: 0;
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
-            border: 2px solid rgba(250, 204, 21, 0.95);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, #0d1033 0%, #1e40af 100%);
+            border: 2px solid #fad605;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
             transition: transform 0.2s ease;
             color: #ffffff;
             font-weight: 800;
-            font-size: 0.76rem;
+            font-size: 0.78rem;
             letter-spacing: 0.5px;
         }
 
@@ -444,36 +470,42 @@
 </head>
 <body>
 
-    <!-- ═══ 1. NAVBAR UTAMA ATAS (TEMA BIRU PU BWS KALIMANTAN I SESUAI REFERENSI) ═══ -->
-    <header class="bws-topbar-primary" style="background: #1b4f9c; height: 66px; border-bottom: 3.5px solid #f59e0b;">
+    <!-- ═══ 1. NAVBAR UTAMA ATAS (TEMA EXECUTIVE PU NAVY & GOLD KEDINASAN RESMI) ═══ -->
+    <header class="bws-topbar-primary">
         <!-- Logo & Instansi Resmi -->
         <div class="bws-brand-section">
-            <div class="mr-3 d-flex align-items-center justify-content-center bg-white shadow-xs" style="width: 44px; height: 44px; min-width: 44px; border-radius: 11px; padding: 4px; border: 1.5px solid rgba(250, 214, 5, 0.95);">
-                <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo Kementerian PU" style="width: 100%; height: 100%; object-fit: contain;">
-            </div>
-            <div class="d-flex flex-column text-white">
-                <span class="font-weight-bold" style="font-size:0.95rem; letter-spacing:0.4px; line-height:1.2;">
-                    SIPDIRA &bull; BWS KALIMANTAN I
-                </span>
-                <span style="font-size:0.72rem; color:rgba(255,255,255,0.95); line-height:1.15; font-weight:600;">
-                    Sistem Informasi Peta Daerah Irigasi
-                </span>
-                <span style="font-size:0.7rem; color:rgba(255,255,255,0.85); line-height:1.15; font-weight:500;">
-                    Ditjen Sumber Daya Air &bull; Kementerian PU
-                </span>
-            </div>
+            <a href="{{ route('admin.dashboard') }}" class="d-flex align-items-center text-decoration-none" title="SIPDIRA Spasial BWS Kalimantan I">
+                <div class="bws-logo-box">
+                    <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo Kementerian PU" style="width: 100%; height: 100%; object-fit: contain;">
+                </div>
+                <div class="d-flex flex-column">
+                    <div class="d-flex align-items-center" style="gap: 8px;">
+                        <span class="bws-brand-title">
+                            SIPDIRA <span style="color: #fad605;">SPASIAL</span>
+                        </span>
+                        <span class="badge font-weight-bold d-none d-md-inline-block" style="background: rgba(250, 214, 5, 0.16); color: #fad605; border: 1px solid rgba(250, 214, 5, 0.45); font-size: 0.65rem; padding: 2px 7px; border-radius: 6px; letter-spacing: 0.4px;">
+                            BWS KALIMANTAN I
+                        </span>
+                    </div>
+                    <span class="bws-brand-sub d-none d-sm-inline-block">
+                        Sistem Peta Irigasi &bull; Ditjen Sumber Daya Air Kementerian PU
+                    </span>
+                </div>
+            </a>
         </div>
 
         <!-- Tombol Aksi & Profil Petugas -->
         <div class="bws-topbar-actions">
             <!-- Tombol Pintasan Lihat Peta WebGIS Modern -->
-            <a href="{{ route('peta') }}" class="btn-lihat-peta-modern mr-2" title="Buka Halaman Peta WebGIS">
-                <i class="fas fa-map-marked-alt"></i>
-                <span>Lihat Peta</span>
+            <a href="{{ route('peta') }}" class="btn-lihat-peta-modern mr-1" title="Buka Halaman Peta Publik WebGIS">
+                <i class="fas fa-compass"></i>
+                <span class="d-none d-md-inline">Buka WebGIS</span>
+                <span class="d-inline d-md-none">Peta</span>
+                <i class="fas fa-external-link-alt d-none d-lg-inline" style="font-size: 0.68rem; opacity: 0.85;"></i>
             </a>
 
             <!-- Fullscreen Toggle -->
-            <a href="#" class="bws-action-icon d-none d-sm-flex" onclick="toggleFullScreen(event)" title="Layar Penuh" style="opacity:0.95;">
+            <a href="#" class="bws-action-icon d-none d-sm-flex" onclick="toggleFullScreen(event)" title="Layar Penuh">
                 <i class="fas fa-expand fa-lg text-white"></i>
             </a>
 
@@ -567,12 +599,15 @@
             <!-- Profile Dropdown Ultra-Modern & Elegan -->
             <div class="dropdown">
                 <div class="bws-user-trigger" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownUserMenu" title="Menu Akun: {{ Auth::user()->name ?? 'Petugas' }}">
-                    <div class="bws-user-avatar-frame">
-                        @if(Auth::check() && Auth::user()->avatar_url)
-                            <img src="{{ Auth::user()->avatar_url }}" alt="Foto {{ Auth::user()->name }}">
-                        @else
-                            <span>{{ Auth::user()->initials ?? 'AB' }}</span>
-                        @endif
+                    <div class="position-relative">
+                        <div class="bws-user-avatar-frame">
+                            @if(Auth::check() && Auth::user()->avatar_url)
+                                <img src="{{ Auth::user()->avatar_url }}" alt="Foto {{ Auth::user()->name }}">
+                            @else
+                                <span>{{ Auth::user()->initials ?? 'AB' }}</span>
+                            @endif
+                        </div>
+                        <span class="position-absolute" style="width: 9.5px; height: 9.5px; background: #10b981; border: 1.5px solid #0d1033; border-radius: 50%; bottom: -1px; right: -1px; box-shadow: 0 0 6px rgba(16, 185, 129, 0.85);" title="Status: Online / Aktif"></span>
                     </div>
                     <div class="bws-user-info">
                         <span class="bws-user-name">
