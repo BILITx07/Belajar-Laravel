@@ -488,7 +488,7 @@
                         </span>
                     </div>
                     <span class="bws-brand-sub d-none d-sm-inline-block">
-                        Sistem Peta Irigasi &bull; Ditjen Sumber Daya Air Kementerian PU
+                        Sistem Informasi Peta Daerah Irigasi &bull; Ditjen SDA, Kementerian PU
                     </span>
                 </div>
             </a>
