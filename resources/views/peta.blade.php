@@ -347,7 +347,7 @@
         border-radius: 14px;
         border: 1px solid rgba(0, 0, 0, 0.08);
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
-        display: flex;
+        display: none; /* Default tertutup sesuai permintaan */
         flex-direction: column;
         overflow: hidden;
         pointer-events: auto;
@@ -525,7 +525,7 @@
         line-height: 1;
     }
 
-    /* Tombol Toggle Melayang saat Panel Disembunyikan */
+    /* Tombol Toggle Melayang saat Panel Disembunyikan / Default Tertutup */
     .bws-layer-toggle-btn {
         position: absolute;
         top: 12px;
@@ -534,24 +534,28 @@
         background: #ffffff;
         border: 1px solid rgba(0, 0, 0, 0.08);
         border-radius: 12px;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
-        padding: 8px 14px;
-        font-size: 12.5px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.10);
+        padding: 7px 14px;
+        font-size: 13px;
         font-weight: 700;
-        color: #15803d;
-        display: none;
+        color: #166534; /* Hijau cartographic persis gambar 2 */
+        display: inline-flex; /* Default terbuka sebagai tombol pill tertutup */
         align-items: center;
-        gap: 7px;
+        gap: 8px;
         cursor: pointer;
         outline: none !important;
         transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
         pointer-events: auto;
     }
+    .bws-layer-toggle-btn i {
+        font-size: 14px;
+        color: #166534;
+    }
     .bws-layer-toggle-btn:hover {
         background: #f8fafc;
         color: #10143a;
         transform: translateY(-1px);
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
     }
     .bws-layer-toggle-btn:active {
         transform: scale(0.97);
@@ -806,14 +810,14 @@
                     </button>
                 </div>
 
-                <!-- ══ TOMBOL TOGGLE PILIHAN LAYER (SAAT PANEL DISEMBUNYIKAN) ══ -->
-                <button type="button" class="bws-layer-toggle-btn shadow-sm" id="btnOpenLayerPanel" onclick="toggleFloatingLayerPanel(true)" title="Tampilkan Pilihan Layer">
-                    <i class="fas fa-layer-group text-success"></i>
+                <!-- ══ TOMBOL TOGGLE PILIHAN LAYER (DEFAULT TERBUKA SEBAGAI TOMBOL TERTUTUP, PERSIS GAMBAR 2) ══ -->
+                <button type="button" class="bws-layer-toggle-btn shadow-sm" id="btnOpenLayerPanel" onclick="toggleFloatingLayerPanel(true)" title="Buka Pilihan Layer">
+                    <i class="fas fa-layer-group"></i>
                     <span>Pilihan layer</span>
                 </button>
 
-                <!-- ══ KARTU MELAYANG PILIHAN LAYER (PERSIS REFERENSI QROP GAMBAR 2) ══ -->
-                <div class="bws-floating-layer-panel" id="floatingLayerPanel">
+                <!-- ══ KARTU MELAYANG PILIHAN LAYER (DEFAULT TERTUTUP/TERSEMBUNYI) ══ -->
+                <div class="bws-floating-layer-panel" id="floatingLayerPanel" style="display: none;">
                     <!-- Header Panel: Judul & Tombol Sembunyikan -->
                     <div class="bws-floating-layer-header">
                         <span class="bws-floating-layer-title">Pilihan layer</span>
