@@ -303,9 +303,9 @@
 
         <!-- Breadcrumb Navigasi -->
         <nav class="bws-policy-breadcrumb" aria-label="breadcrumb">
-            <a href="{{ route('peta') }}"><i class="fas fa-arrow-left mr-1"></i> Kembali ke WebGIS</a>
+            <a href="{{ route('peta') }}">Beranda</a>
             <span class="separator">/</span>
-            <span>Kebijakan Privasi &amp; Tata Kelola Data Spasial</span>
+            <span>Kebijakan Privasi</span>
         </nav>
 
         <!-- Banner Hero Utama (Resmi Kementerian PU) -->
