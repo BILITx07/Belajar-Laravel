@@ -615,8 +615,8 @@
                             </div>
                             
                             <div class="d-flex flex-wrap align-items-center" style="gap: 10px;">
-                                <a href="https://wa.me/62812567890?text=Halo%20Admin%20SISDA%20BWS%20Kalimantan%20I,%20saya%20ingin%20bertanya%20mengenai%20data%20spasial%20SIPDIRA" target="_blank" class="btn btn-sm btn-success font-weight-bold px-3 py-2" style="border-radius: 8px;">
-                                    <i class="fab fa-whatsapp mr-1.5"></i> Layanan Chat SISDA
+                                <a href="https://wa.me/6282144380839?text=Halo%20Pak%20Billianto%20Timothy%2C%20saya%20ingin%20bertanya%20mengenai%20data%20spasial%20SIPDIRA%20BWS%20Kalimantan%20I" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-success font-weight-bold px-3 py-2 shadow-xs" style="border-radius: 8px;">
+                                    <i class="fab fa-whatsapp mr-1.5"></i> BILLIANTO TIMOTHY
                                 </a>
                                 <a href="{{ route('peta') }}" class="bws-btn-official-contact">
                                     <i class="fas fa-map mr-1.5 text-warning"></i> Jelajahi WebGIS
