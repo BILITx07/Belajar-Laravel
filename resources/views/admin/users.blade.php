@@ -67,10 +67,12 @@
                 </div>
                 <button type="button" 
                         class="btn text-white font-weight-bold px-4 py-2 shadow-sm d-inline-flex align-items-center justify-content-center"
-                        style="background: #1d4ed8; border-radius: 25px; font-size: 0.88rem; height: 38px; transition: all 0.2s ease;"
+                        style="background: #10143a; border: 1px solid #10143a; border-radius: 8px; font-size: 0.86rem; height: 38px; transition: all 0.18s ease;"
+                        onmouseover="this.style.background='#1c2262';this.style.borderColor='#1c2262';"
+                        onmouseout="this.style.background='#10143a';this.style.borderColor='#10143a';"
                         data-toggle="modal" 
                         data-target="#modalTambahUser">
-                    <i class="fas fa-user-plus mr-2"></i> Tambah User Baru
+                    <i class="fas fa-user-plus mr-2 text-warning"></i> Tambah User Baru
                 </button>
             </div>
 
@@ -101,7 +103,7 @@
                                style="border-radius: 8px 0 0 8px; font-size: 0.83rem; height: 38px; border-color: #cbd5e1;" 
                                placeholder="Ketik nama, email, username...">
                         <div class="input-group-append">
-                            <button class="btn btn-primary px-3" type="submit" style="background:#1d4ed8; border-color:#1d4ed8; border-radius: 0 8px 8px 0; height: 38px;">
+                            <button class="btn px-3 text-white" type="submit" style="background:#10143a; border-color:#10143a; border-radius: 0 8px 8px 0; height: 38px;" onmouseover="this.style.background='#1c2262';" onmouseout="this.style.background='#10143a';">
                                 <i class="fas fa-search"></i>
                             </button>
                         </div>
@@ -137,11 +139,11 @@
                                     $initials .= strtoupper(mb_substr($w, 0, 1));
                                 }
                                 $palette = [
+                                    ['bg' => '#f1f5f9', 'text' => '#334155', 'border' => '#cbd5e1'],
                                     ['bg' => '#eff6ff', 'text' => '#1d4ed8', 'border' => '#bfdbfe'],
-                                    ['bg' => '#f0fdf4', 'text' => '#15803d', 'border' => '#bbf7d0'],
-                                    ['bg' => '#fef3c7', 'text' => '#b45309', 'border' => '#fde68a'],
-                                    ['bg' => '#f3e8ff', 'text' => '#7e22ce', 'border' => '#e9d5ff'],
-                                    ['bg' => '#fce7f3', 'text' => '#be185d', 'border' => '#fbcfe8'],
+                                    ['bg' => '#ecfdf5', 'text' => '#059669', 'border' => '#a7f3d0'],
+                                    ['bg' => '#fffbeb', 'text' => '#d97706', 'border' => '#fde68a'],
+                                    ['bg' => '#f8fafc', 'text' => '#475569', 'border' => '#e2e8f0'],
                                 ];
                                 $colorIdx = abs(crc32($user->email ?? $user->name)) % count($palette);
                                 $theme = $palette[$colorIdx];
@@ -185,24 +187,24 @@
                                 </td>
                                 <td class="align-middle">
                                     @if(strtolower($user->role) === 'superadmin')
-                                        <span class="badge border font-weight-bold px-2 py-1" style="font-size:0.77rem; border-radius:6px; background:#eff6ff; color:#1d4ed8; border-color:#bfdbfe;">
-                                            <i class="fas fa-shield-alt mr-1"></i> Super Admin
+                                        <span class="badge font-weight-bold px-2 py-1" style="font-size:0.76rem; border-radius:6px; background:rgba(16,20,58,0.06); color:#10143a; border:1px solid rgba(16,20,58,0.18);">
+                                            <i class="fas fa-shield-alt mr-1 text-warning"></i> Super Admin
                                         </span>
                                     @else
-                                        <span class="badge border font-weight-bold px-2 py-1" style="font-size:0.77rem; border-radius:6px; background:#f0fdf4; color:#15803d; border-color:#bbf7d0;">
-                                            <i class="fas fa-user-tie mr-1"></i> Admin
+                                        <span class="badge font-weight-bold px-2 py-1" style="font-size:0.76rem; border-radius:6px; background:#f1f5f9; color:#475569; border:1px solid #e2e8f0;">
+                                            <i class="fas fa-user mr-1 text-muted"></i> Admin
                                         </span>
                                     @endif
                                 </td>
                                 <td class="text-center align-middle py-3">
-                                    <div class="d-inline-flex align-items-center justify-content-center" style="gap: 6px;">
-                                        <!-- Tombol Edit User -->
+                                    <div class="d-inline-flex align-items-center justify-content-center" style="gap: 8px;">
+                                        <!-- Tombol Edit User (Clean Neutral State) -->
                                         <button type="button" 
-                                                class="btn btn-sm d-inline-flex align-items-center justify-content-center"
-                                                style="width: 32px; height: 32px; border-radius: 7px; background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; transition: all 0.15s ease;"
+                                                class="btn btn-sm shadow-xs d-inline-flex align-items-center justify-content-center"
+                                                style="width: 32px; height: 32px; border-radius: 8px; background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; transition: all 0.18s ease;"
                                                 title="Edit Data User"
-                                                onmouseover="this.style.background='#16a34a'; this.style.color='#ffffff'; this.style.borderColor='#16a34a';"
-                                                onmouseout="this.style.background='#f0fdf4'; this.style.color='#16a34a'; this.style.borderColor='#bbf7d0';"
+                                                onmouseover="this.style.background='#10143a'; this.style.color='#ffffff'; this.style.borderColor='#10143a';"
+                                                onmouseout="this.style.background='#f8fafc'; this.style.color='#475569'; this.style.borderColor='#e2e8f0';"
                                                 onclick="openEditUserModal({{ json_encode([
                                                     'id'       => $user->id,
                                                     'name'     => $user->name,
@@ -211,28 +213,28 @@
                                                     'phone'    => $user->phone,
                                                     'role'     => $user->role,
                                                 ]) }})">
-                                            <i class="fas fa-pen" style="font-size: 0.8rem;"></i>
+                                            <i class="fas fa-pen fa-xs"></i>
                                         </button>
 
-                                        <!-- Tombol Hapus User -->
+                                        <!-- Tombol Hapus User (Clean Neutral State) -->
                                         @if(Auth::id() !== $user->id)
                                         <button type="button" 
-                                                class="btn btn-sm d-inline-flex align-items-center justify-content-center"
-                                                style="width: 32px; height: 32px; border-radius: 7px; background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; transition: all 0.15s ease;"
+                                                class="btn btn-sm shadow-xs d-inline-flex align-items-center justify-content-center"
+                                                style="width: 32px; height: 32px; border-radius: 8px; background: #f8fafc; color: #64748b; border: 1px solid #e2e8f0; transition: all 0.18s ease;"
                                                 title="Hapus Akun User"
                                                 onmouseover="this.style.background='#dc2626'; this.style.color='#ffffff'; this.style.borderColor='#dc2626';"
-                                                onmouseout="this.style.background='#fef2f2'; this.style.color='#dc2626'; this.style.borderColor='#fecaca';"
+                                                onmouseout="this.style.background='#f8fafc'; this.style.color='#64748b'; this.style.borderColor='#e2e8f0';"
                                                 onclick="confirmDeleteUser({{ $user->id }}, '{{ addslashes($user->name) }}')">
-                                            <i class="fas fa-trash-alt" style="font-size: 0.8rem;"></i>
+                                            <i class="fas fa-trash fa-xs"></i>
                                         </button>
                                         @else
                                         <!-- Placeholder Terkunci agar Kolom Edit Selalu Sejajar Sempurna -->
                                         <button type="button" 
                                                 class="btn btn-sm d-inline-flex align-items-center justify-content-center disabled"
-                                                style="width: 32px; height: 32px; border-radius: 7px; background: #f8fafc; color: #cbd5e1; border: 1px solid #e2e8f0; cursor: not-allowed; opacity: 0.7;"
+                                                style="width: 32px; height: 32px; border-radius: 8px; background: #f8fafc; color: #cbd5e1; border: 1px solid #f1f5f9; cursor: not-allowed; opacity: 0.6;"
                                                 title="Akun Anda sendiri tidak dapat dihapus"
                                                 disabled>
-                                            <i class="fas fa-trash-alt" style="font-size: 0.8rem;"></i>
+                                            <i class="fas fa-trash fa-xs"></i>
                                         </button>
                                         @endif
                                     </div>
@@ -272,7 +274,7 @@
                             <span class="page-link" style="border-radius: 6px 0 0 6px;">&lsaquo;</span>
                         </li>
                         <li class="page-item active">
-                            <span class="page-link" style="background: #1d4ed8; border-color: #1d4ed8;">1</span>
+                            <span class="page-link" style="background: #10143a; border-color: #10143a;">1</span>
                         </li>
                         <li class="page-item disabled">
                             <span class="page-link" style="border-radius: 0 6px 6px 0;">&rsaquo;</span>
@@ -293,7 +295,7 @@
 <div class="modal fade" id="modalTambahUser" tabindex="-1" role="dialog" aria-labelledby="modalTambahUserLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 520px;">
         <div class="modal-content border-0 shadow-lg" style="border-radius: 14px; overflow: hidden;">
-            <div class="modal-header text-white py-3 px-4" style="background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);">
+            <div class="modal-header text-white py-3 px-4" style="background: linear-gradient(135deg, #0d1033 0%, #161b46 100%); border-bottom: 2px solid #fad605;">
                 <div class="d-flex align-items-center">
                     <div class="mr-3 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px; background: rgba(255,255,255,0.2); border-radius: 10px;">
                         <i class="fas fa-user-plus fa-lg text-white"></i>
@@ -351,8 +353,8 @@
 
                 <div class="modal-footer bg-light border-top py-3 px-4">
                     <button type="button" class="btn btn-light border font-weight-bold btn-sm px-3" data-dismiss="modal" style="border-radius: 6px;">Batal</button>
-                    <button type="submit" class="btn text-white font-weight-bold btn-sm px-4 shadow-sm" style="background: #1d4ed8; border-color: #1d4ed8; border-radius: 6px;">
-                        <i class="fas fa-check mr-1"></i> Simpan User
+                    <button type="submit" class="btn text-white font-weight-bold btn-sm px-4 shadow-sm" style="background: #10143a; border-color: #10143a; border-radius: 6px;" onmouseover="this.style.background='#1c2262';" onmouseout="this.style.background='#10143a';">
+                        <i class="fas fa-check mr-1 text-warning"></i> Simpan User
                     </button>
                 </div>
             </form>
@@ -366,7 +368,7 @@
 <div class="modal fade" id="modalEditUser" tabindex="-1" role="dialog" aria-labelledby="modalEditUserLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 520px;">
         <div class="modal-content border-0 shadow-lg" style="border-radius: 14px; overflow: hidden;">
-            <div class="modal-header text-white py-3 px-4" style="background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);">
+            <div class="modal-header text-white py-3 px-4" style="background: linear-gradient(135deg, #0d1033 0%, #161b46 100%); border-bottom: 2px solid #fad605;">
                 <div class="d-flex align-items-center">
                     <div class="mr-3 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px; background: rgba(255,255,255,0.2); border-radius: 10px;">
                         <i class="fas fa-user-edit fa-lg text-white"></i>
@@ -425,8 +427,8 @@
 
                 <div class="modal-footer bg-light border-top py-3 px-4">
                     <button type="button" class="btn btn-light border font-weight-bold btn-sm px-3" data-dismiss="modal" style="border-radius: 6px;">Batal</button>
-                    <button type="submit" class="btn text-white font-weight-bold btn-sm px-4 shadow-sm" style="background: #1d4ed8; border-color: #1d4ed8; border-radius: 6px;">
-                        <i class="fas fa-check mr-1"></i> Simpan Perubahan
+                    <button type="submit" class="btn text-white font-weight-bold btn-sm px-4 shadow-sm" style="background: #10143a; border-color: #10143a; border-radius: 6px;" onmouseover="this.style.background='#1c2262';" onmouseout="this.style.background='#10143a';">
+                        <i class="fas fa-check mr-1 text-warning"></i> Simpan Perubahan
                     </button>
                 </div>
             </form>

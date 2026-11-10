@@ -56,12 +56,12 @@
 
     @php
         $catLabels = [
-            'baku'       => ['DIR Baku', '#10b981', 'fa-leaf'],
-            'fungsional' => ['DIR Fungsional', '#2563eb', 'fa-water'],
-            'potensial'  => ['DIR Potensial', '#f59e0b', 'fa-seedling'],
-            'saluran'    => ['Jaringan Saluran', '#ec4899', 'fa-stream'],
-            'bangunan'   => ['Bangunan Air', '#8b5cf6', 'fa-landmark'],
-            'ws_kapuas'  => ['WS & DAS Kapuas', '#06b6d4', 'fa-globe-asia'],
+            'baku'       => ['DIR Baku', '#059669', 'fa-leaf'],
+            'fungsional' => ['DIR Fungsional', '#1d4ed8', 'fa-water'],
+            'potensial'  => ['DIR Potensial', '#d97706', 'fa-seedling'],
+            'saluran'    => ['Jaringan Saluran', '#0284c7', 'fa-stream'],
+            'bangunan'   => ['Bangunan Air', '#0d9488', 'fa-landmark'],
+            'ws_kapuas'  => ['WS & DAS Kapuas', '#475569', 'fa-globe-asia'],
             'custom'     => ['Layer Kustom', '#64748b', 'fa-file-alt'],
         ];
     @endphp
@@ -93,24 +93,24 @@
                         </form>
                         @endif
                     @else
-                        <button type="button" class="btn text-white font-weight-bold px-4 py-2 shadow-sm d-inline-flex align-items-center justify-content-center" style="background:#1d4ed8;border-radius:25px;font-size:0.88rem;height:38px;transition:all 0.2s ease;" data-toggle="modal" data-target="#modalUpload">
-                            <i class="fas fa-cloud-upload-alt mr-2"></i>Upload File Baru
+                        <button type="button" class="btn text-white font-weight-bold px-4 py-2 shadow-sm d-inline-flex align-items-center justify-content-center" style="background:#10143a;border:1px solid #10143a;border-radius:8px;font-size:0.86rem;height:38px;transition:all 0.18s ease;" onmouseover="this.style.background='#1c2262';this.style.borderColor='#1c2262';" onmouseout="this.style.background='#10143a';this.style.borderColor='#10143a';" data-toggle="modal" data-target="#modalUpload">
+                            <i class="fas fa-cloud-upload-alt mr-2 text-warning"></i>Upload File Baru
                         </button>
                     @endif
                 </div>
             </div>
 
-            <!-- Tab Navigasi: Data Aktif vs Kotak Sampah -->
+            <!-- Tab Navigasi: Data Aktif vs Kotak Sampah (Executive Clean Style) -->
             <div class="d-flex align-items-center mb-3 pb-2 border-bottom" style="gap: 8px;">
                 <a href="{{ route('admin.kelola-gis', ['tab' => 'active']) }}" 
-                   class="btn btn-sm {{ ($currentTab ?? 'active') === 'active' ? 'btn-primary text-white font-weight-bold shadow-sm' : 'btn-light text-muted' }}" 
-                   style="border-radius: 20px; font-size: 0.84rem; padding: 6px 18px; {{ ($currentTab ?? 'active') === 'active' ? 'background:#1d4ed8;border-color:#1d4ed8;' : '' }}">
-                    <i class="fas fa-database mr-1"></i> Data Aktif ({{ $totalActive ?? 0 }})
+                   class="btn btn-sm {{ ($currentTab ?? 'active') === 'active' ? 'text-white font-weight-bold shadow-xs' : 'btn-light text-secondary font-weight-medium' }}" 
+                   style="border-radius: 8px; font-size: 0.82rem; padding: 6px 16px; {{ ($currentTab ?? 'active') === 'active' ? 'background:#10143a;border:1px solid #10143a;' : 'background:#f8fafc;border:1px solid #e2e8f0;' }}">
+                    <i class="fas fa-database mr-1.5 {{ ($currentTab ?? 'active') === 'active' ? 'text-warning' : 'text-muted' }}"></i> Data Aktif ({{ $totalActive ?? 0 }})
                 </a>
                 <a href="{{ route('admin.kelola-gis', ['tab' => 'trash']) }}" 
-                   class="btn btn-sm {{ ($currentTab ?? '') === 'trash' ? 'btn-danger text-white font-weight-bold shadow-sm' : 'btn-light text-muted' }}" 
-                   style="border-radius: 20px; font-size: 0.84rem; padding: 6px 18px;">
-                    <i class="fas fa-trash-alt mr-1"></i> Kotak Sampah ({{ $totalTrash ?? 0 }})
+                   class="btn btn-sm {{ ($currentTab ?? '') === 'trash' ? 'btn-danger text-white font-weight-bold shadow-xs' : 'btn-light text-secondary font-weight-medium' }}" 
+                   style="border-radius: 8px; font-size: 0.82rem; padding: 6px 16px; {{ ($currentTab ?? '') === 'trash' ? 'background:#dc2626;border:1px solid #dc2626;' : 'background:#f8fafc;border:1px solid #e2e8f0;' }}">
+                    <i class="fas fa-trash-alt mr-1.5 {{ ($currentTab ?? '') === 'trash' ? 'text-white' : 'text-muted' }}"></i> Kotak Sampah ({{ $totalTrash ?? 0 }})
                 </a>
             </div>
 
@@ -164,7 +164,7 @@
                         <div class="input-group input-group-sm shadow-sm" style="width:240px;">
                             <input type="text" name="search" class="form-control" placeholder="Ketik nama file..." value="{{ $search ?? '' }}" style="border-radius:8px 0 0 8px; border-color:#cbd5e1; height:38px; font-size:0.82rem;">
                             <div class="input-group-append">
-                                <button class="btn btn-primary px-3" type="submit" style="border-radius:0 8px 8px 0; background:#1d4ed8; border-color:#1d4ed8;">
+                                <button class="btn px-3 text-white" type="submit" style="border-radius:0 8px 8px 0; background:#10143a; border-color:#10143a;" onmouseover="this.style.background='#1c2262';" onmouseout="this.style.background='#10143a';">
                                     <i class="fas fa-search"></i>
                                 </button>
                             </div>
@@ -273,7 +273,7 @@
                     <thead style="background:#f8fafc;border-top:1px solid #e2e8f0;border-bottom:2px solid #e2e8f0;">
                         <tr class="text-muted font-weight-bold text-uppercase" style="font-size:0.75rem;letter-spacing:0.5px;">
                             <th width="40" class="text-center align-middle">
-                                <input type="checkbox" id="checkAll" onchange="toggleAllChecks(this)" style="cursor:pointer; width:15px; height:15px; accent-color:#1d4ed8;">
+                                <input type="checkbox" id="checkAll" onchange="toggleAllChecks(this)" style="cursor:pointer; width:15px; height:15px; accent-color:#10143a;">
                             </th>
                             <th width="45" class="text-center align-middle">No.</th>
                             <th class="align-middle">Nama File Spasial</th>
@@ -290,14 +290,14 @@
                             @endphp
                             <tr class="table-gis-row" style="border-bottom:1px solid #f1f5f9;">
                                 <td class="text-center align-middle">
-                                    <input type="checkbox" class="file-check" value="{{ $file['name'] }}" onchange="updateBulkCount()" style="cursor:pointer; width:15px; height:15px; accent-color:#1d4ed8;">
+                                    <input type="checkbox" class="file-check" value="{{ $file['name'] }}" onchange="updateBulkCount()" style="cursor:pointer; width:15px; height:15px; accent-color:#10143a;">
                                 </td>
                                 <td class="text-center text-muted align-middle font-weight-bold">
                                     {{ ($offset ?? 0) + $index + 1 }}
                                 </td>
                                 <td class="align-middle">
                                     <div class="d-flex align-items-center">
-                                        <div class="mr-3 rounded d-flex align-items-center justify-content-center shadow-sm flex-shrink-0" style="width:36px;height:36px;background:#eff6ff;color:#2563eb;border-radius:10px !important;">
+                                        <div class="mr-3 rounded d-flex align-items-center justify-content-center flex-shrink-0" style="width:36px;height:36px;background:#f8fafc;color:#475569;border:1px solid #e2e8f0;border-radius:10px !important;">
                                             <i class="fas fa-file-code"></i>
                                         </div>
                                         <div style="min-width:0;">
@@ -329,12 +329,12 @@
                                 </td>
                                 <td class="text-center align-middle">
                                     <div class="d-flex align-items-center justify-content-center" style="gap:8px;">
-                                        <!-- Tombol Edit Ramping -->
-                                        <button type="button" class="btn btn-sm shadow-sm d-inline-flex align-items-center justify-content-center" style="width:32px; height:32px; border-radius:8px; background:#ecfdf5; color:#059669; border:1px solid #a7f3d0; transition:all 0.2s ease;" title="Edit / Rename File" onmouseover="this.style.background='#10b981'; this.style.color='#fff';" onmouseout="this.style.background='#ecfdf5'; this.style.color='#059669';" onclick="openRenameModal('{{ $file['name'] }}')">
+                                        <!-- Tombol Edit Ramping (Clean Neutral State) -->
+                                        <button type="button" class="btn btn-sm shadow-xs d-inline-flex align-items-center justify-content-center" style="width:32px; height:32px; border-radius:8px; background:#f8fafc; color:#475569; border:1px solid #e2e8f0; transition:all 0.18s ease;" title="Ubah Nama File" onmouseover="this.style.background='#10143a'; this.style.color='#ffffff'; this.style.borderColor='#10143a';" onmouseout="this.style.background='#f8fafc'; this.style.color='#475569'; this.style.borderColor='#e2e8f0';" onclick="openRenameModal('{{ $file['name'] }}')">
                                             <i class="fas fa-pen fa-xs"></i>
                                         </button>
-                                        <!-- Tombol Hapus Sementara ke Sampah -->
-                                        <button type="button" class="btn btn-sm shadow-sm d-inline-flex align-items-center justify-content-center" style="width:32px; height:32px; border-radius:8px; background:#fef2f2; color:#dc2626; border:1px solid #fecaca; transition:all 0.2s ease;" title="Pindahkan ke Kotak Sampah" onmouseover="this.style.background='#ef4444'; this.style.color='#fff';" onmouseout="this.style.background='#fef2f2'; this.style.color='#dc2626';" onclick="confirmDelete('{{ $file['name'] }}')">
+                                        <!-- Tombol Hapus Sementara ke Sampah (Clean Neutral State) -->
+                                        <button type="button" class="btn btn-sm shadow-xs d-inline-flex align-items-center justify-content-center" style="width:32px; height:32px; border-radius:8px; background:#f8fafc; color:#64748b; border:1px solid #e2e8f0; transition:all 0.18s ease;" title="Pindahkan ke Kotak Sampah" onmouseover="this.style.background='#dc2626'; this.style.color='#ffffff'; this.style.borderColor='#dc2626';" onmouseout="this.style.background='#f8fafc'; this.style.color='#64748b'; this.style.borderColor='#e2e8f0';" onclick="confirmDelete('{{ $file['name'] }}')">
                                             <i class="fas fa-trash fa-xs"></i>
                                         </button>
                                     </div>
@@ -380,7 +380,7 @@
                             {{-- Numbers --}}
                             @for($p = 1; $p <= $totalPages; $p++)
                                 <li class="page-item {{ ($currentPage ?? 1) == $p ? 'active' : '' }}">
-                                    <a class="page-link" href="{{ request()->fullUrlWithQuery(['page' => $p]) }}" style="{{ ($currentPage ?? 1) == $p ? 'background:#2563eb;border-color:#2563eb;' : '' }}">{{ $p }}</a>
+                                    <a class="page-link" href="{{ request()->fullUrlWithQuery(['page' => $p]) }}" style="{{ ($currentPage ?? 1) == $p ? 'background:#10143a;border-color:#10143a;color:#ffffff;' : '' }}">{{ $p }}</a>
                                 </li>
                             @endfor
 
@@ -408,7 +408,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:880px; width:95%;">
         <div class="modal-content border-0 shadow-lg" style="border-radius:18px; overflow:hidden;">
             <!-- Header Modal Resmi BWS Kalimantan I -->
-            <div class="modal-header text-white py-3 px-4" style="background: linear-gradient(135deg, #093c52 0%, #0d5c70 45%, #1d4ed8 100%);">
+            <div class="modal-header text-white py-3 px-4" style="background: linear-gradient(135deg, #0d1033 0%, #161b46 100%); border-bottom: 2px solid #fad605;">
                 <div class="d-flex align-items-center">
                     <div class="mr-3 d-flex align-items-center justify-content-center shadow-sm" style="width:42px;height:42px;background:rgba(255,255,255,0.18);border-radius:12px;border:1.5px solid rgba(255,255,255,0.35);">
                         <i class="fas fa-cloud-upload-alt fa-lg text-white"></i>
@@ -569,8 +569,8 @@
                     </small>
                     <div style="gap:8px;" class="d-flex">
                         <button type="button" class="btn btn-light border font-weight-bold px-3 btn-sm" data-dismiss="modal" style="border-radius:8px;">Batal</button>
-                        <button type="submit" id="btnKelolaGisSubmit" class="btn btn-primary font-weight-bold px-4 btn-sm shadow-sm" style="background:#1d4ed8;border-color:#1d4ed8;border-radius:8px;">
-                            <i class="fas fa-cloud-upload-alt mr-1"></i> Mulai Unggah
+                        <button type="submit" id="btnKelolaGisSubmit" class="btn text-white font-weight-bold px-4 btn-sm shadow-sm" style="background:#10143a;border-color:#10143a;border-radius:8px;" onmouseover="this.style.background='#1c2262';" onmouseout="this.style.background='#10143a';">
+                            <i class="fas fa-cloud-upload-alt mr-1 text-warning"></i> Mulai Unggah
                         </button>
                     </div>
                 </div>
@@ -585,9 +585,9 @@
 <div class="modal fade" id="modalRename" tabindex="-1" role="dialog" aria-labelledby="modalRenameLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:480px;">
         <div class="modal-content border-0 shadow-lg" style="border-radius:14px;overflow:hidden;">
-            <div class="modal-header border-0 py-3 px-4" style="background:#f0fdf4;">
-                <h5 class="modal-title font-weight-bold" id="modalRenameLabel" style="font-size:1rem;color:#166534;">
-                    <i class="fas fa-pencil-alt mr-2 text-success"></i>Edit Nama File Spasial
+            <div class="modal-header py-3 px-4 border-bottom" style="background:#f8fafc;">
+                <h5 class="modal-title font-weight-bold text-dark" id="modalRenameLabel" style="font-size:1rem;">
+                    <i class="fas fa-pen mr-2 text-primary"></i>Edit Nama File Spasial
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -611,8 +611,8 @@
                 </div>
                 <div class="modal-footer bg-light border-top py-2 px-4">
                     <button type="button" class="btn btn-light border font-weight-bold btn-sm px-3" data-dismiss="modal" style="border-radius:6px;">Batal</button>
-                    <button type="submit" class="btn btn-success font-weight-bold btn-sm px-4 shadow-sm" style="background:#10b981;border-color:#10b981;border-radius:6px;">
-                        <i class="fas fa-check mr-1"></i>Simpan Perubahan
+                    <button type="submit" class="btn text-white font-weight-bold btn-sm px-4 shadow-sm" style="background:#10143a;border-color:#10143a;border-radius:6px;" onmouseover="this.style.background='#1c2262';" onmouseout="this.style.background='#10143a';">
+                        <i class="fas fa-check mr-1 text-warning"></i>Simpan Perubahan
                     </button>
                 </div>
             </form>

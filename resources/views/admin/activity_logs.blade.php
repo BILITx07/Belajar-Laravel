@@ -19,8 +19,8 @@
         @if(Auth::check() && Auth::user()->role === 'superadmin')
         <div>
             <button type="button" 
-                    class="btn btn-outline-danger btn-sm font-weight-bold px-3 py-2 shadow-sm d-inline-flex align-items-center" 
-                    style="border-radius: 20px; font-size: 0.82rem; height: 38px; transition: all 0.2s ease;" 
+                    class="btn btn-outline-danger btn-sm font-weight-bold px-3 py-2 shadow-xs d-inline-flex align-items-center" 
+                    style="border-radius: 8px; font-size: 0.82rem; height: 38px; transition: all 0.18s ease;" 
                     data-toggle="modal" 
                     data-target="#modalClearLogs">
                 <i class="fas fa-trash-alt mr-2"></i> Bersihkan Log
@@ -59,14 +59,14 @@
         <!-- 1. Total Log -->
         <div class="col-6 col-lg-3 mb-3 mb-lg-0">
             <a href="{{ route('admin.activity-logs', ['action' => 'all', 'search' => $search, 'per_page' => $perPage]) }}" 
-               class="card border-0 shadow-sm p-3 h-100 text-decoration-none kpi-card" 
-               style="border-radius: 12px; background: #ffffff; transition: all 0.2s ease; {{ ($actionFilter === 'all' || empty($actionFilter)) ? 'border: 2px solid #1d4ed8 !important; background: #f0f7ff !important;' : '' }}">
+               class="card border p-3 h-100 text-decoration-none kpi-card" 
+               style="border-radius: 12px; background: #ffffff; transition: all 0.2s ease; border-color: {{ ($actionFilter === 'all' || empty($actionFilter)) ? '#10143a !important' : '#e2e8f0' }}; box-shadow: {{ ($actionFilter === 'all' || empty($actionFilter)) ? '0 4px 14px rgba(16,20,58,0.12)' : '0 1px 3px rgba(0,0,0,0.04)' }};">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
                         <div class="text-muted small font-weight-bold text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.5px;">Total Log</div>
                         <h4 class="font-weight-bold text-dark mb-0 mt-1" style="font-size: 1.45rem;">{{ $statsAksi['total'] ?? 0 }}</h4>
                     </div>
-                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="background: #eff6ff; color: #1d4ed8; width: 44px; height: 44px; font-size: 1.1rem;">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="background: rgba(16,20,58,0.07); color: #10143a; width: 42px; height: 42px; font-size: 1.05rem;">
                         <i class="fas fa-history"></i>
                     </div>
                 </div>
@@ -76,14 +76,14 @@
         <!-- 2. Unggah File -->
         <div class="col-6 col-lg-3 mb-3 mb-lg-0">
             <a href="{{ route('admin.activity-logs', ['action' => 'upload', 'search' => $search, 'per_page' => $perPage]) }}" 
-               class="card border-0 shadow-sm p-3 h-100 text-decoration-none kpi-card" 
-               style="border-radius: 12px; background: #ffffff; transition: all 0.2s ease; {{ $actionFilter === 'upload' ? 'border: 2px solid #10b981 !important; background: #f0fdf4 !important;' : '' }}">
+               class="card border p-3 h-100 text-decoration-none kpi-card" 
+               style="border-radius: 12px; background: #ffffff; transition: all 0.2s ease; border-color: {{ $actionFilter === 'upload' ? '#059669 !important' : '#e2e8f0' }}; box-shadow: {{ $actionFilter === 'upload' ? '0 4px 14px rgba(5,150,105,0.12)' : '0 1px 3px rgba(0,0,0,0.04)' }};">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
                         <div class="text-muted small font-weight-bold text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.5px;">Unggah File</div>
                         <h4 class="font-weight-bold text-dark mb-0 mt-1" style="font-size: 1.45rem;">{{ $statsAksi['upload'] ?? 0 }}</h4>
                     </div>
-                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="background: #ecfdf5; color: #059669; width: 44px; height: 44px; font-size: 1.1rem;">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="background: #ecfdf5; color: #059669; width: 42px; height: 42px; font-size: 1.05rem;">
                         <i class="fas fa-cloud-upload-alt"></i>
                     </div>
                 </div>
@@ -93,14 +93,14 @@
         <!-- 3. Dihapus (Kotak Sampah) -->
         <div class="col-6 col-lg-3 mb-3 mb-lg-0">
             <a href="{{ route('admin.activity-logs', ['action' => 'delete', 'search' => $search, 'per_page' => $perPage]) }}" 
-               class="card border-0 shadow-sm p-3 h-100 text-decoration-none kpi-card" 
-               style="border-radius: 12px; background: #ffffff; transition: all 0.2s ease; {{ $actionFilter === 'delete' ? 'border: 2px solid #ef4444 !important; background: #fef2f2 !important;' : '' }}">
+               class="card border p-3 h-100 text-decoration-none kpi-card" 
+               style="border-radius: 12px; background: #ffffff; transition: all 0.2s ease; border-color: {{ $actionFilter === 'delete' ? '#dc2626 !important' : '#e2e8f0' }}; box-shadow: {{ $actionFilter === 'delete' ? '0 4px 14px rgba(220,38,38,0.12)' : '0 1px 3px rgba(0,0,0,0.04)' }};">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
                         <div class="text-muted small font-weight-bold text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.5px;">Dihapus (Sampah)</div>
                         <h4 class="font-weight-bold text-dark mb-0 mt-1" style="font-size: 1.45rem;">{{ $statsAksi['delete'] ?? 0 }}</h4>
                     </div>
-                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="background: #fef2f2; color: #dc2626; width: 44px; height: 44px; font-size: 1.1rem;">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="background: #fef2f2; color: #dc2626; width: 42px; height: 42px; font-size: 1.05rem;">
                         <i class="fas fa-trash-alt"></i>
                     </div>
                 </div>
@@ -110,14 +110,14 @@
         <!-- 4. Dipulihkan -->
         <div class="col-6 col-lg-3 mb-3 mb-lg-0">
             <a href="{{ route('admin.activity-logs', ['action' => 'restore', 'search' => $search, 'per_page' => $perPage]) }}" 
-               class="card border-0 shadow-sm p-3 h-100 text-decoration-none kpi-card" 
-               style="border-radius: 12px; background: #ffffff; transition: all 0.2s ease; {{ $actionFilter === 'restore' ? 'border: 2px solid #3b82f6 !important; background: #eff6ff !important;' : '' }}">
+               class="card border p-3 h-100 text-decoration-none kpi-card" 
+               style="border-radius: 12px; background: #ffffff; transition: all 0.2s ease; border-color: {{ $actionFilter === 'restore' ? '#0284c7 !important' : '#e2e8f0' }}; box-shadow: {{ $actionFilter === 'restore' ? '0 4px 14px rgba(2,132,199,0.12)' : '0 1px 3px rgba(0,0,0,0.04)' }};">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
                         <div class="text-muted small font-weight-bold text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.5px;">Dipulihkan</div>
                         <h4 class="font-weight-bold text-dark mb-0 mt-1" style="font-size: 1.45rem;">{{ $statsAksi['restore'] ?? 0 }}</h4>
                     </div>
-                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="background: #eff6ff; color: #1d4ed8; width: 44px; height: 44px; font-size: 1.1rem;">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="background: #f0f9ff; color: #0284c7; width: 42px; height: 42px; font-size: 1.05rem;">
                         <i class="fas fa-undo"></i>
                     </div>
                 </div>
@@ -152,23 +152,23 @@
                     <!-- Kapsul Filter Kategori Aksi -->
                     <div class="d-flex align-items-center flex-wrap" style="gap: 6px;">
                         <a href="{{ route('admin.activity-logs', ['action' => 'all', 'search' => $search, 'per_page' => $perPage]) }}" 
-                           class="btn btn-sm {{ ($actionFilter === 'all' || empty($actionFilter)) ? 'btn-primary text-white font-weight-bold shadow-sm' : 'btn-light text-muted' }}" 
-                           style="border-radius: 20px; font-size: 0.82rem; padding: 6px 14px; {{ ($actionFilter === 'all' || empty($actionFilter)) ? 'background:#1d4ed8;border-color:#1d4ed8;' : '' }}">
+                           class="btn btn-sm {{ ($actionFilter === 'all' || empty($actionFilter)) ? 'text-white font-weight-bold shadow-xs' : 'btn-light text-secondary font-weight-medium' }}" 
+                           style="border-radius: 8px; font-size: 0.82rem; padding: 6px 14px; {{ ($actionFilter === 'all' || empty($actionFilter)) ? 'background:#10143a;border:1px solid #10143a;' : 'background:#f8fafc;border:1px solid #e2e8f0;' }}">
                             Semua ({{ $statsAksi['total'] ?? 0 }})
                         </a>
                         <a href="{{ route('admin.activity-logs', ['action' => 'upload', 'search' => $search, 'per_page' => $perPage]) }}" 
-                           class="btn btn-sm {{ $actionFilter === 'upload' ? 'btn-success text-white font-weight-bold shadow-sm' : 'btn-light text-muted' }}" 
-                           style="border-radius: 20px; font-size: 0.82rem; padding: 6px 14px; {{ $actionFilter === 'upload' ? 'background:#059669;border-color:#059669;' : '' }}">
+                           class="btn btn-sm {{ $actionFilter === 'upload' ? 'btn-success text-white font-weight-bold shadow-xs' : 'btn-light text-secondary font-weight-medium' }}" 
+                           style="border-radius: 8px; font-size: 0.82rem; padding: 6px 14px; {{ $actionFilter === 'upload' ? 'background:#059669;border:1px solid #059669;' : 'background:#f8fafc;border:1px solid #e2e8f0;' }}">
                             <i class="fas fa-cloud-upload-alt mr-1"></i> Unggah ({{ $statsAksi['upload'] ?? 0 }})
                         </a>
                         <a href="{{ route('admin.activity-logs', ['action' => 'delete', 'search' => $search, 'per_page' => $perPage]) }}" 
-                           class="btn btn-sm {{ $actionFilter === 'delete' ? 'btn-danger text-white font-weight-bold shadow-sm' : 'btn-light text-muted' }}" 
-                           style="border-radius: 20px; font-size: 0.82rem; padding: 6px 14px; {{ $actionFilter === 'delete' ? 'background:#dc2626;border-color:#dc2626;' : '' }}">
+                           class="btn btn-sm {{ $actionFilter === 'delete' ? 'btn-danger text-white font-weight-bold shadow-xs' : 'btn-light text-secondary font-weight-medium' }}" 
+                           style="border-radius: 8px; font-size: 0.82rem; padding: 6px 14px; {{ $actionFilter === 'delete' ? 'background:#dc2626;border:1px solid #dc2626;' : 'background:#f8fafc;border:1px solid #e2e8f0;' }}">
                             <i class="fas fa-trash-alt mr-1"></i> Sampah ({{ $statsAksi['delete'] ?? 0 }})
                         </a>
                         <a href="{{ route('admin.activity-logs', ['action' => 'restore', 'search' => $search, 'per_page' => $perPage]) }}" 
-                           class="btn btn-sm {{ $actionFilter === 'restore' ? 'btn-info text-white font-weight-bold shadow-sm' : 'btn-light text-muted' }}" 
-                           style="border-radius: 20px; font-size: 0.82rem; padding: 6px 14px; {{ $actionFilter === 'restore' ? 'background:#2563eb;border-color:#2563eb;' : '' }}">
+                           class="btn btn-sm {{ $actionFilter === 'restore' ? 'text-white font-weight-bold shadow-xs' : 'btn-light text-secondary font-weight-medium' }}" 
+                           style="border-radius: 8px; font-size: 0.82rem; padding: 6px 14px; {{ $actionFilter === 'restore' ? 'background:#0284c7;border:1px solid #0284c7;' : 'background:#f8fafc;border:1px solid #e2e8f0;' }}">
                             <i class="fas fa-undo mr-1"></i> Dipulihkan ({{ $statsAksi['restore'] ?? 0 }})
                         </a>
                     </div>
@@ -186,7 +186,7 @@
                                style="border-radius: 8px 0 0 8px; font-size: 0.83rem; height: 38px; border-color: #cbd5e1;" 
                                placeholder="Cari aktor, aksi, file...">
                         <div class="input-group-append">
-                            <button class="btn btn-primary px-3" type="submit" style="background:#1d4ed8; border-color:#1d4ed8; border-radius: 0 8px 8px 0; height: 38px;">
+                            <button class="btn px-3 text-white" type="submit" style="background:#10143a; border-color:#10143a; border-radius: 0 8px 8px 0; height: 38px;" onmouseover="this.style.background='#1c2262';" onmouseout="this.style.background='#10143a';">
                                 <i class="fas fa-search"></i>
                             </button>
                         </div>
@@ -252,11 +252,11 @@
                                     $initials .= strtoupper(mb_substr($w, 0, 1));
                                 }
                                 $palettes = [
+                                    ['bg' => '#f1f5f9', 'text' => '#334155', 'border' => '#cbd5e1'],
                                     ['bg' => '#eff6ff', 'text' => '#1d4ed8', 'border' => '#bfdbfe'],
-                                    ['bg' => '#f0fdf4', 'text' => '#15803d', 'border' => '#bbf7d0'],
-                                    ['bg' => '#fef3c7', 'text' => '#b45309', 'border' => '#fde68a'],
-                                    ['bg' => '#f3e8ff', 'text' => '#7e22ce', 'border' => '#e9d5ff'],
-                                    ['bg' => '#fce7f3', 'text' => '#be185d', 'border' => '#fbcfe8'],
+                                    ['bg' => '#ecfdf5', 'text' => '#059669', 'border' => '#a7f3d0'],
+                                    ['bg' => '#fffbeb', 'text' => '#d97706', 'border' => '#fde68a'],
+                                    ['bg' => '#f8fafc', 'text' => '#475569', 'border' => '#e2e8f0'],
                                 ];
                                 $theme = $palettes[abs(crc32($actorName)) % count($palettes)];
 
@@ -343,7 +343,7 @@
                     @for($i = 1; $i <= $totalPages; $i++)
                         @if($i == 1 || $i == $totalPages || abs($i - $currentPage) <= 2)
                             <li class="page-item {{ $i == $currentPage ? 'active' : '' }}">
-                                <a class="page-link" href="{{ request()->fullUrlWithQuery(['page' => $i]) }}" style="{{ $i == $currentPage ? 'background: #1d4ed8; border-color: #1d4ed8;' : '' }}">{{ $i }}</a>
+                                <a class="page-link" href="{{ request()->fullUrlWithQuery(['page' => $i]) }}" style="{{ $i == $currentPage ? 'background: #10143a; border-color: #10143a; color: #ffffff;' : '' }}">{{ $i }}</a>
                             </li>
                         @elseif($i == 2 || $i == $totalPages - 1)
                             <li class="page-item disabled"><span class="page-link">…</span></li>
@@ -360,7 +360,7 @@
                             <span class="page-link" style="border-radius: 6px 0 0 6px;">&lsaquo;</span>
                         </li>
                         <li class="page-item active">
-                            <span class="page-link" style="background: #1d4ed8; border-color: #1d4ed8;">1</span>
+                            <span class="page-link" style="background: #10143a; border-color: #10143a;">1</span>
                         </li>
                         <li class="page-item disabled">
                             <span class="page-link" style="border-radius: 0 6px 6px 0;">&rsaquo;</span>

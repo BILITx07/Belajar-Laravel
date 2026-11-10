@@ -299,25 +299,39 @@
         .bws-nav-link {
             display: inline-flex;
             align-items: center;
-            padding: 14px 18px;
+            padding: 13px 18px;
             color: #64748b;
             font-weight: 600;
-            font-size: 0.88rem;
+            font-size: 0.86rem;
             text-decoration: none;
             border-bottom: 3px solid transparent;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             gap: 8px;
         }
 
+        .bws-nav-link i {
+            color: #94a3b8;
+            font-size: 0.92rem;
+            transition: all 0.2s ease;
+        }
+
         .bws-nav-link:hover {
-            color: #174ea6;
+            color: #10143a;
             text-decoration: none;
         }
 
+        .bws-nav-link:hover i {
+            color: #10143a;
+        }
+
         .bws-nav-link.active {
-            color: #174ea6;
-            border-bottom-color: #174ea6;
+            color: #10143a;
+            border-bottom-color: #10143a;
             font-weight: 700;
+        }
+
+        .bws-nav-link.active i {
+            color: #10143a;
         }
 
         .bws-dropdown-menu {
@@ -620,7 +634,7 @@
                     <!-- Header Profil Card Mini -->
                     <div class="px-3 py-3 border-bottom" style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);">
                         <div class="d-flex align-items-center" style="gap: 12px;">
-                            <div class="rounded-circle d-flex align-items-center justify-content-center text-white font-weight-bold shadow-xs overflow-hidden flex-shrink-0" style="width: 42px; height: 42px; background: linear-gradient(135deg, #1d4ed8, #1e40af); font-size: 0.95rem; border: 2.5px solid #facc15; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center text-white font-weight-bold shadow-xs overflow-hidden flex-shrink-0" style="width: 42px; height: 42px; background: linear-gradient(135deg, #10143a, #1c2262); font-size: 0.95rem; border: 2.5px solid #fad605; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
                                 @if(Auth::check() && Auth::user()->avatar_url)
                                     <img src="{{ Auth::user()->avatar_url }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
                                 @else
@@ -634,7 +648,7 @@
                                 <div class="text-truncate mb-1.5" style="font-size: 0.76rem; line-height: 1.2; color: #64748b;">
                                     {{ Auth::user()->email ?? '' }}
                                 </div>
-                                <span class="badge border font-weight-bold px-2 py-0.5" style="font-size: 0.68rem; border-radius: 6px; background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; width: fit-content;">
+                                <span class="badge border font-weight-bold px-2 py-0.5" style="font-size: 0.68rem; border-radius: 6px; background: rgba(16,20,58,0.06); color: #10143a; border-color: rgba(16,20,58,0.18); width: fit-content;">
                                     {{ Auth::user()->role_label ?? 'Admin' }}
                                 </span>
                             </div>
@@ -666,27 +680,27 @@
     <nav class="bws-subnavbar">
         <!-- 1. Dashboard -->
         <a href="{{ route('admin.dashboard') }}" class="bws-nav-link {{ request()->routeIs('admin.dashboard', 'dashboard', 'admin.index') ? 'active' : '' }}">
-            <i class="fas fa-th-large text-primary"></i>
+            <i class="fas fa-th-large"></i>
             <span>Dashboard</span>
         </a>
 
         <!-- 2. Master Data (Direct Clean Navigation Link) -->
         <a href="{{ route('admin.kelola-gis') }}" class="bws-nav-link {{ request()->routeIs('admin.kelola-gis', 'admin.data-gis') ? 'active' : '' }}">
-            <i class="fas fa-layer-group text-warning"></i>
+            <i class="fas fa-layer-group"></i>
             <span>Master Data</span>
         </a>
 
         <!-- 3. Manajemen User (Hanya Super Admin) -->
         @if(Auth::check() && Auth::user()->role === 'superadmin')
         <a href="{{ route('users.index') }}" class="bws-nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
-            <i class="fas fa-user-friends text-info"></i>
+            <i class="fas fa-user-friends"></i>
             <span>Manajemen User</span>
         </a>
         @endif
 
         <!-- 4. Log Aktivitas (Audit Trail Operasional Data) -->
         <a href="{{ route('admin.activity-logs') }}" class="bws-nav-link {{ request()->routeIs('admin.activity-logs*') ? 'active' : '' }}">
-            <i class="fas fa-history text-secondary"></i>
+            <i class="fas fa-history"></i>
             <span>Log Aktivitas</span>
         </a>
     </nav>

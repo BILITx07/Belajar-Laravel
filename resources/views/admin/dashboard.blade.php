@@ -6,24 +6,27 @@
 <!-- Leaflet CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
-    /* ── STIL KARTU STATISTIK VIBRANT ALA SIPERISDA BWS KALIMANTAN I ── */
+    /* ── STIL KARTU STATISTIK EKSEKUTIF BERSIH & MEWAH (PU CLEAN PALETTE) ── */
     .siperisda-card {
-        border-radius: 12px;
-        color: #ffffff;
+        background: #ffffff;
+        border-radius: 14px;
+        color: #1e293b;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 14px rgba(15, 23, 42, 0.03);
+        border: 1px solid #e2e8f0;
+        transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        min-height: 124px;
-        border: none;
+        min-height: 126px;
     }
 
     .siperisda-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+        border-color: #cbd5e1;
+        background: #ffffff;
     }
 
     .siperisda-body {
@@ -32,62 +35,75 @@
         z-index: 2;
     }
 
+    .siperisda-card-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+    }
+
+    .siperisda-icon-box {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.95rem;
+        flex-shrink: 0;
+        transition: transform 0.2s ease;
+    }
+
+    .siperisda-card:hover .siperisda-icon-box {
+        transform: scale(1.08);
+    }
+
     .siperisda-value {
-        font-size: 1.85rem;
+        font-size: 1.75rem;
         font-weight: 800;
         line-height: 1.15;
         letter-spacing: -0.5px;
+        color: #0f172a;
         margin-bottom: 2px;
     }
 
     .siperisda-unit {
-        font-size: 0.95rem;
+        font-size: 0.82rem;
         font-weight: 600;
-        opacity: 0.9;
+        color: #64748b;
         margin-left: 3px;
     }
 
     .siperisda-label {
-        font-size: 0.82rem;
+        font-size: 0.78rem;
         font-weight: 600;
         letter-spacing: 0.2px;
-        opacity: 0.95;
-    }
-
-    .siperisda-icon {
-        position: absolute;
-        right: 14px;
-        top: 14px;
-        font-size: 2.5rem;
-        opacity: 0.22;
-        z-index: 1;
-        transition: transform 0.3s ease;
-    }
-
-    .siperisda-card:hover .siperisda-icon {
-        transform: scale(1.12);
-        opacity: 0.35;
+        color: #64748b;
     }
 
     .siperisda-footer {
-        background: rgba(0, 0, 0, 0.16);
-        padding: 6px 18px;
-        font-size: 0.74rem;
+        background: #f8fafc;
+        border-top: 1px solid #f1f5f9;
+        padding: 7px 18px;
+        font-size: 0.73rem;
         font-weight: 600;
-        letter-spacing: 0.3px;
+        color: #64748b;
         display: flex;
         align-items: center;
         justify-content: space-between;
         z-index: 2;
     }
 
-    /* Warna Khas SIPERISDA (Sesuai Screenshot Referensi User) */
-    .bg-sip-cyan   { background: linear-gradient(135deg, #00b4d8 0%, #0096c7 100%); }
-    .bg-sip-green  { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
-    .bg-sip-coral  { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); }
-    .bg-sip-mint   { background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%); }
-    .bg-sip-rose   { background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%); }
-    .bg-sip-ocean  { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); }
+    .siperisda-footer i {
+        font-size: 0.75rem;
+        color: #94a3b8;
+        transition: transform 0.2s ease;
+    }
+
+    .siperisda-card:hover .siperisda-footer i {
+        transform: translateX(2px);
+        color: #10143a;
+    }
 
     /* ── STIL KARTU GRAFIK & KONTEN ── */
     .dashboard-panel-card {
@@ -202,16 +218,20 @@
     </div>
     @endif
 
-    <!-- ═══ 1. ENAM KARTU METRIK VIBRANT (PERSIS GAMBAR REFERENSI 1: SIPERISDA BWS KALIMANTAN I) ═══ -->
+    <!-- ═══ 1. ENAM KARTU METRIK EKSEKUTIF BERSIH & MEWAH (PU CLEAN PALETTE) ═══ -->
     <div class="row mb-4" style="row-gap: 16px;">
-        <!-- Card 1: Total Layer Spasial (Cyan) -->
+        <!-- Card 1: Total Layer Spasial -->
         <div class="col-xl-2 col-lg-4 col-md-6 col-sm-6">
-            <a href="{{ route('admin.kelola-gis') }}" class="text-decoration-none text-reset d-block" title="Klik untuk Kelola & Upload File Spasial">
-                <div class="siperisda-card bg-sip-cyan">
+            <a href="{{ route('admin.kelola-gis') }}" class="text-decoration-none text-reset d-block" title="Klik untuk Kelola &amp; Upload File Spasial">
+                <div class="siperisda-card">
                     <div class="siperisda-body">
-                        <i class="fas fa-layer-group siperisda-icon"></i>
+                        <div class="siperisda-card-top">
+                            <span class="siperisda-label">Total Spasial</span>
+                            <div class="siperisda-icon-box" style="background: rgba(16, 20, 58, 0.08); color: #10143a;">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+                        </div>
                         <div class="siperisda-value">{{ $stats['total_files'] ?? count($geojsonFiles) }}</div>
-                        <div class="siperisda-label">Total File Spasial</div>
                     </div>
                     <div class="siperisda-footer">
                         <span>File GeoJSON &amp; SHP</span>
@@ -221,77 +241,97 @@
             </a>
         </div>
 
-        <!-- Card 2: Lahan Baku (Green) -->
+        <!-- Card 2: Lahan Baku -->
         <div class="col-xl-2 col-lg-4 col-md-6 col-sm-6">
-            <div class="siperisda-card bg-sip-green">
+            <div class="siperisda-card">
                 <div class="siperisda-body">
-                    <i class="fas fa-leaf siperisda-icon"></i>
+                    <div class="siperisda-card-top">
+                        <span class="siperisda-label">Lahan Baku</span>
+                        <div class="siperisda-icon-box" style="background: rgba(5, 150, 105, 0.09); color: #059669;">
+                            <i class="fas fa-vector-square"></i>
+                        </div>
+                    </div>
                     <div class="siperisda-value">{{ str_replace(' Ha', '', $statistik['total_luas_baku'] ?? '24.500') }}<span class="siperisda-unit">Ha</span></div>
-                    <div class="siperisda-label">Lahan Baku Siap Tanam</div>
                 </div>
                 <div class="siperisda-footer">
-                    <span>Daerah Irigasi Baku</span>
-                    <i class="fas fa-check-circle"></i>
+                    <span>Siap Tanam (DIR)</span>
+                    <i class="fas fa-check-circle text-success"></i>
                 </div>
             </div>
         </div>
 
-        <!-- Card 3: Lahan Fungsional (Coral/Orange) -->
+        <!-- Card 3: Lahan Fungsional -->
         <div class="col-xl-2 col-lg-4 col-md-6 col-sm-6">
-            <div class="siperisda-card bg-sip-coral">
+            <div class="siperisda-card">
                 <div class="siperisda-body">
-                    <i class="fas fa-tint siperisda-icon"></i>
+                    <div class="siperisda-card-top">
+                        <span class="siperisda-label">Lahan Fungsional</span>
+                        <div class="siperisda-icon-box" style="background: rgba(37, 99, 235, 0.09); color: #2563eb;">
+                            <i class="fas fa-water"></i>
+                        </div>
+                    </div>
                     <div class="siperisda-value">{{ str_replace(' Ha', '', $statistik['total_luas_fung'] ?? '18.200') }}<span class="siperisda-unit">Ha</span></div>
-                    <div class="siperisda-label">Lahan Fungsional</div>
                 </div>
                 <div class="siperisda-footer">
                     <span>Teraliri Air Irigasi</span>
-                    <i class="fas fa-water"></i>
+                    <i class="fas fa-tint text-primary"></i>
                 </div>
             </div>
         </div>
 
-        <!-- Card 4: Total Daerah Irigasi (Mint) -->
+        <!-- Card 4: Total Daerah Irigasi -->
         <div class="col-xl-2 col-lg-4 col-md-6 col-sm-6">
-            <div class="siperisda-card bg-sip-mint">
+            <div class="siperisda-card">
                 <div class="siperisda-body">
-                    <i class="fas fa-seedling siperisda-icon"></i>
+                    <div class="siperisda-card-top">
+                        <span class="siperisda-label">Daerah Irigasi</span>
+                        <div class="siperisda-icon-box" style="background: rgba(245, 158, 11, 0.12); color: #d97706;">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </div>
+                    </div>
                     <div class="siperisda-value">{{ $statistik['total_dir'] ?? 12 }}<span class="siperisda-unit">DIR</span></div>
-                    <div class="siperisda-label">Daerah Irigasi</div>
                 </div>
                 <div class="siperisda-footer">
                     <span>Kewenangan BWSK I</span>
-                    <i class="fas fa-map-marker-alt"></i>
+                    <i class="fas fa-landmark text-warning"></i>
                 </div>
             </div>
         </div>
 
-        <!-- Card 5: Jaringan & Bangunan Air (Rose/Pink) -->
+        <!-- Card 5: Jaringan & Bangunan Air -->
         <div class="col-xl-2 col-lg-4 col-md-6 col-sm-6">
-            <div class="siperisda-card bg-sip-rose">
+            <div class="siperisda-card">
                 <div class="siperisda-body">
-                    <i class="fas fa-stream siperisda-icon"></i>
+                    <div class="siperisda-card-top">
+                        <span class="siperisda-label">Infrastruktur</span>
+                        <div class="siperisda-icon-box" style="background: rgba(13, 148, 136, 0.09); color: #0d9488;">
+                            <i class="fas fa-archway"></i>
+                        </div>
+                    </div>
                     <div class="siperisda-value">{{ ($stats['categories']['saluran'] ?? 0) + ($stats['categories']['bangunan'] ?? 0) }}<span class="siperisda-unit">Objek</span></div>
-                    <div class="siperisda-label">Saluran &amp; Bangunan</div>
                 </div>
                 <div class="siperisda-footer">
-                    <span>Infrastruktur Air</span>
-                    <i class="fas fa-landmark"></i>
+                    <span>Saluran &amp; Bangunan Air</span>
+                    <i class="fas fa-stream" style="color: #0d9488;"></i>
                 </div>
             </div>
         </div>
 
-        <!-- Card 6: Petugas Terautentikasi (Ocean Teal) -->
+        <!-- Card 6: Petugas Sistem -->
         <div class="col-xl-2 col-lg-4 col-md-6 col-sm-6">
-            <div class="siperisda-card bg-sip-ocean">
+            <div class="siperisda-card">
                 <div class="siperisda-body">
-                    <i class="fas fa-users-cog siperisda-icon"></i>
+                    <div class="siperisda-card-top">
+                        <span class="siperisda-label">Petugas Sistem</span>
+                        <div class="siperisda-icon-box" style="background: rgba(100, 116, 139, 0.1); color: #475569;">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                    </div>
                     <div class="siperisda-value">{{ $totalUsers ?? 2 }}<span class="siperisda-unit">Akun</span></div>
-                    <div class="siperisda-label">Petugas Sistem</div>
                 </div>
                 <div class="siperisda-footer">
                     <span>Super Admin &amp; Admin</span>
-                    <i class="fas fa-user-shield"></i>
+                    <i class="fas fa-shield-alt text-secondary"></i>
                 </div>
             </div>
         </div>
@@ -338,12 +378,12 @@
                     <!-- Badges Legend -->
                     <div class="mt-3 pt-2 border-top" style="font-size: 0.78rem;">
                         <div class="row no-gutters text-muted">
-                            <div class="col-6 mb-1"><span class="badge badge-dot mr-1" style="background:#10b981;width:8px;height:8px;display:inline-block;border-radius:50%;"></span> Baku: <strong>{{ $stats['categories']['baku'] ?? 0 }}</strong></div>
-                            <div class="col-6 mb-1"><span class="badge badge-dot mr-1" style="background:#2563eb;width:8px;height:8px;display:inline-block;border-radius:50%;"></span> Fungsional: <strong>{{ $stats['categories']['fungsional'] ?? 0 }}</strong></div>
+                            <div class="col-6 mb-1"><span class="badge badge-dot mr-1" style="background:#059669;width:8px;height:8px;display:inline-block;border-radius:50%;"></span> Baku: <strong>{{ $stats['categories']['baku'] ?? 0 }}</strong></div>
+                            <div class="col-6 mb-1"><span class="badge badge-dot mr-1" style="background:#1d4ed8;width:8px;height:8px;display:inline-block;border-radius:50%;"></span> Fungsional: <strong>{{ $stats['categories']['fungsional'] ?? 0 }}</strong></div>
                             <div class="col-6 mb-1"><span class="badge badge-dot mr-1" style="background:#f59e0b;width:8px;height:8px;display:inline-block;border-radius:50%;"></span> Potensial: <strong>{{ $stats['categories']['potensial'] ?? 0 }}</strong></div>
-                            <div class="col-6 mb-1"><span class="badge badge-dot mr-1" style="background:#ec4899;width:8px;height:8px;display:inline-block;border-radius:50%;"></span> Saluran: <strong>{{ $stats['categories']['saluran'] ?? 0 }}</strong></div>
-                            <div class="col-6 mb-1"><span class="badge badge-dot mr-1" style="background:#8b5cf6;width:8px;height:8px;display:inline-block;border-radius:50%;"></span> Bangunan: <strong>{{ $stats['categories']['bangunan'] ?? 0 }}</strong></div>
-                            <div class="col-6 mb-1"><span class="badge badge-dot mr-1" style="background:#06b6d4;width:8px;height:8px;display:inline-block;border-radius:50%;"></span> WS Kapuas: <strong>{{ $stats['categories']['ws_kapuas'] ?? 0 }}</strong></div>
+                            <div class="col-6 mb-1"><span class="badge badge-dot mr-1" style="background:#0284c7;width:8px;height:8px;display:inline-block;border-radius:50%;"></span> Saluran: <strong>{{ $stats['categories']['saluran'] ?? 0 }}</strong></div>
+                            <div class="col-6 mb-1"><span class="badge badge-dot mr-1" style="background:#0d9488;width:8px;height:8px;display:inline-block;border-radius:50%;"></span> Bangunan: <strong>{{ $stats['categories']['bangunan'] ?? 0 }}</strong></div>
+                            <div class="col-6 mb-1"><span class="badge badge-dot mr-1" style="background:#64748b;width:8px;height:8px;display:inline-block;border-radius:50%;"></span> WS Kapuas: <strong>{{ $stats['categories']['ws_kapuas'] ?? 0 }}</strong></div>
                         </div>
                     </div>
                 </div>
@@ -593,12 +633,12 @@
                     {{ $stats['categories']['ws_kapuas'] ?? 2 }}
                 ],
                 backgroundColor: [
-                    '#10b981',
-                    '#2563eb',
+                    '#059669',
+                    '#1d4ed8',
                     '#f59e0b',
-                    '#ec4899',
-                    '#8b5cf6',
-                    '#06b6d4'
+                    '#0284c7',
+                    '#0d9488',
+                    '#64748b'
                 ],
                 borderWidth: 2,
                 borderColor: '#ffffff'
