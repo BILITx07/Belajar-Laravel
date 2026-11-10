@@ -254,16 +254,21 @@ class AdminController extends Controller
                         if (in_array($entryExt, ['json', 'geojson'])) {
                             $fileContent = $zip->getFromIndex($i);
                             if ($fileContent !== false) {
-                                $targetName = $applyKategoriPrefix($entryName, $kategori);
-                                file_put_contents($destinationPath . '/' . $targetName, $fileContent);
-                                $uploaded[] = $targetName;
-                                $extractedInZip++;
+                                [$isValid, $cleanContent, $err] = $this->sanitizeAndValidateGeoJson($fileContent);
+                                if ($isValid) {
+                                    $targetName = $applyKategoriPrefix($entryName, $kategori);
+                                    file_put_contents($destinationPath . '/' . $targetName, $cleanContent);
+                                    $uploaded[] = $targetName;
+                                    $extractedInZip++;
+                                } else {
+                                    $failed[] = $entryName . ' (' . $err . ')';
+                                }
                             }
                         }
                     }
                     $zip->close();
 
-                    if ($extractedInZip === 0) {
+                    if ($extractedInZip === 0 && count($failed) === 0) {
                         $failed[] = $namaFile . ' (tidak ditemukan file .geojson/.json di dalam arsip ZIP)';
                     }
                 } else {
@@ -271,17 +276,16 @@ class AdminController extends Controller
                 }
             } else {
                 // File .geojson atau .json
-                $content = file_get_contents($file->getRealPath());
-                if ($file->getSize() <= 2 * 1024 * 1024) {
-                    $decoded = json_decode($content, true);
-                    if (json_last_error() !== JSON_ERROR_NONE || empty($decoded['type'])) {
-                        $failed[] = $namaFile . ' (struktur JSON tidak valid)';
-                        continue;
-                    }
+                $rawContent = file_get_contents($file->getRealPath());
+                [$isValid, $cleanContent, $err] = $this->sanitizeAndValidateGeoJson($rawContent);
+
+                if (!$isValid) {
+                    $failed[] = $namaFile . ' (' . $err . ')';
+                    continue;
                 }
 
                 $targetName = $applyKategoriPrefix($namaFile, $kategori);
-                $file->move($destinationPath, $targetName);
+                file_put_contents($destinationPath . '/' . $targetName, $cleanContent);
                 $uploaded[] = $targetName;
             }
         }
@@ -306,6 +310,109 @@ class AdminController extends Controller
         }
 
         return redirect()->back()->with('success', $msg);
+    }
+
+    /**
+     * Sanitasi dan validasi konten GeoJSON secara mendalam.
+     * Membersihkan UTF-8 / UTF-16 BOM, mengonversi encoding non-UTF8 (seperti ANSI dari ArcMap/QGIS),
+     * memperbaiki trailing comma / NaN, serta memastikan struktur FeatureCollection yang valid.
+     *
+     * @param string $content
+     * @return array [bool $isValid, string $cleanedContent, ?string $errorMessage]
+     */
+    private function sanitizeAndValidateGeoJson(string $content): array
+    {
+        // 1. Bersihkan UTF-8 BOM jika ada
+        if (str_starts_with($content, "\xEF\xBB\xBF")) {
+            $content = substr($content, 3);
+        }
+
+        // 2. Bersihkan UTF-16 LE / BE BOM jika ada
+        if (str_starts_with($content, "\xFF\xFE")) {
+            $content = mb_convert_encoding(substr($content, 2), 'UTF-8', 'UTF-16LE');
+        } elseif (str_starts_with($content, "\xFE\xFF")) {
+            $content = mb_convert_encoding(substr($content, 2), 'UTF-8', 'UTF-16BE');
+        }
+
+        $content = trim($content);
+
+        if (empty($content)) {
+            return [false, $content, 'file kosong'];
+        }
+
+        // 3. Coba decode pertama
+        $decoded = json_decode($content, true);
+
+        // 4. Jika gagal karena UTF-8 encoding (sangat sering pada ekspor Shapefile ke GeoJSON dengan simbol derajat ° atau aksen ANSI)
+        if ($decoded === null && json_last_error() === JSON_ERROR_UTF8) {
+            $converted = mb_convert_encoding($content, 'UTF-8', 'Windows-1252');
+            $decoded = json_decode($converted, true);
+            if ($decoded !== null) {
+                $content = $converted;
+            } else {
+                $converted = @iconv('UTF-8', 'UTF-8//IGNORE', $content);
+                if ($converted) {
+                    $decoded = json_decode($converted, true);
+                    if ($decoded !== null) {
+                        $content = $converted;
+                    }
+                }
+            }
+        }
+
+        // 5. Jika gagal karena sintaks (misal: NaN atau trailing comma dari script Python GIS)
+        if ($decoded === null && json_last_error() === JSON_ERROR_SYNTAX) {
+            $fixed = preg_replace('/:\s*NaN\b/i', ': null', $content);
+            $fixed = preg_replace('/:\s*Infinity\b/i', ': null', $fixed);
+            $fixed = preg_replace('/,\s*([\]}])/m', '$1', $fixed);
+            $decoded = json_decode($fixed, true);
+            if ($decoded !== null) {
+                $content = $fixed;
+            }
+        }
+
+        // 6. Validasi struktur spasial GeoJSON
+        if (!is_array($decoded)) {
+            $err = json_last_error_msg();
+            return [false, $content, "format JSON tidak terbaca ({$err})"];
+        }
+
+        // Cek 'type' atau perbaiki jika ada 'features'
+        $typeKey = null;
+        foreach (['type', 'Type', 'TYPE'] as $tk) {
+            if (!empty($decoded[$tk])) {
+                $typeKey = $tk;
+                break;
+            }
+        }
+
+        if ($typeKey) {
+            if ($typeKey !== 'type') {
+                $decoded['type'] = $decoded[$typeKey];
+                unset($decoded[$typeKey]);
+                $content = json_encode($decoded, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            }
+            return [true, $content, null];
+        }
+
+        // Jika tidak ada 'type', tapi memiliki array 'features'
+        if (!empty($decoded['features']) && is_array($decoded['features'])) {
+            $decoded['type'] = 'FeatureCollection';
+            $content = json_encode($decoded, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            return [true, $content, null];
+        }
+
+        // Jika berupa array langsung dari feature objects
+        if (array_is_list($decoded) && count($decoded) > 0 && (isset($decoded[0]['geometry']) || isset($decoded[0]['type']))) {
+            $wrapped = [
+                'type' => 'FeatureCollection',
+                'features' => $decoded
+            ];
+            $content = json_encode($wrapped, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            return [true, $content, null];
+        }
+
+        return [false, $content, 'tidak memiliki struktur spasial GeoJSON (type / features tidak ditemukan)'];
     }
 
     /**

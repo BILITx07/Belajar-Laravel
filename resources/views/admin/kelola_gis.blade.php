@@ -1059,11 +1059,16 @@
                 if (zipEntry) {
                     var baseName = zipPath.split('/').pop();
                     var content = await zipEntry.async('string');
+                    // Bersihkan karakter BOM (\uFEFF) di awal string jika ada
+                    if (content.charCodeAt(0) === 0xFEFF) {
+                        content = content.slice(1);
+                    }
+                    content = content.trim();
                     var cleanName = baseName.replace(/[^a-zA-Z0-9_\-.]/g, '_');
                     if (kategori && kategori !== 'auto' && !cleanName.toLowerCase().startsWith(kategori + '_')) {
                         cleanName = kategori + '_' + cleanName;
                     }
-                    var blob = new Blob([content], { type: 'application/geo+json' });
+                    var blob = new Blob([content], { type: 'application/geo+json;charset=utf-8' });
                     formData.append('file_geojson[]', blob, cleanName);
                 }
             }
