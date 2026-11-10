@@ -763,31 +763,7 @@
 
                         <div class="bws-floating-layer-divider"></div>
 
-                        <!-- 2. Batas wilayah -->
-                        <div class="bws-layer-sec-item">
-                            <div class="bws-layer-sec-header" onclick="toggleLayerSection('secListBatas', this)">
-                                <span>Batas wilayah</span>
-                                <i class="fas fa-caret-up bws-chevron-indicator"></i>
-                            </div>
-                            <div class="bws-layer-sec-list" id="secListBatas">
-                                <label class="bws-layer-item-row">
-                                    <input type="checkbox" id="chkFloatingBatasAdmin" class="bws-custom-check" onchange="toggleBatasAdminLayer(this.checked)">
-                                    <span class="bws-layer-item-label">Batas Administrasi</span>
-                                </label>
-                                <label class="bws-layer-item-row">
-                                    <input type="checkbox" id="chkFloatingBatasKec" class="bws-custom-check" checked onchange="toggleBatasDirLayer(this.checked)">
-                                    <span class="bws-layer-item-label">Batas Wilayah DIR</span>
-                                </label>
-                                <label class="bws-layer-item-row">
-                                    <input type="checkbox" id="chkFloatingWsKapuas" class="bws-custom-check" onchange="toggleWsKapuasLayer(this.checked)">
-                                    <span class="bws-layer-item-label">Wilayah Sungai (WS Kapuas)</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="bws-floating-layer-divider"></div>
-
-                        <!-- 3. Kategori Layer Irigasi -->
+                        <!-- 2. Kategori Layer Irigasi -->
                         <div class="bws-layer-sec-item">
                             <div class="bws-layer-sec-header" onclick="toggleLayerSection('secListIrigasi', this)">
                                 <span>Data Spasial Irigasi</span>
