@@ -183,9 +183,9 @@
     <!-- ═══ BAGIAN KANAN: MENU TEKS & TOMBOL AKSI ALA QROP ═══ -->
     <ul class="navbar-nav ml-auto align-items-center" style="gap: 16px;">
 
-        <!-- Menu Link: Tentang SIPDIRA (Scroll ke Section Tentang) -->
+        <!-- Menu Link: Tentang SIPDIRA (Buka Modal Info Resmi) -->
         <li class="nav-item d-none d-lg-block">
-            <a href="#tentang-sipdira" class="qrop-nav-text-link" title="Tentang Layanan SIPDIRA">
+            <a href="javascript:void(0)" class="qrop-nav-text-link" data-toggle="modal" data-target="#modalTentangSipdira" title="Tentang Layanan SIPDIRA">
                 Tentang SIPDIRA
             </a>
         </li>
