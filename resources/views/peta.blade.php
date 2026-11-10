@@ -138,12 +138,12 @@
     /* ══ FLOATING MAP TOOLS (PERSIS REFERENSI: GPS, HOME, FULLSCREEN) ══ */
     .bws-map-floating-tools {
         position: absolute;
-        top: 84px;
+        top: 96px; /* Spasi presisi 8px di bawah kontrol zoom Leaflet */
         left: 10px;
         z-index: 1000;
         display: flex;
         flex-direction: column;
-        gap: 7px;
+        gap: 8px;
         pointer-events: auto;
     }
     .bws-map-tool-btn {
@@ -152,12 +152,12 @@
         background: #ffffff;
         border-radius: 12px;
         border: 1px solid rgba(0, 0, 0, 0.08);
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #1a4d2e; /* Hijau tua elegan khas cartographic GIS seperti referensi */
-        font-size: 16px;
+        color: #166534; /* Hijau tua elegan khas cartographic GIS seperti referensi */
+        font-size: 15px;
         cursor: pointer;
         outline: none !important;
         transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
@@ -166,17 +166,20 @@
     .bws-map-tool-btn:hover {
         background: #f8fafc;
         color: #10143a;
-        transform: scale(1.06);
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.14);
     }
     .bws-map-tool-btn:active {
         transform: scale(0.96);
     }
 
     /* Modern Squircle Leaflet Zoom Control */
+    .leaflet-control-zoom {
+        margin: 10px 0 0 10px !important;
+    }
     .leaflet-bar {
         border: 1px solid rgba(0, 0, 0, 0.08) !important;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08) !important;
         border-radius: 12px !important;
         overflow: hidden !important;
     }
@@ -184,10 +187,23 @@
         width: 38px !important;
         height: 38px !important;
         line-height: 38px !important;
-        color: #1a4d2e !important;
+        color: #166534 !important;
         font-weight: 700 !important;
         background: #ffffff !important;
         border-bottom: 1px solid #f1f5f9 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .leaflet-bar a:last-child {
+        border-bottom: none !important;
+    }
+    .leaflet-bar a.leaflet-control-zoom-in {
+        font-size: 19px !important;
+    }
+    .leaflet-bar a.leaflet-control-zoom-out {
+        font-size: 21px !important;
     }
     .leaflet-bar a:hover {
         background: #f8fafc !important;
