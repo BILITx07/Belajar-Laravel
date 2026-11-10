@@ -1,2 +1,13 @@
 User-agent: *
-Disallow:
+Allow: /
+Allow: /peta
+Allow: /kebijakan-privasi
+Disallow: /admin/
+Disallow: /dashboard
+Disallow: /login
+Disallow: /register
+Disallow: /profile
+Disallow: /forgot-password
+Disallow: /reset-password
+
+Sitemap: /

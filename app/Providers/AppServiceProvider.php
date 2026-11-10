@@ -20,7 +20,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (config('app.env') === 'production' || env('APP_ENV') === 'production' || request()->header('x-forwarded-proto') === 'https' || str_contains(request()->header('host', ''), 'railway.app')) {
+        // Paksa HTTPS di lingkungan non-lokal / reverse proxy cloud hosting (Render, Railway, Fly.io, Cloudflare, VPS)
+        if (
+            !app()->isLocal() ||
+            config('app.env') === 'production' ||
+            env('APP_ENV') === 'production' ||
+            request()->header('x-forwarded-proto') === 'https' ||
+            request()->isSecure() ||
+            str_contains(request()->header('host', ''), 'railway.app') ||
+            str_contains(request()->header('host', ''), 'onrender.com')
+        ) {
             URL::forceScheme('https');
         }
     }

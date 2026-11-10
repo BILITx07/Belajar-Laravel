@@ -5,10 +5,19 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="SIPDIRA SPASIAL — Sistem Informasi Peta Daerah Irigasi Berbasis Data Spasial Balai Wilayah Sungai Kalimantan I Pontianak, Ditjen SDA, Kementerian Pekerjaan Umum.">
+    <meta name="keywords" content="SIPDIRA, SIPDIRA SPASIAL, BWS Kalimantan I, Peta Irigasi, Daerah Irigasi Kalbar, Kementerian Pekerjaan Umum, WebGIS SDA">
+    <meta name="author" content="Balai Wilayah Sungai Kalimantan I Pontianak — Kementerian PU">
+    <meta name="theme-color" content="#10143a">
 
-    <title>@yield('title', 'WebGIS BWS Kalimantan I — Kementerian Pekerjaan Umum')</title>
+    <!-- Open Graph / SEO Social Cards -->
+    <meta property="og:site_name" content="SIPDIRA SPASIAL BWS Kalimantan I">
+    <meta property="og:title" content="@yield('title', 'SIPDIRA SPASIAL — Sistem Informasi Peta Daerah Irigasi BWS Kalimantan I')">
+    <meta property="og:description" content="Peta interaktif sebaran Daerah Irigasi, Jaringan Saluran, dan Bangunan Air di Kalimantan Barat.">
+    <meta property="og:image" content="{{ asset('img/sipdira-concept-isometric.jpg') }}">
+    <meta property="og:type" content="website">
+
+    <title>@yield('title', 'SIPDIRA SPASIAL — WebGIS BWS Kalimantan I Pontianak')</title>
 
     <!-- Favicon Logo PU -->
     <link rel="icon" href="{{ asset('img/logo-pu.png') }}" type="image/png">

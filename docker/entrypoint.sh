@@ -28,10 +28,10 @@ mkdir -p /var/www/storage/framework/cache/data \
 # Buat file .env default jika belum ada
 if [ ! -f /var/www/.env ]; then
     cat <<EOF > /var/www/.env
-APP_NAME=FEWS-BWS
+APP_NAME="SIPDIRA SPASIAL"
 APP_ENV=production
 APP_KEY=${APP_KEY:-base64:ydrAfWLB+8RfrSypgK/Koz5avVRebgv08y/IMFu4buE=}
-APP_DEBUG=true
+APP_DEBUG=false
 APP_URL=https://belajar-laravel-production.up.railway.app
 SESSION_DRIVER=file
 CACHE_STORE=file

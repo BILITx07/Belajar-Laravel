@@ -90,3 +90,4 @@ Setiap kali pengguna memberikan perintah (walaupun hanya 1 kalimat pendek), AI h
 ---
 
 *Berkas ini merupakan acuan mutlak tata kelola pengembangan perangkat lunak SIPDIRA SPASIAL BWS Kalimantan I.*
+

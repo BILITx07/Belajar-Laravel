@@ -18,7 +18,8 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (\Throwable $e, \Illuminate\Http\Request $request) {
-            if ($request->has('debug') && !$e instanceof \Illuminate\Auth\AuthenticationException) {
+            // Hanya tampilkan rincian debug teknis JSON jika APP_DEBUG=true
+            if (config('app.debug') && $request->has('debug') && !$e instanceof \Illuminate\Auth\AuthenticationException) {
                 return response()->json([
                     'status' => 'error',
                     'exception' => get_class($e),
