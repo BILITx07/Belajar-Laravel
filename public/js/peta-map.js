@@ -1028,3 +1028,121 @@ window.highlightInTable = function(title, fileName, categoryType) {
         window.scrollTo({ top: targetY, behavior: 'smooth' });
     }
 };
+
+/* ============================================================
+   12. FITUR FLOATING MAP TOOLS: GPS LOCATE & MAP FULLSCREEN
+   ============================================================ */
+var userLocationMarker = null;
+var userLocationCircle = null;
+
+window.locateUserPosition = function() {
+    var icon = document.getElementById('iconMapLocate');
+
+    if (!navigator.geolocation) {
+        alert('Fitur GPS Lokasi tidak didukung oleh browser Anda.');
+        return;
+    }
+
+    if (icon) {
+        icon.className = 'fas fa-spinner fa-spin text-primary';
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        function(pos) {
+            var lat = pos.coords.latitude;
+            var lng = pos.coords.longitude;
+            var accuracy = pos.coords.accuracy || 50;
+
+            if (userLocationMarker && map.hasLayer(userLocationMarker)) map.removeLayer(userLocationMarker);
+            if (userLocationCircle && map.hasLayer(userLocationCircle)) map.removeLayer(userLocationCircle);
+
+            userLocationCircle = L.circle([lat, lng], {
+                radius: accuracy,
+                color: '#2563eb',
+                fillColor: '#3b82f6',
+                fillOpacity: 0.15,
+                weight: 1.5
+            }).addTo(map);
+
+            var pulseIcon = L.divIcon({
+                className: 'bws-user-pulse-marker',
+                html: '<div class="bws-gps-dot"></div><div class="bws-gps-pulse"></div>',
+                iconSize: [24, 24],
+                iconAnchor: [12, 12]
+            });
+
+            userLocationMarker = L.marker([lat, lng], { icon: pulseIcon }).addTo(map);
+            userLocationMarker.bindPopup(
+                '<div style="font-size: 12.5px; padding: 2px;">' +
+                '<strong style="color: #10143a;"><i class="fas fa-crosshairs text-primary mr-1"></i> Lokasi Anda Saat Ini</strong><br>' +
+                '<span class="text-muted small">Koordinat: ' + lat.toFixed(5) + ', ' + lng.toFixed(5) + '<br>Akurasi: &plusmn;' + Math.round(accuracy) + ' meter</span>' +
+                '</div>'
+            ).openPopup();
+
+            map.flyTo([lat, lng], Math.max(map.getZoom(), 14), {
+                animate: true,
+                duration: 1.2
+            });
+
+            if (icon) icon.className = 'fas fa-crosshairs text-success';
+            setTimeout(function() {
+                if (icon) icon.className = 'fas fa-crosshairs';
+            }, 3000);
+        },
+        function(err) {
+            if (icon) icon.className = 'fas fa-crosshairs text-danger';
+            var msg = 'Tidak dapat mendeteksi lokasi.';
+            if (err.code === 1) {
+                msg = 'Izin akses lokasi ditolak. Silakan izinkan akses GPS pada browser Anda.';
+            } else if (err.code === 2) {
+                msg = 'Sinyal posisi lokasi tidak tersedia.';
+            } else if (err.code === 3) {
+                msg = 'Waktu permintaan lokasi habis (timeout).';
+            }
+            alert(msg);
+            setTimeout(function() {
+                if (icon) icon.className = 'fas fa-crosshairs';
+            }, 2500);
+        },
+        {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+        }
+    );
+};
+
+window.toggleMapFullscreen = function() {
+    var mapCard = document.querySelector('.bws-leaflet-card');
+    var icon = document.getElementById('iconMapFullscreen');
+
+    if (!document.fullscreenElement) {
+        if (mapCard && mapCard.requestFullscreen) {
+            mapCard.requestFullscreen().catch(function() {
+                document.documentElement.requestFullscreen().catch(function() {});
+            });
+        } else {
+            document.documentElement.requestFullscreen().catch(function() {});
+        }
+        if (icon) icon.className = 'fas fa-compress';
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen().catch(function() {});
+        }
+        if (icon) icon.className = 'fas fa-expand';
+    }
+};
+
+document.addEventListener('fullscreenchange', function() {
+    var icon = document.getElementById('iconMapFullscreen');
+    if (icon) {
+        if (document.fullscreenElement) {
+            icon.className = 'fas fa-compress';
+        } else {
+            icon.className = 'fas fa-expand';
+        }
+    }
+    setTimeout(function() {
+        if (window.map) window.map.invalidateSize();
+    }, 200);
+});

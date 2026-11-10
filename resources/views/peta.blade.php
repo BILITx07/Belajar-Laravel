@@ -134,6 +134,105 @@
         height: 0 !important;
         visibility: hidden !important;
     }
+
+    /* ══ FLOATING MAP TOOLS (PERSIS REFERENSI: GPS, HOME, FULLSCREEN) ══ */
+    .bws-map-floating-tools {
+        position: absolute;
+        top: 84px;
+        left: 10px;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        pointer-events: auto;
+    }
+    .bws-map-tool-btn {
+        width: 38px;
+        height: 38px;
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #1a4d2e; /* Hijau tua elegan khas cartographic GIS seperti referensi */
+        font-size: 16px;
+        cursor: pointer;
+        outline: none !important;
+        transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+        padding: 0;
+    }
+    .bws-map-tool-btn:hover {
+        background: #f8fafc;
+        color: #10143a;
+        transform: scale(1.06);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+    }
+    .bws-map-tool-btn:active {
+        transform: scale(0.96);
+    }
+
+    /* Modern Squircle Leaflet Zoom Control */
+    .leaflet-bar {
+        border: 1px solid rgba(0, 0, 0, 0.08) !important;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+        border-radius: 12px !important;
+        overflow: hidden !important;
+    }
+    .leaflet-bar a {
+        width: 38px !important;
+        height: 38px !important;
+        line-height: 38px !important;
+        color: #1a4d2e !important;
+        font-weight: 700 !important;
+        background: #ffffff !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+    }
+    .leaflet-bar a:hover {
+        background: #f8fafc !important;
+        color: #10143a !important;
+    }
+
+    /* User GPS Location Marker Pulse Animation */
+    .bws-user-pulse-marker {
+        position: relative;
+    }
+    .bws-gps-dot {
+        width: 14px;
+        height: 14px;
+        background: #2563eb;
+        border: 2.5px solid #ffffff;
+        border-radius: 50%;
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        z-index: 2;
+    }
+    .bws-gps-pulse {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: rgba(37, 99, 235, 0.35);
+        animation: bwsGpsPulseAnim 1.8s infinite ease-out;
+    }
+    @keyframes bwsGpsPulseAnim {
+        0% { transform: scale(0.5); opacity: 1; }
+        100% { transform: scale(2.2); opacity: 0; }
+    }
+
+    /* Fullscreen Leaflet Card Support */
+    .bws-leaflet-card:fullscreen {
+        width: 100vw !important;
+        height: 100vh !important;
+        max-height: 100vh !important;
+        border-radius: 0 !important;
+        border: none !important;
+    }
+    .bws-leaflet-card:fullscreen #map {
+        height: 100vh !important;
+    }
 </style>
 @endpush
 
@@ -359,6 +458,19 @@
                     <span class="ml-2 font-weight-bold">Memuat koordinat spasial BWS Kalimantan I...</span>
                 </div>
                 <div id="map"></div>
+
+                <!-- ══ FLOATING MAP TOOLS (PERSIS REFERENSI: GPS, HOME, FULLSCREEN) ══ -->
+                <div class="bws-map-floating-tools">
+                    <button type="button" class="bws-map-tool-btn" id="btnMapLocate" onclick="locateUserPosition()" title="Lokasi Saya (Deteksi GPS)">
+                        <i class="fas fa-crosshairs" id="iconMapLocate"></i>
+                    </button>
+                    <button type="button" class="bws-map-tool-btn" id="btnMapHome" onclick="resetToKalbar()" title="Atur Ulang / Pusatkan ke Kalimantan Barat">
+                        <i class="fas fa-home"></i>
+                    </button>
+                    <button type="button" class="bws-map-tool-btn" id="btnMapFullscreen" onclick="toggleMapFullscreen()" title="Layar Penuh Peta">
+                        <i class="fas fa-expand" id="iconMapFullscreen"></i>
+                    </button>
+                </div>
             </div>
 
             <!-- Strip Info Bawah Peta (Persis Gambar Referensi QROP) -->
