@@ -81,14 +81,14 @@
 
     /* Hero Card - Seamless, Clean & Borderless ala QROP (PU Navy & Gold Edition) */
     .bws-hero-card {
-        background: linear-gradient(135deg, #10143a 0%, #161b4d 45%, #1c2364 100%) !important;
+        background: linear-gradient(115deg, #10143a 0%, #161b4d 50%, #1c2364 100%) !important;
         border: 1px solid rgba(255, 255, 255, 0.08) !important;
-        border-radius: 16px !important;
-        box-shadow: 0 12px 35px -5px rgba(16, 20, 58, 0.25) !important;
+        border-radius: 15px !important;
+        box-shadow: 0 6px 20px rgba(16, 20, 58, 0.15) !important;
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
-        padding: 24px 32px !important;
-        margin-bottom: 20px !important;
+        padding: 27px 30px !important;
+        margin-bottom: 25px !important;
     }
     .bws-dot-hero {
         width: 6px !important;
@@ -948,6 +948,41 @@
                 </div>
             </div>
         </div>
+
+        <!-- ============================================================ -->
+        <!-- KRING PENGAWASAN / KONTAK (PERSIS QROP .contact-section)     -->
+        <!-- ============================================================ -->
+        <section class="contact-section mt-5 mb-4" id="kontak" style="display: flex; align-items: center; justify-content: space-between; gap: 28px; background: linear-gradient(115deg, #10143a 0%, #161b4d 50%, #1c2364 100%); padding: 28px 32px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; color: #ffffff; box-shadow: 0 6px 20px rgba(16, 20, 58, 0.15);">
+            <div>
+                <p class="eyebrow" style="font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: #fad605; margin-bottom: 6px; text-transform: uppercase;">
+                    KRING PENGAWASAN &bull; LAYANAN INFORMASI
+                </p>
+                <h2 style="font-size: 20px; font-weight: 700; color: #ffffff; margin-bottom: 4px;">
+                    Butuh informasi lebih lanjut?
+                </h2>
+                <p style="font-size: 11.5px; color: rgba(255, 255, 255, 0.85); margin: 0;">
+                    Hubungi Balai Wilayah Sungai Kalimantan I Pontianak.
+                </p>
+            </div>
+            <div class="contact-actions d-flex flex-wrap" style="gap: 12px;">
+                <a href="https://wa.me/6285389999100" target="_blank" rel="noopener noreferrer" class="d-flex align-items-center text-decoration-none shadow-xs" style="background: #ffffff; border: 1px solid #d8e4d7; border-radius: 9px; padding: 10px 16px; gap: 11px; min-width: 190px; color: #1e293b;">
+                    <i class="fab fa-whatsapp text-success" style="font-size: 22px;"></i>
+                    <div>
+                        <span style="font-size: 9.5px; color: #64748b; display: block;">WhatsApp</span>
+                        <small style="font-size: 11.5px; font-weight: 700; color: #15803d; display: block;">+62 853 8999 9100</small>
+                    </div>
+                    <i class="fas fa-external-link-alt text-muted ml-auto" style="font-size: 10px;"></i>
+                </a>
+                <a href="https://instagram.com/bwskalimantan1" target="_blank" rel="noopener noreferrer" class="d-flex align-items-center text-decoration-none shadow-xs" style="background: #ffffff; border: 1px solid #d8e4d7; border-radius: 9px; padding: 10px 16px; gap: 11px; min-width: 190px; color: #1e293b;">
+                    <i class="fab fa-instagram text-danger" style="font-size: 22px;"></i>
+                    <div>
+                        <span style="font-size: 9.5px; color: #64748b; display: block;">Instagram</span>
+                        <small style="font-size: 11.5px; font-weight: 700; color: #be185d; display: block;">bwskalimantan1</small>
+                    </div>
+                    <i class="fas fa-external-link-alt text-muted ml-auto" style="font-size: 10px;"></i>
+                </a>
+            </div>
+        </section>
 
         <!-- ============================================================ -->
         <!-- 4. FOOTER RESMI KEMENTERIAN PU (BERSIH & ELEGAN)             -->

@@ -1,32 +1,33 @@
-<!-- Topbar Resmi WebGIS BWS Kalimantan I (Persis Bersih & Rapi ala QROP Spasial) -->
-<nav class="navbar navbar-expand sticky-top bws-qrop-navbar" style="min-height: 64px; height: 64px; z-index: 1030; background: #ffffff; border-bottom: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02); padding: 0;">
+<!-- Topbar Resmi WebGIS BWS Kalimantan I (Persis Proporsi Otentik QROP Spasial) -->
+<nav class="navbar navbar-expand sticky-top bws-qrop-navbar" style="min-height: 85px; z-index: 1030; background: #ffffff; border-bottom: 2.5px solid #10143a; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03); padding: 12px clamp(20px, 4vw, 72px);">
 
     <style>
         .bws-qrop-navbar {
             background: #ffffff !important;
-            border-bottom: 1px solid #e2e8f0 !important;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
-            min-height: 64px !important;
-            height: 64px !important;
-            padding: 0 !important;
+            border-bottom: 2.5px solid #10143a !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+            min-height: 85px !important;
+            padding: 12px clamp(20px, 4vw, 72px) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
             transition: all 0.2s ease;
         }
 
         .bws-navbar-inner-container {
-            max-width: 1240px;
+            max-width: 1600px;
             width: 100%;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 64px;
         }
 
         /* 1. Lambang Instansi di Kiri */
         .qrop-emblem-wrap {
-            width: 32px;
-            height: 32px;
+            width: 44px;
+            height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -34,11 +35,11 @@
         }
 
         .qrop-emblem-wrap:hover {
-            transform: scale(1.05);
+            transform: scale(1.04);
         }
 
         .qrop-emblem-text {
-            font-size: 7.5px;
+            font-size: 8px;
             font-weight: 700;
             letter-spacing: 0.5px;
             color: #1e293b;
@@ -51,54 +52,58 @@
 
         /* Garis Pembatas Vertikal Tipis Elegan */
         .qrop-nav-divider {
-            height: 28px;
+            height: 45px;
             width: 1px;
             background: #e2e8f0;
-            margin: 0 16px;
+            margin: 0 18px;
         }
 
         /* 2. Logo Brand Aplikasi Spasial (Presisi & Proporsional Sesuai Standar QROP) */
         .qrop-brand-title {
             display: flex;
             flex-direction: column;
-            line-height: 1.1;
+            line-height: 1.18;
+        }
+
+        .qrop-brand-headline {
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
         }
 
         .qrop-word-main {
-            font-size: 13px;
+            font-size: 18px;
             font-weight: 800;
-            letter-spacing: 1.6px;
+            letter-spacing: -0.3px;
             color: #10143a;
-            line-height: 1.1;
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         .qrop-word-accent {
-            font-size: 11px;
+            font-size: 16px;
             font-weight: 800;
-            letter-spacing: 1.6px;
+            letter-spacing: 0.5px;
             color: #f59e0b;
-            line-height: 1.1;
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         .qrop-word-sub {
-            font-size: 8.5px;
+            font-size: 11px;
             font-weight: 500;
-            letter-spacing: 0.2px;
+            letter-spacing: 0.25px;
             color: #64748b;
-            line-height: 1.15;
-            margin-top: 2px;
+            line-height: 1.2;
+            margin-top: 1px;
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         /* 3. Link Teks Navigasi Kanan (Tentang & Hubungi kami) */
         .qrop-nav-text-link {
-            font-size: 13px;
-            font-weight: 500;
-            color: #334155 !important;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #475569 !important;
             text-decoration: none !important;
-            padding: 6px 12px;
+            padding: 8px 12px;
             border-radius: 6px;
             transition: all 0.2s ease;
         }
@@ -112,31 +117,35 @@
         .btn-qrop-masuk {
             display: inline-flex;
             align-items: center;
-            gap: 7px;
+            gap: 8px;
             border: 1px solid #cbd5e1;
             border-radius: 8px;
             background: #ffffff;
             color: #0f172a !important;
             font-weight: 600;
-            font-size: 13px;
-            padding: 6px 14px;
+            font-size: 13.5px;
+            padding: 9px 18px;
             text-decoration: none !important;
             transition: all 0.2s ease;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
         }
 
         .btn-qrop-masuk:hover {
-            border-color: #94a3b8;
+            border-color: #10143a;
             background: #f8fafc;
-            color: #0f172a !important;
+            color: #10143a !important;
             transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+            box-shadow: 0 3px 10px rgba(16, 20, 58, 0.08);
         }
 
         .btn-qrop-masuk i {
             color: #0f172a;
-            font-size: 12.5px;
+            font-size: 13.5px;
             transition: color 0.2s ease;
+        }
+
+        .btn-qrop-masuk:hover i {
+            color: #10143a;
         }
 
         .user-pill-qrop {
@@ -160,7 +169,7 @@
         <!-- 1. Lambang Daerah / Instansi PU + Teks Nama Instansi di Bawah -->
         <a href="{{ route('peta') }}" class="d-flex flex-column align-items-center text-decoration-none mr-1" title="Balai Wilayah Sungai Kalimantan I Pontianak">
             <div class="qrop-emblem-wrap">
-                <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo Kementerian Pekerjaan Umum" style="width: 28px; height: 28px; object-fit: contain;">
+                <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo Kementerian Pekerjaan Umum" style="width: 40px; height: 40px; object-fit: contain;">
             </div>
             <div class="qrop-emblem-text d-none d-sm-block">
                 <div>BALAI WILAYAH SUNGAI</div>
@@ -174,13 +183,15 @@
         <!-- 2. Logo Brand Aplikasi Spasial: Logo Resmi SIPDIRA -->
         <a href="{{ route('peta') }}" class="d-flex align-items-center text-decoration-none">
             <!-- Logo Ikon Resmi SIPDIRA (Modular Spatial & Aliran Irigasi BWSK I) -->
-            <div class="mr-2.5 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 34px; height: 34px;">
+            <div class="mr-2.5 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 42px; height: 42px;">
                 <img src="{{ asset('img/logo-sipdira.svg') }}" alt="Logo SIPDIRA" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
             <div class="d-flex flex-column justify-content-center">
                 <div class="qrop-brand-title">
-                    <span class="qrop-word-main">SIPDIRA</span>
-                    <span class="qrop-word-accent">SPASIAL</span>
+                    <div class="qrop-brand-headline">
+                        <span class="qrop-word-main">SIPDIRA</span>
+                        <span class="qrop-word-accent">SPASIAL</span>
+                    </div>
                     <span class="qrop-word-sub">BWS Kalimantan I Pontianak</span>
                 </div>
             </div>
@@ -188,7 +199,7 @@
     </div>
 
     <!-- ═══ BAGIAN KANAN: MENU TEKS & TOMBOL AKSI ALA QROP ═══ -->
-    <ul class="navbar-nav ml-auto align-items-center" style="gap: 16px;">
+    <ul class="navbar-nav ml-auto align-items-center" style="gap: 24px;">
 
         <!-- Menu Link: Tentang SIPDIRA (Scroll ke Section Tentang) -->
         <li class="nav-item d-none d-lg-block">

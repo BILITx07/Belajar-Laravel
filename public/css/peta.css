@@ -41,30 +41,30 @@ body {
 }
 
 /* ============================================================
-   1. WADAH HALAMAN (PERSIS PROPORSI RAPAT & RAPI QROP)
+   1. WADAH HALAMAN (PERSIS PROPORSI RAPAT & RAPI QROP SPASIAL)
    ============================================================ */
 .bws-qrop-page {
-    max-width: 1240px;
+    max-width: 1600px;
     margin: 0 auto;
-    padding: 24px 20px 40px 20px;
+    padding: 30px clamp(20px, 4vw, 72px) 40px;
 }
 
 /* ============================================================
    2. KARTU HERO BANNER BESAR & MEWAH (TEMA RESMI PU & QROP CLEAN)
    ============================================================ */
 .bws-hero-card {
-    background: linear-gradient(135deg, #10143a 0%, #161b4d 45%, #1c2364 100%);
-    border-radius: 16px;
+    background: linear-gradient(115deg, #10143a 0%, #161b4d 50%, #1c2364 100%);
+    border-radius: 15px;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 24px 32px;
+    padding: 27px 30px;
     color: #ffffff;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 12px 35px -5px rgba(16, 20, 58, 0.25);
+    box-shadow: 0 6px 20px rgba(16, 20, 58, 0.15);
 }
 
 .bws-hero-content {
@@ -162,31 +162,29 @@ body {
 }
 
 /* ============================================================
-   3. WORKSPACE SEJAJAR: SIDEBAR KIRI + AREA PETA KANAN
+   3. WORKSPACE SEJAJAR: SIDEBAR KIRI + AREA PETA KANAN (CSS GRID 1:1 QROP)
    ============================================================ */
 .bws-qrop-workspace {
-    display: flex;
+    display: grid;
+    grid-template-columns: 285px minmax(0, 1fr);
     gap: 18px;
     align-items: stretch;
     position: relative;
     margin-bottom: 32px;
 }
 
-/* SIDEBAR KIRI GLASSMORPHISM (PERSIS GAMBAR 1 REFERENSI QROP) */
+/* SIDEBAR KIRI (PERSIS QROP .search-panel) */
 .bws-sidebar-card {
-    width: 320px;
-    min-width: 320px;
-    max-width: 320px;
+    padding: 22px;
     background: #ffffff;
-    border-radius: 16px;
     border: 1px solid #e2e8f0;
-    padding: 20px 18px 16px 18px;
+    border-radius: 14px;
+    border-top: 3px solid #10143a;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+    min-width: 0;
+    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.03);
     box-sizing: border-box;
-    align-self: stretch;
 }
 
 /* Scrollbar Elegan & Halus untuk Sidebar */
@@ -517,24 +515,30 @@ body {
 }
 
 /* ============================================================
-   4. KONTEN AREA KANAN: PETA LEAFLET LUAS (PERSIS GAMBAR 1)
+   4. KONTEN AREA KANAN: PETA LEAFLET LUAS (PERSIS QROP .map-panel)
    ============================================================ */
 .bws-map-container-column {
-    flex: 1;
-    min-width: 0;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    align-self: stretch;
+    min-width: 0;
+    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.03);
 }
 
 /* Topbar Header Peta */
 .bws-map-topbar {
+    padding: 13px 18px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 8px;
-    min-height: 26px;
-    flex-shrink: 0;
+    gap: 12px;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 11px;
+    min-height: 48px;
+    background: #f8fafc;
 }
 
 .bws-dot-green-qrop {
@@ -660,39 +664,39 @@ body {
     background: #b45309;
 }
 
-/* Wadah Kartu Peta Glassmorphism (Persis Proporsi QROP) */
+/* Wadah Kartu Peta (Persis QROP .map-canvas) */
 .bws-leaflet-card {
-    background: #ffffff;
-    border-radius: 16px;
-    border: 1px solid #e2e8f0;
-    overflow: hidden;
     position: relative;
-    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
     flex: 1 1 auto;
-    display: flex;
-    flex-direction: column;
-    min-height: 500px;
-    height: auto;
-}
-
-#map {
-    width: 100%;
-    height: 100%;
-    min-height: 500px;
-    flex: 1;
+    min-height: 540px;
+    height: clamp(540px, 62vh, 800px);
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: hidden;
     background: #e2e8f0;
 }
 
-/* Strip Info Bawah Peta (Persis Gambar Referensi QROP) */
+#map {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: #e2e8f0;
+}
+
+/* Strip Info Bawah Peta (Persis QROP .map-status) */
 .bws-map-footer-strip {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 8px 4px 0 4px;
-    font-size: 11.5px;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 9px 16px;
+    border-top: 1px solid #e2e8f0;
+    min-height: 35px;
+    font-size: 10.5px;
     color: #64748b;
-    min-height: 24px;
-    flex-shrink: 0;
+    background: #ffffff;
 }
 
 .bws-pulse-dot {
@@ -1118,33 +1122,31 @@ body {
    8. TENTANG SIPDIRA & KRING LAYANAN (PERSIS GAMBAR REFERENSI QROP)
    ============================================================ */
 .sipdira-about-section {
-    margin-top: 36px;
-    padding-top: 28px;
+    max-width: 1456px;
+    margin: 8px auto 0;
+    padding: 52px 0 24px;
     border-top: 1px solid #e2e8f0;
 }
 
-/* Grid Sejajar 2 Kolom (Persis Mengikuti Lebar Sidebar & Peta di Atasnya) */
+/* Grid Sejajar 2 Kolom (Persis QROP .about-section) */
 .sipdira-about-grid {
-    display: flex;
-    gap: 18px;
-    align-items: stretch;
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 65px;
+    align-items: center;
     width: 100%;
 }
 
 .sipdira-about-brand-col {
-    width: 320px;
-    min-width: 320px;
-    max-width: 320px;
-    flex-shrink: 0;
+    width: 100%;
+    min-width: 0;
 }
 
 .sipdira-about-text-col {
-    flex: 1;
     min-width: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-left: 10px;
 }
 
 /* Card Brand Kotak Kiri (Glassmorphism Khas PU Navy & Emas) */
