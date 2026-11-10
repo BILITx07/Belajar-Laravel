@@ -1940,3 +1940,246 @@ body {
     height: 0 !important;
     visibility: hidden !important;
 }
+
+/* ══ FLOATING LAYER CONTROL PANEL (PERSIS GAMBAR 2 REFERENSI QROP) ══ */
+.bws-floating-layer-panel {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 1000;
+    width: 228px;
+    max-height: calc(100% - 24px);
+    background: #ffffff;
+    border-radius: 14px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    pointer-events: auto;
+    font-family: inherit;
+    animation: bwsFadeSlideDown 0.2s ease-out;
+}
+@keyframes bwsFadeSlideDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.bws-floating-layer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11px 14px 9px 14px;
+    border-bottom: 1px solid #f1f5f9;
+    background: #ffffff;
+}
+.bws-floating-layer-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #1e293b;
+    letter-spacing: -0.2px;
+}
+.bws-floating-layer-hide-btn {
+    background: #ecfdf5;
+    color: #15803d;
+    border: 1px solid #d1fae5;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    cursor: pointer;
+    outline: none !important;
+    transition: all 0.15s ease;
+    line-height: 1.3;
+}
+.bws-floating-layer-hide-btn:hover {
+    background: #dcfce7;
+    color: #166534;
+    border-color: #86efac;
+}
+.bws-floating-layer-body {
+    padding: 10px 14px 14px 14px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    max-height: 390px;
+}
+/* Custom Scrollbar Persis Gambar 2 */
+.bws-floating-layer-body::-webkit-scrollbar {
+    width: 6px;
+}
+.bws-floating-layer-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+.bws-floating-layer-body::-webkit-scrollbar-thumb {
+    background: #94a3b8;
+    border-radius: 6px;
+}
+.bws-floating-layer-body::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+.bws-layer-sec-item {
+    display: flex;
+    flex-direction: column;
+}
+.bws-layer-sec-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: 4px 0 6px 0;
+    user-select: none;
+}
+.bws-layer-sec-header span {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #15803d; /* Hijau cartographic khas QROP */
+    letter-spacing: -0.1px;
+}
+.bws-chevron-indicator {
+    font-size: 11px;
+    color: #64748b;
+    transition: transform 0.2s ease;
+}
+.bws-layer-sec-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 2px;
+}
+.bws-layer-item-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    cursor: pointer;
+    user-select: none;
+}
+.bws-layer-item-label {
+    font-size: 12.5px;
+    color: #334155;
+    font-weight: 500;
+    line-height: 1.3;
+    transition: color 0.15s ease;
+}
+.bws-layer-item-row:hover .bws-layer-item-label {
+    color: #0f172a;
+}
+.bws-floating-layer-divider {
+    border-top: 1px solid #e2e8f0;
+    margin: 10px 0;
+}
+
+/* Custom Radio Persis Gambar 2 (Lingkaran Hijau Elegan) */
+.bws-custom-radio {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    border: 1.8px solid #94a3b8;
+    border-radius: 50%;
+    outline: none;
+    margin: 0;
+    cursor: pointer;
+    display: grid;
+    place-content: center;
+    transition: border-color 0.15s ease;
+    background: #ffffff;
+    flex-shrink: 0;
+}
+.bws-custom-radio::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    transform: scale(0);
+    transition: 0.12s transform ease-in-out;
+    background-color: #15803d;
+}
+.bws-custom-radio:checked {
+    border-color: #15803d;
+}
+.bws-custom-radio:checked::before {
+    transform: scale(1);
+}
+
+/* Custom Checkbox Persis Gambar 2 (Kotak Hijau Berisi Centang Putih) */
+.bws-custom-check {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    border: 1.8px solid #94a3b8;
+    border-radius: 4px;
+    outline: none;
+    margin: 0;
+    cursor: pointer;
+    display: grid;
+    place-content: center;
+    transition: all 0.15s ease;
+    background: #ffffff;
+    flex-shrink: 0;
+}
+.bws-custom-check:checked {
+    background-color: #15803d;
+    border-color: #15803d;
+}
+.bws-custom-check:checked::after {
+    content: "✓";
+    font-size: 10px;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1;
+}
+
+/* Tombol Toggle Melayang saat Panel Disembunyikan */
+.bws-layer-toggle-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 999;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+    padding: 8px 14px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #15803d;
+    display: none;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+    outline: none !important;
+    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: auto;
+}
+.bws-layer-toggle-btn:hover {
+    background: #f8fafc;
+    color: #10143a;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+}
+.bws-layer-toggle-btn:active {
+    transform: scale(0.97);
+}
+
+/* Status Pill di Header Topbar */
+.bws-topbar-status-badge {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #475569;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 4px 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.bws-pulse-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: #16a34a;
+    box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2);
+}

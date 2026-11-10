@@ -22,10 +22,17 @@ var googleSat = L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}'
     attribution: '&copy; Google Maps Satellite | BWS Kalimantan I'
 });
 
+// Peta Dasar Google Streets (Sesuai Referensi Gambar 2)
+var googleStreets = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+    maxZoom: 20,
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+    attribution: '&copy; Google Maps Streets | BWS Kalimantan I'
+});
+
 var map = L.map('map', {
     center: defaultCenter,
     zoom: 8,
-    layers: [osm],
+    layers: [googleStreets],
     zoomControl: true
 });
 if (map.attributionControl) {
@@ -149,21 +156,100 @@ var layerSaluran    = L.layerGroup(); // Default nonaktif saat pertama kali buka
 var layerBangunan   = L.layerGroup(); // Default nonaktif saat pertama kali buka
 var layerWsKapuas   = L.layerGroup();
 
-/* Fungsi Ganti Peta Dasar (Peta Jalan vs Satelit) via Tombol Rapi di Atas Peta */
+/* Fungsi Ganti Peta Dasar (Google Satellite, Google Streets, OpenStreetMap) */
 window.switchBasemap = function(type) {
+    if (map.hasLayer(osm)) map.removeLayer(osm);
+    if (map.hasLayer(googleSat)) map.removeLayer(googleSat);
+    if (map.hasLayer(googleStreets)) map.removeLayer(googleStreets);
+
+    if (type === 'sat') {
+        if (!map.hasLayer(googleSat)) map.addLayer(googleSat);
+    } else if (type === 'osm') {
+        if (!map.hasLayer(osm)) map.addLayer(osm);
+    } else {
+        // default: 'streets'
+        if (!map.hasLayer(googleStreets)) map.addLayer(googleStreets);
+    }
+
+    // Sinkronkan radio input pada floating layer panel
+    var radios = document.querySelectorAll('input[name="floating_basemap"]');
+    radios.forEach(function(r) {
+        r.checked = (r.value === type);
+    });
+
+    // Sinkronkan tombol lama jika ada di DOM
     var btnOsm = document.getElementById('btnBasemapOsm');
     var btnSat = document.getElementById('btnBasemapSat');
-    if (type === 'sat') {
-        if (map.hasLayer(osm)) map.removeLayer(osm);
-        if (!map.hasLayer(googleSat)) map.addLayer(googleSat);
-        if (btnOsm) btnOsm.classList.remove('active');
-        if (btnSat) btnSat.classList.add('active');
-    } else {
-        if (map.hasLayer(googleSat)) map.removeLayer(googleSat);
-        if (!map.hasLayer(osm)) map.addLayer(osm);
-        if (btnSat) btnSat.classList.remove('active');
-        if (btnOsm) btnOsm.classList.add('active');
+    if (btnOsm && btnSat) {
+        if (type === 'sat') {
+            btnOsm.classList.remove('active');
+            btnSat.classList.add('active');
+        } else {
+            btnSat.classList.remove('active');
+            btnOsm.classList.add('active');
+        }
     }
+};
+
+/* Buka / Sembunyikan Panel Melayang Pilihan Layer */
+window.toggleFloatingLayerPanel = function(show) {
+    var panel = document.getElementById('floatingLayerPanel');
+    var btnOpen = document.getElementById('btnOpenLayerPanel');
+    if (!panel || !btnOpen) return;
+
+    if (show) {
+        panel.style.display = 'flex';
+        btnOpen.style.display = 'none';
+    } else {
+        panel.style.display = 'none';
+        btnOpen.style.display = 'inline-flex';
+    }
+};
+
+/* Collapse / Expand Seksi di dalam Panel Layer */
+window.toggleLayerSection = function(sectionId, headerEl) {
+    var list = document.getElementById(sectionId);
+    if (!list) return;
+    var icon = headerEl.querySelector('.bws-chevron-indicator');
+    if (list.style.display === 'none') {
+        list.style.display = 'flex';
+        if (icon) {
+            icon.classList.remove('fa-caret-down');
+            icon.classList.add('fa-caret-up');
+        }
+    } else {
+        list.style.display = 'none';
+        if (icon) {
+            icon.classList.remove('fa-caret-up');
+            icon.classList.add('fa-caret-down');
+        }
+    }
+};
+
+/* Toggle Layer Wilayah Sungai (WS Kapuas) */
+window.toggleWsKapuasLayer = function(isChecked) {
+    if (isChecked) {
+        if (!map.hasLayer(layerWsKapuas)) map.addLayer(layerWsKapuas);
+    } else {
+        if (map.hasLayer(layerWsKapuas)) map.removeLayer(layerWsKapuas);
+    }
+    var chk = document.getElementById('chkFloatingWsKapuas');
+    if (chk) chk.checked = isChecked;
+};
+
+/* Toggle Layer Batas Wilayah DIR */
+window.toggleBatasDirLayer = function(isChecked) {
+    ['baku', 'fungsional', 'potensial'].forEach(function(cat) {
+        toggleCategoryLayer(cat, isChecked);
+    });
+    var chk = document.getElementById('chkFloatingBatasKec');
+    if (chk) chk.checked = isChecked;
+};
+
+/* Toggle Layer Batas Administrasi */
+window.toggleBatasAdminLayer = function(isChecked) {
+    var chk = document.getElementById('chkFloatingBatasAdmin');
+    if (chk) chk.checked = isChecked;
 };
 
 /* ============================================================
@@ -698,9 +784,12 @@ window.toggleCategoryLayer = function(cat, isChecked) {
         if (map.hasLayer(layer)) map.removeLayer(layer);
     }
 
+    var capCat = cat.charAt(0).toUpperCase() + cat.slice(1);
+
     // Beri umpan balik visual (.inactive) pada kartu kategori di sidebar
-    var chk = document.getElementById('chkLayer' + cat.charAt(0).toUpperCase() + cat.slice(1));
+    var chk = document.getElementById('chkLayer' + capCat);
     if (chk) {
+        chk.checked = isChecked;
         var row = chk.closest('.bws-category-row');
         if (row) {
             if (isChecked) {
@@ -709,6 +798,12 @@ window.toggleCategoryLayer = function(cat, isChecked) {
                 row.classList.add('inactive');
             }
         }
+    }
+
+    // Sinkronkan checkbox pada floating layer panel
+    var chkFloating = document.getElementById('chkFloating' + capCat);
+    if (chkFloating) {
+        chkFloating.checked = isChecked;
     }
 };
 

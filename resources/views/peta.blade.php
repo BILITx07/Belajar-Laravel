@@ -233,6 +233,249 @@
     .bws-leaflet-card:fullscreen #map {
         height: 100vh !important;
     }
+
+    /* ══ FLOATING LAYER CONTROL PANEL (PERSIS GAMBAR 2 REFERENSI QROP) ══ */
+    .bws-floating-layer-panel {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        z-index: 1000;
+        width: 228px;
+        max-height: calc(100% - 24px);
+        background: #ffffff;
+        border-radius: 14px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        pointer-events: auto;
+        font-family: inherit;
+        animation: bwsFadeSlideDown 0.2s ease-out;
+    }
+    @keyframes bwsFadeSlideDown {
+        from { opacity: 0; transform: translateY(-6px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .bws-floating-layer-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 11px 14px 9px 14px;
+        border-bottom: 1px solid #f1f5f9;
+        background: #ffffff;
+    }
+    .bws-floating-layer-title {
+        font-size: 13.5px;
+        font-weight: 700;
+        color: #1e293b;
+        letter-spacing: -0.2px;
+    }
+    .bws-floating-layer-hide-btn {
+        background: #ecfdf5;
+        color: #15803d;
+        border: 1px solid #d1fae5;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 3px 8px;
+        cursor: pointer;
+        outline: none !important;
+        transition: all 0.15s ease;
+        line-height: 1.3;
+    }
+    .bws-floating-layer-hide-btn:hover {
+        background: #dcfce7;
+        color: #166534;
+        border-color: #86efac;
+    }
+    .bws-floating-layer-body {
+        padding: 10px 14px 14px 14px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        max-height: 390px;
+    }
+    /* Custom Scrollbar Persis Gambar 2 */
+    .bws-floating-layer-body::-webkit-scrollbar {
+        width: 6px;
+    }
+    .bws-floating-layer-body::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .bws-floating-layer-body::-webkit-scrollbar-thumb {
+        background: #94a3b8;
+        border-radius: 6px;
+    }
+    .bws-floating-layer-body::-webkit-scrollbar-thumb:hover {
+        background: #64748b;
+    }
+    .bws-layer-sec-item {
+        display: flex;
+        flex-direction: column;
+    }
+    .bws-layer-sec-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        padding: 4px 0 6px 0;
+        user-select: none;
+    }
+    .bws-layer-sec-header span {
+        font-size: 12.5px;
+        font-weight: 700;
+        color: #15803d; /* Hijau cartographic khas QROP */
+        letter-spacing: -0.1px;
+    }
+    .bws-chevron-indicator {
+        font-size: 11px;
+        color: #64748b;
+        transition: transform 0.2s ease;
+    }
+    .bws-layer-sec-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding-top: 2px;
+    }
+    .bws-layer-item-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0;
+        cursor: pointer;
+        user-select: none;
+    }
+    .bws-layer-item-label {
+        font-size: 12.5px;
+        color: #334155;
+        font-weight: 500;
+        line-height: 1.3;
+        transition: color 0.15s ease;
+    }
+    .bws-layer-item-row:hover .bws-layer-item-label {
+        color: #0f172a;
+    }
+    .bws-floating-layer-divider {
+        border-top: 1px solid #e2e8f0;
+        margin: 10px 0;
+    }
+
+    /* Custom Radio Persis Gambar 2 (Lingkaran Hijau Elegan) */
+    .bws-custom-radio {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 15px;
+        height: 15px;
+        border: 1.8px solid #94a3b8;
+        border-radius: 50%;
+        outline: none;
+        margin: 0;
+        cursor: pointer;
+        display: grid;
+        place-content: center;
+        transition: border-color 0.15s ease;
+        background: #ffffff;
+        flex-shrink: 0;
+    }
+    .bws-custom-radio::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        transform: scale(0);
+        transition: 0.12s transform ease-in-out;
+        background-color: #15803d;
+    }
+    .bws-custom-radio:checked {
+        border-color: #15803d;
+    }
+    .bws-custom-radio:checked::before {
+        transform: scale(1);
+    }
+
+    /* Custom Checkbox Persis Gambar 2 (Kotak Hijau Berisi Centang Putih) */
+    .bws-custom-check {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 15px;
+        height: 15px;
+        border: 1.8px solid #94a3b8;
+        border-radius: 4px;
+        outline: none;
+        margin: 0;
+        cursor: pointer;
+        display: grid;
+        place-content: center;
+        transition: all 0.15s ease;
+        background: #ffffff;
+        flex-shrink: 0;
+    }
+    .bws-custom-check:checked {
+        background-color: #15803d;
+        border-color: #15803d;
+    }
+    .bws-custom-check:checked::after {
+        content: "✓";
+        font-size: 10px;
+        font-weight: 800;
+        color: #ffffff;
+        line-height: 1;
+    }
+
+    /* Tombol Toggle Melayang saat Panel Disembunyikan */
+    .bws-layer-toggle-btn {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        z-index: 999;
+        background: #ffffff;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        border-radius: 12px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+        padding: 8px 14px;
+        font-size: 12.5px;
+        font-weight: 700;
+        color: #15803d;
+        display: none;
+        align-items: center;
+        gap: 7px;
+        cursor: pointer;
+        outline: none !important;
+        transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+        pointer-events: auto;
+    }
+    .bws-layer-toggle-btn:hover {
+        background: #f8fafc;
+        color: #10143a;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+    }
+    .bws-layer-toggle-btn:active {
+        transform: scale(0.97);
+    }
+
+    /* Status Pill di Header Topbar */
+    .bws-topbar-status-badge {
+        font-size: 11.5px;
+        font-weight: 600;
+        color: #475569;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 20px;
+        padding: 4px 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .bws-pulse-status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background-color: #16a34a;
+        box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2);
+    }
 </style>
 @endpush
 
@@ -425,7 +668,7 @@
         <!-- ── AREA KANAN: PETA INTERAKTIF LUAS (PERSIS GAMBAR 1 QROP) ── -->
         <main class="bws-map-container-column">
 
-            <!-- Header Peta Ramping (Breadcrumb Kiri & Badge Kanan) -->
+            <!-- Header Peta Ramping (Breadcrumb Kiri & Badge Status Kanan) -->
             <div class="bws-map-topbar">
                 <div class="d-flex align-items-center">
                     <span class="bws-dot-green-qrop"></span>
@@ -434,20 +677,10 @@
                     <span class="text-muted small font-weight-bold" id="currentBreadcrumbLabel">Seluruh Kalimantan Barat</span>
                 </div>
 
-                <div class="d-flex align-items-center" style="gap: 8px;">
-                    <!-- Switcher Peta Standar vs Satelit Rapi -->
-                    <div class="btn-group btn-group-sm bws-basemap-group shadow-sm" role="group">
-                        <button type="button" class="btn btn-sm bws-basemap-btn active" id="btnBasemapOsm" onclick="switchBasemap('osm')" title="Ganti ke Peta Standar / Peta Vektor">
-                            <i class="fas fa-map mr-1"></i> Peta
-                        </button>
-                        <button type="button" class="btn btn-sm bws-basemap-btn" id="btnBasemapSat" onclick="switchBasemap('sat')" title="Ganti ke Citra Satelit Google">
-                            <i class="fas fa-satellite mr-1"></i> Satelit
-                        </button>
-                    </div>
-
-                    <button type="button" class="btn btn-sm btn-white bws-action-pill shadow-sm" onclick="resetToKalbar()" title="Kembalikan tampilan ke seluruh Kalimantan Barat">
-                        <i class="fas fa-home mr-1 text-primary"></i> Atur Ulang
-                    </button>
+                <div class="d-none d-sm-flex align-items-center">
+                    <span class="bws-topbar-status-badge">
+                        <span class="bws-pulse-status-dot"></span> WebGIS Aktif
+                    </span>
                 </div>
             </div>
 
@@ -470,6 +703,104 @@
                     <button type="button" class="bws-map-tool-btn" id="btnMapFullscreen" onclick="toggleMapFullscreen()" title="Layar Penuh Peta">
                         <i class="fas fa-expand" id="iconMapFullscreen"></i>
                     </button>
+                </div>
+
+                <!-- ══ TOMBOL TOGGLE PILIHAN LAYER (SAAT PANEL DISEMBUNYIKAN) ══ -->
+                <button type="button" class="bws-layer-toggle-btn shadow-sm" id="btnOpenLayerPanel" onclick="toggleFloatingLayerPanel(true)" title="Tampilkan Pilihan Layer">
+                    <i class="fas fa-layer-group text-success"></i>
+                    <span>Pilihan layer</span>
+                </button>
+
+                <!-- ══ KARTU MELAYANG PILIHAN LAYER (PERSIS REFERENSI QROP GAMBAR 2) ══ -->
+                <div class="bws-floating-layer-panel" id="floatingLayerPanel">
+                    <!-- Header Panel: Judul & Tombol Sembunyikan -->
+                    <div class="bws-floating-layer-header">
+                        <span class="bws-floating-layer-title">Pilihan layer</span>
+                        <button type="button" class="bws-floating-layer-hide-btn" onclick="toggleFloatingLayerPanel(false)" title="Sembunyikan panel layer">
+                            Sembunyikan
+                        </button>
+                    </div>
+
+                    <!-- Isi Panel Layer Berkelompok -->
+                    <div class="bws-floating-layer-body">
+                        <!-- 1. Peta dasar -->
+                        <div class="bws-layer-sec-item">
+                            <div class="bws-layer-sec-header" onclick="toggleLayerSection('secListBasemap', this)">
+                                <span>Peta dasar</span>
+                                <i class="fas fa-caret-up bws-chevron-indicator"></i>
+                            </div>
+                            <div class="bws-layer-sec-list" id="secListBasemap">
+                                <label class="bws-layer-item-row">
+                                    <input type="radio" name="floating_basemap" value="sat" class="bws-custom-radio" onchange="switchBasemap('sat')">
+                                    <span class="bws-layer-item-label">Google Satellite</span>
+                                </label>
+                                <label class="bws-layer-item-row">
+                                    <input type="radio" name="floating_basemap" value="streets" class="bws-custom-radio" checked onchange="switchBasemap('streets')">
+                                    <span class="bws-layer-item-label">Google Streets</span>
+                                </label>
+                                <label class="bws-layer-item-row">
+                                    <input type="radio" name="floating_basemap" value="osm" class="bws-custom-radio" onchange="switchBasemap('osm')">
+                                    <span class="bws-layer-item-label">OpenStreetMap</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="bws-floating-layer-divider"></div>
+
+                        <!-- 2. Batas wilayah -->
+                        <div class="bws-layer-sec-item">
+                            <div class="bws-layer-sec-header" onclick="toggleLayerSection('secListBatas', this)">
+                                <span>Batas wilayah</span>
+                                <i class="fas fa-caret-up bws-chevron-indicator"></i>
+                            </div>
+                            <div class="bws-layer-sec-list" id="secListBatas">
+                                <label class="bws-layer-item-row">
+                                    <input type="checkbox" id="chkFloatingBatasAdmin" class="bws-custom-check" onchange="toggleBatasAdminLayer(this.checked)">
+                                    <span class="bws-layer-item-label">Batas Administrasi</span>
+                                </label>
+                                <label class="bws-layer-item-row">
+                                    <input type="checkbox" id="chkFloatingBatasKec" class="bws-custom-check" checked onchange="toggleBatasDirLayer(this.checked)">
+                                    <span class="bws-layer-item-label">Batas Wilayah DIR</span>
+                                </label>
+                                <label class="bws-layer-item-row">
+                                    <input type="checkbox" id="chkFloatingWsKapuas" class="bws-custom-check" onchange="toggleWsKapuasLayer(this.checked)">
+                                    <span class="bws-layer-item-label">Wilayah Sungai (WS Kapuas)</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="bws-floating-layer-divider"></div>
+
+                        <!-- 3. Kategori Layer Irigasi -->
+                        <div class="bws-layer-sec-item">
+                            <div class="bws-layer-sec-header" onclick="toggleLayerSection('secListIrigasi', this)">
+                                <span>Data Spasial Irigasi</span>
+                                <i class="fas fa-caret-up bws-chevron-indicator"></i>
+                            </div>
+                            <div class="bws-layer-sec-list" id="secListIrigasi">
+                                <label class="bws-layer-item-row">
+                                    <input type="checkbox" id="chkFloatingBaku" class="bws-custom-check" checked onchange="toggleCategoryLayer('baku', this.checked)">
+                                    <span class="bws-layer-item-label">Lahan Baku</span>
+                                </label>
+                                <label class="bws-layer-item-row">
+                                    <input type="checkbox" id="chkFloatingFungsional" class="bws-custom-check" checked onchange="toggleCategoryLayer('fungsional', this.checked)">
+                                    <span class="bws-layer-item-label">Lahan Fungsional</span>
+                                </label>
+                                <label class="bws-layer-item-row">
+                                    <input type="checkbox" id="chkFloatingPotensial" class="bws-custom-check" checked onchange="toggleCategoryLayer('potensial', this.checked)">
+                                    <span class="bws-layer-item-label">Lahan Potensial</span>
+                                </label>
+                                <label class="bws-layer-item-row">
+                                    <input type="checkbox" id="chkFloatingSaluran" class="bws-custom-check" onchange="toggleCategoryLayer('saluran', this.checked)">
+                                    <span class="bws-layer-item-label">Jaringan Saluran</span>
+                                </label>
+                                <label class="bws-layer-item-row">
+                                    <input type="checkbox" id="chkFloatingBangunan" class="bws-custom-check" onchange="toggleCategoryLayer('bangunan', this.checked)">
+                                    <span class="bws-layer-item-label">Bangunan Air</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
