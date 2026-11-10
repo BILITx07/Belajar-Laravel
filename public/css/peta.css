@@ -1941,6 +1941,40 @@ body {
     visibility: hidden !important;
 }
 
+/* ══ MODE PERLUAS PETA ALA QROP (IN-PAGE EXPAND, BUKAN FULLSCREEN MONITOR) ══ */
+.bws-qrop-page.bws-map-expanded .bws-hero-card {
+    display: none !important;
+}
+.bws-qrop-page.bws-map-expanded .bws-sidebar-card {
+    display: none !important;
+}
+.bws-qrop-page.bws-map-expanded .bws-qrop-workspace {
+    gap: 0 !important;
+}
+.bws-qrop-page.bws-map-expanded .bws-map-container-column {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 1 1 100% !important;
+}
+.bws-qrop-page.bws-map-expanded .bws-leaflet-card {
+    height: calc(100vh - 165px) !important;
+    min-height: 560px !important;
+    border-radius: 16px !important;
+    border: 2px solid #166534 !important; /* Border hijau cartographic persis gambar 1 QROP */
+    box-shadow: 0 10px 30px rgba(16, 20, 58, 0.12) !important;
+}
+.bws-qrop-page.bws-map-expanded #map {
+    height: 100% !important;
+    min-height: 560px !important;
+}
+.bws-qrop-page.bws-map-expanded .bws-map-topbar {
+    background: #f8fafc;
+    padding: 9px 16px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 10px;
+}
+
 /* ══ FLOATING MAP TOOLS (PERSIS REFERENSI: GPS, HOME, FULLSCREEN) ══ */
 .bws-map-floating-tools {
     position: absolute;

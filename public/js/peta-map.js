@@ -1207,37 +1207,50 @@ window.locateUserPosition = function() {
     );
 };
 
+/* ============================================================
+   14. FITUR PERLUAS PETA / IN-PAGE EXPAND (PERSIS REFERENSI QROP)
+   ============================================================ */
 window.toggleMapFullscreen = function() {
-    var mapCard = document.querySelector('.bws-leaflet-card');
+    var page = document.querySelector('.bws-qrop-page');
     var icon = document.getElementById('iconMapFullscreen');
+    var btn = document.getElementById('btnMapFullscreen');
+    if (!page) return;
 
-    if (!document.fullscreenElement) {
-        if (mapCard && mapCard.requestFullscreen) {
-            mapCard.requestFullscreen().catch(function() {
-                document.documentElement.requestFullscreen().catch(function() {});
-            });
-        } else {
-            document.documentElement.requestFullscreen().catch(function() {});
+    var isExpanded = page.classList.toggle('bws-map-expanded');
+
+    if (icon) {
+        icon.className = isExpanded ? 'fas fa-compress' : 'fas fa-expand';
+    }
+    if (btn) {
+        btn.setAttribute('title', isExpanded ? 'Kembalikan Tampilan Normal (Tampilkan Sidebar) [Esc]' : 'Perluas Tampilan Peta (Sembunyikan Sidebar)');
+    }
+
+    if (isExpanded) {
+        // Scroll halus ke area peta agar pas di dalam jendela browser
+        var workspace = document.querySelector('.bws-qrop-workspace');
+        if (workspace) {
+            var targetTop = workspace.getBoundingClientRect().top + window.pageYOffset - 16;
+            window.scrollTo({ top: targetTop, behavior: 'smooth' });
         }
-        if (icon) icon.className = 'fas fa-compress';
-    } else {
-        if (document.exitFullscreen) {
-            document.exitFullscreen().catch(function() {});
-        }
-        if (icon) icon.className = 'fas fa-expand';
+    }
+
+    // Refresh ukuran viewport Leaflet secara bertahap dan mulus
+    if (window.map) {
+        setTimeout(function() {
+            window.map.invalidateSize();
+        }, 120);
+        setTimeout(function() {
+            window.map.invalidateSize();
+        }, 320);
     }
 };
 
-document.addEventListener('fullscreenchange', function() {
-    var icon = document.getElementById('iconMapFullscreen');
-    if (icon) {
-        if (document.fullscreenElement) {
-            icon.className = 'fas fa-compress';
-        } else {
-            icon.className = 'fas fa-expand';
+// Dukungan tombol ESC pada keyboard untuk keluar dari mode perluas peta
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' || e.keyCode === 27) {
+        var page = document.querySelector('.bws-qrop-page');
+        if (page && page.classList.contains('bws-map-expanded')) {
+            toggleMapFullscreen();
         }
     }
-    setTimeout(function() {
-        if (window.map) window.map.invalidateSize();
-    }, 200);
 });
