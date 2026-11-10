@@ -434,44 +434,100 @@
                 </ul>
 
                 <!-- Konten Tab Panduan -->
-                <div class="tab-content border rounded p-3 bg-white shadow-sm" id="pills-tabContent" style="min-height: 230px; font-size: 13px; line-height: 1.6; border-color: #e2e8f0 !important;">
+                <div class="tab-content border rounded p-3 bg-white shadow-sm" id="pills-tabContent" style="min-height: 240px; font-size: 13px; line-height: 1.6; border-color: #e2e8f0 !important;">
                     
                     <!-- TAB 1: LAPISAN & SIMBOL PETA -->
                     <div class="tab-pane fade show active" id="tab-peta" role="tabpanel">
-                        <div class="font-weight-bold text-primary mb-2" style="font-size: 14px;">
-                            <i class="fas fa-palette mr-1"></i> Klasifikasi Data Spasial Irigasi
+                        <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
+                            <div>
+                                <div class="font-weight-bold" style="color: #10143a; font-size: 14px;">
+                                    <i class="fas fa-layer-group text-warning mr-1"></i> Klasifikasi Data Spasial Irigasi Resmi
+                                </div>
+                                <small class="text-muted">Simbol geometri dan kode warna standar kartografi BWS Kalimantan I:</small>
+                            </div>
+                            <span class="badge badge-light px-2 py-1 text-muted border" style="font-size: 11px;">
+                                <i class="fas fa-check-circle text-success mr-1"></i> 5 Kategori Aktif
+                            </span>
                         </div>
-                        <p class="text-secondary mb-3">Setiap warna dan bentuk geometri pada peta merepresentasikan objek sumber daya air resmi BWS Kalimantan I:</p>
                         
                         <div class="row">
+                            <!-- 1. Lahan Baku -->
                             <div class="col-md-6 mb-2">
-                                <div class="p-2 border rounded bg-light d-flex align-items-center">
-                                    <span class="badge badge-success px-2 py-1 mr-2" style="min-width: 70px;">Hijau</span>
-                                    <div><strong>Lahan Baku:</strong> Lahan siap tanam dalam kewenangan Daerah Irigasi Rawa (DIR).</div>
+                                <div class="sipdira-legend-card p-2 rounded border bg-light d-flex align-items-center">
+                                    <div class="sipdira-swatch-box mr-2 d-flex align-items-center justify-content-center shadow-xs" style="width: 38px; height: 38px; border-radius: 8px; background: rgba(16, 185, 129, 0.15); border: 2px solid #10b981; color: #047857; font-size: 15px; flex-shrink: 0;">
+                                        <i class="fas fa-vector-square"></i>
+                                    </div>
+                                    <div style="flex: 1; line-height: 1.35;">
+                                        <div class="d-flex align-items-center justify-content-between mb-0.5">
+                                            <strong style="color: #065f46; font-size: 12.5px;">Lahan Baku</strong>
+                                            <span class="badge px-1.5 py-0.5 text-white" style="background: #10b981; font-size: 9.5px; border-radius: 4px;">Poligon Hijau</span>
+                                        </div>
+                                        <span class="text-muted" style="font-size: 11.5px;">Lahan siap tanam dalam kewenangan Daerah Irigasi Rawa (DIR).</span>
+                                    </div>
                                 </div>
                             </div>
+
+                            <!-- 2. Lahan Fungsional -->
                             <div class="col-md-6 mb-2">
-                                <div class="p-2 border rounded bg-light d-flex align-items-center">
-                                    <span class="badge badge-primary px-2 py-1 mr-2" style="min-width: 70px;">Biru</span>
-                                    <div><strong>Lahan Fungsional:</strong> Lahan aktif beririgasi dan beroperasi O&amp;P rutin.</div>
+                                <div class="sipdira-legend-card p-2 rounded border bg-light d-flex align-items-center">
+                                    <div class="sipdira-swatch-box mr-2 d-flex align-items-center justify-content-center shadow-xs" style="width: 38px; height: 38px; border-radius: 8px; background: rgba(37, 99, 235, 0.15); border: 2px solid #2563eb; color: #1d4ed8; font-size: 15px; flex-shrink: 0;">
+                                        <i class="fas fa-water"></i>
+                                    </div>
+                                    <div style="flex: 1; line-height: 1.35;">
+                                        <div class="d-flex align-items-center justify-content-between mb-0.5">
+                                            <strong style="color: #1e40af; font-size: 12.5px;">Lahan Fungsional</strong>
+                                            <span class="badge px-1.5 py-0.5 text-white" style="background: #2563eb; font-size: 9.5px; border-radius: 4px;">Poligon Biru</span>
+                                        </div>
+                                        <span class="text-muted" style="font-size: 11.5px;">Lahan aktif beririgasi dan beroperasi rutin O&amp;P.</span>
+                                    </div>
                                 </div>
                             </div>
+
+                            <!-- 3. Lahan Potensial -->
                             <div class="col-md-6 mb-2">
-                                <div class="p-2 border rounded bg-light d-flex align-items-center">
-                                    <span class="badge badge-warning text-dark px-2 py-1 mr-2" style="min-width: 70px;">Kuning</span>
-                                    <div><strong>Lahan Potensial:</strong> Wilayah perencanaan pengembangan potensi irigasi.</div>
+                                <div class="sipdira-legend-card p-2 rounded border bg-light d-flex align-items-center">
+                                    <div class="sipdira-swatch-box mr-2 d-flex align-items-center justify-content-center shadow-xs" style="width: 38px; height: 38px; border-radius: 8px; background: rgba(245, 158, 11, 0.15); border: 2px solid #f59e0b; color: #b45309; font-size: 15px; flex-shrink: 0;">
+                                        <i class="fas fa-draw-polygon"></i>
+                                    </div>
+                                    <div style="flex: 1; line-height: 1.35;">
+                                        <div class="d-flex align-items-center justify-content-between mb-0.5">
+                                            <strong style="color: #92400e; font-size: 12.5px;">Lahan Potensial</strong>
+                                            <span class="badge px-1.5 py-0.5 text-dark font-weight-bold" style="background: #fad605; font-size: 9.5px; border-radius: 4px;">Poligon Kuning</span>
+                                        </div>
+                                        <span class="text-muted" style="font-size: 11.5px;">Wilayah perencanaan pengembangan potensi irigasi baru.</span>
+                                    </div>
                                 </div>
                             </div>
+
+                            <!-- 4. Jaringan Saluran -->
                             <div class="col-md-6 mb-2">
-                                <div class="p-2 border rounded bg-light d-flex align-items-center">
-                                    <span class="badge badge-info px-2 py-1 mr-2" style="background:#0284c7; color:#fff; min-width: 70px;">Cyan</span>
-                                    <div><strong>Jaringan Saluran:</strong> Trase garis saluran pembawa primer, sekunder, &amp; tersier.</div>
+                                <div class="sipdira-legend-card p-2 rounded border bg-light d-flex align-items-center">
+                                    <div class="sipdira-swatch-box mr-2 d-flex align-items-center justify-content-center shadow-xs" style="width: 38px; height: 38px; border-radius: 8px; background: rgba(6, 182, 212, 0.15); border: 2px solid #06b6d4; color: #0891b2; font-size: 15px; flex-shrink: 0;">
+                                        <i class="fas fa-route"></i>
+                                    </div>
+                                    <div style="flex: 1; line-height: 1.35;">
+                                        <div class="d-flex align-items-center justify-content-between mb-0.5">
+                                            <strong style="color: #0e7490; font-size: 12.5px;">Jaringan Saluran</strong>
+                                            <span class="badge px-1.5 py-0.5 text-white" style="background: #0891b2; font-size: 9.5px; border-radius: 4px;">Garis Cyan</span>
+                                        </div>
+                                        <span class="text-muted" style="font-size: 11.5px;">Trase garis saluran pembawa primer, sekunder, &amp; tersier.</span>
+                                    </div>
                                 </div>
                             </div>
+
+                            <!-- 5. Bangunan Air -->
                             <div class="col-12 mb-1">
-                                <div class="p-2 border rounded bg-light d-flex align-items-center">
-                                    <span class="badge px-2 py-1 mr-2" style="background:#d97706; color:#fff; min-width: 70px;">Oranye</span>
-                                    <div><strong>Bangunan Air:</strong> Titik pintu air, bendung, sadap, gorong-gorong, dan pos hidrologi.</div>
+                                <div class="sipdira-legend-card p-2 rounded border bg-light d-flex align-items-center">
+                                    <div class="sipdira-swatch-box mr-2 d-flex align-items-center justify-content-center shadow-xs" style="width: 38px; height: 38px; border-radius: 8px; background: rgba(234, 88, 12, 0.15); border: 2px solid #ea580c; color: #c2410c; font-size: 15px; flex-shrink: 0;">
+                                        <i class="fas fa-landmark"></i>
+                                    </div>
+                                    <div style="flex: 1; line-height: 1.35;">
+                                        <div class="d-flex align-items-center justify-content-between mb-0.5">
+                                            <strong style="color: #9a3412; font-size: 12.5px;">Bangunan Air (Infrastruktur SDA)</strong>
+                                            <span class="badge px-1.5 py-0.5 text-white" style="background: #ea580c; font-size: 9.5px; border-radius: 4px;">Titik Oranye</span>
+                                        </div>
+                                        <span class="text-muted" style="font-size: 11.5px;">Titik pintu air, bendung pengatur, gorong-gorong, serta pos hidrologi BWS.</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -479,39 +535,120 @@
 
                     <!-- TAB 2: PENCARIAN & FILTER -->
                     <div class="tab-pane fade" id="tab-filter" role="tabpanel">
-                        <div class="font-weight-bold text-primary mb-2" style="font-size: 14px;">
-                            <i class="fas fa-search mr-1"></i> Cara Cepat Menemukan Objek Irigasi
+                        <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
+                            <div>
+                                <div class="font-weight-bold" style="color: #10143a; font-size: 14px;">
+                                    <i class="fas fa-search-location text-warning mr-1"></i> Alur Kerja Pencarian &amp; Penyaringan Data
+                                </div>
+                                <small class="text-muted">3 langkah mudah menemukan lokasi dan data teknis irigasi:</small>
+                            </div>
+                            <span class="badge badge-light px-2 py-1 text-muted border" style="font-size: 11px;">
+                                <i class="fas fa-bolt text-warning mr-1"></i> Cepat &amp; Presisi
+                            </span>
                         </div>
-                        <ul class="pl-3 text-secondary mb-2">
-                            <li class="mb-2">
-                                <strong>Pencarian Pintar (*Sidebar* Kiri):</strong> Ketikkan nama pos atau daerah irigasi (misal: <em>"Pemangkat"</em>, <em>"Sungai Daun"</em>, atau <em>"Kubu"</em>) pada kotak pencarian, lalu klik hasil yang muncul untuk langsung menuju lokasi.
-                            </li>
-                            <li class="mb-2">
-                                <strong>Filter Kabupaten:</strong> Gunakan menu pilihan wilayah untuk membatasi fokus peta ke Kabupaten tertentu (Kabupaten Sambas, Kubu Raya, atau Ketapang).
-                            </li>
-                            <li class="mb-1">
-                                <strong>Tombol Kategori Layer:</strong> Klik baris kategori (*Lahan Baku*, *Fungsional*, *Saluran*, *Bangunan Air*) di panel kiri untuk menampilkan atau menyembunyikan lapisan tertentu dari peta.
-                            </li>
-                        </ul>
+
+                        <div class="row">
+                            <!-- Langkah 1 -->
+                            <div class="col-12 mb-2">
+                                <div class="sipdira-step-card p-2.5 rounded border bg-light d-flex align-items-start" style="padding: 10px 14px; border-left: 4px solid #1a1c54 !important;">
+                                    <span class="badge mr-3 px-2 py-1 font-weight-bold" style="background: #1a1c54; color: #fad605; font-size: 10.5px; border-radius: 6px; letter-spacing: 0.5px;">LANGKAH 01</span>
+                                    <div style="flex: 1;">
+                                        <div class="font-weight-bold text-dark" style="font-size: 13px;">
+                                            <i class="fas fa-search mr-1 text-primary"></i> Pencarian Cepat Nama DIR
+                                        </div>
+                                        <div class="text-secondary" style="font-size: 12px; margin-top: 2px;">
+                                            Ketikkan nama daerah irigasi pada kotak <em>"Cari Daerah Irigasi (DIR)"</em> di sidebar kiri (misalnya: <strong>"Pemangkat"</strong>, <strong>"Sungai Daun"</strong>, atau <strong>"Kubu"</strong>), lalu klik hasil yang muncul untuk langsung menuju lokasi sasaran secara otomatis.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Langkah 2 -->
+                            <div class="col-12 mb-2">
+                                <div class="sipdira-step-card p-2.5 rounded border bg-light d-flex align-items-start" style="padding: 10px 14px; border-left: 4px solid #2563eb !important;">
+                                    <span class="badge mr-3 px-2 py-1 font-weight-bold" style="background: #2563eb; color: #ffffff; font-size: 10.5px; border-radius: 6px; letter-spacing: 0.5px;">LANGKAH 02</span>
+                                    <div style="flex: 1;">
+                                        <div class="font-weight-bold text-dark" style="font-size: 13px;">
+                                            <i class="fas fa-map-marked-alt mr-1 text-primary"></i> Filter Wilayah Administratif
+                                        </div>
+                                        <div class="text-secondary" style="font-size: 12px; margin-top: 2px;">
+                                            Pilih menu dropdown <em>"Wilayah kabupaten"</em> untuk membatasi fokus peta ke wilayah kerja tertentu, seperti <strong>Kabupaten Sambas</strong>, <strong>Kabupaten Kubu Raya</strong>, atau <strong>Kabupaten Ketapang</strong>.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Langkah 3 -->
+                            <div class="col-12 mb-1">
+                                <div class="sipdira-step-card p-2.5 rounded border bg-light d-flex align-items-start" style="padding: 10px 14px; border-left: 4px solid #10b981 !important;">
+                                    <span class="badge mr-3 px-2 py-1 font-weight-bold" style="background: #10b981; color: #ffffff; font-size: 10.5px; border-radius: 6px; letter-spacing: 0.5px;">LANGKAH 03</span>
+                                    <div style="flex: 1;">
+                                        <div class="font-weight-bold text-dark" style="font-size: 13px;">
+                                            <i class="fas fa-toggle-on mr-1 text-success"></i> Kontrol Visibilitas Layer
+                                        </div>
+                                        <div class="text-secondary" style="font-size: 12px; margin-top: 2px;">
+                                            Gunakan tombol centang hijau pada daftar <em>"Tampilkan kategori"</em> untuk menampilkan atau menyembunyikan lapisan spesifik (Lahan Baku, Lahan Fungsional, Jaringan Saluran, Bangunan Air) sesuai kebutuhan analisis spasial Anda.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- TAB 3: INTERAKSI & DETAIL -->
                     <div class="tab-pane fade" id="tab-popup" role="tabpanel">
-                        <div class="font-weight-bold text-primary mb-2" style="font-size: 14px;">
-                            <i class="fas fa-mouse-pointer mr-1"></i> Membaca Informasi &amp; Koordinat Objek
+                        <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
+                            <div>
+                                <div class="font-weight-bold" style="color: #10143a; font-size: 14px;">
+                                    <i class="fas fa-mouse-pointer text-warning mr-1"></i> Interaksi Peta &amp; Informasi Geospasial
+                                </div>
+                                <small class="text-muted">Fitur interaktif navigasi dan pembacaan atribut spasial:</small>
+                            </div>
+                            <span class="badge badge-light px-2 py-1 text-muted border" style="font-size: 11px;">
+                                <i class="fas fa-satellite text-primary mr-1"></i> Interaktif
+                            </span>
                         </div>
-                        <p class="text-secondary mb-2">Peta ini bersifat interaktif dan akurat secara geospasial:</p>
-                        <ul class="pl-3 text-secondary mb-2">
-                            <li class="mb-2">
-                                <strong>Klik Objek pada Peta:</strong> Setiap kali Anda mengklik poligon lahan, garis saluran, atau ikon bangunan air, peta akan melakukan <strong>pusat kamera otomatis (*smooth flyTo*)</strong> langsung ke titik koordinat presisi.
-                            </li>
-                            <li class="mb-2">
-                                <strong>Kartu Informasi Melayang:</strong> Di atas objek yang diklik akan muncul kartu pop-up modern berisi Nama Objek, Kategori, Kabupaten, serta data teknis resmi dari Buku DIR BWS Kalimantan I.
-                            </li>
-                            <li class="mb-1">
-                                <strong>Navigasi Peta:</strong> Anda dapat memperbesar (*zoom-in*), memperkecil (*zoom-out*), atau menggeser peta secara bebas menggunakan mouse komputer atau sentuhan layar sentuh pada HP.
-                            </li>
-                        </ul>
+
+                        <div class="row">
+                            <!-- Fitur 1 -->
+                            <div class="col-md-4 mb-2">
+                                <div class="sipdira-feature-card p-3 rounded border bg-light h-100 d-flex flex-column text-center">
+                                    <div class="mb-2 mx-auto d-flex align-items-center justify-content-center shadow-xs" style="width: 44px; height: 44px; border-radius: 12px; background: rgba(26, 28, 84, 0.1); color: #1a1c54; font-size: 19px;">
+                                        <i class="fas fa-crosshairs"></i>
+                                    </div>
+                                    <strong style="color: #10143a; font-size: 13px; margin-bottom: 4px;">Auto-Focus FlyTo</strong>
+                                    <p class="text-muted mb-0" style="font-size: 11.5px; line-height: 1.45;">
+                                        Klik objek mana pun di peta untuk animasi kamera otomatis (<em>smooth flyTo</em>) presisi ke titik koordinat sasaran.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Fitur 2 -->
+                            <div class="col-md-4 mb-2">
+                                <div class="sipdira-feature-card p-3 rounded border bg-light h-100 d-flex flex-column text-center">
+                                    <div class="mb-2 mx-auto d-flex align-items-center justify-content-center shadow-xs" style="width: 44px; height: 44px; border-radius: 12px; background: rgba(37, 99, 235, 0.1); color: #2563eb; font-size: 19px;">
+                                        <i class="fas fa-window-restore"></i>
+                                    </div>
+                                    <strong style="color: #1e40af; font-size: 13px; margin-bottom: 4px;">Pop-up Detail Lengkap</strong>
+                                    <p class="text-muted mb-0" style="font-size: 11.5px; line-height: 1.45;">
+                                        Kartu melayang informatif berisi Nama DIR, luasan hektare (Ha), nomenklatur saluran, dan data teknis resmi Buku DIR BWS.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Fitur 3 -->
+                            <div class="col-md-4 mb-2">
+                                <div class="sipdira-feature-card p-3 rounded border bg-light h-100 d-flex flex-column text-center">
+                                    <div class="mb-2 mx-auto d-flex align-items-center justify-content-center shadow-xs" style="width: 44px; height: 44px; border-radius: 12px; background: rgba(245, 158, 11, 0.15); color: #b45309; font-size: 19px;">
+                                        <i class="fas fa-layer-group"></i>
+                                    </div>
+                                    <strong style="color: #92400e; font-size: 13px; margin-bottom: 4px;">Basemap &amp; Satelit</strong>
+                                    <p class="text-muted mb-0" style="font-size: 11.5px; line-height: 1.45;">
+                                        Gunakan kontrol zoom (+/-) atau beralih ke mode <strong>Satelit</strong> di pojok kanan atas untuk analisis tutupan lahan nyata.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -529,8 +666,8 @@
                 <small class="text-muted" style="font-size: 11.5px;">
                     <i class="fas fa-shield-alt text-success mr-1"></i> Data Spasial Resmi SISDA BWS Kalimantan I
                 </small>
-                <button type="button" class="btn btn-primary btn-sm font-weight-bold px-4 shadow-sm" data-dismiss="modal" style="border-radius: 8px;">
-                    Mengerti &amp; Tutup
+                <button type="button" class="btn text-white btn-sm font-weight-bold px-4 shadow-sm" data-dismiss="modal" style="background: linear-gradient(135deg, #10143a 0%, #1a1c54 100%); border: 1.5px solid #fad605; border-radius: 8px;">
+                    <i class="fas fa-check mr-1 text-warning"></i> Mengerti &amp; Tutup
                 </button>
             </div>
         </div>
