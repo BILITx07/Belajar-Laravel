@@ -135,9 +135,9 @@
     }
 
     .focus-btn {
-        background: #f8fafc;
-        color: #10143a;
-        border: 1px solid #cbd5e1;
+        background: #eff6ff;
+        color: #1d4ed8;
+        border: 1px solid #bfdbfe;
         border-radius: 6px;
         font-size: 0.72rem;
         font-weight: 700;
@@ -145,9 +145,9 @@
         transition: all 0.15s ease;
     }
     .focus-btn:hover {
-        background: #10143a;
+        background: #1d4ed8;
         color: #ffffff;
-        border-color: #10143a;
+        border-color: #1d4ed8;
     }
 
     .layer-filter-btn {
@@ -162,9 +162,9 @@
         transition: all 0.15s ease;
     }
     .layer-filter-btn.active {
-        background: #10143a;
+        background: #1d4ed8;
         color: #ffffff;
-        border-color: #10143a;
+        border-color: #1d4ed8;
     }
 
     /* Popup Tabel Properti Leaflet */
@@ -180,8 +180,7 @@
         line-height: 1.4;
     }
     .popup-header {
-        background: linear-gradient(135deg, #0d1033 0%, #161b46 100%);
-        border-bottom: 2px solid #fad605;
+        background: #1d4ed8;
         color: #ffffff;
         padding: 10px 14px;
         font-weight: 700;
@@ -220,13 +219,13 @@
         </div>
 
         <div class="d-flex align-items-center" style="gap: 8px;">
-            <a href="{{ route('admin.kelola-gis') }}" class="btn btn-outline-secondary btn-sm font-weight-bold px-3 shadow-xs" style="border-radius: 8px; height: 36px; display: inline-flex; align-items: center;">
+            <a href="{{ route('admin.kelola-gis') }}" class="btn btn-outline-secondary btn-sm font-weight-bold px-3 shadow-xs" style="border-radius: 20px; height: 36px; display: inline-flex; align-items: center;">
                 <i class="fas fa-layer-group mr-2"></i> Kelola Data GIS
             </a>
-            <button type="button" class="btn text-white btn-sm font-weight-bold px-3 shadow-sm" style="border-radius: 8px; height: 36px; background: #10143a; border: 1px solid #10143a; display: inline-flex; align-items: center;" onmouseover="this.style.background='#1c2262';" onmouseout="this.style.background='#10143a';" data-toggle="modal" data-target="#modalUploadStudio">
-                <i class="fas fa-cloud-upload-alt mr-2 text-warning"></i> Upload File Baru
+            <button type="button" class="btn btn-primary btn-sm font-weight-bold px-3 shadow-sm text-white" style="border-radius: 20px; height: 36px; background: #1d4ed8; border: none; display: inline-flex; align-items: center;" data-toggle="modal" data-target="#modalUploadStudio">
+                <i class="fas fa-cloud-upload-alt mr-2"></i> Upload File Baru
             </button>
-            <a href="{{ route('peta') }}" target="_blank" class="btn btn-light border btn-sm font-weight-bold px-3 shadow-xs" style="border-radius: 8px; height: 36px; display: inline-flex; align-items: center;" title="Buka Halaman Publik WebGIS untuk Melihat Versi Pengunjung">
+            <a href="{{ route('peta') }}" target="_blank" class="btn btn-light border btn-sm font-weight-bold px-3 shadow-xs" style="border-radius: 20px; height: 36px; display: inline-flex; align-items: center;" title="Buka Halaman Publik WebGIS untuk Melihat Versi Pengunjung">
                 <i class="fas fa-external-link-alt mr-2 text-muted"></i> Web Publik
             </a>
         </div>
@@ -425,9 +424,9 @@
 <div class="modal fade" id="modalUploadStudio" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
-            <div class="modal-header py-3 px-4 text-white" style="background: linear-gradient(135deg, #0d1033 0%, #161b46 100%); border-bottom: 2px solid #fad605;">
+            <div class="modal-header py-3 px-4 text-white" style="background: #1d4ed8;">
                 <h5 class="modal-title font-weight-bold" style="font-size: 1.05rem;">
-                    <i class="fas fa-cloud-upload-alt mr-2 text-warning"></i> Upload File Geospasial Baru
+                    <i class="fas fa-cloud-upload-alt mr-2"></i> Upload File Geospasial Baru
                 </h5>
                 <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -461,8 +460,8 @@
                 </div>
                 <div class="modal-footer py-2.5 px-4 bg-light border-top">
                     <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" style="border-radius: 8px;">Batal</button>
-                    <button type="submit" class="btn text-white btn-sm font-weight-bold px-4 shadow-sm" style="border-radius: 8px; background: #10143a; border: 1px solid #10143a;" onmouseover="this.style.background='#1c2262';" onmouseout="this.style.background='#10143a';">
-                        <i class="fas fa-cloud-upload-alt mr-1 text-warning"></i> Unggah Sekarang
+                    <button type="submit" class="btn btn-primary btn-sm font-weight-bold px-4" style="border-radius: 8px; background: #1d4ed8; border: none;">
+                        <i class="fas fa-cloud-upload-alt mr-1"></i> Unggah Sekarang
                     </button>
                 </div>
             </form>
@@ -582,11 +581,8 @@
                         return L.circleMarker(latlng, style);
                     },
                     onEachFeature: function(feature, layer) {
-                        var props = (feature.properties && Object.keys(feature.properties).length > 0) 
-                            ? feature.properties 
-                            : (feature.attributes || feature.properties || {});
-                        var dirTitle = props.D_I_R || props.d_i_r || props.NAMA_DIR || props.Nama_DIR || props.nama || fileName;
-                        var popupHtml = '<div class="popup-header"><i class="fas fa-layer-group mr-2"></i> ' + dirTitle + '</div>';
+                        var props = feature.properties || {};
+                        var popupHtml = '<div class="popup-header"><i class="fas fa-layer-group mr-2"></i> ' + (props.NAMA_DIR || props.Nama_DIR || props.nama || fileName) + '</div>';
                         popupHtml += '<div class="popup-body"><table class="table table-sm popup-table mb-0">';
                         for (var key in props) {
                             if (props.hasOwnProperty(key)) {

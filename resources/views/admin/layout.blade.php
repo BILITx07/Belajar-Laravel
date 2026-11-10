@@ -509,11 +509,12 @@
 
         <!-- Tombol Aksi & Profil Petugas -->
         <div class="bws-topbar-actions">
-            <!-- Tombol Pintasan Pratinjau Peta Studio Admin -->
-            <a href="{{ route('admin.preview-peta') }}" class="btn-lihat-peta-modern mr-1" title="Buka Studio Pratinjau & Pengujian Peta Admin">
-                <i class="fas fa-map-marked-alt icon-peta"></i>
-                <span class="d-none d-md-inline">Studio Peta</span>
+            <!-- Tombol Pintasan Lihat Peta WebGIS Modern Ala Foto 2 -->
+            <a href="{{ route('peta') }}" class="btn-lihat-peta-modern mr-1" title="Buka Halaman Peta Publik WebGIS">
+                <i class="fas fa-compass icon-peta"></i>
+                <span class="d-none d-md-inline">Buka WebGIS</span>
                 <span class="d-inline d-md-none">Peta</span>
+                <i class="fas fa-external-link-alt d-none d-lg-inline" style="font-size: 0.68rem; opacity: 0.7;"></i>
             </a>
 
             <!-- Fullscreen Toggle -->
@@ -693,13 +694,7 @@
             <span>Master Data</span>
         </a>
 
-        <!-- 3. Pratinjau Peta Spasial (Studio Pengujian Berkas Admin) -->
-        <a href="{{ route('admin.preview-peta') }}" class="bws-nav-link {{ request()->routeIs('admin.preview-peta*') ? 'active' : '' }}">
-            <i class="fas fa-map-marked-alt"></i>
-            <span>Pratinjau Peta</span>
-        </a>
-
-        <!-- 4. Manajemen User (Hanya Super Admin) -->
+        <!-- 3. Manajemen User (Hanya Super Admin) -->
         @if(Auth::check() && Auth::user()->role === 'superadmin')
         <a href="{{ route('users.index') }}" class="bws-nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
             <i class="fas fa-user-friends"></i>
@@ -707,16 +702,10 @@
         </a>
         @endif
 
-        <!-- 5. Log Aktivitas (Audit Trail Operasional Data) -->
+        <!-- 4. Log Aktivitas (Audit Trail Operasional Data) -->
         <a href="{{ route('admin.activity-logs') }}" class="bws-nav-link {{ request()->routeIs('admin.activity-logs*') ? 'active' : '' }}">
             <i class="fas fa-history"></i>
             <span>Log Aktivitas</span>
-        </a>
-
-        <!-- Link Pintasan WebGIS Publik Versi Pengunjung -->
-        <a href="{{ route('peta') }}" target="_blank" class="bws-nav-link ml-auto text-secondary" style="font-size: 0.8rem; font-weight: 600;" title="Buka Portal WebGIS Publik (Tampilan Pengunjung Eksternal)">
-            <i class="fas fa-external-link-alt fa-xs text-muted mr-1"></i>
-            <span>Web Publik</span>
         </a>
     </nav>
     @endif

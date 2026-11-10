@@ -5,144 +5,39 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/peta.css') }}?v={{ file_exists(public_path('css/peta.css')) ? filemtime(public_path('css/peta.css')) : time() }}">
-<style>
-    /* ══ MODE FULLSCREEN CLEAN WEBGIS WORKSPACE (TANPA BANNER & ARTIKEL BAWAH) ══ */
-    html, body {
-        height: 100% !important;
-        overflow: hidden !important;
-    }
-    
-    #page-top, #wrapper, #content-wrapper, #content {
-        height: 100% !important;
-        min-height: 100% !important;
-        overflow: hidden !important;
-    }
-
-    .container-fluid {
-        flex: 1 !important;
-        height: calc(100vh - 84px) !important;
-        overflow: hidden !important;
-        padding: 0 !important;
-    }
-
-    .bws-qrop-page {
-        max-width: 100% !important;
-        width: 100% !important;
-        height: 100% !important;
-        margin: 0 !important;
-        padding: 10px 14px 12px 14px !important;
-        display: flex !important;
-        flex-direction: column !important;
-        overflow: hidden !important;
-        box-sizing: border-box;
-    }
-
-    .bws-qrop-workspace {
-        flex: 1;
-        height: 100% !important;
-        min-height: 0 !important;
-        display: flex;
-        gap: 12px;
-        align-items: stretch;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .bws-sidebar-card {
-        height: 100% !important;
-        max-height: 100% !important;
-        overflow-y: auto !important;
-        padding: 16px 14px !important;
-        gap: 10px !important;
-        width: 320px !important;
-        min-width: 320px !important;
-        max-width: 320px !important;
-        transition: margin 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
-        z-index: 100;
-        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
-    }
-
-    .bws-sidebar-card.sidebar-hidden {
-        margin-left: -336px !important;
-        opacity: 0;
-        pointer-events: none;
-    }
-
-    .bws-map-container-column {
-        flex: 1;
-        height: 100% !important;
-        min-height: 0 !important;
-        display: flex;
-        flex-direction: column;
-        align-self: stretch;
-        overflow: hidden;
-    }
-
-    .bws-map-topbar {
-        margin-bottom: 8px;
-        flex-shrink: 0;
-    }
-
-    .bws-leaflet-card {
-        flex: 1;
-        height: 100% !important;
-        min-height: 0 !important;
-        display: flex;
-        flex-direction: column;
-        border-radius: 14px;
-        position: relative;
-        border: 1.5px solid #cbd5e1;
-        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
-        overflow: hidden;
-    }
-
-    #map {
-        flex: 1;
-        width: 100% !important;
-        height: 100% !important;
-        min-height: 0 !important;
-        border-radius: 12px;
-    }
-
-    .bws-map-footer-strip {
-        padding: 5px 8px 1px 8px;
-        font-size: 11px;
-        flex-shrink: 0;
-    }
-
-    /* Tombol Toggle Sidebar Filter */
-    .btn-toggle-sidebar {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        background: #ffffff;
-        color: #10143a;
-        font-weight: 700;
-        font-size: 0.8rem;
-        padding: 5px 12px;
-        border-radius: 8px;
-        border: 1px solid #cbd5e1;
-        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
-        cursor: pointer;
-        transition: all 0.2s ease;
-        height: 31px;
-        line-height: 1;
-    }
-
-    .btn-toggle-sidebar:hover,
-    .btn-toggle-sidebar.active {
-        background: #10143a;
-        color: #ffffff;
-        border-color: #10143a;
-    }
-</style>
 @endpush
 
 @section('konten')
 <div class="bws-qrop-page">
 
     <!-- ============================================================ -->
-    <!-- WADAH UTAMA KONTEN: SIDEBAR + PETA SEJAJAR (MURNI AREA PETA) -->
+    <!-- 1. KARTU BANNER HERO MEWAH (PERSIS SEPERTI GAMBAR 1 QROP)    -->
+    <!-- ============================================================ -->
+    <div class="bws-hero-card">
+        <div class="bws-hero-content">
+            <div class="bws-hero-pretitle">
+                <span class="bws-dot-hero"></span> DATA SPASIAL SIPDIRA &bull; BWS KALIMANTAN I
+            </div>
+            <h1 class="bws-hero-title">
+                Peta Daerah Irigasi &amp; Jaringan SDA.
+            </h1>
+            <p class="bws-hero-desc">
+                Temukan sebaran Daerah Irigasi, Jaringan Saluran, dan Bangunan Air di Kalimantan Barat dalam satu peta.
+            </p>
+        </div>
+        <div class="bws-hero-location d-none d-md-flex align-items-center">
+            <div class="bws-location-icon-box">
+                <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div>
+                <div class="font-weight-bold" style="font-size: 13px;">Kalimantan Barat</div>
+                <small style="color: rgba(255, 255, 255, 0.75);">BWS Kalimantan I Pontianak</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 2. WADAH UTAMA KONTEN: SIDEBAR + PETA SEJAJAR                -->
     <!-- ============================================================ -->
     <div class="bws-qrop-workspace">
 
@@ -311,11 +206,6 @@
                 </div>
 
                 <div class="d-flex align-items-center" style="gap: 8px;">
-                    <!-- Tombol Sembunyikan/Buka Sidebar Filter -->
-                    <button type="button" class="btn btn-sm btn-white bws-action-pill shadow-sm" id="btnToggleSidebar" onclick="toggleSidebarView()" title="Sembunyikan / Tampilkan Panel Filter">
-                        <i class="fas fa-sliders-h mr-1 text-primary"></i> <span id="labelToggleSidebar">Filter</span>
-                    </button>
-
                     <!-- Switcher Peta Standar vs Satelit Rapi -->
                     <div class="btn-group btn-group-sm bws-basemap-group shadow-sm" role="group">
                         <button type="button" class="btn btn-sm bws-basemap-btn active" id="btnBasemapOsm" onclick="switchBasemap('osm')" title="Ganti ke Peta Standar / Peta Vektor">
@@ -355,80 +245,83 @@
 
     </div>
 
-</div>
-
-<!-- MODAL TENTANG SIPDIRA RESMI (DIBUKA DARI NAVBAR) -->
-<div class="modal fade" id="modalTentangSipdira" tabindex="-1" role="dialog" aria-labelledby="modalTentangLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content border-0 shadow-lg" style="border-radius: 18px; overflow: hidden;">
-            <div class="modal-header text-white px-4 py-3" style="background: linear-gradient(135deg, #10143a 0%, #1a1c54 100%); border-bottom: 3.5px solid #fad605;">
-                <div class="d-flex align-items-center">
-                    <div class="mr-3 d-flex align-items-center justify-content-center bg-white shadow-xs" style="width: 44px; height: 44px; border-radius: 12px; border: 2px solid #fad605; padding: 4px;">
-                        <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo PU" style="width: 100%; height: 100%; object-fit: contain;">
+    <!-- ============================================================ -->
+    <!-- 3. TENTANG SIPDIRA & KRING LAYANAN (PERSIS GAMBAR REFERENSI) -->
+    <!-- ============================================================ -->
+    <section id="tentang-sipdira" class="sipdira-about-section">
+        
+        <div class="row align-items-stretch">
+            <!-- Kolom Kiri: Kartu Brand Kotak Modern (Persis Card Kiri QROP) -->
+            <div class="col-lg-4 col-md-5 mb-4 mb-md-0">
+                <div class="sipdira-brand-about-card h-100">
+                    <div class="sipdira-about-logo-wrap">
+                        <img src="{{ asset('img/logo-sipdira.svg') }}" alt="Logo SIPDIRA" class="sipdira-about-logo-img">
                     </div>
-                    <div>
-                        <h5 class="modal-title font-weight-bold text-white mb-0" id="modalTentangLabel" style="font-size: 1.15rem; letter-spacing: 0.3px;">
-                            Tentang Layanan SIPDIRA SPASIAL
-                        </h5>
-                        <small style="color: rgba(255, 255, 255, 0.88); font-size: 0.78rem;">
-                            Balai Wilayah Sungai Kalimantan I Pontianak &bull; Ditjen SDA Kementerian PU
-                        </small>
+                    <div class="sipdira-about-brand-text">
+                        <span class="sipdira-about-title-main">SIPDIRA</span>
+                        <span class="sipdira-about-title-sub">SPASIAL</span>
+                    </div>
+                    <div class="sipdira-about-brand-caption">
+                        SISTEM INFORMASI PETA DAERAH IRIGASI
                     </div>
                 </div>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 0.85; text-shadow: none;">
-                    <span aria-hidden="true" style="font-size: 1.5rem;">&times;</span>
-                </button>
             </div>
-            <div class="modal-body p-4">
-                <div class="row align-items-center mb-3">
-                    <div class="col-md-3 text-center mb-3 mb-md-0">
-                        <div class="p-3 bg-light rounded border d-inline-block">
-                            <img src="{{ asset('img/logo-sipdira.svg') }}" alt="Logo SIPDIRA" style="width: 80px; height: 80px; object-fit: contain;">
-                            <div class="font-weight-bold text-dark mt-2" style="font-size: 13px;">SIPDIRA SPASIAL</div>
-                            <small class="text-muted" style="font-size: 10px;">BWS KALIMANTAN I</small>
+
+            <!-- Kolom Kanan: Teks Layanan & Accordion Panduan -->
+            <div class="col-lg-8 col-md-7 d-flex flex-column justify-content-center">
+                <div class="sipdira-about-content pl-lg-3">
+                    <div class="sipdira-service-tag">TENTANG LAYANAN</div>
+                    <h2 class="sipdira-about-headline">
+                        Informasi spasial daerah irigasi,<br class="d-none d-lg-block">
+                        lebih dekat dan mudah dipahami.
+                    </h2>
+                    <p class="sipdira-about-desc">
+                        SIPDIRA Spasial (Sistem Informasi Peta Daerah Irigasi Berbasis Data Spasial) merupakan sistem informasi pemetaan geospasial Balai Wilayah Sungai Kalimantan I Pontianak, Direktorat Jenderal Sumber Daya Air. Halaman ini menyajikan peta sebaran daerah irigasi kewenangan pusat maupun provinsi, luasan fungsional dan potensial, jaringan saluran primer, sekunder, serta bangunan air penunjang ketahanan pangan Kalimantan Barat.
+                    </p>
+
+                    <!-- Accordion Cara Menggunakan Peta (Persis QROP) -->
+                    <div class="sipdira-how-to-accordion">
+                        <button class="sipdira-how-to-toggle collapsed" type="button" data-toggle="collapse" data-target="#collapseCaraPeta" aria-expanded="false" aria-controls="collapseCaraPeta">
+                            <span>Cara menggunakan peta</span>
+                            <i class="fas fa-chevron-down sipdira-chevron"></i>
+                        </button>
+                        <div class="collapse" id="collapseCaraPeta">
+                            <div class="sipdira-how-to-body">
+                                <ul class="sipdira-guide-steps">
+                                    <li><strong>1. Cari Daerah Irigasi:</strong> Gunakan kotak pencarian pada sidebar kiri atau pilih wilayah kabupaten untuk memusatkan peta ke lokasi yang diinginkan.</li>
+                                    <li><strong>2. Pilih Kategori Layer:</strong> Centang atau nonaktifkan layer data spasial seperti Lahan Baku, Lahan Fungsional, Lahan Potensial, Jaringan Saluran, dan Bangunan Air.</li>
+                                    <li><strong>3. Interaksi dengan Peta:</strong> Klik ikon lokasi pada peta untuk melihat detail informasi teknis, luasan hektare, dan data hidrologi.</li>
+                                    <li><strong>4. Mode Citra Satelit:</strong> Beralih ke citra satelit resolusi tinggi dengan mengklik tombol "Satelit" pada panel kontrol peta.</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-9">
-                        <h6 class="font-weight-bold text-primary mb-2" style="font-size: 1.05rem;">
-                            Informasi spasial daerah irigasi, lebih dekat dan mudah dipahami.
-                        </h6>
-                        <p class="text-muted" style="font-size: 13px; line-height: 1.6; margin-bottom: 0;">
-                            SIPDIRA Spasial (Sistem Informasi Peta Daerah Irigasi Berbasis Data Spasial) merupakan sistem pemetaan geospasial resmi Balai Wilayah Sungai Kalimantan I Pontianak, Direktorat Jenderal Sumber Daya Air, Kementerian Pekerjaan Umum.
-                            Menyajikan sebaran daerah irigasi kewenangan pusat maupun provinsi, luasan baku dan fungsional, trase saluran irigasi primer/sekunder/tersier, serta bangunan air penunjang ketahanan pangan di Kalimantan Barat.
-                        </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 4. FOOTER RESMI KEMENTERIAN PU (BERSIH & ELEGAN)             -->
+        <!-- ============================================================ -->
+        <footer class="sipdira-clean-footer" id="kontak-layanan">
+            <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
+                <div class="sipdira-footer-left-info d-flex align-items-center mb-2 mb-md-0">
+                    <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo PU" class="sipdira-footer-mini-pu mr-2.5">
+                    <div class="sipdira-footer-instansi-text">
+                        <span>&copy; {{ date('Y') }} <strong>SIPDIRA SPASIAL</strong> &bull; Balai Wilayah Sungai Kalimantan I Pontianak</span>
+                        <div class="text-muted small">Direktorat Jenderal Sumber Daya Air &bull; Kementerian Pekerjaan Umum</div>
                     </div>
                 </div>
-
-                <div class="p-3 rounded border bg-light mb-3" style="font-size: 12.5px; line-height: 1.55;">
-                    <strong class="text-dark d-block mb-1"><i class="fas fa-check-circle text-success mr-1"></i> Ruang Lingkup Data Geospasial:</strong>
-                    <ul class="mb-0 pl-3 text-muted">
-                        <li><strong>Lahan Baku:</strong> Poligon hijau batas wilayah daerah irigasi siap tanam.</li>
-                        <li><strong>Lahan Fungsional:</strong> Poligon biru area aktif teraliri suplai air irigasi.</li>
-                        <li><strong>Lahan Potensial:</strong> Poligon kuning wilayah rencana pengembangan irigasi.</li>
-                        <li><strong>Jaringan Saluran:</strong> Garis cyan trase saluran pembawa (primer, sekunder, tersier).</li>
-                        <li><strong>Bangunan Air:</strong> Titik koordinat bendung, pintu air, dan sadap bagi/bagi-sadap.</li>
-                    </ul>
-                </div>
-
-                <div class="d-flex align-items-center justify-content-between text-muted small border-top pt-3">
-                    <div>
-                        <i class="fas fa-map-marker-alt text-danger mr-1"></i> Jl. Paris II No. 1, Kota Pontianak, Kalbar 78124
-                    </div>
-                    <a href="javascript:void(0)" data-dismiss="modal" data-toggle="modal" data-target="#modalKontakResmi" class="text-primary font-weight-bold">
-                        <i class="fas fa-phone-alt mr-1"></i> Hubungi Layanan &raquo;
+                <div class="sipdira-footer-right-action">
+                    <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;" class="btn btn-sm btn-light border sipdira-btn-back-top shadow-xs" title="Kembali ke atas peta">
+                        <i class="fas fa-arrow-up mr-1 text-primary"></i> Kembali ke Atas
                     </a>
                 </div>
             </div>
-            <div class="modal-footer bg-light py-2 px-4 justify-content-between">
-                <small class="text-muted" style="font-size: 11.5px;">
-                    &copy; {{ date('Y') }} SIPDIRA SPASIAL &bull; BWS Kalimantan I Pontianak
-                </small>
-                <button type="button" class="btn text-white btn-sm font-weight-bold px-4 shadow-sm" data-dismiss="modal" style="background: #10143a; border-radius: 8px;">
-                    Tutup
-                </button>
-            </div>
-        </div>
-    </div>
+        </footer>
+
+    </section>
+
 </div>
 
 <!-- MODAL KONTAK RESMI BWS KALIMANTAN I (BERSIH & PROFESIONAL) -->
@@ -798,27 +691,6 @@
             if (typeof toggleCategoryLayer === 'function') {
                 toggleCategoryLayer(cat, chk.checked);
             }
-        }
-    }
-
-    function toggleSidebarView() {
-        var sidebar = document.querySelector('.bws-sidebar-card');
-        var btn = document.getElementById('btnToggleSidebar');
-        var label = document.getElementById('labelToggleSidebar');
-        if (sidebar) {
-            sidebar.classList.toggle('sidebar-hidden');
-            var isHidden = sidebar.classList.contains('sidebar-hidden');
-            if (btn) {
-                btn.classList.toggle('active', isHidden);
-            }
-            if (label) {
-                label.innerText = isHidden ? 'Buka Filter' : 'Filter';
-            }
-            setTimeout(function() {
-                if (window.map) {
-                    window.map.invalidateSize();
-                }
-            }, 320);
         }
     }
 </script>
