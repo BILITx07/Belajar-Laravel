@@ -773,19 +773,13 @@
         <!-- ── AREA KANAN: PETA INTERAKTIF LUAS (PERSIS GAMBAR 1 QROP) ── -->
         <main class="bws-map-container-column">
 
-            <!-- Header Peta Ramping (Breadcrumb Kiri & Badge Status Kanan) -->
+            <!-- Header Peta Ramping (Breadcrumb Kiri) -->
             <div class="bws-map-topbar">
                 <div class="d-flex align-items-center">
                     <span class="bws-dot-green-qrop"></span>
                     <span class="font-weight-bold text-dark ml-2" style="font-size: 13.5px;">Peta Daerah Irigasi</span>
                     <span class="text-muted mx-2">/</span>
                     <span class="text-muted small font-weight-bold" id="currentBreadcrumbLabel">Seluruh Kalimantan Barat</span>
-                </div>
-
-                <div class="d-none d-sm-flex align-items-center">
-                    <span class="bws-topbar-status-badge">
-                        <span class="bws-pulse-status-dot"></span> WebGIS Aktif
-                    </span>
                 </div>
             </div>
 
