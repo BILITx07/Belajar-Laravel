@@ -93,6 +93,9 @@
                         </form>
                         @endif
                     @else
+                        <a href="{{ route('admin.preview-peta') }}" class="btn btn-outline-secondary font-weight-bold px-3 py-2 shadow-xs d-inline-flex align-items-center" style="border-radius:8px;font-size:0.84rem;height:38px;border-color:#cbd5e1;background:#ffffff;" title="Buka Studio Pengujian Peta Spasial">
+                            <i class="fas fa-map-marked-alt mr-2 text-primary"></i>Studio Peta
+                        </a>
                         <button type="button" class="btn text-white font-weight-bold px-4 py-2 shadow-sm d-inline-flex align-items-center justify-content-center" style="background:#10143a;border:1px solid #10143a;border-radius:8px;font-size:0.86rem;height:38px;transition:all 0.18s ease;" onmouseover="this.style.background='#1c2262';this.style.borderColor='#1c2262';" onmouseout="this.style.background='#10143a';this.style.borderColor='#10143a';" data-toggle="modal" data-target="#modalUpload">
                             <i class="fas fa-cloud-upload-alt mr-2 text-warning"></i>Upload File Baru
                         </button>
@@ -328,7 +331,11 @@
                                     </div>
                                 </td>
                                 <td class="text-center align-middle">
-                                    <div class="d-flex align-items-center justify-content-center" style="gap:8px;">
+                                    <div class="d-flex align-items-center justify-content-center" style="gap:6px;">
+                                        <!-- Tombol Lihat di Peta Studio -->
+                                        <a href="{{ route('admin.preview-peta') }}" class="btn btn-sm shadow-xs d-inline-flex align-items-center justify-content-center" style="width:32px; height:32px; border-radius:8px; background:#f8fafc; color:#10143a; border:1px solid #e2e8f0; transition:all 0.18s ease;" title="Uji &amp; Lihat Poligon di Peta" onmouseover="this.style.background='#10143a'; this.style.color='#ffffff'; this.style.borderColor='#10143a';" onmouseout="this.style.background='#f8fafc'; this.style.color='#10143a'; this.style.borderColor='#e2e8f0';">
+                                            <i class="fas fa-eye fa-xs"></i>
+                                        </a>
                                         <!-- Tombol Edit Ramping (Clean Neutral State) -->
                                         <button type="button" class="btn btn-sm shadow-xs d-inline-flex align-items-center justify-content-center" style="width:32px; height:32px; border-radius:8px; background:#f8fafc; color:#475569; border:1px solid #e2e8f0; transition:all 0.18s ease;" title="Ubah Nama File" onmouseover="this.style.background='#10143a'; this.style.color='#ffffff'; this.style.borderColor='#10143a';" onmouseout="this.style.background='#f8fafc'; this.style.color='#475569'; this.style.borderColor='#e2e8f0';" onclick="openRenameModal('{{ $file['name'] }}')">
                                             <i class="fas fa-pen fa-xs"></i>
