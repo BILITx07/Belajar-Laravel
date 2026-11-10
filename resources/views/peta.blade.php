@@ -5,6 +5,51 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/peta.css') }}?v={{ file_exists(public_path('css/peta.css')) ? filemtime(public_path('css/peta.css')) : time() }}">
+<style>
+    /* Segmented Tab Nav for Petunjuk Penggunaan Modal */
+    .bws-modal-nav-capsule {
+        background: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 4px;
+        gap: 4px;
+        display: flex;
+    }
+    .bws-modal-nav-capsule .nav-item {
+        flex: 1;
+        margin: 0;
+    }
+    .bws-modal-nav-capsule .nav-link {
+        border-radius: 9px !important;
+        font-size: 0.82rem !important;
+        font-weight: 700 !important;
+        color: #475569 !important;
+        border: none !important;
+        padding: 8px 10px !important;
+        text-align: center;
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        background: transparent;
+        white-space: nowrap;
+    }
+    .bws-modal-nav-capsule .nav-link:hover {
+        background: rgba(255, 255, 255, 0.85) !important;
+        color: #10143a !important;
+    }
+    .bws-modal-nav-capsule .nav-link.active {
+        background: #10143a !important;
+        color: #ffffff !important;
+        box-shadow: 0 2px 8px rgba(16, 20, 58, 0.22) !important;
+    }
+    .sipdira-legend-card {
+        transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+    .sipdira-legend-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        border-color: #cbd5e1 !important;
+        background: #ffffff !important;
+    }
+</style>
 @endpush
 
 @section('konten')
@@ -409,29 +454,29 @@
             </div>
             
             <div class="modal-body p-4">
-                <!-- Navigasi Tab Modern -->
-                <ul class="nav nav-pills nav-fill mb-3" id="pills-tab-panduan" role="tablist">
+                <!-- Navigasi Tab Segmented Modern (Executive BWS) -->
+                <ul class="nav nav-pills bws-modal-nav-capsule mb-3" id="pills-tab-panduan" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active font-weight-bold py-2" id="tab-peta-link" data-toggle="pill" href="#tab-peta" role="tab" style="font-size: 0.85rem; border-radius: 10px;">
-                            <i class="fas fa-layer-group mr-1"></i> 1. Lapisan &amp; Simbol Peta
+                        <a class="nav-link active" id="tab-peta-link" data-toggle="pill" href="#tab-peta" role="tab">
+                            <i class="fas fa-layer-group mr-1.5 text-warning"></i> 1. Lapisan &amp; Simbol Peta
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link font-weight-bold py-2" id="tab-filter-link" data-toggle="pill" href="#tab-filter" role="tab" style="font-size: 0.85rem; border-radius: 10px;">
-                            <i class="fas fa-search-location mr-1"></i> 2. Pencarian &amp; Filter
+                        <a class="nav-link" id="tab-filter-link" data-toggle="pill" href="#tab-filter" role="tab">
+                            <i class="fas fa-search-location mr-1.5 text-primary"></i> 2. Pencarian &amp; Filter
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link font-weight-bold py-2" id="tab-popup-link" data-toggle="pill" href="#tab-popup" role="tab" style="font-size: 0.85rem; border-radius: 10px;">
-                            <i class="fas fa-info-circle mr-1"></i> 3. Interaksi &amp; Detail
+                        <a class="nav-link" id="tab-popup-link" data-toggle="pill" href="#tab-popup" role="tab">
+                            <i class="fas fa-info-circle mr-1.5 text-info"></i> 3. Interaksi &amp; Detail
                         </a>
                     </li>
                 </ul>
 
                 <!-- Konten Tab Panduan -->
-                <div class="tab-content border rounded p-3 bg-white shadow-sm" id="pills-tabContent" style="min-height: 240px; font-size: 13px; line-height: 1.6; border-color: #e2e8f0 !important;">
+                <div class="tab-content border rounded p-3 bg-white shadow-sm" id="pills-tabContent" style="min-height: 250px; font-size: 13px; line-height: 1.6; border-color: #e2e8f0 !important; border-radius: 14px !important;">
                     
-                    <!-- TAB 1: LAPISAN & SIMBOL PETA -->
+                    <!-- TAB 1: LAPISAN & SIMBOL PETA (Grid Simetris 3x2) -->
                     <div class="tab-pane fade show active" id="tab-peta" role="tabpanel">
                         <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
                             <div>
@@ -441,14 +486,14 @@
                                 <small class="text-muted">Simbol geometri dan kode warna standar kartografi BWS Kalimantan I:</small>
                             </div>
                             <span class="badge badge-light px-2 py-1 text-muted border" style="font-size: 11px;">
-                                <i class="fas fa-check-circle text-success mr-1"></i> 5 Kategori Aktif
+                                <i class="fas fa-check-circle text-success mr-1"></i> 6 Lapisan Kartografi
                             </span>
                         </div>
                         
                         <div class="row">
                             <!-- 1. Lahan Baku -->
                             <div class="col-md-6 mb-2">
-                                <div class="sipdira-legend-card p-2 rounded border bg-light d-flex align-items-center">
+                                <div class="sipdira-legend-card p-2 rounded border bg-light d-flex align-items-center h-100">
                                     <div class="sipdira-swatch-box mr-2 d-flex align-items-center justify-content-center shadow-xs" style="width: 38px; height: 38px; border-radius: 8px; background: rgba(16, 185, 129, 0.15); border: 2px solid #10b981; color: #047857; font-size: 15px; flex-shrink: 0;">
                                         <i class="fas fa-vector-square"></i>
                                     </div>
@@ -464,7 +509,7 @@
 
                             <!-- 2. Lahan Fungsional -->
                             <div class="col-md-6 mb-2">
-                                <div class="sipdira-legend-card p-2 rounded border bg-light d-flex align-items-center">
+                                <div class="sipdira-legend-card p-2 rounded border bg-light d-flex align-items-center h-100">
                                     <div class="sipdira-swatch-box mr-2 d-flex align-items-center justify-content-center shadow-xs" style="width: 38px; height: 38px; border-radius: 8px; background: rgba(37, 99, 235, 0.15); border: 2px solid #2563eb; color: #1d4ed8; font-size: 15px; flex-shrink: 0;">
                                         <i class="fas fa-water"></i>
                                     </div>
@@ -473,14 +518,14 @@
                                             <strong style="color: #1e40af; font-size: 12.5px;">Lahan Fungsional</strong>
                                             <span class="badge px-1.5 py-0.5 text-white" style="background: #2563eb; font-size: 9.5px; border-radius: 4px;">Poligon Biru</span>
                                         </div>
-                                        <span class="text-muted" style="font-size: 11.5px;">Lahan aktif beririgasi dan beroperasi rutin O&amp;P.</span>
+                                        <span class="text-muted" style="font-size: 11.5px;">Lahan aktif beririgasi dan beroperasi rutin O&amp;P BWS.</span>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- 3. Lahan Potensial -->
                             <div class="col-md-6 mb-2">
-                                <div class="sipdira-legend-card p-2 rounded border bg-light d-flex align-items-center">
+                                <div class="sipdira-legend-card p-2 rounded border bg-light d-flex align-items-center h-100">
                                     <div class="sipdira-swatch-box mr-2 d-flex align-items-center justify-content-center shadow-xs" style="width: 38px; height: 38px; border-radius: 8px; background: rgba(245, 158, 11, 0.15); border: 2px solid #f59e0b; color: #b45309; font-size: 15px; flex-shrink: 0;">
                                         <i class="fas fa-draw-polygon"></i>
                                     </div>
@@ -496,7 +541,7 @@
 
                             <!-- 4. Jaringan Saluran -->
                             <div class="col-md-6 mb-2">
-                                <div class="sipdira-legend-card p-2 rounded border bg-light d-flex align-items-center">
+                                <div class="sipdira-legend-card p-2 rounded border bg-light d-flex align-items-center h-100">
                                     <div class="sipdira-swatch-box mr-2 d-flex align-items-center justify-content-center shadow-xs" style="width: 38px; height: 38px; border-radius: 8px; background: rgba(6, 182, 212, 0.15); border: 2px solid #06b6d4; color: #0891b2; font-size: 15px; flex-shrink: 0;">
                                         <i class="fas fa-route"></i>
                                     </div>
@@ -511,17 +556,33 @@
                             </div>
 
                             <!-- 5. Bangunan Air -->
-                            <div class="col-12 mb-1">
-                                <div class="sipdira-legend-card p-2 rounded border bg-light d-flex align-items-center">
+                            <div class="col-md-6 mb-2">
+                                <div class="sipdira-legend-card p-2 rounded border bg-light d-flex align-items-center h-100">
                                     <div class="sipdira-swatch-box mr-2 d-flex align-items-center justify-content-center shadow-xs" style="width: 38px; height: 38px; border-radius: 8px; background: rgba(234, 88, 12, 0.15); border: 2px solid #ea580c; color: #c2410c; font-size: 15px; flex-shrink: 0;">
                                         <i class="fas fa-landmark"></i>
                                     </div>
                                     <div style="flex: 1; line-height: 1.35;">
                                         <div class="d-flex align-items-center justify-content-between mb-0.5">
-                                            <strong style="color: #9a3412; font-size: 12.5px;">Bangunan Air (Infrastruktur SDA)</strong>
+                                            <strong style="color: #9a3412; font-size: 12.5px;">Bangunan Air (SDA)</strong>
                                             <span class="badge px-1.5 py-0.5 text-white" style="background: #ea580c; font-size: 9.5px; border-radius: 4px;">Titik Oranye</span>
                                         </div>
-                                        <span class="text-muted" style="font-size: 11.5px;">Titik pintu air, bendung pengatur, gorong-gorong, serta pos hidrologi BWS.</span>
+                                        <span class="text-muted" style="font-size: 11.5px;">Titik pintu air, bendung, gorong-gorong, serta pos hidrologi.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 6. Batas Wilayah Kerja DIR (Penyempurna Grid 3x2) -->
+                            <div class="col-md-6 mb-2">
+                                <div class="sipdira-legend-card p-2 rounded border bg-light d-flex align-items-center h-100">
+                                    <div class="sipdira-swatch-box mr-2 d-flex align-items-center justify-content-center shadow-xs" style="width: 38px; height: 38px; border-radius: 8px; background: rgba(99, 102, 241, 0.15); border: 2px solid #6366f1; color: #4f46e5; font-size: 15px; flex-shrink: 0;">
+                                        <i class="fas fa-map-marked-alt"></i>
+                                    </div>
+                                    <div style="flex: 1; line-height: 1.35;">
+                                        <div class="d-flex align-items-center justify-content-between mb-0.5">
+                                            <strong style="color: #4338ca; font-size: 12.5px;">Batas Wilayah DIR</strong>
+                                            <span class="badge px-1.5 py-0.5 text-white" style="background: #6366f1; font-size: 9.5px; border-radius: 4px;">Garis Ungu</span>
+                                        </div>
+                                        <span class="text-muted" style="font-size: 11.5px;">Delineasi batas administrasi kewenangan daerah irigasi BWS.</span>
                                     </div>
                                 </div>
                             </div>
@@ -549,7 +610,7 @@
                                     <span class="badge mr-3 px-2 py-1 font-weight-bold" style="background: #1a1c54; color: #fad605; font-size: 10.5px; border-radius: 6px; letter-spacing: 0.5px;">LANGKAH 01</span>
                                     <div style="flex: 1;">
                                         <div class="font-weight-bold text-dark" style="font-size: 13px;">
-                                            <i class="fas fa-search mr-1 text-primary"></i> Pencarian Cepat Nama DIR
+                                             Pencarian Cepat Nama DIR
                                         </div>
                                         <div class="text-secondary" style="font-size: 12px; margin-top: 2px;">
                                             Ketikkan nama daerah irigasi pada kotak <em>"Cari Daerah Irigasi (DIR)"</em> di sidebar kiri (misalnya: <strong>"Pemangkat"</strong>, <strong>"Sungai Daun"</strong>, atau <strong>"Kubu"</strong>), lalu klik hasil yang muncul untuk langsung menuju lokasi sasaran secara otomatis.
@@ -564,7 +625,7 @@
                                     <span class="badge mr-3 px-2 py-1 font-weight-bold" style="background: #2563eb; color: #ffffff; font-size: 10.5px; border-radius: 6px; letter-spacing: 0.5px;">LANGKAH 02</span>
                                     <div style="flex: 1;">
                                         <div class="font-weight-bold text-dark" style="font-size: 13px;">
-                                            <i class="fas fa-map-marked-alt mr-1 text-primary"></i> Filter Wilayah Administratif
+                                            Filter Wilayah Administratif
                                         </div>
                                         <div class="text-secondary" style="font-size: 12px; margin-top: 2px;">
                                             Pilih menu dropdown <em>"Wilayah kabupaten"</em> untuk membatasi fokus peta ke wilayah kerja tertentu, seperti <strong>Kabupaten Sambas</strong>, <strong>Kabupaten Kubu Raya</strong>, atau <strong>Kabupaten Ketapang</strong>.
@@ -579,7 +640,7 @@
                                     <span class="badge mr-3 px-2 py-1 font-weight-bold" style="background: #10b981; color: #ffffff; font-size: 10.5px; border-radius: 6px; letter-spacing: 0.5px;">LANGKAH 03</span>
                                     <div style="flex: 1;">
                                         <div class="font-weight-bold text-dark" style="font-size: 13px;">
-                                            <i class="fas fa-toggle-on mr-1 text-success"></i> Kontrol Visibilitas Layer
+                                            Kontrol Visibilitas Layer
                                         </div>
                                         <div class="text-secondary" style="font-size: 12px; margin-top: 2px;">
                                             Gunakan tombol centang hijau pada daftar <em>"Tampilkan kategori"</em> untuk menampilkan atau menyembunyikan lapisan spesifik (Lahan Baku, Lahan Fungsional, Jaringan Saluran, Bangunan Air) sesuai kebutuhan analisis spasial Anda.
@@ -590,7 +651,7 @@
                         </div>
                     </div>
 
-                    <!-- TAB 3: INTERAKSI & DETAIL -->
+                    <!-- TAB 3: INTERAKSI & DETAIL (Terminologi Resmi & Jelas) -->
                     <div class="tab-pane fade" id="tab-popup" role="tabpanel">
                         <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
                             <div>
@@ -611,9 +672,9 @@
                                     <div class="mb-2 mx-auto d-flex align-items-center justify-content-center shadow-xs" style="width: 44px; height: 44px; border-radius: 12px; background: rgba(26, 28, 84, 0.1); color: #1a1c54; font-size: 19px;">
                                         <i class="fas fa-crosshairs"></i>
                                     </div>
-                                    <strong style="color: #10143a; font-size: 13px; margin-bottom: 4px;">Auto-Focus FlyTo</strong>
+                                    <strong style="color: #10143a; font-size: 13px; margin-bottom: 4px;">Navigasi &amp; Zoom Fokus</strong>
                                     <p class="text-muted mb-0" style="font-size: 11.5px; line-height: 1.45;">
-                                        Klik objek mana pun di peta untuk animasi kamera otomatis (<em>smooth flyTo</em>) presisi ke titik koordinat sasaran.
+                                        Klik objek mana pun di peta untuk animasi kamera meluncur otomatis presisi ke titik koordinat sasaran.
                                     </p>
                                 </div>
                             </div>
@@ -624,9 +685,9 @@
                                     <div class="mb-2 mx-auto d-flex align-items-center justify-content-center shadow-xs" style="width: 44px; height: 44px; border-radius: 12px; background: rgba(37, 99, 235, 0.1); color: #2563eb; font-size: 19px;">
                                         <i class="fas fa-window-restore"></i>
                                     </div>
-                                    <strong style="color: #1e40af; font-size: 13px; margin-bottom: 4px;">Pop-up Detail Lengkap</strong>
+                                    <strong style="color: #1e40af; font-size: 13px; margin-bottom: 4px;">Informasi Atribut Spasial</strong>
                                     <p class="text-muted mb-0" style="font-size: 11.5px; line-height: 1.45;">
-                                        Kartu melayang informatif berisi Nama DIR, luasan hektare (Ha), nomenklatur saluran, dan data teknis resmi Buku DIR BWS.
+                                        Kartu pop-up informatif berisi Nama DIR, luasan hektare (Ha), nomenklatur saluran, dan data teknis resmi Buku DIR BWS.
                                     </p>
                                 </div>
                             </div>
@@ -637,9 +698,9 @@
                                     <div class="mb-2 mx-auto d-flex align-items-center justify-content-center shadow-xs" style="width: 44px; height: 44px; border-radius: 12px; background: rgba(245, 158, 11, 0.15); color: #b45309; font-size: 19px;">
                                         <i class="fas fa-layer-group"></i>
                                     </div>
-                                    <strong style="color: #92400e; font-size: 13px; margin-bottom: 4px;">Basemap &amp; Satelit</strong>
+                                    <strong style="color: #92400e; font-size: 13px; margin-bottom: 4px;">Peta Dasar &amp; Citra Satelit</strong>
                                     <p class="text-muted mb-0" style="font-size: 11.5px; line-height: 1.45;">
-                                        Gunakan kontrol zoom (+/-) atau beralih ke mode <strong>Satelit</strong> di pojok kanan atas untuk analisis tutupan lahan nyata.
+                                        Gunakan kontrol zoom (+/-) atau beralih ke layer <strong>Satelit</strong> di pojok kanan atas untuk analisis tutupan lahan nyata.
                                     </p>
                                 </div>
                             </div>
@@ -647,23 +708,30 @@
                     </div>
                 </div>
 
-                <!-- Tips Navigasi Praktis -->
-                <div class="p-2 px-3 rounded mt-3 d-flex align-items-center" style="background: rgba(29, 78, 216, 0.06); border: 1px dashed rgba(29, 78, 216, 0.25); font-size: 12.5px; color: #1e40af;">
-                    <i class="fas fa-lightbulb text-warning mr-2 fa-lg"></i>
-                    <div>
-                        <strong>Tips Praktis:</strong> Gunakan tombol <strong>Layar Penuh</strong> (<i class="fas fa-expand mx-1"></i>) pada pojok kanan atas navbar untuk melihat sebaran jaringan irigasi secara maksimal dan leluasa.
+                <!-- Tips Navigasi Praktis (Executive Clean) -->
+                <div class="p-2.5 px-3 rounded mt-3 d-flex align-items-center" style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #f59e0b; font-size: 12.5px; color: #1e293b;">
+                    <div class="mr-2.5 d-flex align-items-center justify-content-center" style="width: 28px; height: 28px; border-radius: 6px; background: #fef3c7; color: #d97706; flex-shrink: 0;">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div style="line-height: 1.4;">
+                        <strong>Tips Praktis:</strong> Gunakan tombol <strong>Layar Penuh</strong> (<i class="fas fa-expand mx-0.5 text-muted"></i>) pada pojok kanan atas navbar untuk melihat sebaran jaringan irigasi secara maksimal dan leluasa.
                     </div>
                 </div>
             </div>
 
-            <!-- Modal Footer -->
-            <div class="modal-footer bg-light py-2 px-4 justify-content-between">
+            <!-- Modal Footer dengan Navigasi Wizard Dinamis -->
+            <div class="modal-footer bg-light py-2.5 px-4 d-flex align-items-center justify-content-between">
                 <small class="text-muted" style="font-size: 11.5px;">
                     <i class="fas fa-shield-alt text-success mr-1"></i> Data Spasial Resmi SISDA BWS Kalimantan I
                 </small>
-                <button type="button" class="btn text-white btn-sm font-weight-bold px-4 shadow-sm" data-dismiss="modal" style="background: linear-gradient(135deg, #10143a 0%, #1a1c54 100%); border: 1.5px solid #fad605; border-radius: 8px;">
-                    <i class="fas fa-check mr-1 text-warning"></i> Mengerti &amp; Tutup
-                </button>
+                <div class="d-flex align-items-center" style="gap: 8px;">
+                    <button type="button" class="btn btn-sm btn-outline-secondary font-weight-bold px-3 d-none" id="btnPanduanPrev" style="border-radius: 8px; font-size: 12px; border-color: #cbd5e1; color: #475569;">
+                        <i class="fas fa-arrow-left mr-1"></i> Sebelumnya
+                    </button>
+                    <button type="button" class="btn text-white btn-sm font-weight-bold px-3 shadow-sm" id="btnPanduanNext" style="background: linear-gradient(135deg, #10143a 0%, #1a1c54 100%); border: 1.5px solid #fad605; border-radius: 8px; font-size: 12px;">
+                        <span id="btnPanduanNextText">Lanjut: Pencarian</span> <i class="fas fa-arrow-right ml-1 text-warning" id="btnPanduanNextIcon"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -690,4 +758,64 @@
     }
 </script>
 <script src="{{ asset('js/peta-map.js') }}?v={{ file_exists(public_path('js/peta-map.js')) ? filemtime(public_path('js/peta-map.js')) : time() }}"></script>
+<script>
+    // ============================================================
+    // WIZARD NAVIGASI PANDUAN PENGGUNAAN (STEP-BY-STEP MODAL)
+    // ============================================================
+    $(function() {
+        var panduanTabs = ['#tab-peta-link', '#tab-filter-link', '#tab-popup-link'];
+        var currentStep = 0;
+
+        function updateWizardUI(step) {
+            currentStep = step;
+            if (step === 0) {
+                $('#btnPanduanPrev').addClass('d-none');
+                $('#btnPanduanNextText').text('Lanjut: Pencarian');
+                $('#btnPanduanNextIcon').attr('class', 'fas fa-arrow-right ml-1 text-warning');
+                $('#btnPanduanNext').data('action', 'next');
+            } else if (step === 1) {
+                $('#btnPanduanPrev').removeClass('d-none');
+                $('#btnPanduanNextText').text('Lanjut: Interaksi');
+                $('#btnPanduanNextIcon').attr('class', 'fas fa-arrow-right ml-1 text-warning');
+                $('#btnPanduanNext').data('action', 'next');
+            } else if (step === 2) {
+                $('#btnPanduanPrev').removeClass('d-none');
+                $('#btnPanduanNextText').text('Selesai & Jelajahi Peta');
+                $('#btnPanduanNextIcon').attr('class', 'fas fa-check ml-1 text-warning');
+                $('#btnPanduanNext').data('action', 'finish');
+            }
+        }
+
+        $('#pills-tab-panduan a[data-toggle="pill"]').on('shown.bs.tab', function(e) {
+            var targetId = $(e.target).attr('id');
+            var idx = panduanTabs.indexOf('#' + targetId);
+            if (idx !== -1) {
+                updateWizardUI(idx);
+            }
+        });
+
+        $('#btnPanduanNext').on('click', function() {
+            if ($(this).data('action') === 'finish') {
+                $('#modalPanduanAplikasi').modal('hide');
+            } else {
+                var next = currentStep + 1;
+                if (next < panduanTabs.length) {
+                    $(panduanTabs[next]).tab('show');
+                }
+            }
+        });
+
+        $('#btnPanduanPrev').on('click', function() {
+            var prev = currentStep - 1;
+            if (prev >= 0) {
+                $(panduanTabs[prev]).tab('show');
+            }
+        });
+
+        $('#modalPanduanAplikasi').on('show.bs.modal', function() {
+            $(panduanTabs[0]).tab('show');
+            updateWizardUI(0);
+        });
+    });
+</script>
 @endpush
