@@ -26,8 +26,8 @@
 
         /* 1. Lambang Instansi di Kiri */
         .qrop-emblem-wrap {
-            width: 44px;
-            height: 44px;
+            width: 50px;
+            height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -39,30 +39,40 @@
         }
 
         .qrop-emblem-text {
-            font-size: 8px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            color: #1e293b;
+            font-size: 8.5px;
             text-align: center;
             text-transform: uppercase;
-            line-height: 1.15;
-            margin-top: 2px;
+            line-height: 1.25;
+            margin-top: 3px;
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .qrop-emblem-kem {
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            color: #10143a;
+        }
+
+        .qrop-emblem-balai {
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            color: #475569;
+            font-size: 8px;
         }
 
         /* Garis Pembatas Vertikal Tipis Elegan */
         .qrop-nav-divider {
-            height: 45px;
-            width: 1px;
+            height: 52px;
+            width: 1.5px;
             background: #e2e8f0;
-            margin: 0 18px;
+            margin: 0 20px;
         }
 
         /* 2. Logo Brand Aplikasi Spasial (Presisi & Proporsional Sesuai Standar QROP) */
         .qrop-brand-title {
             display: flex;
             flex-direction: column;
-            line-height: 1.18;
+            line-height: 1.15;
         }
 
         .qrop-brand-headline {
@@ -72,15 +82,15 @@
         }
 
         .qrop-word-main {
-            font-size: 18px;
+            font-size: 21px;
             font-weight: 800;
-            letter-spacing: -0.3px;
+            letter-spacing: -0.4px;
             color: #10143a;
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         .qrop-word-accent {
-            font-size: 16px;
+            font-size: 19px;
             font-weight: 800;
             letter-spacing: 0.5px;
             color: #f59e0b;
@@ -88,12 +98,12 @@
         }
 
         .qrop-word-sub {
-            font-size: 11px;
-            font-weight: 500;
-            letter-spacing: 0.25px;
+            font-size: 11.5px;
+            font-weight: 600;
+            letter-spacing: 0.2px;
             color: #64748b;
             line-height: 1.2;
-            margin-top: 1px;
+            margin-top: 2px;
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
@@ -167,13 +177,13 @@
     <!-- ═══ BAGIAN KIRI: LOGO INSTANSI & BRANDING SPASIAL PROPORSIONAL & MEWAH ═══ -->
     <div class="d-flex align-items-center">
         <!-- 1. Lambang Daerah / Instansi PU + Teks Nama Instansi di Bawah -->
-        <a href="{{ route('peta') }}" class="d-flex flex-column align-items-center text-decoration-none mr-1" title="Balai Wilayah Sungai Kalimantan I Pontianak">
+        <a href="{{ route('peta') }}" class="d-flex flex-column align-items-center text-decoration-none mr-1" title="Kementerian Pekerjaan Umum - Balai Wilayah Sungai Kalimantan I Pontianak">
             <div class="qrop-emblem-wrap">
-                <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo Kementerian Pekerjaan Umum" style="width: 40px; height: 40px; object-fit: contain;">
+                <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo Kementerian Pekerjaan Umum" style="width: 48px; height: 48px; object-fit: contain;">
             </div>
             <div class="qrop-emblem-text d-none d-sm-block">
-                <div>BALAI WILAYAH SUNGAI</div>
-                <div>KALIMANTAN I</div>
+                <div class="qrop-emblem-kem">KEMENTERIAN PEKERJAAN UMUM</div>
+                <div class="qrop-emblem-balai">BALAI WILAYAH SUNGAI KALIMANTAN I</div>
             </div>
         </a>
 
@@ -183,7 +193,7 @@
         <!-- 2. Logo Brand Aplikasi Spasial: Logo Resmi SIPDIRA -->
         <a href="{{ route('peta') }}" class="d-flex align-items-center text-decoration-none">
             <!-- Logo Ikon Resmi SIPDIRA (Modular Spatial & Aliran Irigasi BWSK I) -->
-            <div class="mr-2.5 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 42px; height: 42px;">
+            <div class="mr-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 48px; height: 48px;">
                 <img src="{{ asset('img/logo-sipdira.svg') }}" alt="Logo SIPDIRA" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
             <div class="d-flex flex-column justify-content-center">
