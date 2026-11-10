@@ -49,26 +49,34 @@
         border-color: #cbd5e1 !important;
         background: #ffffff !important;
     }
+    .sipdira-footer-right-links {
+        margin-right: 54px !important; /* Ruang lega agar tidak menempel/bertabrakan dengan floating scroll-to-top button */
+    }
     .sipdira-footer-policy-link {
-        color: #64748b;
-        font-size: 12.5px;
-        font-weight: 600;
-        text-decoration: none;
-        padding: 6px 12px;
-        border-radius: 8px;
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        transition: all 0.2s ease;
-        display: inline-flex;
-        align-items: center;
+        color: #64748b !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        text-decoration: none !important;
+        background: transparent !important;
+        border: none !important;
+        padding: 4px 0 !important;
+        box-shadow: none !important;
+        transition: color 0.18s ease;
+        display: inline-block;
     }
     .sipdira-footer-policy-link:hover {
-        color: #10143a;
-        background: #f8fafc;
-        border-color: #cbd5e1;
-        text-decoration: none;
-        box-shadow: 0 2px 6px rgba(16, 20, 58, 0.08);
-        transform: translateY(-1px);
+        color: #10143a !important;
+        text-decoration: underline !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        transform: none !important;
+    }
+    @media (max-width: 767.98px) {
+        .sipdira-footer-right-links {
+            margin-right: 0 !important;
+            margin-top: 10px;
+        }
     }
 
     /* Hero Card - Seamless, Clean & Borderless ala QROP (PU Navy & Gold Edition) */
@@ -427,7 +435,7 @@
                 </div>
                 <div class="sipdira-footer-right-links">
                     <a href="{{ route('kebijakan-privasi') }}" class="sipdira-footer-policy-link" title="Kebijakan Privasi &amp; Tata Kelola Data Spasial">
-                        <i class="fas fa-shield-alt mr-1.5 text-warning"></i> Kebijakan Privasi
+                        Kebijakan Privasi
                     </a>
                 </div>
             </div>

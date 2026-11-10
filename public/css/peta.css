@@ -1790,9 +1790,34 @@ body {
    10. FOOTER BERSIH & ELEGAN (STANDAR ENTERPRISE/KEMENTERIAN PU)
    ============================================================ */
 .sipdira-clean-footer {
-    margin-top: 36px;
-    padding: 24px 4px 12px 4px;
-    border-top: 1.5px solid rgba(226, 232, 240, 0.9);
+    margin-top: 40px;
+    padding: 24px 0 16px 0;
+    border-top: 1px solid #e2e8f0;
+}
+
+.sipdira-footer-right-links {
+    margin-right: 54px;
+}
+
+.sipdira-footer-policy-link {
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.18s ease;
+    display: inline-block;
+}
+
+.sipdira-footer-policy-link:hover {
+    color: #10143a;
+    text-decoration: underline;
+}
+
+@media (max-width: 767.98px) {
+    .sipdira-footer-right-links {
+        margin-right: 0;
+        margin-top: 10px;
+    }
 }
 
 .sipdira-footer-mini-pu {
