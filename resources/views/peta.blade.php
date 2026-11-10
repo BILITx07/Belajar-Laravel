@@ -70,6 +70,53 @@
         box-shadow: 0 2px 6px rgba(16, 20, 58, 0.08);
         transform: translateY(-1px);
     }
+
+    /* Hero Card - Seamless, Clean & Borderless ala QROP (PU Navy & Gold Edition) */
+    .bws-hero-card {
+        background: linear-gradient(135deg, #10143a 0%, #161b4d 45%, #1c2364 100%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 18px !important;
+        box-shadow: 0 12px 35px -5px rgba(16, 20, 58, 0.25) !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        padding: 30px 36px !important;
+    }
+    .bws-dot-hero {
+        width: 6px !important;
+        height: 6px !important;
+        background: #fad605 !important;
+        box-shadow: none !important;
+    }
+    .bws-hero-title-accent {
+        color: #fad605 !important;
+    }
+    .bws-hero-location {
+        background: transparent !important;
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+    }
+    .bws-location-icon-box {
+        width: 44px !important;
+        height: 44px !important;
+        background: rgba(255, 255, 255, 0.12) !important;
+        color: #ffffff !important;
+        border-radius: 50% !important;
+    }
+    .bws-location-main-text {
+        font-weight: 700;
+        font-size: 14.5px;
+        color: #ffffff;
+        line-height: 1.3;
+        letter-spacing: -0.2px;
+    }
+    .bws-location-sub-text {
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 12px;
+        line-height: 1.3;
+    }
 </style>
 @endpush
 
@@ -77,7 +124,7 @@
 <div class="bws-qrop-page">
 
     <!-- ============================================================ -->
-    <!-- 1. KARTU BANNER HERO MEWAH (PERSIS SEPERTI GAMBAR 1 QROP)    -->
+    <!-- 1. KARTU BANNER HERO MEWAH (BERSIH & ELEGAN PERSIS QROP)     -->
     <!-- ============================================================ -->
     <div class="bws-hero-card">
         <div class="bws-hero-content">
@@ -85,7 +132,7 @@
                 <span class="bws-dot-hero"></span> DATA SPASIAL SIPDIRA &bull; BWS KALIMANTAN I
             </div>
             <h1 class="bws-hero-title">
-                Peta Daerah Irigasi &amp; Jaringan SDA.
+                Peta Daerah Irigasi <span class="bws-hero-title-accent">&amp; Jaringan SDA.</span>
             </h1>
             <p class="bws-hero-desc">
                 Temukan sebaran Daerah Irigasi, Jaringan Saluran, dan Bangunan Air di Kalimantan Barat dalam satu peta.
@@ -96,8 +143,8 @@
                 <i class="fas fa-map-marker-alt"></i>
             </div>
             <div>
-                <div class="font-weight-bold" style="font-size: 13px;">Kalimantan Barat</div>
-                <small style="color: rgba(255, 255, 255, 0.75);">BWS Kalimantan I Pontianak</small>
+                <div class="bws-location-main-text">Kalimantan Barat</div>
+                <div class="bws-location-sub-text">BWS Kalimantan I Pontianak</div>
             </div>
         </div>
     </div>
