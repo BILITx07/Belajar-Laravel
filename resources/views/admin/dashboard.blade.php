@@ -187,12 +187,6 @@
         </div>
 
         <div class="d-flex align-items-center flex-wrap" style="gap: 10px;">
-            @if(Auth::check() && Auth::user()->isSuperAdmin())
-            <a href="{{ route('admin.backup-gis') }}" class="btn btn-sm btn-dark font-weight-bold shadow-sm d-inline-flex align-items-center" style="border-radius: 8px; font-size: 0.82rem; padding: 6px 14px; background: #10143a; border-color: #10143a;" title="Cadangkan Seluruh File GeoJSON &amp; SHP ke Arsip .ZIP (Khusus Super Admin)">
-                <i class="fas fa-file-archive mr-1.5 text-warning"></i> Backup Peta (.ZIP)
-            </a>
-            @endif
-
             <span class="badge badge-light border text-secondary px-3 py-2 font-weight-bold shadow-sm" style="border-radius: 20px; font-size: 0.8rem; background: #ffffff; border-color: #e2e8f0;">
                 <i class="fas fa-calendar-alt text-primary mr-2"></i> {{ \Carbon\Carbon::now()->locale('id')->isoFormat('dddd, D MMMM Y') }}
             </span>
