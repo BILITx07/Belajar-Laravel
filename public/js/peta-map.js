@@ -226,15 +226,77 @@ window.toggleLayerSection = function(sectionId, headerEl) {
     }
 };
 
-/* Toggle Layer Wilayah Sungai (WS Kapuas) */
+/* Toggle Layer Wilayah Sungai (WS Kapuas) dengan Smart Lazy Loading */
+var wsKapuasLoaded = false;
+var wsKapuasLoading = false;
+
+window.loadWsKapuasLazy = function(onDone) {
+    if (wsKapuasLoaded) {
+        if (onDone) onDone();
+        return;
+    }
+    if (wsKapuasLoading) return;
+    wsKapuasLoading = true;
+
+    var wsFiles = (window.geojsonFiles || []).filter(function(fn) {
+        var u = fn.toUpperCase();
+        return u.indexOf('KAPUAS') !== -1 || u.indexOf('WS') === 0 || u.indexOf('DAS') !== -1;
+    });
+
+    if (wsFiles.length === 0) {
+        wsKapuasLoaded = true;
+        wsKapuasLoading = false;
+        if (onDone) onDone();
+        return;
+    }
+
+    var count = 0;
+    wsFiles.forEach(function(fileName) {
+        fetch('/geojson/' + encodeURIComponent(fileName))
+            .then(function(res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+            .then(function(rawData) {
+                var gj = convertEsriToGeoJson(rawData);
+                if (!gj || !gj.features || gj.features.length === 0) return;
+                var gjLayer = L.geoJSON(gj, {
+                    style: function() {
+                        return {
+                            color: '#0891b2',
+                            weight: 1.5,
+                            opacity: 0.8,
+                            fillColor: '#06b6d4',
+                            fillOpacity: 0.15
+                        };
+                    }
+                });
+                layerWsKapuas.addLayer(gjLayer);
+            })
+            .catch(function(err) {})
+            .finally(function() {
+                count++;
+                if (count >= wsFiles.length) {
+                    wsKapuasLoaded = true;
+                    wsKapuasLoading = false;
+                    if (onDone) onDone();
+                }
+            });
+    });
+};
+
 window.toggleWsKapuasLayer = function(isChecked) {
+    var chk = document.getElementById('chkFloatingWsKapuas');
+    if (chk) chk.checked = isChecked;
+
     if (isChecked) {
-        if (!map.hasLayer(layerWsKapuas)) map.addLayer(layerWsKapuas);
+        if (!wsKapuasLoaded) {
+            window.loadWsKapuasLazy(function() {
+                if (!map.hasLayer(layerWsKapuas)) map.addLayer(layerWsKapuas);
+            });
+        } else {
+            if (!map.hasLayer(layerWsKapuas)) map.addLayer(layerWsKapuas);
+        }
     } else {
         if (map.hasLayer(layerWsKapuas)) map.removeLayer(layerWsKapuas);
     }
-    var chk = document.getElementById('chkFloatingWsKapuas');
-    if (chk) chk.checked = isChecked;
 };
 
 /* Toggle Layer Batas Wilayah DIR */
@@ -452,18 +514,26 @@ var currentWilayahFilter = 'all';
 var currentPage = 1;
 var pageSize = 10;
 
-if (window.geojsonFiles && window.geojsonFiles.length > 0) {
+// SMART OPTIMIZATION: Filter keluar file WS Kapuas (41+ MB) agar di-lazy load
+// Hanya 54 file Daerah Irigasi (total < 2 MB) yang dimuat saat inisialisasi awal
+var initialFilesToLoad = (window.geojsonFiles || []).filter(function(fileName) {
+    var u = fileName.toUpperCase();
+    return !(u.indexOf('KAPUAS') !== -1 || u.indexOf('WS') === 0 || u.indexOf('DAS') !== -1);
+});
+
+if (initialFilesToLoad.length > 0) {
     var loadedCount = 0;
 
+    // Timeout pengaman dipersingkat dari 7000ms menjadi 2500ms
     setTimeout(function() {
         if (mapLoadingEl && mapLoadingEl.style.display !== 'none') {
             mapLoadingEl.style.display = 'none';
             if (mapBounds.isValid()) map.fitBounds(mapBounds, { padding: [40, 40] });
             renderTable();
         }
-    }, 7000);
+    }, 2500);
 
-    window.geojsonFiles.forEach(function(fileName) {
+    initialFilesToLoad.forEach(function(fileName) {
         fetch('/geojson/' + encodeURIComponent(fileName))
             .then(function(res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
             .then(function(rawData) {
@@ -610,7 +680,7 @@ if (window.geojsonFiles && window.geojsonFiles.length > 0) {
             .catch(function(err) {})
             .finally(function() {
                 loadedCount++;
-                if (loadedCount >= window.geojsonFiles.length) {
+                if (loadedCount >= initialFilesToLoad.length) {
                     if (mapLoadingEl) mapLoadingEl.style.display = 'none';
                     if (mapBounds.isValid()) map.fitBounds(mapBounds, { padding: [40, 40] });
                     renderTable();
