@@ -554,6 +554,13 @@
             font-weight: 600;
         }
 
+        /* ═══ SEMBUNYIKAN BADGE MENGAMBANG RECAPTCHA DI POJOK LAYAR (MENGHILANGKAN KOTAK KEDUA) ═══ */
+        .grecaptcha-badge {
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
         /* Teks Footer Bawah */
         .form-footer-copyright {
             margin-top: 22px;
