@@ -82,11 +82,6 @@
                 </div>
 
                 <div class="d-flex align-items-center flex-wrap" style="gap:10px;">
-                    <!-- Ekspor CSV (Staf & Super Admin) -->
-                    <a href="{{ route('admin.export-rekap') }}" class="btn btn-outline-success font-weight-bold px-3 py-2 shadow-sm d-inline-flex align-items-center justify-content-center" style="border-radius:8px;font-size:0.84rem;height:38px;background:#fff;" title="Ekspor Rekapitulasi Data Geospasial ke CSV">
-                        <i class="fas fa-file-csv mr-1.5 text-success"></i>Ekspor CSV
-                    </a>
-
                     <!-- Backup ZIP (Khusus Super Admin) -->
                     @if(Auth::check() && Auth::user()->isSuperAdmin())
                     <a href="{{ route('admin.backup-gis') }}" class="btn text-white font-weight-bold px-3 py-2 shadow-sm d-inline-flex align-items-center justify-content-center" style="background:#1e293b;border:1px solid #1e293b;border-radius:8px;font-size:0.84rem;height:38px;" title="Unduh Arsip .ZIP Seluruh Berkas Spasial (Khusus Super Admin)">

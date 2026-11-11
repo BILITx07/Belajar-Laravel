@@ -522,14 +522,6 @@
 
         <!-- Tombol Aksi & Profil Petugas -->
         <div class="bws-topbar-actions">
-            <!-- Tombol Pintasan Lihat Peta WebGIS Modern Ala Foto 2 -->
-            <a href="{{ route('peta') }}" class="btn-lihat-peta-modern mr-1" title="Buka Halaman Peta Publik WebGIS">
-                <i class="fas fa-compass icon-peta"></i>
-                <span class="d-none d-md-inline">Buka WebGIS</span>
-                <span class="d-inline d-md-none">Peta</span>
-                <i class="fas fa-external-link-alt d-none d-lg-inline" style="font-size: 0.68rem; opacity: 0.7;"></i>
-            </a>
-
             <!-- Fullscreen Toggle -->
             <a href="#" class="bws-action-icon d-none d-sm-flex" onclick="toggleFullScreen(event)" title="Layar Penuh">
                 <i class="fas fa-expand"></i>
