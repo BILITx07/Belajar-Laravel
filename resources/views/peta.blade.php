@@ -950,37 +950,175 @@
         </div>
 
         <!-- ============================================================ -->
-        <!-- KRING PENGAWASAN / KONTAK (PERSIS QROP .contact-section)     -->
+        <!-- PUSAT LAYANAN & KOORDINASI SPASIAL BWS KALIMANTAN I          -->
+        <!-- (Desain Otentik Resmi Kementerian PU - Grid 3 Kartu Layanan) -->
         <!-- ============================================================ -->
-        <section class="contact-section mt-5 mb-4" id="kontak" style="display: flex; align-items: center; justify-content: space-between; gap: 28px; background: linear-gradient(115deg, #10143a 0%, #161b4d 50%, #1c2364 100%); padding: 28px 32px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; color: #ffffff; box-shadow: 0 6px 20px rgba(16, 20, 58, 0.15);">
-            <div>
-                <p class="eyebrow" style="font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: #fad605; margin-bottom: 6px; text-transform: uppercase;">
-                    KRING PENGAWASAN &bull; LAYANAN INFORMASI
-                </p>
-                <h2 style="font-size: 20px; font-weight: 700; color: #ffffff; margin-bottom: 4px;">
-                    Butuh informasi lebih lanjut?
-                </h2>
-                <p style="font-size: 11.5px; color: rgba(255, 255, 255, 0.85); margin: 0;">
-                    Hubungi Balai Wilayah Sungai Kalimantan I Pontianak.
-                </p>
+        <section class="bws-services-section mt-5 mb-4" id="kontak">
+            <style>
+                .bws-services-section {
+                    background: #ffffff;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 16px;
+                    padding: 28px 32px;
+                    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+                    position: relative;
+                    overflow: hidden;
+                }
+                .bws-services-section::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    height: 4px;
+                    background: linear-gradient(90deg, #10143a 0%, #1d4ed8 50%, #f59e0b 100%);
+                }
+                .bws-service-grid {
+                    display: grid;
+                    grid-template-columns: repeat(3, minmax(0, 1fr));
+                    gap: 20px;
+                    margin-top: 22px;
+                }
+                @media (max-width: 992px) {
+                    .bws-service-grid {
+                        grid-template-columns: 1fr;
+                        gap: 16px;
+                    }
+                }
+                .bws-service-card {
+                    background: #f8fafc;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 12px;
+                    padding: 20px 22px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    transition: all 0.22s ease;
+                }
+                .bws-service-card:hover {
+                    background: #ffffff;
+                    border-color: #cbd5e1;
+                    transform: translateY(-2px);
+                    box-shadow: 0 8px 24px rgba(16, 20, 58, 0.06);
+                }
+                .bws-service-card-header {
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 14px;
+                    margin-bottom: 12px;
+                }
+                .bws-service-icon-box {
+                    width: 44px;
+                    height: 44px;
+                    border-radius: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 19px;
+                    flex-shrink: 0;
+                }
+                .bws-service-btn {
+                    margin-top: 16px;
+                    border-radius: 8px;
+                    font-size: 12.5px;
+                    font-weight: 700;
+                    padding: 9px 16px;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    text-decoration: none !important;
+                    transition: all 0.2s ease;
+                    width: 100%;
+                }
+            </style>
+
+            <!-- Header Section -->
+            <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between" style="gap: 12px;">
+                <div>
+                    <div class="d-inline-flex align-items-center mb-1.5" style="gap: 7px;">
+                        <span style="display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #f59e0b;"></span>
+                        <span style="font-size: 10.5px; font-weight: 800; color: #10143a; letter-spacing: 1px; text-transform: uppercase;">
+                            UNIT LAYANAN TERPADU &bull; BWS KALIMANTAN I
+                        </span>
+                    </div>
+                    <h3 style="font-size: 20px; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.3px;">
+                        Pusat Layanan Informasi &amp; Koordinasi Daerah Irigasi
+                    </h3>
+                    <p style="font-size: 12.5px; color: #64748b; margin: 4px 0 0 0; line-height: 1.5;">
+                        Kanal resmi Balai Wilayah Sungai Kalimantan I Pontianak untuk tata kelola data geospasial, pelaporan kondisi fisik infrastruktur SDA, serta publikasi kegiatan irigasi.
+                    </p>
+                </div>
             </div>
-            <div class="contact-actions d-flex flex-wrap" style="gap: 12px;">
-                <a href="https://wa.me/6285389999100" target="_blank" rel="noopener noreferrer" class="d-flex align-items-center text-decoration-none shadow-xs" style="background: #ffffff; border: 1px solid #d8e4d7; border-radius: 9px; padding: 10px 16px; gap: 11px; min-width: 190px; color: #1e293b;">
-                    <i class="fab fa-whatsapp text-success" style="font-size: 22px;"></i>
+
+            <!-- 3 Kartu Layanan Interaktif -->
+            <div class="bws-service-grid">
+                <!-- Kartu 1: Permohonan Data Geospasial -->
+                <div class="bws-service-card">
                     <div>
-                        <span style="font-size: 9.5px; color: #64748b; display: block;">WhatsApp</span>
-                        <small style="font-size: 11.5px; font-weight: 700; color: #15803d; display: block;">+62 853 8999 9100</small>
+                        <div class="bws-service-card-header">
+                            <div class="bws-service-icon-box" style="background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe;">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+                            <div>
+                                <span class="badge badge-light border mb-1" style="font-size: 9.5px; font-weight: 700; color: #1d4ed8; background: #ffffff;">DATA &amp; RISET</span>
+                                <h4 style="font-size: 14.5px; font-weight: 800; color: #0f172a; margin: 0;">Permohonan Data Spasial</h4>
+                            </div>
+                        </div>
+                        <p style="font-size: 12px; color: #475569; line-height: 1.55; margin: 0;">
+                            Membutuhkan data spasial vektor (Shapefile/GeoJSON) atau data teknis luas baku/fungsional untuk penelitian akademis, skripsi/magang, atau koordinasi dinas?
+                        </p>
                     </div>
-                    <i class="fas fa-external-link-alt text-muted ml-auto" style="font-size: 10px;"></i>
-                </a>
-                <a href="https://instagram.com/bwskalimantan1" target="_blank" rel="noopener noreferrer" class="d-flex align-items-center text-decoration-none shadow-xs" style="background: #ffffff; border: 1px solid #d8e4d7; border-radius: 9px; padding: 10px 16px; gap: 11px; min-width: 190px; color: #1e293b;">
-                    <i class="fab fa-instagram text-danger" style="font-size: 22px;"></i>
+                    <button type="button" class="btn bws-service-btn" data-toggle="modal" data-target="#modalSopDataSpasial" style="background: #10143a; color: #ffffff; border: 1px solid #10143a;">
+                        <i class="fas fa-file-alt text-warning"></i>
+                        <span>SOP Permohonan Data</span>
+                    </button>
+                </div>
+
+                <!-- Kartu 2: Pelaporan & Posko Siaga O&P SDA -->
+                <div class="bws-service-card">
                     <div>
-                        <span style="font-size: 9.5px; color: #64748b; display: block;">Instagram</span>
-                        <small style="font-size: 11.5px; font-weight: 700; color: #be185d; display: block;">bwskalimantan1</small>
+                        <div class="bws-service-card-header">
+                            <div class="bws-service-icon-box" style="background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0;">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <div>
+                                <span class="badge badge-light border mb-1" style="font-size: 9.5px; font-weight: 700; color: #15803d; background: #ffffff;">OPERASI &amp; PEMELIHARAAN</span>
+                                <h4 style="font-size: 14.5px; font-weight: 800; color: #0f172a; margin: 0;">Pelaporan Saluran &amp; Bangunan</h4>
+                            </div>
+                        </div>
+                        <p style="font-size: 12px; color: #475569; line-height: 1.55; margin: 0;">
+                            Temuan kendala fisik di lapangan seperti kerusakan tanggul, pintu air macet, sedimentasi parah, atau koordinasi petani pemakai air (P3A)?
+                        </p>
                     </div>
-                    <i class="fas fa-external-link-alt text-muted ml-auto" style="font-size: 10px;"></i>
-                </a>
+                    <button type="button" class="btn bws-service-btn" data-toggle="modal" data-target="#modalKontakResmi" style="background: #ffffff; color: #15803d; border: 1.5px solid #86efac;">
+                        <i class="fas fa-headset"></i>
+                        <span>Kontak Posko O&amp;P BWS</span>
+                    </button>
+                </div>
+
+                <!-- Kartu 3: Kanal Informasi & Publikasi Resmi -->
+                <div class="bws-service-card">
+                    <div>
+                        <div class="bws-service-card-header">
+                            <div class="bws-service-icon-box" style="background: #fdf2f8; color: #db2777; border: 1px solid #fbcfe8;">
+                                <i class="fab fa-instagram"></i>
+                            </div>
+                            <div>
+                                <span class="badge badge-light border mb-1" style="font-size: 9.5px; font-weight: 700; color: #db2777; background: #ffffff;">MEDIA PUBLIKASI RESMI</span>
+                                <h4 style="font-size: 14.5px; font-weight: 800; color: #0f172a; margin: 0;">Kanal Instagram Resmi</h4>
+                            </div>
+                        </div>
+                        <p style="font-size: 12px; color: #475569; line-height: 1.55; margin: 0;">
+                            Dapatkan dokumentasi dan kabar terkini mengenai rehabilitasi jaringan irigasi rawa, operasi bendung, dan agenda kerja resmi BWS Kalimantan I.
+                        </p>
+                    </div>
+                    <a href="https://instagram.com/bwskalimantan1" target="_blank" rel="noopener noreferrer" class="btn bws-service-btn" style="background: #ffffff; color: #be185d; border: 1.5px solid #f9a8d4;">
+                        <i class="fab fa-instagram"></i>
+                        <span>Kunjungi @bwskalimantan1</span>
+                        <i class="fas fa-external-link-alt ml-auto" style="font-size: 10px; opacity: 0.6;"></i>
+                    </a>
+                </div>
             </div>
         </section>
 
@@ -1066,6 +1204,135 @@
                     <a href="https://instagram.com/bwskalimantan1" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-danger font-weight-bold flex-fill py-2 d-flex align-items-center justify-content-center" style="border-radius: 10px; gap: 6px;">
                         <i class="fab fa-instagram" style="font-size: 15px;"></i> Instagram Resmi
                     </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ======================================================================= -->
+<!-- MODAL SOP PERMOHONAN DATA GEOSPASIAL RESMI BWS KALIMANTAN I             -->
+<!-- ======================================================================= -->
+<div class="modal fade" id="modalSopDataSpasial" tabindex="-1" role="dialog" aria-labelledby="modalSopDataLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 18px; overflow: hidden;">
+            <!-- Header Modal Resmi PU Navy & Gold -->
+            <div class="modal-header text-white px-4 py-3" style="background: linear-gradient(135deg, #10143a 0%, #1a1c54 100%); border-bottom: 3.5px solid #f59e0b;">
+                <div class="d-flex align-items-center">
+                    <div class="mr-3 d-flex align-items-center justify-content-center bg-white shadow-xs" style="width: 44px; height: 44px; border-radius: 12px; border: 1.5px solid #fad605; padding: 4px;">
+                        <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo PU" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                    <div>
+                        <h5 class="modal-title font-weight-bold text-white mb-0" id="modalSopDataLabel" style="font-size: 1.12rem; letter-spacing: 0.3px;">
+                            SOP Permohonan Data Geospasial Irigasi
+                        </h5>
+                        <small style="color: rgba(255, 255, 255, 0.88); font-size: 0.78rem;">
+                            Balai Wilayah Sungai Kalimantan I &bull; Direktorat Jenderal Sumber Daya Air
+                        </small>
+                    </div>
+                </div>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 0.85; text-shadow: none;">
+                    <span aria-hidden="true" style="font-size: 1.5rem;">&times;</span>
+                </button>
+            </div>
+
+            <!-- Body Modal -->
+            <div class="modal-body p-4" style="background: #ffffff; font-size: 13px; line-height: 1.6; color: #334155;">
+                <!-- Kotak Maklumat Pelayanan Publik (Gratis / Rp 0) -->
+                <div class="p-3 mb-3 rounded-lg" style="background: #f0fdf4; border: 1px solid #bbf7d0; border-left: 4px solid #16a34a;">
+                    <div class="d-flex align-items-center mb-1" style="gap: 8px;">
+                        <i class="fas fa-certificate text-success" style="font-size: 15px;"></i>
+                        <strong class="text-success" style="font-size: 13px;">Maklumat Pelayanan Informasi Publik (PPID)</strong>
+                    </div>
+                    <div class="small text-dark" style="font-size: 12px; line-height: 1.5;">
+                        Pelayanan data geospasial di Balai Wilayah Sungai Kalimantan I Pontianak diselenggarakan sesuai <strong>UU No. 14 Tahun 2008</strong> tentang Keterbukaan Informasi Publik dan prinsip <strong>Satu Data Indonesia</strong>. Seluruh proses pelayanan permohonan data <strong>TIDAK DIPUNGUT BIAYA (GRATIS / Rp 0)</strong> untuk keperluan pendidikan, penelitian, skripsi/tesis, dan kedinasan.
+                    </div>
+                </div>
+
+                <!-- 4 Tahapan Alur Prosedur -->
+                <h6 class="font-weight-bold text-dark mb-2.5 d-flex align-items-center" style="font-size: 13.5px; gap: 7px;">
+                    <i class="fas fa-list-ol text-primary"></i> Alur Pengajuan Permohonan Data Vektor (SHP / GeoJSON):
+                </h6>
+
+                <div class="row" style="gap: 0; margin-left: -6px; margin-right: -6px;">
+                    <!-- Step 1 -->
+                    <div class="col-md-6 mb-2.5 px-1.5">
+                        <div class="p-3 h-100 rounded border bg-light" style="border-color: #e2e8f0 !important;">
+                            <div class="d-flex align-items-center mb-1.5" style="gap: 8px;">
+                                <span class="badge badge-primary font-weight-bold rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 22px; height: 22px; font-size: 11px;">1</span>
+                                <strong class="text-dark" style="font-size: 12.5px;">Surat Permohonan Resmi</strong>
+                            </div>
+                            <div class="text-muted small" style="font-size: 11.5px; line-height: 1.45;">
+                                Buat surat resmi dari Universitas/Fakultas/Instansi yang ditujukan kepada:<br>
+                                <span class="font-weight-bold text-dark">Yth. Kepala Balai Wilayah Sungai Kalimantan I Pontianak</span><br>
+                                <em>Jl. Paris II No. 1, Pontianak, Kalbar 78124</em>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="col-md-6 mb-2.5 px-1.5">
+                        <div class="p-3 h-100 rounded border bg-light" style="border-color: #e2e8f0 !important;">
+                            <div class="d-flex align-items-center mb-1.5" style="gap: 8px;">
+                                <span class="badge badge-primary font-weight-bold rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 22px; height: 22px; font-size: 11px;">2</span>
+                                <strong class="text-dark" style="font-size: 12.5px;">Lampiran Dokumen Riset</strong>
+                            </div>
+                            <div class="text-muted small" style="font-size: 11.5px; line-height: 1.45;">
+                                Lampirkan fotokopi/scan Kartu Tanda Mahasiswa (KTM) / KTP, serta ringkasan Proposal Penelitian / Kerangka Acuan Kerja (KAK) yang mencantumkan nama Daerah Irigasi (DIR) yang dituju.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="col-md-6 mb-2.5 px-1.5">
+                        <div class="p-3 h-100 rounded border bg-light" style="border-color: #e2e8f0 !important;">
+                            <div class="d-flex align-items-center mb-1.5" style="gap: 8px;">
+                                <span class="badge badge-primary font-weight-bold rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 22px; height: 22px; font-size: 11px;">3</span>
+                                <strong class="text-dark" style="font-size: 12.5px;">Penyerahan Berkas ke ULT</strong>
+                            </div>
+                            <div class="text-muted small" style="font-size: 11.5px; line-height: 1.45;">
+                                Serahkan berkas langsung ke <strong>Unit Layanan Terpadu (ULT) BWS Kalimantan I</strong> pada hari dan jam kerja, atau kirimkan via email kedinasan resmi ke <a href="mailto:bwskalimantan1@pu.go.id" class="text-primary font-weight-bold">bwskalimantan1@pu.go.id</a>.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="col-md-6 mb-2.5 px-1.5">
+                        <div class="p-3 h-100 rounded border bg-light" style="border-color: #e2e8f0 !important;">
+                            <div class="d-flex align-items-center mb-1.5" style="gap: 8px;">
+                                <span class="badge badge-primary font-weight-bold rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 22px; height: 22px; font-size: 11px;">4</span>
+                                <strong class="text-dark" style="font-size: 12.5px;">Verifikasi &amp; Serah Terima</strong>
+                            </div>
+                            <div class="text-muted small" style="font-size: 11.5px; line-height: 1.45;">
+                                Tim Seksi Teknis O&amp;P SDA / GIS memverifikasi ketersediaan layer spasial dan menerbitkan Berita Acara Serah Terima (BAST) data untuk digunakan sesuai peruntukan non-komersial.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Format Data yang Tersedia -->
+                <div class="p-2.5 mt-2 rounded bg-white border" style="border-color: #e2e8f0 !important; font-size: 11.5px;">
+                    <strong class="text-dark d-block mb-1"><i class="fas fa-database text-warning mr-1"></i> Format Data Spasial Tersedia:</strong>
+                    <ul class="mb-0 pl-3 text-secondary" style="line-height: 1.5;">
+                        <li>Layer Poligon Daerah Irigasi (Lahan Baku, Fungsional, dan Potensial) &mdash; Format Shapefile (.shp) / GeoJSON / KML.</li>
+                        <li>Layer Garis Jaringan Saluran Irigasi (Primer &amp; Sekunder) &mdash; Format Shapefile (.shp) / GeoJSON.</li>
+                        <li>Layer Titik Infrastruktur Bangunan Air (Bendung &amp; Pintu Air) &mdash; Sistem Koordinat WGS 84 / UTM Zone 49N.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Footer Modal -->
+            <div class="modal-footer bg-light py-2.5 px-4 d-flex justify-content-between align-items-center">
+                <small class="text-muted" style="font-size: 11px;">
+                    <i class="fas fa-map-marker-alt text-danger mr-1"></i> Kantor BWS Kalimantan I: Jl. Paris II No. 1, Pontianak
+                </small>
+                <div class="d-flex" style="gap: 8px;">
+                    <button type="button" class="btn btn-outline-secondary btn-sm font-weight-bold px-3" data-dismiss="modal" style="border-radius: 8px; font-size: 12px;">
+                        Tutup
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm font-weight-bold px-3" data-dismiss="modal" data-toggle="modal" data-target="#modalKontakResmi" style="border-radius: 8px; font-size: 12px; background: #10143a; border-color: #10143a;">
+                        <i class="fas fa-phone-alt mr-1 text-warning"></i> Kontak Kantor BWS
+                    </button>
                 </div>
             </div>
         </div>
