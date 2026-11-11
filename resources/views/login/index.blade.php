@@ -21,12 +21,17 @@
 
     <style>
         :root {
+            --pu-navy: #10143a;
+            --pu-navy-dark: #090c24;
+            --pu-navy-light: #1c2363;
             --pu-blue: #1d4ed8;
             --pu-blue-hover: #1e40af;
-            --pu-gold: #fad605;
-            --pu-navy: #0f2b48;
+            --pu-gold: #f59e0b;
+            --pu-gold-bright: #fad605;
             --text-dark: #0f172a;
+            --text-body: #334155;
             --text-muted: #64748b;
+            --border-color: #e2e8f0;
         }
 
         * {
@@ -34,393 +39,506 @@
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: linear-gradient(135deg, #092c48 0%, #0d4b68 40%, #12637a 100%);
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: radial-gradient(circle at 20% 20%, #151d52 0%, #0d1238 45%, #07091f 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0;
-            padding: 18px 16px;
+            padding: 24px 16px;
             position: relative;
             overflow-x: hidden;
         }
 
-        /* Ambient Lighting Background Spheres (Glassmorphism Depth) */
-        .ambient-glow-1 {
+        /* Ambient Glow Background Spheres */
+        .ambient-sphere-1 {
             position: fixed;
-            top: -12%;
-            left: -10%;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(13, 92, 112, 0.55) 0%, transparent 70%);
+            top: -100px;
+            left: -80px;
+            width: 480px;
+            height: 480px;
+            background: radial-gradient(circle, rgba(29, 78, 216, 0.35) 0%, transparent 70%);
             border-radius: 50%;
-            filter: blur(60px);
+            filter: blur(70px);
             pointer-events: none;
             z-index: 0;
         }
 
-        .ambient-glow-2 {
+        .ambient-sphere-2 {
             position: fixed;
-            bottom: -15%;
-            right: -10%;
+            bottom: -120px;
+            right: -100px;
             width: 520px;
             height: 520px;
-            background: radial-gradient(circle, rgba(29, 78, 216, 0.4) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.22) 0%, transparent 70%);
             border-radius: 50%;
-            filter: blur(65px);
+            filter: blur(80px);
             pointer-events: none;
             z-index: 0;
         }
 
-        /* Glassmorphism Main Card Container (Compact, Elegan & Modern) */
-        .auth-container {
+        /* ═══ KARTU LOGIN UTAMA (1:1 DENGAN REFERENSI DESAIN) ═══ */
+        .login-card-container {
             width: 100%;
-            max-width: 860px;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.65);
-            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.32),
-                        0 0 1px 1px rgba(255, 255, 255, 0.5);
+            max-width: 960px;
+            min-height: 560px;
+            background: #ffffff;
+            border-radius: 26px;
+            box-shadow: 0 25px 70px -15px rgba(5, 8, 30, 0.55),
+                        0 0 0 1px rgba(255, 255, 255, 0.1);
             overflow: hidden;
             display: flex;
             position: relative;
+            z-index: 2;
+        }
+
+        /* ═══ SISI KIRI: HERO PANEL (WELCOME & 3D SPHERES) ═══ */
+        .login-hero-panel {
+            flex: 1.05;
+            background: linear-gradient(145deg, #0d1238 0%, #101748 50%, #1a2468 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 44px 40px;
+            color: #ffffff;
+        }
+
+        /* 3D Geometric Spheres / Curvature (Persis Referensi Foto) */
+        .hero-shape-top-curve {
+            position: absolute;
+            width: 380px;
+            height: 380px;
+            top: -70px;
+            right: -100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.85) 0%, rgba(29, 78, 216, 0.95) 100%);
+            box-shadow: inset 0 -12px 28px rgba(10, 14, 45, 0.45);
+            pointer-events: none;
             z-index: 1;
         }
 
-        /* Left Side: Spatial Visual Panel */
-        .auth-visual-panel {
-            flex: 1;
-            position: relative;
-            background: linear-gradient(150deg, #093c52 0%, #0d5c70 50%, #117887 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 36px 30px;
-            color: #ffffff;
-            overflow: hidden;
-        }
-
-        /* Geospatial Mesh Background */
-        .spatial-mesh-bg {
+        .hero-shape-main-sphere {
             position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.2) 1.2px, transparent 1.2px),
-                radial-gradient(circle at 20% 40%, rgba(255, 255, 255, 0.16) 1.5px, transparent 1.5px),
-                radial-gradient(circle at 60% 70%, rgba(255, 255, 255, 0.22) 2px, transparent 2px),
-                radial-gradient(circle at 35% 85%, rgba(255, 255, 255, 0.15) 1.2px, transparent 1.2px);
-            background-size: 100px 100px, 80px 80px, 120px 120px, 70px 70px;
-            opacity: 0.85;
+            width: 175px;
+            height: 175px;
+            bottom: 35px;
+            right: 35px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, #60a5fa 0%, #2563eb 40%, #1d4ed8 70%, #0f2468 100%);
+            box-shadow: -15px 16px 32px rgba(0, 0, 0, 0.45),
+                        inset -8px -8px 16px rgba(0, 0, 0, 0.5),
+                        inset 6px 6px 12px rgba(255, 255, 255, 0.5);
             pointer-events: none;
-        }
-
-        .spatial-lines {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(45deg, rgba(255, 255, 255, 0.04) 25%, transparent 25%),
-                linear-gradient(-45deg, rgba(255, 255, 255, 0.04) 25%, transparent 25%);
-            background-size: 50px 50px;
-            pointer-events: none;
-        }
-
-        /* Subtle Glow */
-        .panel-bottom-glow {
-            position: absolute;
-            bottom: -30px;
-            left: -20%;
-            width: 140%;
-            height: 160px;
-            background: radial-gradient(ellipse at 50% 100%, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 70%);
-            pointer-events: none;
-        }
-
-        /* Government / Ministry PU Emblem Badge */
-        .emblem-wrapper {
-            position: relative;
             z-index: 2;
-            margin-bottom: 18px;
         }
 
-        .emblem-badge {
-            width: 98px;
-            height: 98px;
-            background: #ffffff;
-            border-radius: 22px;
+        .hero-shape-bottom-curve {
+            position: absolute;
+            width: 240px;
+            height: 240px;
+            bottom: -90px;
+            left: -70px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 40% 40%, #1e3a8a 0%, #0d1238 85%);
+            opacity: 0.9;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .hero-gold-glow {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            top: 20px;
+            left: -20px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.22) 0%, transparent 70%);
+            filter: blur(25px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Hero Content (Di Atas Layer Bentuk Geometris) */
+        .hero-content-wrapper {
+            position: relative;
+            z-index: 5;
+        }
+
+        /* Dual Logo Badge (Logo PU & Logo Website SIPDIRA) */
+        .dual-logo-badge {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            padding: 12px;
-            box-shadow: 0 12px 28px rgba(10, 30, 45, 0.35),
-                        0 0 0 3.5px rgba(250, 214, 5, 0.95);
-            transition: transform 0.25s ease;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px 18px;
+            border-radius: 14px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+            border: 1.5px solid rgba(255, 255, 255, 0.85);
+            margin-bottom: 26px;
         }
 
-        .emblem-badge:hover {
-            transform: scale(1.03);
-        }
-
-        .emblem-badge img {
-            width: 100%;
-            height: 100%;
+        .dual-logo-badge img.logo-item {
+            height: 38px;
+            width: auto;
             object-fit: contain;
+            display: block;
         }
 
-        .agency-title {
-            position: relative;
-            z-index: 2;
-            font-size: 1.15rem;
+        .dual-logo-divider {
+            width: 1.5px;
+            height: 28px;
+            background: #cbd5e1;
+        }
+
+        .hero-sub-agency {
+            font-size: 0.73rem;
             font-weight: 800;
-            letter-spacing: 0.6px;
-            line-height: 1.35;
-            color: #ffffff;
+            letter-spacing: 1px;
+            color: var(--pu-gold-bright);
+            text-transform: uppercase;
             margin-bottom: 8px;
-            text-transform: uppercase;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .agency-subtitle {
+        .hero-title-welcome {
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            line-height: 1.1;
+            margin: 0 0 8px 0;
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+        }
+
+        .hero-headline-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            color: #93c5fd;
+            text-transform: uppercase;
+            margin: 0 0 14px 0;
+        }
+
+        .hero-description {
+            font-size: 0.83rem;
+            line-height: 1.65;
+            color: rgba(255, 255, 255, 0.88);
+            max-width: 330px;
+            margin: 0;
+        }
+
+        .hero-footer-status {
             position: relative;
-            z-index: 2;
-            font-size: 0.78rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            color: rgba(255, 255, 255, 0.92);
-            line-height: 1.45;
-            text-transform: uppercase;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            z-index: 5;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 14px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.74rem;
+            color: #ffffff;
+            width: fit-content;
         }
 
-        /* Right Side: Form Panel */
-        .auth-form-panel {
-            flex: 1.05;
-            padding: 34px 38px;
+        /* ═══ SISI KANAN: FORM PANEL (SIGN IN) ═══ */
+        .login-form-panel {
+            flex: 1;
+            background: #ffffff;
+            padding: 44px 44px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.95);
-        }
-
-        /* Brand Logo Block (Logo PU Resmi) */
-        .brand-header-box {
-            display: flex;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .brand-icon-glass {
-            width: 42px;
-            height: 42px;
-            background: #ffffff;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 5px;
-            margin-right: 12px;
-            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12),
-                        0 0 0 2px rgba(250, 214, 5, 0.9);
-            flex-shrink: 0;
-        }
-
-        .brand-icon-glass img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .brand-text-block h1 {
-            font-size: 1.18rem;
-            font-weight: 800;
-            color: var(--text-dark);
-            margin: 0;
-            letter-spacing: 0.8px;
-            line-height: 1.1;
-        }
-
-        .brand-text-block span {
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--pu-blue);
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-        }
-
-        .auth-form-title {
-            font-size: 0.88rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            margin-bottom: 18px;
-        }
-
-        /* Modern Inputs */
-        .input-wrapper {
             position: relative;
+        }
+
+        .form-heading-title {
+            font-size: 1.95rem;
+            font-weight: 800;
+            color: var(--pu-navy);
+            letter-spacing: -0.5px;
+            margin: 0 0 4px 0;
+            line-height: 1.2;
+        }
+
+        .form-heading-subtitle {
+            font-size: 0.84rem;
+            color: var(--text-muted);
+            margin: 0 0 22px 0;
+            line-height: 1.5;
+        }
+
+        /* Custom Input Pill Wrappers (Persis Referensi Input dengan Icon) */
+        .form-input-pill {
+            position: relative;
+            background: #f8fafc;
+            border: 1.5px solid var(--border-color);
+            border-radius: 12px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            transition: all 0.2s ease;
             margin-bottom: 14px;
         }
 
-        .input-glass {
-            height: 44px;
-            border-radius: 8px;
-            border: 1.5px solid #e2e8f0;
-            padding: 8px 14px;
-            font-size: 0.9rem;
-            color: var(--text-dark);
-            background: rgba(255, 255, 255, 0.88);
-            transition: all 0.2s ease;
-            width: 100%;
-        }
-
-        .input-glass:focus {
-            border-color: var(--pu-blue);
+        .form-input-pill:focus-within {
             background: #ffffff;
-            box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.12);
-            outline: none;
+            border-color: var(--pu-navy);
+            box-shadow: 0 0 0 3px rgba(16, 20, 58, 0.1);
         }
 
-        .input-glass::placeholder {
-            color: #94a3b8;
-            font-size: 0.86rem;
+        .form-input-pill.has-error {
+            border-color: #ef4444;
+            background: #fef2f2;
         }
 
-        /* Show/Hide Password Eye Toggle */
-        .password-toggle-btn {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
+        .input-icon-left {
             color: #94a3b8;
-            cursor: pointer;
-            padding: 4px;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            width: 20px;
+            text-align: center;
+            margin-right: 12px;
+            flex-shrink: 0;
             transition: color 0.2s ease;
         }
 
-        .password-toggle-btn:hover {
-            color: var(--text-dark);
+        .form-input-pill:focus-within .input-icon-left {
+            color: var(--pu-navy);
         }
 
-        /* Remember Me Box */
-        .remember-box {
-            background: rgba(248, 250, 252, 0.85);
-            border: 1px solid #eef2f6;
-            border-radius: 8px;
-            padding: 8px 12px;
-            margin-bottom: 18px;
-        }
-
-        .custom-control-label {
-            font-size: 0.84rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            cursor: pointer;
-            line-height: 1.3;
-        }
-
-        .remember-subtext {
-            font-size: 0.72rem;
-            color: var(--text-muted);
-            margin-left: 24px;
-            margin-top: 1px;
-        }
-
-        /* Submit Button */
-        .btn-submit-masuk {
-            height: 44px;
-            background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
-            color: #ffffff;
-            font-weight: 700;
-            font-size: 0.94rem;
-            border-radius: 8px;
+        .form-input-pill input {
+            flex: 1;
             border: none;
-            width: 100%;
+            background: transparent;
+            font-size: 0.88rem;
+            color: var(--text-dark);
+            font-weight: 500;
+            height: 100%;
+            outline: none;
+            padding: 0;
+        }
+
+        .form-input-pill input::placeholder {
+            color: #94a3b8;
+            font-size: 0.86rem;
+            font-weight: 400;
+        }
+
+        /* Tombol SHOW / HIDE Persis Referensi Desain */
+        .btn-toggle-show {
+            background: none;
+            border: none;
+            color: var(--pu-blue);
+            font-weight: 800;
+            font-size: 0.74rem;
+            letter-spacing: 0.5px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 14px rgba(29, 78, 216, 0.25);
+            padding: 4px 6px;
+            text-transform: uppercase;
+            transition: color 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .btn-toggle-show:hover {
+            color: var(--pu-blue-hover);
+        }
+
+        /* Baris Utilitas: Remember Me & Forgot Password */
+        .utility-row {
             display: flex;
             align-items: center;
-            justify-content: center;
-            letter-spacing: 0.4px;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            margin-top: 2px;
         }
 
-        .btn-submit-masuk:hover {
-            background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
-            box-shadow: 0 6px 18px rgba(29, 78, 216, 0.35);
-            transform: translateY(-1px);
-            color: #ffffff;
-        }
-
-        .btn-submit-masuk:active {
-            transform: translateY(0);
-        }
-
-        /* Footer Links */
-        .home-link {
-            display: inline-block;
-            margin-top: 14px;
-            color: var(--pu-blue);
-            font-size: 0.84rem;
+        .remember-checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.82rem;
+            color: var(--text-body);
             font-weight: 600;
+            cursor: pointer;
+            margin: 0;
+            user-select: none;
+        }
+
+        .remember-checkbox-label input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--pu-navy);
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .forgot-link {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
             text-decoration: none;
             transition: color 0.2s ease;
         }
 
-        .home-link:hover {
-            color: var(--pu-blue-hover);
+        .forgot-link:hover {
+            color: var(--pu-navy);
             text-decoration: underline;
         }
 
-        .copyright-text {
-            margin-top: 16px;
-            font-size: 0.72rem;
-            color: #94a3b8;
-            text-align: center;
+        /* Tombol Utama: Sign in (Navy PU Dominan) */
+        .btn-signin-primary {
+            width: 100%;
+            height: 48px;
+            background: var(--pu-navy);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.94rem;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 6px 18px rgba(16, 20, 58, 0.25);
         }
 
-        /* Google reCAPTCHA Badge Hide (Clean look with disclaimer) */
+        .btn-signin-primary:hover {
+            background: var(--pu-navy-light);
+            box-shadow: 0 8px 24px rgba(16, 20, 58, 0.35);
+            transform: translateY(-1px);
+            color: #ffffff;
+        }
+
+        .btn-signin-primary:active {
+            transform: translateY(0);
+        }
+
+        /* Garis Pemisah (Divider "Or") Persis Referensi Foto */
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 18px 0;
+            color: #94a3b8;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1.5px solid #e2e8f0;
+        }
+
+        .auth-divider span {
+            padding: 0 12px;
+            text-transform: capitalize;
+        }
+
+        /* Tombol Alternatif: "Sign in with other" -> "Buka WebGIS Publik" */
+        .btn-signin-secondary {
+            width: 100%;
+            height: 46px;
+            background: #ffffff;
+            color: var(--text-dark);
+            border: 1.5px solid var(--border-color);
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.86rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none !important;
+            transition: all 0.2s ease;
+        }
+
+        .btn-signin-secondary:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            color: var(--pu-navy);
+            box-shadow: 0 3px 10px rgba(16, 20, 58, 0.06);
+            transform: translateY(-1px);
+        }
+
+        /* Footer Bawah */
+        .auth-footer-bottom {
+            margin-top: 22px;
+            text-align: center;
+            font-size: 0.74rem;
+            color: #94a3b8;
+        }
+
+        .auth-footer-bottom a {
+            color: var(--pu-blue);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .auth-footer-bottom a:hover {
+            text-decoration: underline;
+        }
+
+        /* Sembunyikan Badge Google reCAPTCHA v3 */
         .grecaptcha-badge {
             visibility: hidden !important;
         }
 
-        /* Responsive Breakpoint */
-        @media (max-width: 820px) {
-            .auth-container {
+        /* ═══ RESPONSIVE BREAKPOINT (MOBILE & TABLET) ═══ */
+        @media (max-width: 860px) {
+            .login-card-container {
                 flex-direction: column;
-                max-width: 440px;
+                max-width: 460px;
+                min-height: auto;
             }
 
-            .auth-visual-panel {
-                padding: 28px 20px;
+            .login-hero-panel {
+                padding: 34px 28px;
+                min-height: 280px;
             }
 
-            .agency-title {
-                font-size: 1.05rem;
+            .hero-shape-top-curve {
+                width: 260px;
+                height: 260px;
+                top: -50px;
+                right: -60px;
             }
 
-            .emblem-badge {
-                width: 80px;
-                height: 80px;
-                padding: 10px;
+            .hero-shape-main-sphere {
+                width: 120px;
+                height: 120px;
+                bottom: 20px;
+                right: 20px;
             }
 
-            .auth-form-panel {
-                padding: 26px 20px;
+            .hero-title-welcome {
+                font-size: 1.8rem;
+            }
+
+            .login-form-panel {
+                padding: 32px 26px;
+            }
+
+            .form-heading-title {
+                font-size: 1.65rem;
             }
         }
     </style>
 
-    {{-- Google reCAPTCHA v3 Script jika Site Key sudah diatur --}}
+    {{-- Google reCAPTCHA v3 Script jika Site Key aktif --}}
     @if(!empty(config('services.recaptcha.site_key')))
         <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site_key') }}"></script>
     @endif
@@ -428,78 +546,91 @@
 
 <body>
 
-    <!-- Ambient Glow Spheres (Glassmorphism Effect) -->
-    <div class="ambient-glow-1"></div>
-    <div class="ambient-glow-2"></div>
+    <!-- Ambient Glow Spheres -->
+    <div class="ambient-sphere-1"></div>
+    <div class="ambient-sphere-2"></div>
 
-    <main class="auth-container">
-        <!-- 1. LEFT PANEL: BWS Kalimantan I / Ditjen SDA Branding -->
-        <section class="auth-visual-panel">
-            <div class="spatial-mesh-bg"></div>
-            <div class="spatial-lines"></div>
+    <main class="login-card-container">
 
-            <div class="w-100" style="position: relative; z-index: 2;">
-                <!-- Logo Emblem Kementerian PU (Presisi & Jernih) -->
-                <div class="emblem-wrapper">
-                    <div class="emblem-badge">
-                        <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo Kementerian Pekerjaan Umum">
-                    </div>
+        <!-- ═════════════════════════════════════════════════════════
+             1. SISI KIRI: HERO PANEL (WELCOME, DUAL LOGO & 3D SPHERES)
+             ═════════════════════════════════════════════════════════ -->
+        <section class="login-hero-panel">
+            <!-- 3D Geometric Spheres (1:1 Layout dari Foto Referensi) -->
+            <div class="hero-shape-top-curve"></div>
+            <div class="hero-shape-main-sphere"></div>
+            <div class="hero-shape-bottom-curve"></div>
+            <div class="hero-gold-glow"></div>
+
+            <div class="hero-content-wrapper">
+                <!-- Dual Logo Badge: Logo PU + Logo SIPDIRA -->
+                <div class="dual-logo-badge">
+                    <img src="{{ asset('img/logo-pu.svg') }}" class="logo-item" alt="Logo Kementerian Pekerjaan Umum" title="Kementerian Pekerjaan Umum">
+                    <div class="dual-logo-divider"></div>
+                    <img src="{{ asset('img/logo-sipdira.svg') }}" class="logo-item" alt="Logo SIPDIRA Spasial" title="SIPDIRA Spasial">
                 </div>
 
-                <!-- Instansi Header -->
-                <h2 class="agency-title">
-                    BALAI WILAYAH SUNGAI<br>KALIMANTAN I
-                </h2>
-                <div class="agency-subtitle">
-                    DIREKTORAT JENDERAL SUMBER DAYA AIR<br>
-                    KEMENTERIAN PEKERJAAN UMUM
+                <!-- Instansi Sub-label -->
+                <div class="hero-sub-agency">
+                    <i class="fas fa-shield-alt text-warning"></i>
+                    <span>BWS KALIMANTAN I &bull; DITJEN SDA</span>
                 </div>
+
+                <!-- Judul WELCOME (Persis Foto Referensi) -->
+                <h1 class="hero-title-welcome">WELCOME</h1>
+
+                <!-- Headline Nama Website -->
+                <div class="hero-headline-name">
+                    SIPDIRA SPASIAL
+                </div>
+
+                <!-- Deskripsi Pendukung -->
+                <p class="hero-description">
+                    Sistem Informasi Peta Daerah Irigasi berbasis spasial untuk pemantauan, pengelolaan lahan baku, fungsional, dan jaringan infrastruktur sumber daya air Kalimantan Barat.
+                </p>
             </div>
 
-            <div class="panel-bottom-glow"></div>
+            <!-- Status Keamanan Resmi di Bagian Bawah Hero -->
+            <div class="hero-footer-status">
+                <i class="fas fa-lock text-warning"></i>
+                <span>Portal Kedinasan Resmi Kementerian PU</span>
+            </div>
         </section>
 
-        <!-- 2. RIGHT PANEL: Formulir Login Bersih & Modern (Google reCAPTCHA v3) -->
-        <section class="auth-form-panel">
-            <!-- Header Logo PU Resmi & Judul Web GIS -->
-            <div class="brand-header-box">
-                <div class="brand-icon-glass">
-                    <img src="{{ asset('img/logo-sipdira.svg') }}" alt="Logo SIPDIRA">
-                </div>
-                <div class="brand-text-block">
-                    <h1>SIPDIRA</h1>
-                    <span>Sistem Informasi Peta Daerah Irigasi</span>
-                </div>
-            </div>
+        <!-- ═════════════════════════════════════════════════════════
+             2. SISI KANAN: FORM PANEL (SIGN IN, INPUTS & ACTIONS)
+             ═════════════════════════════════════════════════════════ -->
+        <section class="login-form-panel">
+            <!-- Header Judul Form (Persis Foto Referensi) -->
+            <h2 class="form-heading-title">Sign in</h2>
+            <p class="form-heading-subtitle">
+                Silakan masukkan kredensial akun kedinasan Anda untuk mengakses panel.
+            </p>
 
-            <!-- Subtitle -->
-            <div class="auth-form-title">
-                Silakan masuk ke akun Anda
-            </div>
-
-            {{-- Pesan Notifikasi Sukses Logout / Status --}}
+            {{-- Alert Notifikasi Sukses --}}
             @if(session()->has('success'))
-                <div class="alert alert-success alert-dismissible fade show p-2 mb-2" style="font-size: 0.8rem;" role="alert">
-                    <i class="fas fa-check-circle mr-1"></i> {{ session('success') }}
+                <div class="alert alert-success alert-dismissible fade show p-2.5 mb-3" style="font-size: 0.8rem; border-radius: 10px;" role="alert">
+                    <i class="fas fa-check-circle mr-1.5"></i> {{ session('success') }}
                     <button type="button" class="close p-2" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
             @endif
 
-            {{-- Pesan Notifikasi Gagal Login --}}
+            {{-- Alert Notifikasi Error Login --}}
             @if(session()->has('loginError'))
-                <div class="alert alert-danger alert-dismissible fade show p-2 mb-2" style="font-size: 0.8rem;" role="alert">
-                    <i class="fas fa-exclamation-triangle mr-1"></i> {{ session('loginError') }}
+                <div class="alert alert-danger alert-dismissible fade show p-2.5 mb-3" style="font-size: 0.8rem; border-radius: 10px;" role="alert">
+                    <i class="fas fa-exclamation-triangle mr-1.5"></i> {{ session('loginError') }}
                     <button type="button" class="close p-2" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
             @endif
 
+            {{-- Alert Notifikasi Status --}}
             @if(session('status'))
-                <div class="alert alert-info alert-dismissible fade show p-2 mb-2" style="font-size: 0.8rem;" role="alert">
-                    <i class="fas fa-info-circle mr-1"></i> {{ session('status') }}
+                <div class="alert alert-info alert-dismissible fade show p-2.5 mb-3" style="font-size: 0.8rem; border-radius: 10px;" role="alert">
+                    <i class="fas fa-info-circle mr-1.5"></i> {{ session('status') }}
                     <button type="button" class="close p-2" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -515,99 +646,86 @@
                     <input type="text" name="_hp_check" value="" tabindex="-1" autocomplete="off">
                 </div>
 
-                {{-- Hidden input token reCAPTCHA v3 --}}
+                {{-- Token reCAPTCHA v3 --}}
                 <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
 
-                <!-- Input Email -->
-                <div class="input-wrapper">
-                    <label class="small font-weight-bold text-gray-700 mb-1 d-block" for="email" style="font-size: 0.8rem;">
-                        Alamat Email
-                    </label>
+                <!-- 1. Input Email / Username (Persis Bentuk Input Foto Referensi) -->
+                <div class="form-input-pill @error('email') has-error @enderror">
+                    <i class="fas fa-user input-icon-left"></i>
                     <input type="email" 
                            name="email" 
-                           id="email"
-                           class="input-glass @error('email') is-invalid @enderror" 
-                           placeholder="Masukkan alamat email Anda"
-                           value="{{ old('email') }}"
+                           id="email" 
+                           placeholder="Alamat Email Kedinasan" 
+                           value="{{ old('email') }}" 
                            required 
                            autofocus 
                            autocomplete="off">
-                    @error('email')
-                        <div class="invalid-feedback ml-1" style="font-size: 0.75rem;">
-                            {{ $message }}
-                        </div>
-                    @enderror
+                </div>
+                @error('email')
+                    <div class="text-danger ml-2 mb-2 font-weight-bold" style="font-size: 0.74rem; margin-top: -8px;">
+                        <i class="fas fa-exclamation-circle mr-1"></i> {{ $message }}
+                    </div>
+                @enderror
+
+                <!-- 2. Input Password & Tombol SHOW (Persis Foto Referensi) -->
+                <div class="form-input-pill @error('password') has-error @enderror">
+                    <i class="fas fa-lock input-icon-left"></i>
+                    <input type="password" 
+                           name="password" 
+                           id="password" 
+                           placeholder="Password" 
+                           required 
+                           autocomplete="off">
+                    <button type="button" 
+                            class="btn-toggle-show" 
+                            id="togglePassword" 
+                            title="Tampilkan / Sembunyikan Password"
+                            onclick="togglePasswordVisibility()">
+                        <span id="showText">SHOW</span>
+                    </button>
+                </div>
+                @error('password')
+                    <div class="text-danger ml-2 mb-2 font-weight-bold" style="font-size: 0.74rem; margin-top: -8px;">
+                        <i class="fas fa-exclamation-circle mr-1"></i> {{ $message }}
+                    </div>
+                @enderror
+
+                <!-- 3. Baris Remember Me & Forgot Password (Persis Foto Referensi) -->
+                <div class="utility-row">
+                    <label class="remember-checkbox-label" for="remember">
+                        <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                        <span>Remember me</span>
+                    </label>
+
+                    <a href="{{ route('password.request') }}" class="forgot-link">
+                        Forgot Password?
+                    </a>
                 </div>
 
-                <!-- Input Password & Eye Toggle & Lupa Password -->
-                <div class="input-wrapper">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <label class="small font-weight-bold text-gray-700 mb-0" for="password" style="font-size: 0.8rem;">
-                            Password
-                        </label>
-                        <a href="{{ route('password.request') }}" class="font-weight-bold text-decoration-none" style="font-size: 0.75rem; color: #1d4ed8;">
-                            Lupa Password?
-                        </a>
-                    </div>
-                    <div style="position: relative;">
-                        <input type="password" 
-                               name="password" 
-                               id="password"
-                               class="input-glass @error('password') is-invalid @enderror" 
-                               placeholder="Masukkan password"
-                               required 
-                               autocomplete="off">
-                        <button type="button" 
-                                class="password-toggle-btn" 
-                                id="togglePassword" 
-                                title="Tampilkan / Sembunyikan Password"
-                                onclick="togglePasswordVisibility()">
-                            <i class="far fa-eye" id="eyeIcon"></i>
-                        </button>
-                    </div>
-                    @error('password')
-                        <div class="invalid-feedback ml-1" style="font-size: 0.75rem;">
-                            {{ $message }}
-                        </div>
-                    @enderror
-                </div>
-
-                <!-- Checkbox: Tetap Masuk (Persis QROP Spasial) -->
-                <div class="remember-box">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" name="remember" id="remember" class="custom-control-input" {{ old('remember') ? 'checked' : '' }}>
-                        <label class="custom-control-label" for="remember">
-                            Tetap masuk
-                        </label>
-                    </div>
-                    <div class="remember-subtext">
-                        Gunakan hanya di perangkat pribadi Anda
-                    </div>
-                </div>
-
-                <!-- Teks Notifikasi Perlindungan reCAPTCHA (Persis QROP Spasial) -->
-                <div class="text-center text-muted mb-2" style="font-size: 0.74rem;">
-                    Formulir ini dilindungi oleh reCAPTCHA.
-                </div>
-
-                <!-- Tombol Submit: Masuk -->
-                <button type="submit" class="btn-submit-masuk" id="btnSubmit">
-                    <i class="fas fa-sign-in-alt mr-2"></i> Masuk
+                <!-- 4. Tombol Utama: Sign in (Navy PU Persis Foto Referensi) -->
+                <button type="submit" class="btn-signin-primary" id="btnSubmit">
+                    <span>Sign in</span>
+                    <i class="fas fa-arrow-right ml-1" style="font-size: 0.85rem;"></i>
                 </button>
             </form>
 
-            <!-- Tautan Navigasi Beranda -->
-            <div class="text-center">
-                <a href="{{ route('peta') }}" class="home-link">
-                    <i class="fas fa-arrow-left mr-1"></i> Kembali ke Beranda Peta
-                </a>
+            <!-- 5. Garis Pemisah "Or" (Persis Foto Referensi) -->
+            <div class="auth-divider">
+                <span>Or</span>
             </div>
 
-            <!-- Footer Hak Cipta -->
-            <div class="copyright-text">
-                Copyright &copy; {{ date('Y') }} | BWS Kalimantan I Pontianak
+            <!-- 6. Tombol Sekunder (Persis "Sing in with other" -> WebGIS Publik) -->
+            <a href="{{ route('peta') }}" class="btn-signin-secondary" title="Kembali ke Peta Spasial Publik">
+                <i class="fas fa-compass text-primary"></i>
+                <span>Buka WebGIS Publik (Tanpa Login)</span>
+            </a>
+
+            <!-- 7. Footer Hak Cipta -->
+            <div class="auth-footer-bottom">
+                Hak Cipta &copy; {{ date('Y') }} &bull; Balai Wilayah Sungai Kalimantan I Pontianak
             </div>
         </section>
+
     </main>
 
     <!-- Scripts -->
@@ -615,40 +733,39 @@
     <script src="{{ asset('sbadmin/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
     <script>
-        // Toggle Show/Hide Password
+        // Toggle Show / Hide Password dengan tulisan SHOW / HIDE persis foto referensi
         function togglePasswordVisibility() {
             const passwordInput = document.getElementById('password');
-            const eyeIcon = document.getElementById('eyeIcon');
+            const showText = document.getElementById('showText');
             
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
-                eyeIcon.classList.remove('fa-eye');
-                eyeIcon.classList.add('fa-eye-slash');
+                showText.textContent = 'HIDE';
+                showText.style.color = '#dc2626'; // Merah saat terlihat
             } else {
                 passwordInput.type = 'password';
-                eyeIcon.classList.remove('fa-eye-slash');
-                eyeIcon.classList.add('fa-eye');
+                showText.textContent = 'SHOW';
+                showText.style.color = '#1d4ed8'; // Biru saat tersembunyi
             }
         }
 
-        // Integrasi Google reCAPTCHA v3 saat form disubmit
+        // Integrasi Google reCAPTCHA v3 saat submit
         const loginForm = document.getElementById('loginForm');
         const siteKey = "{{ config('services.recaptcha.site_key') }}";
 
         loginForm.addEventListener('submit', function(e) {
+            const btnSubmit = document.getElementById('btnSubmit');
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> Memproses...';
+
             if (siteKey && typeof grecaptcha !== 'undefined') {
                 e.preventDefault();
-                const btnSubmit = document.getElementById('btnSubmit');
-                btnSubmit.disabled = true;
-                btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Memeriksa...';
-
                 grecaptcha.ready(function() {
                     grecaptcha.execute(siteKey, { action: 'login' }).then(function(token) {
                         document.getElementById('g-recaptcha-response').value = token;
                         loginForm.submit();
                     }).catch(function(error) {
                         console.error('reCAPTCHA error:', error);
-                        // Fallback submit jika ada error koneksi ke Google
                         loginForm.submit();
                     });
                 });
@@ -656,4 +773,5 @@
         });
     </script>
 </body>
+
 </html>
