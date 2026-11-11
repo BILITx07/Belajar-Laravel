@@ -35,8 +35,8 @@
         /* ── TOPBAR EXECUTIVE PU WHITE & GOLD ACCENT (SESUAI FOTO 2) ── */
         .bws-topbar-primary {
             background: #ffffff;
-            height: 72px;
-            padding: 0 28px;
+            min-height: 84px;
+            padding: 8px 32px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -55,8 +55,8 @@
 
         /* 1. Lambang Instansi di Kiri */
         .qrop-emblem-wrap {
-            width: 44px;
-            height: 44px;
+            width: 50px;
+            height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -74,22 +74,22 @@
             color: #10143a;
             text-align: center;
             text-transform: uppercase;
-            line-height: 1.15;
-            margin-top: 2px;
+            line-height: 1.2;
+            margin-top: 3px;
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         /* Garis Pembatas Vertikal Tipis Elegan */
         .qrop-nav-divider {
-            height: 44px;
+            height: 52px;
             width: 1.5px;
             background: #e2e8f0;
-            margin: 0 18px;
+            margin: 0 20px;
         }
 
         /* 2. Logo Brand Aplikasi Spasial (SIPDIRA SPASIAL) */
         .qrop-word-main {
-            font-size: 20px;
+            font-size: 21px;
             font-weight: 900;
             letter-spacing: 2.5px;
             color: #10143a;
@@ -98,7 +98,7 @@
         }
 
         .qrop-word-sub {
-            font-size: 15px;
+            font-size: 15.5px;
             font-weight: 900;
             letter-spacing: 2px;
             color: #d97706;
@@ -283,7 +283,7 @@
             justify-content: flex-start;
             box-shadow: 0 1px 3px rgba(0,0,0,0.02);
             position: sticky;
-            top: 72px;
+            top: 84px;
             z-index: 1030;
         }
 
@@ -496,7 +496,7 @@
             <!-- 1. Lambang Daerah / Instansi PU + Teks Nama Instansi di Bawah -->
             <a href="{{ route('admin.dashboard') }}" class="d-flex flex-column align-items-center text-decoration-none mr-1" title="Balai Wilayah Sungai Kalimantan I Pontianak">
                 <div class="qrop-emblem-wrap">
-                    <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo Kementerian Pekerjaan Umum" style="width: 42px; height: 42px; object-fit: contain;">
+                    <img src="{{ asset('img/logo-pu.svg') }}" alt="Logo Kementerian Pekerjaan Umum" style="width: 48px; height: 48px; object-fit: contain;">
                 </div>
                 <div class="qrop-emblem-text d-none d-sm-block">
                     <div>BALAI WILAYAH SUNGAI</div>
@@ -510,7 +510,7 @@
             <!-- 2. Logo Brand Aplikasi Spasial: SIPDIRA SPASIAL -->
             <a href="{{ route('admin.dashboard') }}" class="d-flex align-items-center text-decoration-none">
                 <!-- Logo Ikon Resmi SIPDIRA -->
-                <div class="mr-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 44px; height: 44px;">
+                <div class="mr-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 50px; height: 50px;">
                     <img src="{{ asset('img/logo-sipdira.svg') }}" alt="Logo SIPDIRA" style="width: 100%; height: 100%; object-fit: contain;">
                 </div>
                 <div class="d-flex flex-column" style="line-height: 1.05;">
