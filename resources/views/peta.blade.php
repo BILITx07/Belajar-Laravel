@@ -1055,45 +1055,41 @@
                     </div>
                 </div>
 
-                <!-- Kolom 2: Akses Pintas & Layanan -->
+                <!-- Kolom 2: Tautan Terkait Kedinasan & Portal Resmi PU -->
                 <div>
                     <h5 class="bws-footer-heading">
-                        <i class="fas fa-compass text-primary"></i> Akses Pintas
+                        <i class="fas fa-external-link-alt text-primary" style="font-size: 12px;"></i> Tautan Terkait
                     </h5>
                     <ul class="bws-footer-links-list">
                         <li>
-                            <a href="#map">
-                                <i class="fas fa-chevron-right text-muted" style="font-size: 9px;"></i> Kembali ke Peta Spasial
+                            <a href="https://pu.go.id" target="_blank" rel="noopener noreferrer" title="Portal Resmi Kementerian Pekerjaan Umum">
+                                <i class="fas fa-chevron-right text-muted" style="font-size: 9px;"></i> Kementerian Pekerjaan Umum
+                                <i class="fas fa-external-link-alt ml-auto text-muted" style="font-size: 8px; opacity: 0.6;"></i>
                             </a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)" data-toggle="modal" data-target="#modalPanduanAplikasi">
-                                <i class="fas fa-chevron-right text-muted" style="font-size: 9px;"></i> Petunjuk Penggunaan WebGIS
+                            <a href="https://sda.pu.go.id" target="_blank" rel="noopener noreferrer" title="Direktorat Jenderal Sumber Daya Air">
+                                <i class="fas fa-chevron-right text-muted" style="font-size: 9px;"></i> Ditjen Sumber Daya Air
+                                <i class="fas fa-external-link-alt ml-auto text-muted" style="font-size: 8px; opacity: 0.6;"></i>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('kebijakan-privasi') }}">
-                                <i class="fas fa-chevron-right text-muted" style="font-size: 9px;"></i> Kebijakan Privasi Data
+                            <a href="https://data.go.id" target="_blank" rel="noopener noreferrer" title="Satu Data Indonesia">
+                                <i class="fas fa-chevron-right text-muted" style="font-size: 9px;"></i> Portal Satu Data Indonesia
+                                <i class="fas fa-external-link-alt ml-auto text-muted" style="font-size: 8px; opacity: 0.6;"></i>
                             </a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)" data-toggle="modal" data-target="#modalKontakResmi">
-                                <i class="fas fa-chevron-right text-muted" style="font-size: 9px;"></i> Layanan Informasi Kantor
+                            <a href="https://www.lapor.go.id" target="_blank" rel="noopener noreferrer" title="Layanan Aspirasi dan Pengaduan Online Rakyat">
+                                <i class="fas fa-chevron-right text-muted" style="font-size: 9px;"></i> Layanan SP4N LAPOR!
+                                <i class="fas fa-external-link-alt ml-auto text-muted" style="font-size: 8px; opacity: 0.6;"></i>
                             </a>
                         </li>
-                        @guest
                         <li>
-                            <a href="{{ route('login') }}">
-                                <i class="fas fa-chevron-right text-muted" style="font-size: 9px;"></i> Portal Masuk Petugas
+                            <a href="{{ route('kebijakan-privasi') }}" title="Kebijakan Privasi dan Tata Kelola Data Spasial">
+                                <i class="fas fa-shield-alt text-muted" style="font-size: 10px;"></i> Kebijakan Privasi Data Spasial
                             </a>
                         </li>
-                        @else
-                        <li>
-                            <a href="{{ route('admin.dashboard') }}">
-                                <i class="fas fa-chevron-right text-muted" style="font-size: 9px;"></i> Panel Administrator
-                            </a>
-                        </li>
-                        @endguest
                     </ul>
                 </div>
 
