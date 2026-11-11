@@ -31,7 +31,7 @@
                 <i class="fas fa-redo-alt text-warning"></i>
                 <span>Muat Ulang Peta</span>
             </a>
-            <a href="https://wa.me/6285389999100" target="_blank" rel="noopener noreferrer" class="btn d-inline-flex align-items-center" style="background: #ffffff; color: #15803d; border: 1.5px solid #cbd5e1; border-radius: 9px; padding: 10px 20px; font-weight: 600; font-size: 13.5px; gap: 8px; text-decoration: none;">
+            <a href="https://wa.me/6281349497711" target="_blank" rel="noopener noreferrer" class="btn d-inline-flex align-items-center" style="background: #ffffff; color: #15803d; border: 1.5px solid #cbd5e1; border-radius: 9px; padding: 10px 20px; font-weight: 600; font-size: 13.5px; gap: 8px; text-decoration: none;">
                 <i class="fab fa-whatsapp"></i>
                 <span>Laporkan Kendala</span>
             </a>

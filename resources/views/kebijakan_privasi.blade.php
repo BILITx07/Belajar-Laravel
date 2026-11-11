@@ -610,13 +610,16 @@
                                 Direktorat Jenderal Sumber Daya Air &bull; Kementerian Pekerjaan Umum
                             </div>
                             <div class="small text-secondary mb-3" style="line-height: 1.6;">
-                                <i class="fas fa-map-marker-alt text-danger mr-1.5"></i> Jl. Ahmad Yani No. 1, Bansir Darat, Kec. Pontianak Tenggara, Kota Pontianak, Kalimantan Barat 78124<br>
-                                <i class="fas fa-envelope text-primary mr-1.5"></i> Unit Sistem Informasi Sumber Daya Air (SISDA) BWS Kalimantan I
+                                <i class="fas fa-map-marker-alt text-danger mr-1.5"></i> Jl. Achmad Sood No. 6, Kota Pontianak, Kalimantan Barat 78121<br>
+                                <i class="fas fa-envelope text-primary mr-1.5"></i> <a href="mailto:bwsk1pontianak@pu.go.id" class="text-primary font-weight-bold">bwsk1pontianak@pu.go.id</a> &bull; Telepon/WA: +62 813-4949-7711
                             </div>
                             
                             <div class="d-flex flex-wrap align-items-center" style="gap: 10px;">
-                                <a href="https://wa.me/6282144380839?text=Halo%20Pak%20Billianto%20Timothy%2C%20saya%20ingin%20bertanya%20mengenai%20data%20spasial%20SIPDIRA%20BWS%20Kalimantan%20I" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-success font-weight-bold px-3 py-2 shadow-xs" style="border-radius: 8px;">
-                                    <i class="fab fa-whatsapp mr-1.5"></i> BILLIANTO TIMOTHY
+                                <a href="https://wa.me/6281349497711?text=Halo%20BWS%20Kalimantan%20I%20Pontianak%2C%20saya%20ingin%20bertanya%20mengenai%20data%20spasial%20SIPDIRA" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-success font-weight-bold px-3 py-2 shadow-xs" style="border-radius: 8px;">
+                                    <i class="fab fa-whatsapp mr-1.5"></i> WhatsApp BWS Kalimantan I
+                                </a>
+                                <a href="https://www.instagram.com/pu_sda_kalimantan1/" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-danger font-weight-bold px-3 py-2" style="border-radius: 8px;">
+                                    <i class="fab fa-instagram mr-1.5"></i> @pu_sda_kalimantan1
                                 </a>
                                 <a href="{{ route('peta') }}" class="bws-btn-official-contact">
                                     <i class="fas fa-map mr-1.5 text-warning"></i> Jelajahi WebGIS

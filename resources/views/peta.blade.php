@@ -1104,7 +1104,7 @@
                         </div>
                         <div>
                             <strong class="d-block text-dark">Alamat Kantor</strong>
-                            <span>Jl. Paris II No. 1, Kota Pontianak, Kalimantan Barat 78124</span>
+                            <span>Jl. Achmad Sood No. 6, Kota Pontianak, Kalimantan Barat 78121</span>
                         </div>
                     </div>
                     <div class="bws-footer-contact-item">
@@ -1113,7 +1113,7 @@
                         </div>
                         <div>
                             <strong class="d-block text-dark">Telepon Layanan</strong>
-                            <span>(0561) 742182 / (0561) 732168</span>
+                            <a href="tel:+6281349497711" class="text-secondary text-decoration-none">+62 813-4949-7711</a>
                         </div>
                     </div>
                     <div class="bws-footer-contact-item">
@@ -1122,15 +1122,15 @@
                         </div>
                         <div>
                             <strong class="d-block text-dark">Email Kedinasan</strong>
-                            <a href="mailto:bwskalimantan1@pu.go.id" class="text-primary text-decoration-none font-weight-bold">
-                                bwskalimantan1@pu.go.id
+                            <a href="mailto:bwsk1pontianak@pu.go.id" class="text-primary text-decoration-none font-weight-bold">
+                                bwsk1pontianak@pu.go.id
                             </a>
                         </div>
                     </div>
                     <div class="mt-3 pt-2">
-                        <a href="https://instagram.com/bwskalimantan1" target="_blank" rel="noopener noreferrer" class="btn btn-sm d-inline-flex align-items-center shadow-xs" style="background: #ffffff; color: #be185d; border: 1.5px solid #f9a8d4; border-radius: 8px; font-size: 11.5px; font-weight: 700; padding: 6px 12px; gap: 7px; text-decoration: none;">
+                        <a href="https://www.instagram.com/pu_sda_kalimantan1/" target="_blank" rel="noopener noreferrer" class="btn btn-sm d-inline-flex align-items-center shadow-xs" style="background: #ffffff; color: #be185d; border: 1.5px solid #f9a8d4; border-radius: 8px; font-size: 11.5px; font-weight: 700; padding: 6px 12px; gap: 7px; text-decoration: none;">
                             <i class="fab fa-instagram"></i>
-                            <span>@bwskalimantan1</span>
+                            <span>@pu_sda_kalimantan1</span>
                             <i class="fas fa-external-link-alt ml-1" style="font-size: 9px; opacity: 0.7;"></i>
                         </a>
                     </div>
@@ -1185,21 +1185,21 @@
                     <div class="mr-3 text-primary mt-1" style="font-size: 16px; width: 22px; text-align: center;"><i class="fas fa-map-marker-alt text-danger"></i></div>
                     <div>
                         <strong class="d-block text-dark font-weight-bold" style="font-size: 13.5px;">Alamat Kantor</strong>
-                        <div class="text-muted small" style="line-height: 1.45;">Jl. Paris II No. 1, Kota Pontianak, Kalimantan Barat 78124</div>
+                        <div class="text-muted small" style="line-height: 1.45;">Jl. Achmad Sood No. 6, Kota Pontianak, Kalimantan Barat 78121</div>
                     </div>
                 </div>
                 <div class="mb-3 d-flex align-items-start">
                     <div class="mr-3 text-primary mt-1" style="font-size: 16px; width: 22px; text-align: center;"><i class="fas fa-phone-alt text-primary"></i></div>
                     <div>
-                        <strong class="d-block text-dark font-weight-bold" style="font-size: 13.5px;">Telepon Kantor</strong>
-                        <div class="text-muted small">(0561) 742182 / 742183</div>
+                        <strong class="d-block text-dark font-weight-bold" style="font-size: 13.5px;">Telepon / WhatsApp Layanan</strong>
+                        <div class="text-muted small">+62 813-4949-7711</div>
                     </div>
                 </div>
                 <div class="mb-3 d-flex align-items-start">
                     <div class="mr-3 text-primary mt-1" style="font-size: 16px; width: 22px; text-align: center;"><i class="fas fa-envelope text-info"></i></div>
                     <div>
                         <strong class="d-block text-dark font-weight-bold" style="font-size: 13.5px;">Email Kedinasan</strong>
-                        <div class="text-muted small"><a href="mailto:bwskalimantan1@pu.go.id" class="text-primary font-weight-bold">bwskalimantan1@pu.go.id</a></div>
+                        <div class="text-muted small"><a href="mailto:bwsk1pontianak@pu.go.id" class="text-primary font-weight-bold">bwsk1pontianak@pu.go.id</a></div>
                     </div>
                 </div>
                 <div class="mb-4 d-flex align-items-start">
@@ -1210,11 +1210,11 @@
                     </div>
                 </div>
                 <div class="pt-3 border-top d-flex justify-content-between" style="gap: 10px;">
-                    <a href="https://wa.me/6285389999100" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-success font-weight-bold flex-fill py-2 d-flex align-items-center justify-content-center shadow-xs" style="border-radius: 10px; gap: 6px;">
+                    <a href="https://wa.me/6281349497711" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-success font-weight-bold flex-fill py-2 d-flex align-items-center justify-content-center shadow-xs" style="border-radius: 10px; gap: 6px;">
                         <i class="fab fa-whatsapp font-weight-bold" style="font-size: 15px;"></i> WhatsApp BWS
                     </a>
-                    <a href="https://instagram.com/bwskalimantan1" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-danger font-weight-bold flex-fill py-2 d-flex align-items-center justify-content-center" style="border-radius: 10px; gap: 6px;">
-                        <i class="fab fa-instagram" style="font-size: 15px;"></i> Instagram Resmi
+                    <a href="https://www.instagram.com/pu_sda_kalimantan1/" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-danger font-weight-bold flex-fill py-2 d-flex align-items-center justify-content-center" style="border-radius: 10px; gap: 6px;">
+                        <i class="fab fa-instagram" style="font-size: 15px;"></i> @pu_sda_kalimantan1
                     </a>
                 </div>
             </div>

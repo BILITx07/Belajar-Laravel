@@ -415,21 +415,21 @@
                         <i class="fas fa-map-marked-alt text-success mr-3 mt-1 fa-lg"></i>
                         <div>
                             <strong>Alamat Kantor:</strong><br>
-                            Jl. Dr. Wahidin Sudirohusodo No. 4, Pontianak, Kalimantan Barat
+                            Jl. Achmad Sood No. 6, Kota Pontianak, Kalimantan Barat 78121
                         </div>
                     </div>
                     <div class="list-group-item d-flex align-items-start py-2.5 px-3">
                         <i class="fas fa-phone-alt text-success mr-3 mt-1 fa-lg"></i>
                         <div>
                             <strong>Telepon / Layanan:</strong><br>
-                            (0561) 742182 / (0561) 732168
+                            <a href="tel:+6281349497711" class="text-dark text-decoration-none font-weight-bold">+62 813-4949-7711</a>
                         </div>
                     </div>
                     <div class="list-group-item d-flex align-items-start py-2.5 px-3">
                         <i class="fas fa-envelope text-success mr-3 mt-1 fa-lg"></i>
                         <div>
                             <strong>Email Resmi:</strong><br>
-                            <a href="mailto:bws.kalimantan1@pu.go.id" class="text-primary font-weight-bold">bws.kalimantan1@pu.go.id</a>
+                            <a href="mailto:bwsk1pontianak@pu.go.id" class="text-primary font-weight-bold">bwsk1pontianak@pu.go.id</a>
                         </div>
                     </div>
                     <div class="list-group-item d-flex align-items-start py-2.5 px-3">
