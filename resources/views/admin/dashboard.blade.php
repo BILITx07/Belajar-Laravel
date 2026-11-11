@@ -503,69 +503,143 @@
     </div>
     </div>
 
-    <!-- ═══ 4. TABEL FILE GEOSPASIAL TERKINI (REFERENSI FEWS BWS) ═══ -->
+    <!-- ═══ 4. TABEL REKAPITULASI EKSEKUTIF DAERAH IRIGASI (STANDAR BWS KALIMANTAN I) ═══ -->
     <div class="dashboard-panel-card">
-        <div class="panel-card-header">
-            <h5 class="panel-card-title">
-                <i class="fas fa-folder-open text-warning"></i>
-                <span>Data Spasial Terkini Terdaftar</span>
-            </h5>
-            <div class="d-flex align-items-center" style="gap: 8px;">
-                <a href="{{ route('admin.kelola-gis') }}" class="btn btn-sm btn-outline-secondary font-weight-bold px-3" style="border-radius: 20px; font-size: 0.78rem;">
-                    Buka Seluruh {{ count($geojsonFiles ?? []) }} File Master Data &raquo;
+        <div class="panel-card-header flex-wrap" style="gap: 12px;">
+            <div>
+                <h5 class="panel-card-title mb-1">
+                    <i class="fas fa-chart-line text-primary"></i>
+                    <span>Rekapitulasi Eksekutif Daerah Irigasi (DIR) BWS Kalimantan I</span>
+                </h5>
+                <small class="text-muted" style="font-size: 0.78rem;">
+                    Inventarisasi luasan baku, fungsional, rasio pengairan sawah, dan status operasional di Kalimantan Barat
+                </small>
+            </div>
+            <div class="d-flex align-items-center flex-wrap" style="gap: 8px;">
+                <a href="{{ route('admin.export-rekap') }}" class="btn btn-sm btn-success font-weight-bold px-3 shadow-xs d-inline-flex align-items-center" style="border-radius: 8px; font-size: 0.78rem; gap: 6px;">
+                    <i class="fas fa-file-excel"></i>
+                    <span>Unduh Rekapitulasi (Excel / CSV)</span>
+                </a>
+                <a href="{{ route('peta') }}" target="_blank" class="btn btn-sm btn-outline-primary font-weight-bold px-3 d-inline-flex align-items-center" style="border-radius: 8px; font-size: 0.78rem; gap: 6px;">
+                    <i class="fas fa-external-link-alt"></i>
+                    <span>Buka WebGIS Publik</span>
                 </a>
             </div>
         </div>
         <div class="table-responsive">
-            <table class="table table-hover mb-0" style="font-size: 0.85rem;">
-                <thead style="background: #f8fafc; color: #475569; font-weight: 600;">
+            <table class="table table-hover align-middle mb-0" style="font-size: 0.84rem;">
+                <thead style="background: #f8fafc; color: #475569; font-weight: 700; border-bottom: 2px solid #e2e8f0;">
                     <tr>
-                        <th width="5%" class="text-center">No.</th>
-                        <th width="35%">Nama File Spasial</th>
-                        <th width="20%">Kategori Master Data</th>
-                        <th width="15%">Ukuran File</th>
-                        <th width="15%">Tanggal Modifikasi</th>
-                        <th width="10%" class="text-center">Aksi</th>
+                        <th width="4%" class="text-center">No.</th>
+                        <th width="7%" class="text-center">Kode</th>
+                        <th width="26%">Nama Daerah Irigasi (DIR)</th>
+                        <th width="15%">Wilayah Kabupaten</th>
+                        <th width="12%" class="text-right">Luas Baku</th>
+                        <th width="12%" class="text-right">Luas Fungsional</th>
+                        <th width="14%">Rasio Pengairan</th>
+                        <th width="10%" class="text-center">Status</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($recentFiles as $idx => $rf)
-                    <tr>
-                        <td class="text-center text-muted font-weight-bold">{{ $idx + 1 }}</td>
-                        <td>
-                            <div class="font-weight-bold text-dark">{{ $rf['name'] }}</div>
-                            <span class="text-muted small" style="font-size: 0.72rem;">Format: {{ strtoupper($rf['extension']) }}</span>
-                        </td>
-                        <td>
-                            @php
-                                $catBadge = match($rf['category']) {
-                                    'baku'       => ['bg' => '#ecfdf5', 'color' => '#059669', 'label' => 'DIR Baku'],
-                                    'fungsional' => ['bg' => '#eff6ff', 'color' => '#2563eb', 'label' => 'DIR Fungsional'],
-                                    'potensial'  => ['bg' => '#fffbeb', 'color' => '#d97706', 'label' => 'DIR Potensial'],
-                                    'saluran'    => ['bg' => '#fdf2f8', 'color' => '#db2777', 'label' => 'Jaringan Saluran'],
-                                    'bangunan'   => ['bg' => '#f5f3ff', 'color' => '#7c3aed', 'label' => 'Bangunan Air'],
-                                    'ws_kapuas'  => ['bg' => '#ecfeff', 'color' => '#0891b2', 'label' => 'WS & DAS Kapuas'],
-                                    default      => ['bg' => '#f1f5f9', 'color' => '#475569', 'label' => 'Layer Kustom']
-                                };
-                            @endphp
-                            <span class="badge font-weight-bold px-2 py-1" style="background: {{ $catBadge['bg'] }}; color: {{ $catBadge['color'] }}; font-size: 0.74rem; border-radius: 6px;">
-                                {{ $catBadge['label'] }}
-                            </span>
-                        </td>
-                        <td class="text-muted font-weight-bold">{{ $rf['size'] }}</td>
-                        <td class="text-muted">{{ $rf['date'] }}</td>
-                        <td class="text-center">
-                            <a href="{{ route('admin.kelola-gis', ['search' => $rf['name']]) }}" class="btn btn-sm btn-light border px-2 py-1 text-primary font-weight-bold" style="border-radius: 6px; font-size: 0.75rem;" title="Kelola File Ini">
-                                <i class="fas fa-cog mr-1"></i> Kelola
-                            </a>
-                        </td>
-                    </tr>
+                    @php
+                        $sumBaku = 0;
+                        $sumFung = 0;
+                    @endphp
+                    @forelse($lokasi as $idx => $item)
+                        @php
+                            $baku = (float) ($item['luas_baku'] ?? 0);
+                            $fung = (float) ($item['luas_fung'] ?? 0);
+                            $sumBaku += $baku;
+                            $sumFung += $fung;
+                            $ratio = ($baku > 0) ? round(($fung / $baku) * 100, 1) : 0;
+
+                            $kabBadgeStyle = match($item['kabupaten'] ?? '') {
+                                'Sambas'    => ['bg' => '#eff6ff', 'color' => '#1d4ed8', 'border' => '#bfdbfe'],
+                                'Kubu Raya' => ['bg' => '#fef2f2', 'color' => '#dc2626', 'border' => '#fecaca'],
+                                'Ketapang'  => ['bg' => '#f0fdf4', 'color' => '#15803d', 'border' => '#bbf7d0'],
+                                default     => ['bg' => '#f8fafc', 'color' => '#475569', 'border' => '#e2e8f0']
+                            };
+
+                            $progressColor = match(true) {
+                                $ratio >= 80 => 'bg-success',
+                                $ratio >= 60 => 'bg-primary',
+                                default      => 'bg-warning'
+                            };
+                        @endphp
+                        <tr>
+                            <td class="text-center text-muted font-weight-bold">{{ $idx + 1 }}</td>
+                            <td class="text-center">
+                                <span class="badge badge-light border text-monospace font-weight-bold text-dark px-1.5 py-1" style="font-size: 0.72rem; border-radius: 5px;">
+                                    {{ $item['kode'] ?? 'DIR' }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="font-weight-bold text-dark" style="font-size: 0.86rem;">
+                                    {{ $item['nama'] ?? '-' }}
+                                </div>
+                                <span class="text-muted small" style="font-size: 0.72rem;">
+                                    <i class="fas fa-map-pin text-danger mr-1"></i>{{ number_format($item['lat'] ?? 0, 4) }}, {{ number_format($item['lng'] ?? 0, 4) }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge font-weight-bold px-2 py-1" style="background: {{ $kabBadgeStyle['bg'] }}; color: {{ $kabBadgeStyle['color'] }}; border: 1px solid {{ $kabBadgeStyle['border'] }}; border-radius: 6px; font-size: 0.73rem;">
+                                    Kab. {{ $item['kabupaten'] ?? '-' }}
+                                </span>
+                            </td>
+                            <td class="text-right font-weight-bold text-dark">
+                                {{ number_format($baku, 0, ',', '.') }} <span class="text-muted font-weight-normal small">Ha</span>
+                            </td>
+                            <td class="text-right font-weight-bold" style="color: #059669;">
+                                {{ number_format($fung, 0, ',', '.') }} <span class="text-muted font-weight-normal small">Ha</span>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center" style="gap: 8px;">
+                                    <div class="progress flex-grow-1" style="height: 6px; border-radius: 6px; background-color: #f1f5f9;">
+                                        <div class="progress-bar {{ $progressColor }}" role="progressbar" style="width: {{ min($ratio, 100) }}%; border-radius: 6px;" aria-valuenow="{{ $ratio }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <span class="font-weight-bold text-dark" style="font-size: 0.74rem; min-width: 36px; text-align: right;">
+                                        {{ $ratio }}%
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge badge-success px-2 py-1 font-weight-bold shadow-xs" style="font-size: 0.7rem; border-radius: 6px;">
+                                    <i class="fas fa-check-circle mr-1"></i> Aktif Terairi
+                                </span>
+                            </td>
+                        </tr>
                     @empty
-                    <tr>
-                        <td colspan="6" class="text-center py-4 text-muted">Belum ada file GeoJSON terdaftar.</td>
-                    </tr>
+                        <tr>
+                            <td colspan="8" class="text-center py-4 text-muted">Belum ada data daerah irigasi terdaftar.</td>
+                        </tr>
                     @endforelse
                 </tbody>
+                @if(count($lokasi) > 0)
+                <tfoot style="background: #f8fafc; font-weight: 800; border-top: 2px solid #cbd5e1; color: #0f172a;">
+                    @php
+                        $totalRatio = ($sumBaku > 0) ? round(($sumFung / $sumBaku) * 100, 1) : 0;
+                    @endphp
+                    <tr>
+                        <td colspan="4" class="text-uppercase" style="letter-spacing: 0.5px; font-size: 0.8rem;">
+                            <i class="fas fa-calculator text-primary mr-1"></i> Total Keseluruhan ({{ count($lokasi) }} Daerah Irigasi Kewenangan BWS Kalimantan I)
+                        </td>
+                        <td class="text-right" style="font-size: 0.9rem;">
+                            {{ number_format($sumBaku, 0, ',', '.') }} Ha
+                        </td>
+                        <td class="text-right text-success" style="font-size: 0.9rem;">
+                            {{ number_format($sumFung, 0, ',', '.') }} Ha
+                        </td>
+                        <td>
+                            <span class="badge badge-primary px-2 py-1" style="font-size: 0.74rem;">
+                                Rata-rata Efisiensi: {{ $totalRatio }}%
+                            </span>
+                        </td>
+                        <td class="text-center text-muted small">
+                            Tercatat di SISDA
+                        </td>
+                    </tr>
+                </tfoot>
+                @endif
             </table>
         </div>
     </div>
